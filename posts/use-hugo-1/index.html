@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>使用hugo搭建个人网站（一）- hugo使用入门 // little k&#39;s site</title>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.58.3" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="wangtingkui" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://wangtingkui.github.io/css/main.min.59023e5fd38d6ecb0e1dfbb295077c3c67e00e3b9eb3feaf34b5a5e6b332897a.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用hugo搭建个人网站（一）- hugo使用入门"/>
+<meta name="twitter:description" content="以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们"/>
+
+    <meta property="og:title" content="使用hugo搭建个人网站（一）- hugo使用入门" />
+<meta property="og:description" content="以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/posts/use-hugo-1/" />
+<meta property="article:published_time" content="2019-09-22T15:28:34+08:00" />
+<meta property="article:modified_time" content="2019-09-22T15:28:34+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://wangtingkui.github.io"><img class="app-header-avatar" src="https://tva1.sinaimg.cn/large/006y8mN6ly1g6m7sfw67pj30u00u07cn.jpg" alt="wangtingkui" /></a>
+      <h1>little k&#39;s site</h1>
+      <p>暂时还没想好写什么</p>
+      <div class="app-header-social">
+        
+          <a target="_blank" href="https://github.com/wangtingkui"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg></a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">使用hugo搭建个人网站（一）- hugo使用入门</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Sep 22, 2019
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div></div>
+    </header>
+    <div class="post-content">
+      
+
+<p>以<code>blog</code>为例，看看hugo是如何使用的</p>
+
+<h3 id="创建一个网站项目">创建一个网站项目</h3>
+
+<p><code>hugo new site blog</code>， 执行这个命令后，会在当前目录下创建一个<code>blog</code>目录
+，这个目录就是我们的项目目录</p>
+
+<p>简单了解下目录的结构</p>
+
+<pre><code class="language-sh">.
+├── archetypes   # 存储 .md 的模板文件
+│   └── default.md
+├── config.toml # 配置文件
+├── content # 存储网站所有的内容
+├── data # 存储数据文件供模板调用
+├── layouts # 存储 .html 模板
+├── static # 存储图片、css、js等静态文件，该目录下的文件会直接拷贝到 /public
+└── themes # 存储主题
+
+6 directories, 2 files
+</code></pre>
+
+<h3 id="快速体验">快速体验</h3>
+
+<p>让我们快速体验下hugo的威力</p>
+
+<p>hugo创建出来的项目默认不带有任何主题，我们直接从github上随便搞一个，放到之前提到的<code>themes</code>文件夹下</p>
+
+<p><code>git clone https://github.com/budparr/gohugo-theme-ananke.git ./themes/ananke</code></p>
+
+<p>然后在配置文件中配置应用这个主题</p>
+
+<p><code>echo 'theme = &quot;ananke&quot;' &gt;&gt; config.toml</code></p>
+
+<p>接下来该正常的用markdown写作我们的文章了，使用如下命令新建一个文章</p>
+
+<p><code>hugo new post/my-first-post.md</code></p>
+
+<p>可以看到在<code>content</code>文件夹下多出了一个<code>post</code>文件夹，里面有一个<code>my-fisrt-post.md</code>的<code>markdown</code>文件，我们看下创建出来的这个文件里面的内容都有什么</p>
+
+<blockquote>
+<p>content/post/my-first-post.md 文件内容</p>
+</blockquote>
+
+<pre><code class="language-md">---
+title: &quot;My First Post&quot;
+date: 2019-09-22T14:53:48+08:00
+draft: true
+---
+</code></pre>
+
+<p>这些默认生成的内容其实就是文章的一些元信息，比如文章的标题，创建的时间等等，里面的具体属性我们稍后再细讲。那这些内容是根据什么生成的呢，还记得我们上面给出的目录结构么，<code>archetypes</code>目录用来存放 md 文件的模板，让我们进去瞅瞅里面有啥，<code>vim archetypes/default.md</code></p>
+
+<blockquote>
+<p>archetypes/default.md 文件内容</p>
+</blockquote>
+
+<pre><code class="language-md">---
+title: &quot;{{ replace .Name &quot;-&quot; &quot; &quot; | title }}&quot;
+date: {{ .Date }}
+draft: true
+---
+</code></pre>
+
+<p>看起来是不是和我们刚才生成的文件结构超像，其实那个文件就是依据这个模板来的</p>
+
+<p>我们来改动下刚才生成的文件，编辑一些自定义的内容</p>
+
+<blockquote>
+<p>content/post/my-first-post.md 文件内容</p>
+</blockquote>
+
+<pre><code class="language-md">---
+title: &quot;My First Post&quot;
+date: 2019-09-22T14:53:48+08:00
+draft: true
+---
+
+### 这是我的第一篇文章
+
+内容就是用来测试的啦~
+</code></pre>
+
+<p>最重要的一步来了，生成我们的站点，hugo内置了一个server，方便我们在书写文章的过程中快速的预览到站点效果，只需要执行下面的命令即可</p>
+
+<p><code>hugo server -D</code></p>
+
+<p>其中<code>-D</code>选项是告诉hugo把草稿状态的文章也渲染出来，执行完之后，hugo就提示我们已经可以从<code>http://localhost:1313</code>去访问我们的站点了，赶紧去看一下，是不是很吊呢</p>
+
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g78bd27hxsj31gr0mtdi4.jpg" alt="" /></p>
+
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g78bdc1ue7j31h70jy76a.jpg" alt="" /></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
