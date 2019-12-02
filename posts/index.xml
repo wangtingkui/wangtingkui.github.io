@@ -5,13 +5,31 @@
     <link>https://wangtingkui.github.io/posts/</link>
     <description>Recent content in Posts on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 01 Dec 2019 17:28:45 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 02 Dec 2019 14:12:07 +0800</lastBuildDate>
     
 	<atom:link href="https://wangtingkui.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Go标准库使用 - flag</title>
+      <title>使用hugo搭建个人网站（三）- 其他使用技巧</title>
+      <link>https://wangtingkui.github.io/posts/use-hugo-3/</link>
+      <pubDate>Mon, 02 Dec 2019 14:12:07 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/posts/use-hugo-3/</guid>
+      <description>引用站点内其他文章 很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（flag）- 源码分析</title>
+      <link>https://wangtingkui.github.io/posts/go-std-lib-flag-source-code/</link>
+      <pubDate>Mon, 02 Dec 2019 14:07:56 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/posts/go-std-lib-flag-source-code/</guid>
+      <description>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（flag）- 使用</title>
       <link>https://wangtingkui.github.io/posts/go-std-lib-flag/</link>
       <pubDate>Sun, 01 Dec 2019 17:28:45 +0800</pubDate>
       
