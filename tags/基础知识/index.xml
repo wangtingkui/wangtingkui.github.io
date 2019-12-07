@@ -7,16 +7,106 @@
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Sun, 22 Sep 2019 15:45:32 +0800</lastBuildDate>
     
-	<atom:link href="https://wangtingkui.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://wangtingkui.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>使用hugo搭建个人网站（六）- 给你的文章分类</title>
+      <link>https://wangtingkui.github.io/2019/12/hugo-categorize-your-artical/</link>
+      <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/hugo-categorize-your-artical/</guid>
+      <description>hugo 内置了强大且支持自定义的分类系统，比如标签、类别、系列等，可以通过配置开启这些分类系统 在config.toml中配置： [taxonomies] tag = &amp;quot;tags&amp;quot; category = &amp;quot;categories&amp;quot; seris = &amp;quot;series&amp;quot;</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（五）- 定制你文章的url</title>
+      <link>https://wangtingkui.github.io/2019/12/hugo-custom-your-url/</link>
+      <pubDate>Sat, 07 Dec 2019 16:01:41 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/hugo-custom-your-url/</guid>
+      <description>默认情况下，站点文章的 url 和我们 content 目录下的文件结构是一一对应的，比如有 content/posts/test.md 这篇文章，当我们发布之后，在站点访问的 url 就是 &amp;lt;domian&amp;gt</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（五）- 模板选择顺序</title>
+      <link>https://wangtingkui.github.io/2019/12/use-hugo-5/</link>
+      <pubDate>Sat, 07 Dec 2019 15:55:24 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/use-hugo-5/</guid>
+      <description>加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（四）- Front Matter 配置详解</title>
+      <link>https://wangtingkui.github.io/2019/12/use-hugo-4/</link>
+      <pubDate>Sat, 07 Dec 2019 15:31:44 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/use-hugo-4/</guid>
+      <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 同样</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（三）- 其他使用技巧</title>
+      <link>https://wangtingkui.github.io/2019/12/use-hugo-3/</link>
+      <pubDate>Mon, 02 Dec 2019 14:12:07 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/use-hugo-3/</guid>
+      <description>引用站点内其他文章 很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（flag）- 源码分析</title>
+      <link>https://wangtingkui.github.io/2019/12/go-std-lib-flag-source-code/</link>
+      <pubDate>Mon, 02 Dec 2019 14:07:56 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/go-std-lib-flag-source-code/</guid>
+      <description>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（flag）- 使用</title>
+      <link>https://wangtingkui.github.io/2019/12/go-std-lib-flag/</link>
+      <pubDate>Sun, 01 Dec 2019 17:28:45 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/go-std-lib-flag/</guid>
+      <description>本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</title>
+      <link>https://wangtingkui.github.io/2019/12/use-hugo-2/</link>
+      <pubDate>Sun, 01 Dec 2019 13:56:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/use-hugo-2/</guid>
+      <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点</description>
+    </item>
+    
+    <item>
+      <title>go cli 应用框架cobra（一）- 简介</title>
+      <link>https://wangtingkui.github.io/2019/12/introduction-to-cobra/</link>
+      <pubDate>Sun, 01 Dec 2019 10:17:30 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/introduction-to-cobra/</guid>
+      <description>简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架 一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users</description>
+    </item>
+    
+    <item>
       <title>详解字符编码</title>
-      <link>https://wangtingkui.github.io/posts/unicode/</link>
+      <link>https://wangtingkui.github.io/2019/09/unicode/</link>
       <pubDate>Sun, 22 Sep 2019 15:45:32 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/posts/unicode/</guid>
+      <guid>https://wangtingkui.github.io/2019/09/unicode/</guid>
       <description>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（一）- hugo使用入门</title>
+      <link>https://wangtingkui.github.io/2019/09/use-hugo-1/</link>
+      <pubDate>Sun, 22 Sep 2019 15:28:34 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/09/use-hugo-1/</guid>
+      <description>以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们</description>
     </item>
     
   </channel>

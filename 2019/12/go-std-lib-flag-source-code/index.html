@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Go标准库（flag）- 源码分析 - xiaok&#39;s site
+      </title>
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  
+  <meta name="theme-color" content="#000000" />
+  
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <meta name="description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用" />
+  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
+  <title>Go标准库（flag）- 源码分析 - xiaok&#39;s site</title>
+  
+
+  <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+  <meta property="og:title" content="Go标准库（flag）- 源码分析" />
+<meta property="og:description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/2019/12/go-std-lib-flag-source-code/" />
+<meta property="article:published_time" content="2019-12-02T14:07:56+08:00" />
+<meta property="article:modified_time" content="2019-12-02T14:07:56+08:00" />
+<meta itemprop="name" content="Go标准库（flag）- 源码分析">
+<meta itemprop="description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用">
+
+
+<meta itemprop="datePublished" content="2019-12-02T14:07:56&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-02T14:07:56&#43;08:00" />
+<meta itemprop="wordCount" content="1976">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go标准库（flag）- 源码分析"/>
+<meta name="twitter:description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用"/>
+
+  <!--[if lte IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+    <![endif]-->
+
+  <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  </head>
+  
+
+  <body class="main-center theme-blue" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="" target="_blank">
+            <img class="img-circle img-rotate" src="https://wangtingkui.github.io/avatar.jpg" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">无敌小k</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Beijing, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>来者皆是客</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="tag-list-link">基础知识</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/" class="tag-list-link">字符编码</a><span
+                    class="tag-list-count">1</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2019/12/go-std-lib-flag-source-code/"
+    >Go标准库（flag）- 源码分析</a
+  >
+</h1>
+
+      <div class="article-meta">
+        <span class="article-date">
+  <i class="icon icon-calendar-check"></i>
+<a href="https://wangtingkui.github.io/2019/12/go-std-lib-flag-source-code/" class="article-date">
+  <time datetime="2019-12-02 14:07:56 &#43;0800 CST" itemprop="datePublished">2019-12-02</time>
+</a>
+</span>
+
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count:4minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      
+
+<p>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考<a href="https://wangtingkui.github.io/2019/12/go-std-lib-flag/">Go标准库（flag）- 使用</a></p>
+
+<h3 id="核心数据类型">核心数据类型</h3>
+
+<p>首先还是来看下flag包中有哪些核心的类型，主要有两个接口和两个结构体</p>
+
+<p>interface:</p>
+
+<pre><code class="language-go">// 抽象类型， 我们后续也是通过这个接口来扩展我们flag包支持的数据类型的
+type Value interface {
+    String() string
+    Set(string) error
+}
+
+type Getter interface {
+    Value
+    Get() interface{}
+}
+</code></pre>
+
+<p>struct:</p>
+
+<pre><code class="language-go">// 代表一个命令行选项
+type Flag struct {
+    Name     string // name as it appears on command line  // 标签在命令行显示的名字
+    Usage    string // help message  // 帮助信息
+    Value    Value  // value as set  // 标签的值
+    DefValue string // default value (as text); for usage message  // 默认值（文本格式）；这也是一个用法的信息说明
+}
+
+// 代表一个选项集合，其实可以认为就是在shell中敲入的命令被拆分解析之后就是FlagSet
+type FlagSet struct {
+
+    // 当解析标签出现错误的时候，Usage就会被调用。这个字段是一个函数（不是一个方法），它可以指向
+    // 用户自己定义的错误处理函数。
+	Usage func()
+
+	name          string // 名字，一般默认是os.Args[0]
+	parsed        bool	// 是否已经解析过了（是否调用过flag.Parse()）
+	actual        map[string]*Flag // 解析过得flag数组
+	formal        map[string]*Flag // 注册的flag数组
+	args          []string // 解析过后，剩余的non-flag参数
+	errorHandling ErrorHandling // 解析失败后的处理方式
+	output        io.Writer // nil means stderr; use out() accessor
+}
+</code></pre>
+
+<h3 id="源码分析">源码分析</h3>
+
+<p>很多包在提供了底层类型的同时，为了方便我们使用，经常会在包内初始化一个默认对象，然后在开放一些导出函数供我们使用，flag 包也是这样的，标准库的实现者在包内初始化了一个名为<code>CommandLine</code>的<code>FlagSet</code>类型对象，我们经常使用的<code>flag.String()</code>,<code>flag.BoolVal()</code>等方法其实就是对这个对象的操作</p>
+
+<p>接下来就让我们追踪下最常用的<code>flag.String</code>的调用，看下flag包的内部实现逻辑吧</p>
+
+<h4 id="注册">注册</h4>
+
+<p><code>flag.String</code></p>
+
+<pre><code class="language-go">// 可以看到，flag.String 其实是对 CommandLine 对象 String 方法的包装，和我们刚才提到的是吻合的
+func String(name string, value string, usage string) *string {
+	return CommandLine.String(name, value, usage)
+}
+</code></pre>
+
+<p><code>CommandLine.String</code></p>
+
+<pre><code class="language-go">// 帮我们创建了一个string类型的指针，返回给后续使用，
+// 这里也可以看到，Xxx()这种方法比XxxVar()的方法只是多了一步帮我们创建变量的过程，其实更底层是一样的
+func (f *FlagSet) String(name string, value string, usage string) *string {
+	p := new(string)
+	f.StringVar(p, name, value, usage)
+	return p
+}
+</code></pre>
+
+<p><code>f.StringVar</code></p>
+
+<pre><code class="language-go">// FlagSet.StringVar 将我们的string类型的指针包装成了 stringValue 这个实现了 Value 接口的类型
+func (f *FlagSet) StringVar(p *string, name string, value string, usage string) {
+	f.Var(newStringValue(value, p), name, usage)
+}
+</code></pre>
+
+<p><code>f.Var</code></p>
+
+<pre><code class="language-go">func (f *FlagSet) Var(value Value, name string, usage string) {
+	// 创建一个Flag对象
+	flag := &amp;Flag{name, usage, value, value.String()}
+	// 检测是否已经注册过同名的flag
+	_, alreadythere := f.formal[name]
+	if alreadythere {
+		var msg string
+		if f.name == &quot;&quot; {
+			msg = fmt.Sprintf(&quot;flag redefined: %s&quot;, name)
+		} else {
+			msg = fmt.Sprintf(&quot;%s flag redefined: %s&quot;, f.name, name)
+		}
+		fmt.Fprintln(f.Output(), msg)
+		panic(msg) // Happens only if flags are declared with identical names
+	}
+	// 初始化formal
+	if f.formal == nil {
+		f.formal = make(map[string]*Flag)
+	}
+	// 放到注册的标记集合中
+	f.formal[name] = flag
+}
+</code></pre>
+
+<h4 id="解析">解析</h4>
+
+<p>执行到这里，我们的选项注册工作已经完成了，下一步就是命令行参数的解析，从而把用户真正的输入拿到，执行解析，我们调用的方法是<code>flag.Parse</code></p>
+
+<p><code>flag.Parse</code></p>
+
+<pre><code class="language-go">// 其实是对FlagSet.Parse的封装
+// 同时也看到，flag包对参数的解析默认是从命令行输入的第二个字符串开始的
+func Parse() {
+	// Ignore errors; CommandLine is set for ExitOnError.
+	CommandLine.Parse(os.Args[1:])
+}
+</code></pre>
+
+<p><code>CommandLine.Parse</code></p>
+
+<pre><code class="language-go">func (f *FlagSet) Parse(arguments []string) error {
+	// 将解析标记置为true，标记这个FlagSet已经被解析过了
+	f.parsed = true
+	// 将所有参数放到盛放non-flag参数的容器中
+	// 后续解析过程会一个一个参数从这个容器中往外拿，直到解析结束
+	f.args = arguments
+	for {
+		// 逐个解析参数
+		seen, err := f.parseOne()
+		if seen {
+			continue
+		}
+		// 解析完成，退出循环，f.parseOne 返回 false,nil 的时候
+		if err == nil {
+			break
+		}
+		// 如果有error发生，根据设置定的error处理方式处理error
+		switch f.errorHandling {
+		case ContinueOnError:
+			return err
+		case ExitOnError:
+			os.Exit(2)
+		case PanicOnError:
+			panic(err)
+		}
+	}
+	return nil
+}
+</code></pre>
+
+<p><code>f.parseOne</code></p>
+
+<pre><code class="language-go">// 这个方法是最主要的一个方法，他解析我们的参数
+// 这个方法是被循环调用的，决定解析是否终止的条件也在这个方法中，在源码中我会标记出来
+func (f *FlagSet) parseOne() (bool, error) {
+	// 没有参数，不需要解析
+	if len(f.args) == 0 {
+		return false, nil
+	}
+	s := f.args[0]
+	// 结束条件1：字符串长度小于零或者不是以 - 字符开头的
+	if len(s) &lt; 2 || s[0] != '-' {
+		return false, nil
+	}
+	numMinuses := 1
+	if s[1] == '-' {
+		numMinuses++
+		// 结束条件2：字符串是以 -- 开头的
+		if len(s) == 2 { // &quot;--&quot; terminates the flags
+			f.args = f.args[1:]
+			return false, nil
+		}
+	}
+
+	// 取出真正的字符值（去掉前缀 - 或者 -- ）
+	name := s[numMinuses:]
+
+	// 字符串合法检测
+	if len(name) == 0 || name[0] == '-' || name[0] == '=' {
+		return false, f.failf(&quot;bad flag syntax: %s&quot;, s)
+	}
+
+	// it's a flag. does it have an argument?
+	f.args = f.args[1:]
+	hasValue := false
+	value := &quot;&quot;
+	// 通过等号判断是不是 &quot;name=value&quot; 这种格式类型的flag
+	for i := 1; i &lt; len(name); i++ { // equals cannot be first
+		if name[i] == '=' {
+			value = name[i+1:]
+			hasValue = true
+			name = name[0:i]
+			break
+		}
+	}
+	m := f.formal
+	// 判断是否注册过指定名称的flag
+	flag, alreadythere := m[name] // BUG
+	if !alreadythere {
+		// 默认支持解析 help 和 h 选项
+		if name == &quot;help&quot; || name == &quot;h&quot; { // special case for nice help message.
+			f.usage()
+			return false, ErrHelp
+		}
+		return false, f.failf(&quot;flag provided but not defined: -%s&quot;, name)
+	}
+
+	// bool类型的flag支持 -flag 形式的写法，传了标记就是true，不传就依赖默认值
+	if fv, ok := flag.Value.(boolFlag); ok &amp;&amp; fv.IsBoolFlag() { // special case: doesn't need an arg
+		if hasValue {
+			if err := fv.Set(value); err != nil {
+				return false, f.failf(&quot;invalid boolean value %q for -%s: %v&quot;, value, name, err)
+			}
+		} else {
+			if err := fv.Set(&quot;true&quot;); err != nil {
+				return false, f.failf(&quot;invalid boolean flag %s: %v&quot;, name, err)
+			}
+		}
+	} else {
+		// It must have a value, which might be the next argument.
+		if !hasValue &amp;&amp; len(f.args) &gt; 0 {
+			// value is the next arg
+			hasValue = true
+			value, f.args = f.args[0], f.args[1:]
+		}
+		if !hasValue {
+			return false, f.failf(&quot;flag needs an argument: -%s&quot;, name)
+		}
+		if err := flag.Value.Set(value); err != nil {
+			return false, f.failf(&quot;invalid value %q for flag -%s: %v&quot;, value, name, err)
+		}
+	}
+
+	// 初始化f.actual
+	if f.actual == nil {
+		f.actual = make(map[string]*Flag)
+	}
+
+	// 放在解析后的容器里面
+	f.actual[name] = flag
+	return true, nil
+}
+</code></pre>
+
+    </div>
+    <div class="article-footer">
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://wangtingkui.github.io/2019/12/go-std-lib-flag/" title="Go标准库（flag）- 使用"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://wangtingkui.github.io/2019/12/use-hugo-3/"
+                    title="使用hugo搭建个人网站（三）- 其他使用技巧"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+        </div>
+    </div>
+</nav>
+
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/wangtingkui" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://wangtingkui.github.io/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/rust.min.js"></script>
+<script type="text/javascript"
+    src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/application.js"></script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/plugin.js"></script>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/wangtingkui.github.io',
+            CONTENT_URL: 'https:\/\/wangtingkui.github.io\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/insight.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+  </body>
+</html>
