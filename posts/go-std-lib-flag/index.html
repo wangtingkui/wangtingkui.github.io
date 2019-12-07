@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en-us">
   <head>
-    <title>Go标准库使用 - flag // xiaok&#39;s site</title>
+    <title>Go标准库（flag）- 使用 // xiaok&#39;s site</title>
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.58.3" />
+    <meta name="generator" content="Hugo 0.57.2" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="wangtingkui" />
     <meta name="description" content="" />
@@ -11,10 +11,10 @@
 
     
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Go标准库使用 - flag"/>
+<meta name="twitter:title" content="Go标准库（flag）- 使用"/>
 <meta name="twitter:description" content="本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提"/>
 
-    <meta property="og:title" content="Go标准库使用 - flag" />
+    <meta property="og:title" content="Go标准库（flag）- 使用" />
 <meta property="og:description" content="本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://wangtingkui.github.io/posts/go-std-lib-flag/" />
@@ -30,7 +30,7 @@
       <p>暂时还没想好写什么</p>
       <div class="app-header-social">
         
-          <a target="_blank" href="https://github.com/wangtingkui"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+          <a target="_blank" href="https://github.com/wangtingkui" rel="noreferrer noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
   <title>github</title>
   <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
 </svg></a>
@@ -41,7 +41,7 @@
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">Go标准库使用 - flag</h1>
+      <h1 class ="post-title">Go标准库（flag）- 使用</h1>
       <div class="post-meta">
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -87,7 +87,7 @@ flag.IntVal(&amp;intval, &quot;intval&quot;, 1, &quot;a intger value&quot;)
 
 <h3 id="使用flag">使用flag</h3>
 
-<p>当使用命令行传递flag的时候，有以下三种语法格式</p>
+<p>当使用命令行传递flag的时候，有以下三种语法格式（虽说官方只写了一个<code>-</code>，但其实当flag是bool类型的时候<code>--</code>也是支持的，但最好还是按照官方的来）</p>
 
 <pre><code>-flag // 只支持 bool 类型
 -flag value // 只支持非 bool 类型，因为比如有`cmd -x false`这种格式，不能确定false到底是flag的值还是一个参数

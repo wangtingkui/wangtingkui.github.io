@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Go标准库（flag）- 源码分析 // xiaok&#39;s site</title>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="wangtingkui" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://wangtingkui.github.io/css/main.min.59023e5fd38d6ecb0e1dfbb295077c3c67e00e3b9eb3feaf34b5a5e6b332897a.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go标准库（flag）- 源码分析"/>
+<meta name="twitter:description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用"/>
+
+    <meta property="og:title" content="Go标准库（flag）- 源码分析" />
+<meta property="og:description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/posts/go-std-lib-flag-source-code/" />
+<meta property="article:published_time" content="2019-12-02T14:07:56+08:00" />
+<meta property="article:modified_time" content="2019-12-02T14:07:56+08:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://wangtingkui.github.io"><img class="app-header-avatar" src="https://tva1.sinaimg.cn/large/006y8mN6ly1g6m7sfw67pj30u00u07cn.jpg" alt="wangtingkui" /></a>
+      <h1>xiaok&#39;s site</h1>
+      <p>暂时还没想好写什么</p>
+      <div class="app-header-social">
+        
+          <a target="_blank" href="https://github.com/wangtingkui" rel="noreferrer noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg></a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Go标准库（flag）- 源码分析</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Dec 2, 2019
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div></div>
+    </header>
+    <div class="post-content">
+      
+
+<p>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考<a href="https://wangtingkui.github.io/posts/go-std-lib-flag/">Go标准库（flag）- 使用</a></p>
+
+<h3 id="核心数据类型">核心数据类型</h3>
+
+<p>首先还是来看下flag包中有哪些核心的类型，主要有两个接口和两个结构体</p>
+
+<p>interface:</p>
+
+<pre><code class="language-go">// 抽象类型， 我们后续也是通过这个接口来扩展我们flag包支持的数据类型的
+type Value interface {
+    String() string
+    Set(string) error
+}
+
+type Getter interface {
+    Value
+    Get() interface{}
+}
+</code></pre>
+
+<p>struct:</p>
+
+<pre><code class="language-go">// 代表一个命令行选项
+type Flag struct {
+    Name     string // name as it appears on command line  // 标签在命令行显示的名字
+    Usage    string // help message  // 帮助信息
+    Value    Value  // value as set  // 标签的值
+    DefValue string // default value (as text); for usage message  // 默认值（文本格式）；这也是一个用法的信息说明
+}
+
+// 代表一个选项集合，其实可以认为就是在shell中敲入的命令被拆分解析之后就是FlagSet
+type FlagSet struct {
+
+    // 当解析标签出现错误的时候，Usage就会被调用。这个字段是一个函数（不是一个方法），它可以指向
+    // 用户自己定义的错误处理函数。
+	Usage func()
+
+	name          string // 名字，一般默认是os.Args[0]
+	parsed        bool	// 是否已经解析过了（是否调用过flag.Parse()）
+	actual        map[string]*Flag // 解析过得flag数组
+	formal        map[string]*Flag // 注册的flag数组
+	args          []string // 解析过后，剩余的non-flag参数
+	errorHandling ErrorHandling // 解析失败后的处理方式
+	output        io.Writer // nil means stderr; use out() accessor
+}
+</code></pre>
+
+<h3 id="源码分析">源码分析</h3>
+
+<p>很多包在提供了底层类型的同时，为了方便我们使用，经常会在包内初始化一个默认对象，然后在开放一些导出函数供我们使用，flag 包也是这样的，标准库的实现者在包内初始化了一个名为<code>CommandLine</code>的<code>FlagSet</code>类型对象，我们经常使用的<code>flag.String()</code>,<code>flag.BoolVal()</code>等方法其实就是对这个对象的操作</p>
+
+<p>接下来就让我们追踪下最常用的<code>flag.String</code>的调用，看下flag包的内部实现逻辑吧</p>
+
+<h4 id="注册">注册</h4>
+
+<p><code>flag.String</code></p>
+
+<pre><code class="language-go">// 可以看到，flag.String 其实是对 CommandLine 对象 String 方法的包装，和我们刚才提到的是吻合的
+func String(name string, value string, usage string) *string {
+	return CommandLine.String(name, value, usage)
+}
+</code></pre>
+
+<p><code>CommandLine.String</code></p>
+
+<pre><code class="language-go">// 帮我们创建了一个string类型的指针，返回给后续使用，
+// 这里也可以看到，Xxx()这种方法比XxxVar()的方法只是多了一步帮我们创建变量的过程，其实更底层是一样的
+func (f *FlagSet) String(name string, value string, usage string) *string {
+	p := new(string)
+	f.StringVar(p, name, value, usage)
+	return p
+}
+</code></pre>
+
+<p><code>f.StringVar</code></p>
+
+<pre><code class="language-go">// FlagSet.StringVar 将我们的string类型的指针包装成了 stringValue 这个实现了 Value 接口的类型
+func (f *FlagSet) StringVar(p *string, name string, value string, usage string) {
+	f.Var(newStringValue(value, p), name, usage)
+}
+</code></pre>
+
+<p><code>f.Var</code></p>
+
+<pre><code class="language-go">func (f *FlagSet) Var(value Value, name string, usage string) {
+	// 创建一个Flag对象
+	flag := &amp;Flag{name, usage, value, value.String()}
+	// 检测是否已经注册过同名的flag
+	_, alreadythere := f.formal[name]
+	if alreadythere {
+		var msg string
+		if f.name == &quot;&quot; {
+			msg = fmt.Sprintf(&quot;flag redefined: %s&quot;, name)
+		} else {
+			msg = fmt.Sprintf(&quot;%s flag redefined: %s&quot;, f.name, name)
+		}
+		fmt.Fprintln(f.Output(), msg)
+		panic(msg) // Happens only if flags are declared with identical names
+	}
+	// 初始化formal
+	if f.formal == nil {
+		f.formal = make(map[string]*Flag)
+	}
+	// 放到注册的标记集合中
+	f.formal[name] = flag
+}
+</code></pre>
+
+<h4 id="解析">解析</h4>
+
+<p>执行到这里，我们的选项注册工作已经完成了，下一步就是命令行参数的解析，从而把用户真正的输入拿到，执行解析，我们调用的方法是<code>flag.Parse</code></p>
+
+<p><code>flag.Parse</code></p>
+
+<pre><code class="language-go">// 其实是对FlagSet.Parse的封装
+// 同时也看到，flag包对参数的解析默认是从命令行输入的第二个字符串开始的
+func Parse() {
+	// Ignore errors; CommandLine is set for ExitOnError.
+	CommandLine.Parse(os.Args[1:])
+}
+</code></pre>
+
+<p><code>CommandLine.Parse</code></p>
+
+<pre><code class="language-go">func (f *FlagSet) Parse(arguments []string) error {
+	// 将解析标记置为true，标记这个FlagSet已经被解析过了
+	f.parsed = true
+	// 将所有参数放到盛放non-flag参数的容器中
+	// 后续解析过程会一个一个参数从这个容器中往外拿，直到解析结束
+	f.args = arguments
+	for {
+		// 逐个解析参数
+		seen, err := f.parseOne()
+		if seen {
+			continue
+		}
+		// 解析完成，退出循环，f.parseOne 返回 false,nil 的时候
+		if err == nil {
+			break
+		}
+		// 如果有error发生，根据设置定的error处理方式处理error
+		switch f.errorHandling {
+		case ContinueOnError:
+			return err
+		case ExitOnError:
+			os.Exit(2)
+		case PanicOnError:
+			panic(err)
+		}
+	}
+	return nil
+}
+</code></pre>
+
+<p><code>f.parseOne</code></p>
+
+<pre><code class="language-go">// 这个方法是最主要的一个方法，他解析我们的参数
+// 这个方法是被循环调用的，决定解析是否终止的条件也在这个方法中，在源码中我会标记出来
+func (f *FlagSet) parseOne() (bool, error) {
+	// 没有参数，不需要解析
+	if len(f.args) == 0 {
+		return false, nil
+	}
+	s := f.args[0]
+	// 结束条件1：字符串长度小于零或者不是以 - 字符开头的
+	if len(s) &lt; 2 || s[0] != '-' {
+		return false, nil
+	}
+	numMinuses := 1
+	if s[1] == '-' {
+		numMinuses++
+		// 结束条件2：字符串是以 -- 开头的
+		if len(s) == 2 { // &quot;--&quot; terminates the flags
+			f.args = f.args[1:]
+			return false, nil
+		}
+	}
+
+	// 取出真正的字符值（去掉前缀 - 或者 -- ）
+	name := s[numMinuses:]
+
+	// 字符串合法检测
+	if len(name) == 0 || name[0] == '-' || name[0] == '=' {
+		return false, f.failf(&quot;bad flag syntax: %s&quot;, s)
+	}
+
+	// it's a flag. does it have an argument?
+	f.args = f.args[1:]
+	hasValue := false
+	value := &quot;&quot;
+	// 通过等号判断是不是 &quot;name=value&quot; 这种格式类型的flag
+	for i := 1; i &lt; len(name); i++ { // equals cannot be first
+		if name[i] == '=' {
+			value = name[i+1:]
+			hasValue = true
+			name = name[0:i]
+			break
+		}
+	}
+	m := f.formal
+	// 判断是否注册过指定名称的flag
+	flag, alreadythere := m[name] // BUG
+	if !alreadythere {
+		// 默认支持解析 help 和 h 选项
+		if name == &quot;help&quot; || name == &quot;h&quot; { // special case for nice help message.
+			f.usage()
+			return false, ErrHelp
+		}
+		return false, f.failf(&quot;flag provided but not defined: -%s&quot;, name)
+	}
+
+	// bool类型的flag支持 -flag 形式的写法，传了标记就是true，不传就依赖默认值
+	if fv, ok := flag.Value.(boolFlag); ok &amp;&amp; fv.IsBoolFlag() { // special case: doesn't need an arg
+		if hasValue {
+			if err := fv.Set(value); err != nil {
+				return false, f.failf(&quot;invalid boolean value %q for -%s: %v&quot;, value, name, err)
+			}
+		} else {
+			if err := fv.Set(&quot;true&quot;); err != nil {
+				return false, f.failf(&quot;invalid boolean flag %s: %v&quot;, name, err)
+			}
+		}
+	} else {
+		// It must have a value, which might be the next argument.
+		if !hasValue &amp;&amp; len(f.args) &gt; 0 {
+			// value is the next arg
+			hasValue = true
+			value, f.args = f.args[0], f.args[1:]
+		}
+		if !hasValue {
+			return false, f.failf(&quot;flag needs an argument: -%s&quot;, name)
+		}
+		if err := flag.Value.Set(value); err != nil {
+			return false, f.failf(&quot;invalid value %q for flag -%s: %v&quot;, value, name, err)
+		}
+	}
+
+	// 初始化f.actual
+	if f.actual == nil {
+		f.actual = make(map[string]*Flag)
+	}
+
+	// 放在解析后的容器里面
+	f.actual[name] = flag
+	return true, nil
+}
+</code></pre>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
