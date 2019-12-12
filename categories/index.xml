@@ -10,6 +10,24 @@
     
     
     <item>
+      <title>go cli 应用框架cobra（二）- 源码分析</title>
+      <link>https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/</link>
+      <pubDate>Wed, 11 Dec 2019 14:57:37 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/</guid>
+      <description>上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，</description>
+    </item>
+    
+    <item>
+      <title>hugo源码分析（一）- version</title>
+      <link>https://wangtingkui.github.io/2019/12/hugo-source-code-analysis-version/</link>
+      <pubDate>Tue, 10 Dec 2019 17:00:24 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/hugo-source-code-analysis-version/</guid>
+      <description>hugo 是一个静态网页生成器，关于它的使用就不再多说，可以参考之前写过的使用hugo搭建个人站点系列文章。本系列主要是分析下 hugo 的源码，看下其他人是</description>
+    </item>
+    
+    <item>
       <title>使用hugo搭建个人网站（六）- 给你的文章分类</title>
       <link>https://wangtingkui.github.io/2019/12/hugo-categorize-your-artical/</link>
       <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>

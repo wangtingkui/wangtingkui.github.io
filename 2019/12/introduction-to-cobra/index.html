@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架 一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users" />
-  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
+  <meta name="generator" content="Hugo 0.57.2 with theme pure" />
   <title>go cli 应用框架cobra（一）- 简介 - xiaok&#39;s site</title>
   
 
@@ -43,7 +43,7 @@
 
 <meta itemprop="datePublished" content="2019-12-01T10:17:30&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-01T10:17:30&#43;08:00" />
-<meta itemprop="wordCount" content="750">
+<meta itemprop="wordCount" content="841">
 
 
 
@@ -163,11 +163,23 @@
         <ul class="tag-list">
             
             
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/cobra/" class="tag-list-link">cobra</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="tag-list-link">基础知识</a><span
                     class="tag-list-count">1</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/" class="tag-list-link">字符编码</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="tag-list-link">源码分析</a><span
                     class="tag-list-count">1</span></li>
             
         </ul>
@@ -225,10 +237,10 @@
 <p>一个遵循这个理念的命令行应用模式是 <code>APPNAME VERB NOUN -ADJECTIVE</code> 或者换种表达方式 <code>APPNAME COMMADN ARG --FLAG</code></p>
 
 <ul>
-<li>APPNAME是我们应用的名称</li>
-<li>COMMAND是我们要执行的动作，一般是个动词</li>
-<li>ARG是我们动作作用的对象，一般是个名词</li>
-<li>&ndash;FLAG 是用来调整我们动作的行为，一般是个形容词</li>
+<li><code>APPNAME</code>是我们应用的名称</li>
+<li><code>COMMAND</code>是我们要执行的动作，一般是个动词</li>
+<li><code>ARG</code>是我们动作作用的对象，一般是个名词</li>
+<li><code>--FLAG</code>是用来调整我们动作的行为，一般是个形容词</li>
 </ul>
 
 <p>一个例子：<code>git clone URL --bare</code></p>
@@ -257,7 +269,7 @@ cobra init --pkg-name github.com/wangtingkui/testCobra ./testCobra # 创建完�
 # 给我们的应用添加命令
 cobra add serve # 添加 serve 命令
 cobra add config # 添加 config 命令
-cobra add create -p 'configCmd' # 给 config 命令添加 create 子命令
+cobra add create -p 'configCmd' # 给 config 命令添加 create 子命令，`-p`指定这个命令的父命令，这个没有什么逻辑校验，就是在新命令的文件中init方法里面添加`configCmd.AddCommand(createCmd)`这行代码而已
 </code></pre>
 
 <p>创建完成之后，再来看下最终生成的目录结构</p>
