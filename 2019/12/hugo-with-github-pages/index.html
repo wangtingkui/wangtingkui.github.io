@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        xiaok&#39;s site</title>
+        使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点 - xiaok&#39;s site
+      </title>
     <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -22,27 +23,34 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  
+  <meta name="description" content="上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点" />
   <meta name="generator" content="Hugo 0.57.2 with theme pure" />
-  <title>xiaok&#39;s site</title>
+  <title>使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点 - xiaok&#39;s site</title>
   
 
-  <link rel="alternate" type="application/rss+xml" href="https://wangtingkui.github.io/tags/go/index.xml" title="xiaok's site" />
   <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.css">
   <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
-  <meta property="og:title" content="go" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://wangtingkui.github.io/tags/go/" />
+  <meta property="og:title" content="使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点" />
+<meta property="og:description" content="上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/2019/12/hugo-with-github-pages/" />
+<meta property="article:published_time" content="2019-12-01T13:56:09+08:00" />
+<meta property="article:modified_time" content="2019-12-01T13:56:09+08:00" />
+<meta itemprop="name" content="使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点">
+<meta itemprop="description" content="上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点">
 
-<meta property="og:updated_time" content="2019-12-13T14:46:50+08:00" />
-<meta itemprop="name" content="go">
-<meta itemprop="description" content="">
 
+<meta itemprop="datePublished" content="2019-12-01T13:56:09&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-01T13:56:09&#43;08:00" />
+<meta itemprop="wordCount" content="673">
+
+
+
+<meta itemprop="keywords" content="go," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="go"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点"/>
+<meta name="twitter:description" content="上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点"/>
 
   <!--[if lte IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -189,164 +197,131 @@
 
     
     
-<main class="main" role="main">
-    <article class="content article article-tags post-type-list" itemscope="">
-        <header class="article-header">
-            <h1 itemprop="name" class="hidden-xs">go</h1>
-            <p class="text-muted hidden-xs">Total 6 tags</p>
-            <nav role="navigation" id="nav-main" class="okayNav">
-                <ul>
-                    <li><a href="https://wangtingkui.github.io/tags">All</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/cobra/">cobra</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/go/">go</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/unicode/">unicode</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/utf-8/">utf-8</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/">字符编码</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析</a></li>
-                </ul>
-            </nav>
-        </header>
-        
-        <div class="article-body">
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-13 14:46:50 &#43;0800 CST"
-                itemprop="datePublished">2019-12-13</time>
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2019/12/hugo-with-github-pages/"
+    >使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</a
+  >
+</h1>
+
+      <div class="article-meta">
+        <span class="article-date">
+  <i class="icon icon-calendar-check"></i>
+<a href="https://wangtingkui.github.io/2019/12/hugo-with-github-pages/" class="article-date">
+  <time datetime="2019-12-01 13:56:09 &#43;0800 CST" itemprop="datePublished">2019-12-01</time>
+</a>
+</span><span class="article-category">
+  <i class="icon icon-folder"></i>
+  <a class="article-category-link" href="/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"> 使用hugo搭建个人网站 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+    <a class="article-tag-link" href="/tags/go/"> go </a>
+  </span>
+
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count:2minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      
+
+<p>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点的生成，那么剩下的一个问题就是如何部署我们生成的站点，供其他人访问</p>
+
+<p>这篇文章帮助我们了解如何使用github pages的功能来部署我们的个人站点</p>
+
+<h3 id="使用-github-pages-的好处">使用 github pages 的好处</h3>
+
+<ul>
+<li>完全免费</li>
+<li>不需要自己购买服务器</li>
+<li>不需要自己运行维护</li>
+<li>可以方便的使用https</li>
+</ul>
+
+<h3 id="github-pages-的限制">github pages 的限制</h3>
+
+<p>当然github pages本身还是有一些限制的</p>
+
+<ul>
+<li>网站大小不能超过1GB</li>
+<li>网站不能发布的过于频繁（每小时不超过10个版本）</li>
+<li>每个月流量上限为1000GB</li>
+</ul>
+
+<p>但是作为个人博客来说，这些限制几乎对我们没什么影响</p>
+
+<h3 id="如何使用-github-pages">如何使用 github pages</h3>
+
+<p><a href="https://pages.github.com/">github pages 官方文档</a></p>
+
+<ol>
+<li>申请一个github账号，每个github账号可以有一个个人站点和多个项目站点（这个以后有机会在单独写文章说一下）</li>
+<li>创建一个<code>&lt;username&gt;.github.io</code>的仓库</li>
+<li>当我们执行<code>hugo</code>命令去生成我们的静态站点的文件时，默认会放在当前目录的<code>public</code>目录（当然你也可以通过配置hugo从而指定目录），所以我们直接把创建好的仓库拉取到项目下的<code>public</code>目录即可<code>git clone git@github.com:wangtingkui/wangtingkui.github.io.git ./public</code></li>
+<li>指定<code>hugo</code>命令生成站点文件</li>
+
+<li><p>进入<code>public</code>文件夹，将生成的文件提交到git，然后推送到远端即可</p>
+
+<pre><code class="language-sh">cd public
+git add .
+git commit -m &quot;提交信息&quot;
+git push -u origin master
+</code></pre></li>
+</ol>
+
+<p>推送之后，访问<code>&lt;username&gt;.github.io</code>你就会惊奇的发现你的个人站点已经可以访问了，如果访问的时候没有效果，也不要着急，那是github还在处理中，去休息一下，过段时间在访问就会生效啦~</p>
+
+    </div>
+    <div class="article-footer">
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://wangtingkui.github.io/2019/12/cobra-introduction/" title="go cli 应用框架cobra（一）- 简介"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://wangtingkui.github.io/2019/12/go-std-lib-flag/"
+                    title="Go标准库（flag）- 使用"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
         </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/go-multi-version-manage/">go多版本管理</a>
-        </h3>
     </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-11 14:57:37 &#43;0800 CST"
-                itemprop="datePublished">2019-12-11</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/">go cli 应用框架cobra（二）- 源码分析</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-        <a href="https://wangtingkui.github.io/tags/cobra" class="label label-default mb">cobra</a>
-        <a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90" class="label label-default mb">源码分析</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-07 16:35:07 &#43;0800 CST"
-                itemprop="datePublished">2019-12-07</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-categorize-your-artical/">使用hugo搭建个人网站（六）- 给你的文章分类</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-07 16:01:41 &#43;0800 CST"
-                itemprop="datePublished">2019-12-07</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-custom-your-url/">使用hugo搭建个人网站（五）- 定制你文章的url</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-07 15:55:24 &#43;0800 CST"
-                itemprop="datePublished">2019-12-07</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-template-order/">使用hugo搭建个人网站（五）- 模板选择顺序</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-07 15:31:44 &#43;0800 CST"
-                itemprop="datePublished">2019-12-07</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-front-matter/">使用hugo搭建个人网站（四）- Front Matter 配置详解</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-02 14:12:07 &#43;0800 CST"
-                itemprop="datePublished">2019-12-02</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-other-skills/">使用hugo搭建个人网站（三）- 其他使用技巧</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-01 13:56:09 &#43;0800 CST"
-                itemprop="datePublished">2019-12-01</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-with-github-pages/">使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-09-22 15:28:34 &#43;0800 CST"
-                itemprop="datePublished">2019-09-22</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/09/hugo-introduction/">使用hugo搭建个人网站（一）- hugo使用入门</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-        </div>
-    </article>
+</nav>
+
+
 </main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
 <ul class="social-links">
     <li><a href="https://github.com/wangtingkui" target="_blank" title="github" data-toggle=tooltip data-placement=top >

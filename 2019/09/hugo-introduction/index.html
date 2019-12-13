@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        xiaok&#39;s site</title>
+        使用hugo搭建个人网站（一）- hugo使用入门 - xiaok&#39;s site
+      </title>
     <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -22,27 +23,34 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  
+  <meta name="description" content="以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们" />
   <meta name="generator" content="Hugo 0.57.2 with theme pure" />
-  <title>xiaok&#39;s site</title>
+  <title>使用hugo搭建个人网站（一）- hugo使用入门 - xiaok&#39;s site</title>
   
 
-  <link rel="alternate" type="application/rss+xml" href="https://wangtingkui.github.io/tags/go/index.xml" title="xiaok's site" />
   <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.css">
   <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
-  <meta property="og:title" content="go" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://wangtingkui.github.io/tags/go/" />
+  <meta property="og:title" content="使用hugo搭建个人网站（一）- hugo使用入门" />
+<meta property="og:description" content="以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/2019/09/hugo-introduction/" />
+<meta property="article:published_time" content="2019-09-22T15:28:34+08:00" />
+<meta property="article:modified_time" content="2019-09-22T15:28:34+08:00" />
+<meta itemprop="name" content="使用hugo搭建个人网站（一）- hugo使用入门">
+<meta itemprop="description" content="以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们">
 
-<meta property="og:updated_time" content="2019-12-13T14:46:50+08:00" />
-<meta itemprop="name" content="go">
-<meta itemprop="description" content="">
 
+<meta itemprop="datePublished" content="2019-09-22T15:28:34&#43;08:00" />
+<meta itemprop="dateModified" content="2019-09-22T15:28:34&#43;08:00" />
+<meta itemprop="wordCount" content="848">
+
+
+
+<meta itemprop="keywords" content="go," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="go"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="使用hugo搭建个人网站（一）- hugo使用入门"/>
+<meta name="twitter:description" content="以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们"/>
 
   <!--[if lte IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -189,164 +197,173 @@
 
     
     
-<main class="main" role="main">
-    <article class="content article article-tags post-type-list" itemscope="">
-        <header class="article-header">
-            <h1 itemprop="name" class="hidden-xs">go</h1>
-            <p class="text-muted hidden-xs">Total 6 tags</p>
-            <nav role="navigation" id="nav-main" class="okayNav">
-                <ul>
-                    <li><a href="https://wangtingkui.github.io/tags">All</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/cobra/">cobra</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/go/">go</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/unicode/">unicode</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/utf-8/">utf-8</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/">字符编码</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析</a></li>
-                </ul>
-            </nav>
-        </header>
-        
-        <div class="article-body">
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-13 14:46:50 &#43;0800 CST"
-                itemprop="datePublished">2019-12-13</time>
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2019/09/hugo-introduction/"
+    >使用hugo搭建个人网站（一）- hugo使用入门</a
+  >
+</h1>
+
+      <div class="article-meta">
+        <span class="article-date">
+  <i class="icon icon-calendar-check"></i>
+<a href="https://wangtingkui.github.io/2019/09/hugo-introduction/" class="article-date">
+  <time datetime="2019-09-22 15:28:34 &#43;0800 CST" itemprop="datePublished">2019-09-22</time>
+</a>
+</span><span class="article-category">
+  <i class="icon icon-folder"></i>
+  <a class="article-category-link" href="/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"> 使用hugo搭建个人网站 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+    <a class="article-tag-link" href="/tags/go/"> go </a>
+  </span>
+
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count:2minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      
+
+<p>以<code>blog</code>为例，看看hugo是如何使用的</p>
+
+<h3 id="创建一个网站项目">创建一个网站项目</h3>
+
+<p><code>hugo new site blog</code>， 执行这个命令后，会在当前目录下创建一个<code>blog</code>目录
+，这个目录就是我们的项目目录</p>
+
+<p>简单了解下目录的结构</p>
+
+<pre><code class="language-sh">.
+├── archetypes   # 存储 .md 的模板文件
+│   └── default.md
+├── config.toml # 配置文件
+├── content # 存储网站所有的内容
+├── data # 存储数据文件供模板调用
+├── layouts # 存储 .html 模板
+├── static # 存储图片、css、js等静态文件，该目录下的文件会直接拷贝到 /public
+└── themes # 存储主题
+
+6 directories, 2 files
+</code></pre>
+
+<h3 id="快速体验">快速体验</h3>
+
+<p>让我们快速体验下hugo的威力</p>
+
+<p>hugo创建出来的项目默认不带有任何主题，我们直接从github上随便搞一个，放到之前提到的<code>themes</code>文件夹下</p>
+
+<p><code>git clone https://github.com/budparr/gohugo-theme-ananke.git ./themes/ananke</code></p>
+
+<p>然后在配置文件中配置应用这个主题</p>
+
+<p><code>echo 'theme = &quot;ananke&quot;' &gt;&gt; config.toml</code></p>
+
+<p>接下来该正常的用markdown写作我们的文章了，使用如下命令新建一个文章</p>
+
+<p><code>hugo new post/my-first-post.md</code></p>
+
+<p>可以看到在<code>content</code>文件夹下多出了一个<code>post</code>文件夹，里面有一个<code>my-fisrt-post.md</code>的<code>markdown</code>文件，我们看下创建出来的这个文件里面的内容都有什么</p>
+
+<blockquote>
+<p>content/post/my-first-post.md 文件内容</p>
+</blockquote>
+
+<pre><code class="language-md">---
+title: &quot;My First Post&quot;
+date: 2019-09-22T14:53:48+08:00
+draft: true
+---
+</code></pre>
+
+<p>这些默认生成的内容其实就是文章的一些元信息，比如文章的标题，创建的时间等等，里面的具体属性我们稍后再细讲。那这些内容是根据什么生成的呢，还记得我们上面给出的目录结构么，<code>archetypes</code>目录用来存放 md 文件的模板，让我们进去瞅瞅里面有啥，<code>vim archetypes/default.md</code></p>
+
+<blockquote>
+<p>archetypes/default.md 文件内容</p>
+</blockquote>
+
+<pre><code class="language-md">---
+title: &quot;{{ replace .Name &quot;-&quot; &quot; &quot; | title }}&quot;
+date: {{ .Date }}
+draft: true
+---
+</code></pre>
+
+<p>看起来是不是和我们刚才生成的文件结构超像，其实那个文件就是依据这个模板来的</p>
+
+<p>我们来改动下刚才生成的文件，编辑一些自定义的内容</p>
+
+<blockquote>
+<p>content/post/my-first-post.md 文件内容</p>
+</blockquote>
+
+<pre><code class="language-md">---
+title: &quot;My First Post&quot;
+date: 2019-09-22T14:53:48+08:00
+draft: true
+---
+
+### 这是我的第一篇文章
+
+内容就是用来测试的啦~
+</code></pre>
+
+<p>最重要的一步来了，生成我们的站点，hugo内置了一个server，方便我们在书写文章的过程中快速的预览到站点效果，只需要执行下面的命令即可</p>
+
+<p><code>hugo server -D</code></p>
+
+<p>其中<code>-D</code>选项是告诉hugo把草稿状态的文章也渲染出来，执行完之后，hugo就提示我们已经可以从<code>http://localhost:1313</code>去访问我们的站点了，赶紧去看一下，是不是很吊呢</p>
+
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g78bd27hxsj31gr0mtdi4.jpg" alt="" /></p>
+
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g78bdc1ue7j31h70jy76a.jpg" alt="" /></p>
+
+    </div>
+    <div class="article-footer">
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="next">
+                <a href="https://wangtingkui.github.io/2019/09/unicode/"
+                    title="详解字符编码"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
         </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/go-multi-version-manage/">go多版本管理</a>
-        </h3>
     </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-11 14:57:37 &#43;0800 CST"
-                itemprop="datePublished">2019-12-11</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/">go cli 应用框架cobra（二）- 源码分析</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-        <a href="https://wangtingkui.github.io/tags/cobra" class="label label-default mb">cobra</a>
-        <a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90" class="label label-default mb">源码分析</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-07 16:35:07 &#43;0800 CST"
-                itemprop="datePublished">2019-12-07</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-categorize-your-artical/">使用hugo搭建个人网站（六）- 给你的文章分类</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-07 16:01:41 &#43;0800 CST"
-                itemprop="datePublished">2019-12-07</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-custom-your-url/">使用hugo搭建个人网站（五）- 定制你文章的url</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-07 15:55:24 &#43;0800 CST"
-                itemprop="datePublished">2019-12-07</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-template-order/">使用hugo搭建个人网站（五）- 模板选择顺序</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-07 15:31:44 &#43;0800 CST"
-                itemprop="datePublished">2019-12-07</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-front-matter/">使用hugo搭建个人网站（四）- Front Matter 配置详解</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-02 14:12:07 &#43;0800 CST"
-                itemprop="datePublished">2019-12-02</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-other-skills/">使用hugo搭建个人网站（三）- 其他使用技巧</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-01 13:56:09 &#43;0800 CST"
-                itemprop="datePublished">2019-12-01</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/hugo-with-github-pages/">使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-09-22 15:28:34 &#43;0800 CST"
-                itemprop="datePublished">2019-09-22</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/09/hugo-introduction/">使用hugo搭建个人网站（一）- hugo使用入门</a>
-        </h3>
-    </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-    </div>
-</article>
-            </div>
-        </div>
-    </article>
+</nav>
+
+
 </main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
 <ul class="social-links">
     <li><a href="https://github.com/wangtingkui" target="_blank" title="github" data-toggle=tooltip data-placement=top >

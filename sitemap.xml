@@ -3,6 +3,55 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://wangtingkui.github.io/categories/</loc>
+    <lastmod>2019-12-13T14:46:50+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/go/</loc>
+    <lastmod>2019-12-13T14:46:50+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2019-12-13T14:46:50+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2019/12/go-multi-version-manage/</loc>
+    <lastmod>2019-12-13T14:46:50+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/posts/</loc>
+    <lastmod>2019-12-13T14:46:50+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/</loc>
+    <lastmod>2019-12-13T14:46:50+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/</loc>
+    <lastmod>2019-12-13T14:46:50+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://wangtingkui.github.io/tags/cobra/</loc>
     <lastmod>2019-12-11T14:57:37+08:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -10,35 +59,7 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/tags/go/</loc>
-    <lastmod>2019-12-11T14:57:37+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/</loc>
-    <lastmod>2019-12-11T14:57:37+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/posts/</loc>
-    <lastmod>2019-12-11T14:57:37+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/tags/</loc>
-    <lastmod>2019-12-11T14:57:37+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/</loc>
     <lastmod>2019-12-11T14:57:37+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -59,6 +80,13 @@
   </url>
   
   <url>
+    <loc>https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</loc>
+    <lastmod>2019-12-07T16:35:07+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://wangtingkui.github.io/2019/12/hugo-categorize-your-artical/</loc>
     <lastmod>2019-12-07T16:35:07+08:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -73,21 +101,21 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/use-hugo-5/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/hugo-template-order/</loc>
     <lastmod>2019-12-07T15:55:24+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/use-hugo-4/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/hugo-front-matter/</loc>
     <lastmod>2019-12-07T15:31:44+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/use-hugo-3/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/hugo-other-skills/</loc>
     <lastmod>2019-12-02T14:12:07+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -108,21 +136,28 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/use-hugo-2/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/hugo-with-github-pages/</loc>
     <lastmod>2019-12-01T13:56:09+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/introduction-to-cobra/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/cobra-introduction/</loc>
     <lastmod>2019-12-01T10:17:30+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</loc>
+    <loc>https://wangtingkui.github.io/tags/unicode/</loc>
+    <lastmod>2019-09-22T15:45:32+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/utf-8/</loc>
     <lastmod>2019-09-22T15:45:32+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -143,28 +178,14 @@
   </url>
   
   <url>
+    <loc>https://wangtingkui.github.io/2019/09/hugo-introduction/</loc>
+    <lastmod>2019-09-22T15:28:34+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://wangtingkui.github.io/series/</loc>
-    <lastmod>2019-09-22T15:28:34+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</loc>
-    <lastmod>2019-09-22T15:28:34+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/2019/09/use-hugo-1/</loc>
-    <lastmod>2019-09-22T15:28:34+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/categories/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

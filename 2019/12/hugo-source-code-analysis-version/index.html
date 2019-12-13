@@ -43,7 +43,7 @@
 
 <meta itemprop="datePublished" content="2019-12-10T17:00:24&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-10T17:00:24&#43;08:00" />
-<meta itemprop="wordCount" content="857">
+<meta itemprop="wordCount" content="903">
 
 
 
@@ -154,6 +154,8 @@
     <h3 class="widget-title"> Categories</h3>
     <div class="widget-body">
         <ul class="category-list">
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">7</span></li>
         </ul>
     </div>
 </div>
@@ -168,10 +170,14 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">9</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
                     class="tag-list-count">1</span></li>
             
             
-            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="tag-list-link">基础知识</a><span
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/utf-8/" class="tag-list-link">utf-8</a><span
                     class="tag-list-count">1</span></li>
             
             
@@ -244,7 +250,12 @@ Hugo Static Site Generator v0.57.2-A849CB2D darwin/amd64 BuildDate: 2019-08-17T1
 
 <h3 id="源码分析">源码分析</h3>
 
-<p><code>hugo</code> 是基于 <a href="https://github.com/spf13/cobra">cobra</a> 这个命令行应用的框架做的，如果能了解下 cobra 的基本使用会对我们的源码分析过程有比较大的帮助，cobra 的基本使用可以参考之前的一片文章<a href="https://wangtingkui.github.io/2019/12/introduction-to-cobra/">cobra使用入门</a></p>
+<p><code>hugo</code>是基于 <a href="https://github.com/spf13/cobra">cobra</a> 这个命令行应用框架做的，如果能了解下<code>cobra</code>的基本使用会对我们的源码分析过程有比较大的帮助，关于 <code>cobra</code>，可以参考之前的两篇文章</p>
+
+<ul>
+<li><a href="https://wangtingkui.github.io/2019/12/cobra-introduction/">go cli 应用框架cobra（一）- 简介</a></li>
+<li><a href="https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/">go cli 应用框架cobra（二）- 源码分析</a></li>
+</ul>
 
 <p>为了使我们的分析过程比较轻松，先来看下在 <code>hugo version</code> 这条主线中，会涉及到哪些比较主要的结构体</p>
 
@@ -278,7 +289,7 @@ func (c *baseCmd) flagsToConfig(cfg config.Provider) {
 }
 </code></pre>
 
-<p>这是一个命令的构建器，是它将我们的<code>version</code>,<code>new</code>,<code>config</code>,<code>check</code>&hellip; 等命令打包起来放在一个命令的子命令中，从而使我们方便的使用</p>
+<p>这是一个命令的构建器，是它将我们的<code>version</code>,<code>new</code>,<code>config</code>,<code>check</code>&hellip; 等命令打包起来放在一个命令的子命令中，从而使我们方便的使用，其实就是用来生成我们的根命令</p>
 
 <blockquote>
 <p>hugoCmd</p>
