@@ -38,7 +38,7 @@
     </item>
     
     <item>
-      <title>使用hugo搭建个人网站（六）- 给你的文章分类</title>
+      <title>使用hugo搭建个人网站（七）- 给你的文章分类</title>
       <link>https://wangtingkui.github.io/2019/12/hugo-categorize-your-artical/</link>
       <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
       
@@ -47,7 +47,16 @@
     </item>
     
     <item>
-      <title>使用hugo搭建个人网站（五）- 定制你文章的url</title>
+      <title>使用hugo搭建个人网站（八）- 自定义你的站点域名</title>
+      <link>https://wangtingkui.github.io/2019/12/hugo-custom-your-domain/</link>
+      <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/hugo-custom-your-domain/</guid>
+      <description>github pages 为我们提供的站点域名是 &amp;lt;username&amp;gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（六）- 定制你文章的url</title>
       <link>https://wangtingkui.github.io/2019/12/hugo-custom-your-url/</link>
       <pubDate>Sat, 07 Dec 2019 16:01:41 +0800</pubDate>
       

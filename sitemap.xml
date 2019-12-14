@@ -80,6 +80,13 @@
   </url>
   
   <url>
+    <loc>https://wangtingkui.github.io/tags/github-pages/</loc>
+    <lastmod>2019-12-07T16:35:07+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</loc>
     <lastmod>2019-12-07T16:35:07+08:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -88,6 +95,13 @@
   
   <url>
     <loc>https://wangtingkui.github.io/2019/12/hugo-categorize-your-artical/</loc>
+    <lastmod>2019-12-07T16:35:07+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2019/12/hugo-custom-your-domain/</loc>
     <lastmod>2019-12-07T16:35:07+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Go标准库（flag）- 源码分析 - xiaok&#39;s site
+        使用hugo搭建个人网站（八）- 自定义你的站点域名 - xiaok&#39;s site
       </title>
     <head>
   <meta charset="utf-8">
@@ -23,34 +23,34 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <meta name="description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用" />
+  <meta name="description" content="github pages 为我们提供的站点域名是 &amp;lt;username&amp;gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到" />
   <meta name="generator" content="Hugo 0.58.3 with theme pure" />
-  <title>Go标准库（flag）- 源码分析 - xiaok&#39;s site</title>
+  <title>使用hugo搭建个人网站（八）- 自定义你的站点域名 - xiaok&#39;s site</title>
   
 
   <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.css">
   <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
-  <meta property="og:title" content="Go标准库（flag）- 源码分析" />
-<meta property="og:description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用" />
+  <meta property="og:title" content="使用hugo搭建个人网站（八）- 自定义你的站点域名" />
+<meta property="og:description" content="github pages 为我们提供的站点域名是 &lt;username&gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://wangtingkui.github.io/2019/12/go-std-lib-flag-source-code/" />
-<meta property="article:published_time" content="2019-12-02T14:07:56+08:00" />
-<meta property="article:modified_time" content="2019-12-02T14:07:56+08:00" />
-<meta itemprop="name" content="Go标准库（flag）- 源码分析">
-<meta itemprop="description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用">
+<meta property="og:url" content="https://wangtingkui.github.io/2019/12/hugo-custom-your-domain/" />
+<meta property="article:published_time" content="2019-12-07T16:35:07+08:00" />
+<meta property="article:modified_time" content="2019-12-07T16:35:07+08:00" />
+<meta itemprop="name" content="使用hugo搭建个人网站（八）- 自定义你的站点域名">
+<meta itemprop="description" content="github pages 为我们提供的站点域名是 &lt;username&gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到">
 
 
-<meta itemprop="datePublished" content="2019-12-02T14:07:56&#43;08:00" />
-<meta itemprop="dateModified" content="2019-12-02T14:07:56&#43;08:00" />
-<meta itemprop="wordCount" content="1976">
+<meta itemprop="datePublished" content="2019-12-07T16:35:07&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-07T16:35:07&#43;08:00" />
+<meta itemprop="wordCount" content="412">
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="go,github pages," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Go标准库（flag）- 源码分析"/>
-<meta name="twitter:description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用"/>
+<meta name="twitter:title" content="使用hugo搭建个人网站（八）- 自定义你的站点域名"/>
+<meta name="twitter:description" content="github pages 为我们提供的站点域名是 &lt;username&gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到"/>
 
   <!--[if lte IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -217,272 +217,68 @@
       <h1 itemprop="name">
   <a
     class="article-title"
-    href="/2019/12/go-std-lib-flag-source-code/"
-    >Go标准库（flag）- 源码分析</a
+    href="/2019/12/hugo-custom-your-domain/"
+    >使用hugo搭建个人网站（八）- 自定义你的站点域名</a
   >
 </h1>
 
       <div class="article-meta">
         <span class="article-date">
   <i class="icon icon-calendar-check"></i>
-<a href="https://wangtingkui.github.io/2019/12/go-std-lib-flag-source-code/" class="article-date">
-  <time datetime="2019-12-02 14:07:56 &#43;0800 CST" itemprop="datePublished">2019-12-02</time>
+<a href="https://wangtingkui.github.io/2019/12/hugo-custom-your-domain/" class="article-date">
+  <time datetime="2019-12-07 16:35:07 &#43;0800 CST" itemprop="datePublished">2019-12-07</time>
 </a>
-</span>
+</span><span class="article-category">
+  <i class="icon icon-folder"></i>
+  <a class="article-category-link" href="/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"> 使用hugo搭建个人网站 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+    <a class="article-tag-link" href="/tags/go/"> go </a>
+    <a class="article-tag-link" href="/tags/github-pages/"> github pages </a>
+  </span>
 
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count:4minutes </span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count:1minutes </span>
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
       
 
-<p>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考<a href="https://wangtingkui.github.io/2019/12/go-std-lib-flag/">Go标准库（flag）- 使用</a></p>
+<p>github pages 为我们提供的站点域名是 <code>&lt;username&gt;.github.io</code>，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到 github pages 上呢，当然是可以的</p>
 
-<h3 id="核心数据类型">核心数据类型</h3>
+<p>github pages 支持多种域名类型，不同的域名类型配置有细微的区别</p>
 
-<p>首先还是来看下flag包中有哪些核心的类型，主要有两个接口和两个结构体</p>
+<h3 id="配置二级域名">配置二级域名</h3>
 
-<p>interface:</p>
+<p>二级域名就是类似<code>baidu.com</code>这种，<code>.com</code>是顶级域,<code>baidu</code>是二级域</p>
 
-<pre><code class="language-go">// 抽象类型， 我们后续也是通过这个接口来扩展我们flag包支持的数据类型的
-type Value interface {
-    String() string
-    Set(string) error
-}
+<p>首先进入到 github 仓库的设置，找到 GitHub Pages 项下的 Custom domain 配置项
+<img src="https://tva1.sinaimg.cn/large/006tNbRwly1g9v50kooonj30ng0iwtb9.jpg" alt="" /></p>
 
-type Getter interface {
-    Value
-    Get() interface{}
-}
+<p>输入你的二级域名，点击保存，这个操作会自动在你的仓库代码的根目录下添加一个CNAME文件
+<img src="https://tva1.sinaimg.cn/large/006tNbRwly1g9v547jza9j30ud0bp405.jpg" alt="" /></p>
+
+<p>最后还需要在你的dns服务提供商那里配置一下域名解析，对于二级域名来说，你可以配置<code>ALIAS记录</code>,<code>ANAME记录</code>或者是<code>A记录</code></p>
+
+<p>如果配置的是<code>ALIAS</code>或者<code>ANAME</code>，需要把你二级域名指向默认的站点域名，也就是<code>&lt;username.github,io&gt;</code></p>
+
+<p>如果配置的是<code>A记录</code>，把你的二级域名指向下面的ip，具体会不会变化可以参考<a href="https://help.github.com/cn/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">官方文档</a></p>
+
+<pre><code>185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
 </code></pre>
 
-<p>struct:</p>
+<h3 id="配置子域名">配置子域名</h3>
 
-<pre><code class="language-go">// 代表一个命令行选项
-type Flag struct {
-    Name     string // name as it appears on command line  // 标签在命令行显示的名字
-    Usage    string // help message  // 帮助信息
-    Value    Value  // value as set  // 标签的值
-    DefValue string // default value (as text); for usage message  // 默认值（文本格式）；这也是一个用法的信息说明
-}
+<p>可以参考官方文档</p>
 
-// 代表一个选项集合，其实可以认为就是在shell中敲入的命令被拆分解析之后就是FlagSet
-type FlagSet struct {
+<h3 id="参考">参考</h3>
 
-    // 当解析标签出现错误的时候，Usage就会被调用。这个字段是一个函数（不是一个方法），它可以指向
-    // 用户自己定义的错误处理函数。
-	Usage func()
-
-	name          string // 名字，一般默认是os.Args[0]
-	parsed        bool	// 是否已经解析过了（是否调用过flag.Parse()）
-	actual        map[string]*Flag // 解析过得flag数组
-	formal        map[string]*Flag // 注册的flag数组
-	args          []string // 解析过后，剩余的non-flag参数
-	errorHandling ErrorHandling // 解析失败后的处理方式
-	output        io.Writer // nil means stderr; use out() accessor
-}
-</code></pre>
-
-<h3 id="源码分析">源码分析</h3>
-
-<p>很多包在提供了底层类型的同时，为了方便我们使用，经常会在包内初始化一个默认对象，然后在开放一些导出函数供我们使用，flag 包也是这样的，标准库的实现者在包内初始化了一个名为<code>CommandLine</code>的<code>FlagSet</code>类型对象，我们经常使用的<code>flag.String()</code>,<code>flag.BoolVal()</code>等方法其实就是对这个对象的操作</p>
-
-<p>接下来就让我们追踪下最常用的<code>flag.String</code>的调用，看下flag包的内部实现逻辑吧</p>
-
-<h4 id="注册">注册</h4>
-
-<p><code>flag.String</code></p>
-
-<pre><code class="language-go">// 可以看到，flag.String 其实是对 CommandLine 对象 String 方法的包装，和我们刚才提到的是吻合的
-func String(name string, value string, usage string) *string {
-	return CommandLine.String(name, value, usage)
-}
-</code></pre>
-
-<p><code>CommandLine.String</code></p>
-
-<pre><code class="language-go">// 帮我们创建了一个string类型的指针，返回给后续使用，
-// 这里也可以看到，Xxx()这种方法比XxxVar()的方法只是多了一步帮我们创建变量的过程，其实更底层是一样的
-func (f *FlagSet) String(name string, value string, usage string) *string {
-	p := new(string)
-	f.StringVar(p, name, value, usage)
-	return p
-}
-</code></pre>
-
-<p><code>f.StringVar</code></p>
-
-<pre><code class="language-go">// FlagSet.StringVar 将我们的string类型的指针包装成了 stringValue 这个实现了 Value 接口的类型
-func (f *FlagSet) StringVar(p *string, name string, value string, usage string) {
-	f.Var(newStringValue(value, p), name, usage)
-}
-</code></pre>
-
-<p><code>f.Var</code></p>
-
-<pre><code class="language-go">func (f *FlagSet) Var(value Value, name string, usage string) {
-	// 创建一个Flag对象
-	flag := &amp;Flag{name, usage, value, value.String()}
-	// 检测是否已经注册过同名的flag
-	_, alreadythere := f.formal[name]
-	if alreadythere {
-		var msg string
-		if f.name == &quot;&quot; {
-			msg = fmt.Sprintf(&quot;flag redefined: %s&quot;, name)
-		} else {
-			msg = fmt.Sprintf(&quot;%s flag redefined: %s&quot;, f.name, name)
-		}
-		fmt.Fprintln(f.Output(), msg)
-		panic(msg) // Happens only if flags are declared with identical names
-	}
-	// 初始化formal
-	if f.formal == nil {
-		f.formal = make(map[string]*Flag)
-	}
-	// 放到注册的标记集合中
-	f.formal[name] = flag
-}
-</code></pre>
-
-<h4 id="解析">解析</h4>
-
-<p>执行到这里，我们的选项注册工作已经完成了，下一步就是命令行参数的解析，从而把用户真正的输入拿到，执行解析，我们调用的方法是<code>flag.Parse</code></p>
-
-<p><code>flag.Parse</code></p>
-
-<pre><code class="language-go">// 其实是对FlagSet.Parse的封装
-// 同时也看到，flag包对参数的解析默认是从命令行输入的第二个字符串开始的
-func Parse() {
-	// Ignore errors; CommandLine is set for ExitOnError.
-	CommandLine.Parse(os.Args[1:])
-}
-</code></pre>
-
-<p><code>CommandLine.Parse</code></p>
-
-<pre><code class="language-go">func (f *FlagSet) Parse(arguments []string) error {
-	// 将解析标记置为true，标记这个FlagSet已经被解析过了
-	f.parsed = true
-	// 将所有参数放到盛放non-flag参数的容器中
-	// 后续解析过程会一个一个参数从这个容器中往外拿，直到解析结束
-	f.args = arguments
-	for {
-		// 逐个解析参数
-		seen, err := f.parseOne()
-		if seen {
-			continue
-		}
-		// 解析完成，退出循环，f.parseOne 返回 false,nil 的时候
-		if err == nil {
-			break
-		}
-		// 如果有error发生，根据设置定的error处理方式处理error
-		switch f.errorHandling {
-		case ContinueOnError:
-			return err
-		case ExitOnError:
-			os.Exit(2)
-		case PanicOnError:
-			panic(err)
-		}
-	}
-	return nil
-}
-</code></pre>
-
-<p><code>f.parseOne</code></p>
-
-<pre><code class="language-go">// 这个方法是最主要的一个方法，他解析我们的参数
-// 这个方法是被循环调用的，决定解析是否终止的条件也在这个方法中，在源码中我会标记出来
-func (f *FlagSet) parseOne() (bool, error) {
-	// 没有参数，不需要解析
-	if len(f.args) == 0 {
-		return false, nil
-	}
-	s := f.args[0]
-	// 结束条件1：字符串长度小于零或者不是以 - 字符开头的
-	if len(s) &lt; 2 || s[0] != '-' {
-		return false, nil
-	}
-	numMinuses := 1
-	if s[1] == '-' {
-		numMinuses++
-		// 结束条件2：字符串是以 -- 开头的
-		if len(s) == 2 { // &quot;--&quot; terminates the flags
-			f.args = f.args[1:]
-			return false, nil
-		}
-	}
-
-	// 取出真正的字符值（去掉前缀 - 或者 -- ）
-	name := s[numMinuses:]
-
-	// 字符串合法检测
-	if len(name) == 0 || name[0] == '-' || name[0] == '=' {
-		return false, f.failf(&quot;bad flag syntax: %s&quot;, s)
-	}
-
-	// it's a flag. does it have an argument?
-	f.args = f.args[1:]
-	hasValue := false
-	value := &quot;&quot;
-	// 通过等号判断是不是 &quot;name=value&quot; 这种格式类型的flag
-	for i := 1; i &lt; len(name); i++ { // equals cannot be first
-		if name[i] == '=' {
-			value = name[i+1:]
-			hasValue = true
-			name = name[0:i]
-			break
-		}
-	}
-	m := f.formal
-	// 判断是否注册过指定名称的flag
-	flag, alreadythere := m[name] // BUG
-	if !alreadythere {
-		// 默认支持解析 help 和 h 选项
-		if name == &quot;help&quot; || name == &quot;h&quot; { // special case for nice help message.
-			f.usage()
-			return false, ErrHelp
-		}
-		return false, f.failf(&quot;flag provided but not defined: -%s&quot;, name)
-	}
-
-	// bool类型的flag支持 -flag 形式的写法，传了标记就是true，不传就依赖默认值
-	if fv, ok := flag.Value.(boolFlag); ok &amp;&amp; fv.IsBoolFlag() { // special case: doesn't need an arg
-		if hasValue {
-			if err := fv.Set(value); err != nil {
-				return false, f.failf(&quot;invalid boolean value %q for -%s: %v&quot;, value, name, err)
-			}
-		} else {
-			if err := fv.Set(&quot;true&quot;); err != nil {
-				return false, f.failf(&quot;invalid boolean flag %s: %v&quot;, name, err)
-			}
-		}
-	} else {
-		// It must have a value, which might be the next argument.
-		if !hasValue &amp;&amp; len(f.args) &gt; 0 {
-			// value is the next arg
-			hasValue = true
-			value, f.args = f.args[0], f.args[1:]
-		}
-		if !hasValue {
-			return false, f.failf(&quot;flag needs an argument: -%s&quot;, name)
-		}
-		if err := flag.Value.Set(value); err != nil {
-			return false, f.failf(&quot;invalid value %q for flag -%s: %v&quot;, value, name, err)
-		}
-	}
-
-	// 初始化f.actual
-	if f.actual == nil {
-		f.actual = make(map[string]*Flag)
-	}
-
-	// 放在解析后的容器里面
-	f.actual[name] = flag
-	return true, nil
-}
-</code></pre>
+<ul>
+<li><a href="https://help.github.com/en/github/working-with-github-pages/configuring-a-custom-domain-for-your-github-pages-site">github pages 官方文档</a></li>
+</ul>
 
     </div>
     <div class="article-footer">
@@ -495,13 +291,13 @@ func (f *FlagSet) parseOne() (bool, error) {
     <div class="bar-inner">
         <ul class="pager pull-left">
             <li class="prev">
-                <a href="https://wangtingkui.github.io/2019/12/go-std-lib-flag/" title="Go标准库（flag）- 使用"><i
+                <a href="https://wangtingkui.github.io/2019/12/hugo-custom-your-url/" title="使用hugo搭建个人网站（六）- 定制你文章的url"><i
                         class="icon icon-angle-left"
                         aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
             </li>
             <li class="next">
-                <a href="https://wangtingkui.github.io/2019/12/hugo-other-skills/"
-                    title="使用hugo搭建个人网站（三）- 其他使用技巧"><span>Newer&nbsp;&nbsp;</span><i
+                <a href="https://wangtingkui.github.io/2019/12/hugo-categorize-your-artical/"
+                    title="使用hugo搭建个人网站（七）- 给你的文章分类"><span>Newer&nbsp;&nbsp;</span><i
                         class="icon icon-angle-right" aria-hidden="true"></i></a>
             </li>
             
