@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        使用hugo搭建个人网站（三）- 其他使用技巧 - xiaok&#39;s site
+        go日志库zap使用 - xiaok&#39;s site
       </title>
     <head>
   <meta charset="utf-8">
@@ -23,34 +23,34 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <meta name="description" content="引用站点内其他文章 很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo" />
+  <meta name="description" content="zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概" />
   <meta name="generator" content="Hugo 0.57.2 with theme pure" />
-  <title>使用hugo搭建个人网站（三）- 其他使用技巧 - xiaok&#39;s site</title>
+  <title>go日志库zap使用 - xiaok&#39;s site</title>
   
 
   <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.css">
   <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
-  <meta property="og:title" content="使用hugo搭建个人网站（三）- 其他使用技巧" />
-<meta property="og:description" content="引用站点内其他文章 很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo" />
+  <meta property="og:title" content="go日志库zap使用" />
+<meta property="og:description" content="zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://wangtingkui.github.io/2019/12/hugo-other-skills/" />
-<meta property="article:published_time" content="2019-12-02T14:12:07+08:00" />
-<meta property="article:modified_time" content="2019-12-02T14:12:07+08:00" />
-<meta itemprop="name" content="使用hugo搭建个人网站（三）- 其他使用技巧">
-<meta itemprop="description" content="引用站点内其他文章 很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo">
+<meta property="og:url" content="https://wangtingkui.github.io/2019/12/go-third-lib-zap/" />
+<meta property="article:published_time" content="2019-12-16T22:45:34+08:00" />
+<meta property="article:modified_time" content="2019-12-16T22:45:34+08:00" />
+<meta itemprop="name" content="go日志库zap使用">
+<meta itemprop="description" content="zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概">
 
 
-<meta itemprop="datePublished" content="2019-12-02T14:12:07&#43;08:00" />
-<meta itemprop="dateModified" content="2019-12-02T14:12:07&#43;08:00" />
-<meta itemprop="wordCount" content="243">
+<meta itemprop="datePublished" content="2019-12-16T22:45:34&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-16T22:45:34&#43;08:00" />
+<meta itemprop="wordCount" content="2565">
 
 
 
 <meta itemprop="keywords" content="go," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="使用hugo搭建个人网站（三）- 其他使用技巧"/>
-<meta name="twitter:description" content="引用站点内其他文章 很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo"/>
+<meta name="twitter:title" content="go日志库zap使用"/>
+<meta name="twitter:description" content="zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概"/>
 
   <!--[if lte IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -219,47 +219,213 @@
       <h1 itemprop="name">
   <a
     class="article-title"
-    href="/2019/12/hugo-other-skills/"
-    >使用hugo搭建个人网站（三）- 其他使用技巧</a
+    href="/2019/12/go-third-lib-zap/"
+    >go日志库zap使用</a
   >
 </h1>
 
       <div class="article-meta">
         <span class="article-date">
   <i class="icon icon-calendar-check"></i>
-<a href="https://wangtingkui.github.io/2019/12/hugo-other-skills/" class="article-date">
-  <time datetime="2019-12-02 14:12:07 &#43;0800 CST" itemprop="datePublished">2019-12-02</time>
+<a href="https://wangtingkui.github.io/2019/12/go-third-lib-zap/" class="article-date">
+  <time datetime="2019-12-16 22:45:34 &#43;0800 CST" itemprop="datePublished">2019-12-16</time>
 </a>
 </span><span class="article-category">
   <i class="icon icon-folder"></i>
-  <a class="article-category-link" href="/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/"> 使用hugo搭建个人网站 </a>
+  <a class="article-category-link" href="/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/"> go三方库使用 </a>
 </span>  
   <span class="article-tag">
     <i class="icon icon-tags"></i>
     <a class="article-tag-link" href="/tags/go/"> go </a>
   </span>
 
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count:1minutes </span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count:6minutes </span>
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
       
 
-<h3 id="引用站点内其他文章">引用站点内其他文章</h3>
+<p>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap</p>
 
-<p>很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo 帮我们实现了这种功能，只需要在文章中使用 <code>{{&lt; ref &quot;posts/my_post.md&quot; &gt;}}</code>或者<code>{{&lt; relref &quot;posts/my_post.md&quot; &gt;}}</code>即可，前者是相对链接，后者是绝对链接</p>
+<h3 id="版本">版本</h3>
 
-<p>一些例子：</p>
+<p>本篇基于的 zap 版本是 <code>v1.10.0</code></p>
 
-<pre><code>{{&lt; ref &quot;blog/post.md&quot; &gt;}} =&gt; https://example.com/blog/post/
-{{&lt; ref &quot;post.md#tldr&quot; &gt;}} =&gt; https://example.com/blog/post/#tldr:caffebad
-{{&lt; relref &quot;post.md&quot; &gt;}} =&gt; /blog/post/
-{{&lt; relref &quot;blog/post.md#tldr&quot; &gt;}} =&gt; /blog/post/#tldr:caffebad
-{{&lt; ref &quot;#tldr&quot; &gt;}} =&gt; #tldr:badcaffe
-{{&lt; relref &quot;#tldr&quot; &gt;}} =&gt; #tldr:badcaffe
+<h3 id="使用">使用</h3>
+
+<h4 id="基本概念">基本概念</h4>
+
+<p>在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概念，方便在我们阅读 demo 或者写代码的时候能大体的感知到我们在用什么，为什么这样用。为了不产生翻译上的歧义，书写过程中涉及到的概念会用 zap 源码中的命名</p>
+
+<blockquote>
+<p>Logger</p>
+</blockquote>
+
+<p>这是 zap 暴露给我们类型，正常情况下，我们也是通过 Logger 这个结构体的方法来记录日志的</p>
+
+<blockquote>
+<p>Config</p>
+</blockquote>
+
+<p>这个是 zap 提供给我们的 Logger 的配置，我们可以按需配置，然后通过 Build 方法来构造出我们想要的 Logger，是典型的的构造者模式</p>
+
+<blockquote>
+<p>Field</p>
+</blockquote>
+
+<p>除了日志级别、日志时间、日志信息等这些基本的通用字段之外，我们在记录日志的时候通常会想记录一些额外的字段（用来记录打日志时的上下文），这些字段在 zap 中需要封装成 Field 类型</p>
+
+<blockquote>
+<p>Core</p>
+</blockquote>
+
+<p>Logger 是一个结构体，为我们暴露了使用日志的方法，而 Core 是一个接口，它被包含在 Logger 中，用来真正提供日志格式化和输出功能，这样的实现使日志记录器的使用和输出实现了高度解耦。我们可以实现自己的 Core 从而达到不同的输出的目的</p>
+
+<blockquote>
+<p>Encoder</p>
+</blockquote>
+
+<p>Encoder 同样是一个接口，刚才说到 Core 是实现具体输出行为的核心，而 Encoder 是 Core 中真正进行日志信息和字段格式化的编码器，它把我们输入的各种日志信息经过处理得到字节切片。从而可以记录在各种存储载体中。zap 对于 Encoder 自带了两个实现，jsonEncoder 和 consoleEncoder</p>
+
+<blockquote>
+<p>EncoderConfig</p>
+</blockquote>
+
+<p>这个就很好理解了，就是我们 Encoder 的配置，由于不同的 Encoder 实现不一样，所以如果是我们自己实现的 Encoder，完全可以实现自己的 EncoderConfig，zap 中的 EncoderConfig 自然也是为了 jsonEncoder 和 consoleEncoder 服务的。</p>
+
+<h4 id="logger-快速入门">Logger 快速入门</h4>
+
+<p>了解了 zap 中的一些基础概念，让我们先来搞一个小 demo 感受一下</p>
+
+<p>代码：</p>
+
+<pre><code class="language-go">func main() {
+	// 实例化一个 EncoderConfig
+	encoderCfg := zapcore.EncoderConfig{
+		MessageKey:     &quot;msg&quot;, // 序列化成json时在输出中的key
+		LevelKey:       &quot;level&quot;,
+		NameKey:        &quot;logger&quot;,
+		EncodeLevel:    zapcore.LowercaseLevelEncoder, // 日志级别字段的值序列化方式，这里使用了zap自带的小写格式编码
+		EncodeTime:     zapcore.ISO8601TimeEncoder,    // 时间字段的值序列化方式，这里使用了自带的ISO8601格式编码
+		EncodeDuration: zapcore.StringDurationEncoder, // 时间段类型的值序列化方式，这里使用自带的字符串格式
+	}
+
+	// 用刚才 EncoderConfig 实例化一个 jsonEncoder，也就是输出成json格式
+	jsonEncoder := zapcore.NewJSONEncoder(encoderCfg)
+
+	// 实例化一个 Core，使用 jsonEncoder，将 InfoLevel 级别以上（包含 InfoLevel）的日志输出到标准输出中
+	core := zapcore.NewCore(jsonEncoder, os.Stdout, zapcore.InfoLevel)
+
+	// 用 Core 实例化一个 Logger
+	logger := zap.New(core)
+
+	logger.Debug(&quot;debug level log&quot;, zap.String(&quot;k&quot;, &quot;v&quot;))
+	logger.Info(&quot;info level log&quot;, zap.Bool(&quot;k&quot;, false))
+	logger.Warn(&quot;warn level log&quot;, zap.Time(&quot;t&quot;, time.Now()))
+	logger.Error(&quot;error level log&quot;, zap.Int(&quot;i&quot;, 9))
+}
 </code></pre>
 
-<p>如果是不是需要引用，而仅仅是需要展示<code>{{&lt; ref &quot;blog/post.md&quot; &gt;}}</code>这样的文本，需要在标签内加上<code>/* */</code>这样的注释，比如<code>{{&lt;/* ref &quot;blog/post.md&quot; */&gt;}}</code></p>
+<p>输出：</p>
+
+<pre><code class="language-sh">{&quot;level&quot;:&quot;info&quot;,&quot;msg&quot;:&quot;info level log&quot;,&quot;k&quot;:false}
+{&quot;level&quot;:&quot;warn&quot;,&quot;msg&quot;:&quot;warn level log&quot;,&quot;t&quot;:&quot;2019-12-16T23:58:53.324+0800&quot;}
+{&quot;level&quot;:&quot;error&quot;,&quot;msg&quot;:&quot;error level log&quot;,&quot;i&quot;:9}
+</code></pre>
+
+<p>之所以少一条，是应为我们设置了 info 级别以上才输出。</p>
+
+<h4 id="使用构造方法获取预置-logger">使用构造方法获取预置 Logger</h4>
+
+<p>可以看到上面的整个使用过程，基本上都是围绕着我们最开始提到的基本概念展开的，同时也能明显的感受到，构造一个 Logger 的过程还是复杂的，所以同很多包一样，zap 也为我们提供了几个方便的构造函数，能让我们快速的获取 Logger，基本也能覆盖我们大多数简单的使用场景，分别是<code>zap.NewExample</code>，<code>zap.NewDevelopment</code>和<code>zap.NewProduction</code>，除了这3个，还有一个<code>zap.NewNop</code>，这个相当于一个空 Logger，不做任何操作，所以也不用着重介绍了。下面让我们依次看下前三个。</p>
+
+<blockquote>
+<p>zap.NewExample</p>
+</blockquote>
+
+<pre><code class="language-go">func main() {
+	logger := zap.NewExample()
+	logger.Debug(&quot;我是debug信息&quot;, zap.String(&quot;k&quot;, &quot;v&quot;))
+	logger.Info(&quot;我是info信息&quot;, zap.Bool(&quot;b&quot;, true))
+}
+
+// {&quot;level&quot;:&quot;debug&quot;,&quot;msg&quot;:&quot;我是debug信息&quot;,&quot;k&quot;:&quot;v&quot;}
+// {&quot;level&quot;:&quot;info&quot;,&quot;msg&quot;:&quot;我是info信息&quot;,&quot;b&quot;:true}
+
+</code></pre>
+
+<p>可以看到这样用起来就非常方便了，如果我们取看他的源码，会发现其实就是封装了我们上面创建一个 Logger 的过程</p>
+
+<blockquote>
+<p>zap.NewDevelopment</p>
+</blockquote>
+
+<pre><code class="language-go">func main() {
+	logger, _ := zap.NewDevelopment()
+	logger.Debug(&quot;我是debug信息&quot;, zap.String(&quot;k&quot;, &quot;v&quot;))
+	logger.Info(&quot;我是info信息&quot;, zap.Bool(&quot;b&quot;, true))
+}
+
+// 2019-12-17T11:40:33.606+0800    DEBUG   zap/main.go:9   我是debug信息   {&quot;k&quot;: &quot;v&quot;}
+// 2019-12-17T11:40:33.606+0800    INFO    zap/main.go:10  我是info信息    {&quot;b&quot;: true}
+
+</code></pre>
+
+<blockquote>
+<p>zap.NewProduction</p>
+</blockquote>
+
+<pre><code class="language-go">func main() {
+	logger, _ := zap.NewProduction()
+	logger.Debug(&quot;我是debug信息&quot;, zap.String(&quot;k&quot;, &quot;v&quot;))
+	logger.Info(&quot;我是info信息&quot;, zap.Bool(&quot;b&quot;, true))
+}
+
+// {&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1576554152.8352141,&quot;caller&quot;:&quot;zap/main.go:10&quot;,&quot;msg&quot;:&quot;我是info信息&quot;,&quot;b&quot;:true}
+</code></pre>
+
+<h4 id="通过配置构造-logger">通过配置构造 Logger</h4>
+
+<p>上面的几种用法都是我们手动的创建 Logger，我们还可以通过构造 Logger 的 Config，从而来构建 Logger，可以通过 zap.NewDevelopment 的源码学习</p>
+
+<p>这种方法也能给我们带来比较大的灵活性，能在 Logger 的配置上有更大的自由度</p>
+
+<p>如果想更加精细的配置 Logger，比如同时使用多个 Core 输出，可以参考本文的 zap 高级配置小节</p>
+
+<h4 id="使用-sugaredlogger-进行日志记录">使用 SugaredLogger 进行日志记录</h4>
+
+<p>即便是 zap 为我们提供了几个预置的 Logger，但是当我们想添加自己的附加字段的时候，需要对每个字段调用对应的封装函数将其包装为 zap.Field 类型，这样做的好处是效率非常高，但是当我们不在乎这一点性能的提升，愿意用一点点性能的损耗来换取编程的方便的时候，可以使用 zap 为我们提供的 SugaredLogger 这个类，名字也非常形象，语法糖，方便我们的编程过程</p>
+
+<p>SugaredLogger 是对 Logger 的封装，提供了更加方便的api供我们使用，其实就是不必去调用 zap 的一系列函数，将我们的额外字段封装成 Field 类型，在 SugaredLogger 底层会自动帮我们处理</p>
+
+<p>Logger 和 SugaredLogger 之间的转换也非常简单，我们完全可以在一个项目中根据需求混合使用两种日志记录方式</p>
+
+<pre><code class="language-go">func main() {
+	logger, _ := zap.NewDevelopment()
+
+	// 通过 Logger 转换成 SugaredLogger
+	sugar := logger.Sugar()
+	sugar.Info(&quot;sugar info message&quot;)
+	sugar.Infof(&quot;sugar info formatted message %s&quot;, &quot;hehe&quot;)
+	sugar.Infow(&quot;sugar info message with extra context&quot;, &quot;key1&quot;, &quot;val1&quot;, &quot;ket2&quot;, true)
+
+	// 通过 SugaredLogger 转换成 Logger
+	lg := sugar.Desugar()
+	lg.Debug(&quot;我是debug信息&quot;, zap.String(&quot;k&quot;, &quot;v&quot;))
+	lg.Info(&quot;我是info信息&quot;, zap.Bool(&quot;b&quot;, true))
+}
+
+//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:12  sugar info message
+//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:13  sugar info formatted message hehe
+//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:14  sugar info message with extra context   {&quot;key1&quot;: &quot;val1&quot;, &quot;ket2&quot;: true}
+//2019-12-17T12:08:14.535+0800    DEBUG   zap/main.go:18  我是debug信息   {&quot;k&quot;: &quot;v&quot;}
+//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:19  我是info信息    {&quot;b&quot;: true}
+
+</code></pre>
+
+<h4 id="zap-高级配置">zap 高级配置</h4>
+
+<p>可以参考：<a href="https://godoc.org/go.uber.org/zap#pkg-examples">https://godoc.org/go.uber.org/zap#pkg-examples</a></p>
 
     </div>
     <div class="article-footer">
@@ -272,14 +438,9 @@
     <div class="bar-inner">
         <ul class="pager pull-left">
             <li class="prev">
-                <a href="https://wangtingkui.github.io/2019/12/go-std-lib-flag-source-code/" title="Go标准库（flag）- 源码分析"><i
+                <a href="https://wangtingkui.github.io/2019/12/go-std-lib-filepath/" title="Go标准库（path/filepath）- 使用"><i
                         class="icon icon-angle-left"
                         aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
-            </li>
-            <li class="next">
-                <a href="https://wangtingkui.github.io/2019/12/hugo-front-matter/"
-                    title="使用hugo搭建个人网站（四）- Front Matter 配置详解"><span>Newer&nbsp;&nbsp;</span><i
-                        class="icon icon-angle-right" aria-hidden="true"></i></a>
             </li>
             
             <li class="toggle-toc">

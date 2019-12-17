@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Go标准库使用 on xiaok&#39;s site</title>
-    <link>https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
-    <description>Recent content in Go标准库使用 on xiaok&#39;s site</description>
+    <title>go三方库使用 on xiaok&#39;s site</title>
+    <link>https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
+    <description>Recent content in go三方库使用 on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 15 Dec 2019 14:35:43 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 16 Dec 2019 22:45:34 +0800</lastBuildDate>
     
-        <atom:link href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>

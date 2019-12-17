@@ -5,10 +5,19 @@
     <link>https://wangtingkui.github.io/</link>
     <description>Recent content on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 15 Dec 2019 14:35:43 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 16 Dec 2019 22:45:34 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>go日志库zap使用</title>
+      <link>https://wangtingkui.github.io/2019/12/go-third-lib-zap/</link>
+      <pubDate>Mon, 16 Dec 2019 22:45:34 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/go-third-lib-zap/</guid>
+      <description>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概</description>
+    </item>
     
     <item>
       <title>Go标准库（path/filepath）- 使用</title>
