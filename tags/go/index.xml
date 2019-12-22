@@ -5,10 +5,19 @@
     <link>https://wangtingkui.github.io/tags/go/</link>
     <description>Recent content in go on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 21 Dec 2019 22:21:40 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 22 Dec 2019 11:48:21 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go标准库（net/http）- 使用</title>
+      <link>https://wangtingkui.github.io/2019/12/go-std-lib-net-http/</link>
+      <pubDate>Sun, 22 Dec 2019 11:48:21 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/go-std-lib-net-http/</guid>
+      <description>net/http 包为我们提供了对 http 协议的处理，包含了客户端和服务端两大部分的实现 版本 go1.12 主要结构体 几乎任何语言中的http包都是围绕客户端，服务端，请求和响</description>
+    </item>
     
     <item>
       <title>Go标准库（net/url）- 使用</title>
