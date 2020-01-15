@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型" />
-  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
+  <meta name="generator" content="Hugo 0.62.2 with theme pure" />
   <title>详解字符编码 - xiaok&#39;s site</title>
   
 
@@ -39,16 +39,13 @@
 <meta property="article:modified_time" content="2019-09-22T15:45:32+08:00" />
 <meta itemprop="name" content="详解字符编码">
 <meta itemprop="description" content="作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型">
-
-
 <meta itemprop="datePublished" content="2019-09-22T15:45:32&#43;08:00" />
 <meta itemprop="dateModified" content="2019-09-22T15:45:32&#43;08:00" />
 <meta itemprop="wordCount" content="2856">
 
 
 
-<meta itemprop="keywords" content="字符编码,unicode,utf-8," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="字符编码,unicode,utf-8," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="详解字符编码"/>
 <meta name="twitter:description" content="作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型"/>
 
@@ -157,6 +154,7 @@
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">4</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
         </ul>
     </div>
@@ -177,6 +175,10 @@
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
                     class="tag-list-count">15</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
+                    class="tag-list-count">1</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
@@ -242,86 +244,73 @@
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      
-
-<p>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型的例子就是当我们的代码遇到了乱码，这时候其他人总会告诉我们要使用utf-8编码就可以解决问题，但这背后蕴含的原理，却一直没有探索过，所以就查了一些资料，将查到的资料提炼汇总，有了这篇文章</p>
-
+      <p>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型的例子就是当我们的代码遇到了乱码，这时候其他人总会告诉我们要使用utf-8编码就可以解决问题，但这背后蕴含的原理，却一直没有探索过，所以就查了一些资料，将查到的资料提炼汇总，有了这篇文章</p>
 <h3 id="字符编码的发展历程">字符编码的发展历程</h3>
-
 <p>我们知道，所有的数据在计算机中都是用二进制串来表示的，那么人类世界的语言符号，想要在计算机中表示，就必须有对应的转换规则，这就是字符编码</p>
-
 <h4 id="ascii-时期">ASCII 时期</h4>
-
 <p>上世纪60年代，美国制定了一套字符编码，它使用一个字节来对英语字符和二进制串进行映射，这就是ASCII码。</p>
-
 <p>ASCII一共规定了128个字符，其中包含32个控制字符，由于ASCII只有128个字符，所以只占用了一个字节的7位，所以规定最前面的1位统一为0</p>
-
 <h4 id="传统字符编码时期">传统字符编码时期</h4>
-
 <p>由于不是所有国家的语言体系都是英文，比如中国使用的汉字，字符数量就远远超过了一个字符所能容纳的极限，所有随着计算机的普及，各个国家都提出了自己的字符编码方案，基本的策略就是使用更多的字节空间，兼容ASCII，然后用剩下的空间来编码其他的字符。比如中国的GB2312、BIG5等，但是这就导致了一个问题，各个国家都只是兼容了ASCII，然后编码了本国语言，对其他语言是不支持的，所以导致当时的计算机只能处理双语言环境，不支持多语言环境。</p>
-
 <p>假如遇到要在一个文本中同时出现中文、英文、阿拉伯文的时候，就无法进行编码处理了。</p>
-
 <h4 id="unicode-时期">unicode 时期</h4>
-
 <p>为了解决传统编码方式带来的问题，unicode出现了，下面就让我们详细看下unicode是如何解决上面的这些问题的</p>
-
 <h3 id="现代编码模型">现代编码模型</h3>
-
 <p>在探讨unicode是个什么东西之前，我们先来了解一下现代编码模型，因为要完美解决上面提到的编码问题，以及保证这套字符编码的可扩展性（因为到现在为止，还不断有更多的字符在加入到我们的语言体系之中），已经不能只是用简单规定几个字节，然后将字符和编码一一对应来处理了。</p>
-
 <p>现代编码模型将字符编码从底向上分为了几个层次：</p>
-
 <ul>
 <li>抽象字符表（Abstract Character Repertoire）</li>
 </ul>
-
 <blockquote>
 <p>就是这个编码系统所包含的所有抽象字符的集合，比如ASCII编码里面就有128个抽象字符。抽象字符表可以是封闭的，比如ASCII，不允许添加新的字符，也可以是开放的，比如unicode，可以添加新的字符进去。要注意的是，抽象字符表是一个集合，集合有一个最大的特点就是无序的。</p>
 </blockquote>
-
 <ul>
 <li>编码字符集（Coded Character Set）</li>
 </ul>
-
 <blockquote>
 <p>抽象字符表是抽象字符的集合，集合是无序的。无序的抽象字符表其实没什么卵用，因为我们只能判断一个字符在不在这个抽象字符表中，却无法方便的引用这个字符。为了更好的描述和操作字符，我们为抽象字符表中的每个抽象字符关联一个数字编号，这个数字编号叫做<code>Code Point</code>（译为<code>码位</code>），编码字符集就是为所有的字符都分配了码位的字符集。</p>
-
+</blockquote>
+<blockquote>
 <p>码位一般是非负整数，习惯上使用十六进制表示。码位的分配也不一定是连续的。</p>
-
+</blockquote>
+<blockquote>
 <p>最常见的编码字符集就是UCS（Universal Character Set），这也是unicode标准下使用的编码字符集</p>
-
+</blockquote>
+<blockquote>
+</blockquote>
 <pre><code>- [0x0000,0xD7FF] 和 [0xE000,0x10FFFF] 这两个区间称为unicode标量值(unicode scala value)
 - [0xD800,0xDBFF] 称为 Hign-surrogate
 - [0xDC00,0xDFFF] 称为 Low-surrogate
 </code></pre>
-</blockquote>
-
 <ul>
 <li>字符编码表（Character Encoding Form）</li>
 </ul>
-
 <blockquote>
 <p>当我们有了编码字符集之后，是不是所有的问题已经解决了呢，当然不是，上面提到过，字符集可以是开放的，所以理论上UCS需要的码位是无限的，但是就算是计算机中uint32，也只有4个字节，最多只能表示4294967295个码位，这样矛盾就出现了。解决这个矛盾的方案，就是字符编码表</p>
-
+</blockquote>
+<blockquote>
 <p>字符编码表是一个将Unicode标量值(Unicode scalar value)一一映射为码元序列(Code Unit Sequences)的映射。 之所以必须是一一映射，那是因为我们不光要编码，也要解码。 在Unicode中，指定了三种标准的字符编码表，UTF-8,UTF-16,UTF-32。分别将Unicode标量值映射为比特数为8、16、32的码元的序列。 即，UTF-8的码元为uint8, UTF-16的码元为uint16, UTF-32的码元为uint32。 当然也有一些非标准的CEF，如UCS-2,UCS-4，在此不多介绍。</p>
-
+</blockquote>
+<blockquote>
 <p>码元 Code unit: The minimal bit combination that can represent a unit of encoded text for processing or interchange. 码元是能用于处理或交换编码文本的最小比特组合。通常计算机处理字符的码元为一字节，即8bit。同时因为计算机中char其实是一种整形，而整形的计算往往以计算机的字长作为一个基础单元，通常来讲，也就是4字节。Unicode定义了三种不同的CEF，分别采用了1字节，2字节，4字节的码元，正好对应了计算机中最常见的三种整形长度。</p>
-
+</blockquote>
+<blockquote>
 <p>如何将一个无限大的整数，一一映射为指定字宽的码元序列。 这个问题可以通过变长编码来解决。 无论是UTF-8还是UTF-16，本质思想都是通过预留标记位来指示码元序列的长度。从而实现变长编码的。</p>
 </blockquote>
-
 <ul>
 <li>字符编码方案（Character Encoding Schema）</li>
 </ul>
-
 <blockquote>
 <p>简单说，字符编码方案CES等于字符编码表CEF加上字节序列化的方案。</p>
-
+</blockquote>
+<blockquote>
 <p>通过CEF，我们已经可以将字符转为码元(Code Unit)。无论是哪种UTF-X的码元，都可以找到计算机中与之对应的整形存放。那么现在我们能说存储处理交换字符这个问题解决了吗？ 还不行。 因为从码元落实到底层的存储，还有一些问题需要解决。 假设一个字符按照UTF16拆成了A，B两个码元，那实际存储的时候究竟应该把A放在前面呢还是B放在前面呢？而另一个程序又如何知道当前这份文件是按照什么样的端序存储码元的呢？ 无论是大端法与小端法的选择，还是用于决定编码字节序的标记，都是CES需要操心的方案。</p>
-
+</blockquote>
+<blockquote>
 <p>所以Unicode实际上定义了7种字符编码方案CES</p>
-
+</blockquote>
+<blockquote>
+</blockquote>
 <pre><code>- UTF-8
 - UTF-16LE
 - UTF-16BE
@@ -330,24 +319,22 @@
 - UTF-32BE
 - UTF-32
 </code></pre>
-
+<blockquote>
 <p>UTF-8因为已经采用字节作为码元了，所以实际上是不存在字节序的问题。其他两种CES嘛，都有一个大端版本一个小端版本，还有一个随机应变大小端带BOM的版本</p>
-
+</blockquote>
+<blockquote>
 <p>当然，这里也出现一个问题，UTF-X可以同时指代字符编码表CEF或者字符编码方案CES。UTF-8问题还好，因为UTF-8的字节序列化方案太朴素了，以至于CES和CEF都没什么区别。但其他两种：UTF-16,UTF-32，就比较棘手了。当我们说UTF-16时，既可以指代UTF-16字符编码表，又可以指代UTF-16字符编码方案。所以当有人说“这个字符串是UTF-16编码的”时，鬼知道他到底说的到底是一个（UTF-16 encoding form的）码元序列还是(UTF-16 encoding schema 的)带BOM序列化好的一串字节流</p>
 </blockquote>
-
 <ul>
 <li>传输编码语法（Transfer Encoding Syntax）</li>
 </ul>
-
 <blockquote>
 <p>通过CES，我们已经可以将一个字符表示为一个字节序列。 但是有时候，字节序列表示还不够。比如在HTTP协议中，在URL里，一些字符是不允许出现的。这时候就需要再次对字节流进行编码。</p>
-
+</blockquote>
+<blockquote>
 <p>著名的Base64编码，就是把字节流映射成了一个由64个安全字符组成字符集所表示的字符流。从而使字节流能够安全地在Web中传输。</p>
 </blockquote>
-
 <h3 id="参考文章">参考文章</h3>
-
 <ul>
 <li><a href="http://vonng.com/blog/character-set/">http://vonng.com/blog/character-set/</a></li>
 </ul>

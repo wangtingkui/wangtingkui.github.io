@@ -5,10 +5,19 @@
     <link>https://wangtingkui.github.io/categories/</link>
     <description>Recent content in Categories on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 22 Dec 2019 11:48:21 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 14 Jan 2020 19:11:11 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>php多版本管理</title>
+      <link>https://wangtingkui.github.io/2020/01/php-multi-version/</link>
+      <pubDate>Tue, 14 Jan 2020 19:11:11 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/01/php-multi-version/</guid>
+      <description>本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装 第一步 首先需要下载二进制文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar chmod</description>
+    </item>
     
     <item>
       <title>Go标准库（net/http）- 使用</title>
