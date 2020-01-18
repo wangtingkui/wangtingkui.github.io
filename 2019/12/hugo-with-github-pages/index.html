@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点" />
-  <meta name="generator" content="Hugo 0.62.2 with theme pure" />
+  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
   <title>使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点 - xiaok&#39;s site</title>
   
 
@@ -39,13 +39,16 @@
 <meta property="article:modified_time" content="2019-12-01T13:56:09+08:00" />
 <meta itemprop="name" content="使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点">
 <meta itemprop="description" content="上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点">
+
+
 <meta itemprop="datePublished" content="2019-12-01T13:56:09&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-01T13:56:09&#43;08:00" />
-<meta itemprop="wordCount" content="671">
+<meta itemprop="wordCount" content="673">
 
 
 
-<meta itemprop="keywords" content="go," /><meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="go," />
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点"/>
 <meta name="twitter:description" content="上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点"/>
 
@@ -152,7 +155,7 @@
     <div class="widget-body">
         <ul class="category-list">
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">4</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
@@ -174,7 +177,7 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">15</span></li>
+                    class="tag-list-count">16</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
@@ -245,37 +248,53 @@
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      <p>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点的生成，那么剩下的一个问题就是如何部署我们生成的站点，供其他人访问</p>
+      
+
+<p>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点的生成，那么剩下的一个问题就是如何部署我们生成的站点，供其他人访问</p>
+
 <p>这篇文章帮助我们了解如何使用github pages的功能来部署我们的个人站点</p>
+
 <h3 id="使用-github-pages-的好处">使用 github pages 的好处</h3>
+
 <ul>
 <li>完全免费</li>
 <li>不需要自己购买服务器</li>
 <li>不需要自己运行维护</li>
 <li>可以方便的使用https</li>
 </ul>
+
 <h3 id="github-pages-的限制">github pages 的限制</h3>
+
 <p>当然github pages本身还是有一些限制的</p>
+
 <ul>
 <li>网站大小不能超过1GB</li>
 <li>网站不能发布的过于频繁（每小时不超过10个版本）</li>
 <li>每个月流量上限为1000GB</li>
 </ul>
+
 <p>但是作为个人博客来说，这些限制几乎对我们没什么影响</p>
+
 <h3 id="如何使用-github-pages">如何使用 github pages</h3>
+
 <p><a href="https://pages.github.com/">github pages 官方文档</a></p>
+
 <ol>
 <li>申请一个github账号，每个github账号可以有一个个人站点和多个项目站点（这个以后有机会在单独写文章说一下）</li>
 <li>创建一个<code>&lt;username&gt;.github.io</code>的仓库</li>
 <li>当我们执行<code>hugo</code>命令去生成我们的静态站点的文件时，默认会放在当前目录的<code>public</code>目录（当然你也可以通过配置hugo从而指定目录），所以我们直接把创建好的仓库拉取到项目下的<code>public</code>目录即可<code>git clone git@github.com:wangtingkui/wangtingkui.github.io.git ./public</code></li>
 <li>指定<code>hugo</code>命令生成站点文件</li>
-<li>进入<code>public</code>文件夹，将生成的文件提交到git，然后推送到远端即可</li>
-</ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cd public
+
+<li><p>进入<code>public</code>文件夹，将生成的文件提交到git，然后推送到远端即可</p>
+
+<pre><code class="language-sh">cd public
 git add .
-git commit -m <span style="color:#e6db74">&#34;提交信息&#34;</span>
+git commit -m &quot;提交信息&quot;
 git push -u origin master
-</code></pre></div><p>推送之后，访问<code>&lt;username&gt;.github.io</code>你就会惊奇的发现你的个人站点已经可以访问了，如果访问的时候没有效果，也不要着急，那是github还在处理中，去休息一下，过段时间在访问就会生效啦~</p>
+</code></pre></li>
+</ol>
+
+<p>推送之后，访问<code>&lt;username&gt;.github.io</code>你就会惊奇的发现你的个人站点已经可以访问了，如果访问的时候没有效果，也不要着急，那是github还在处理中，去休息一下，过段时间在访问就会生效啦~</p>
 
     </div>
     <div class="article-footer">

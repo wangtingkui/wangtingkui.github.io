@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 同样" />
-  <meta name="generator" content="Hugo 0.62.2 with theme pure" />
+  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
   <title>使用hugo搭建个人网站（四）- Front Matter 配置详解 - xiaok&#39;s site</title>
   
 
@@ -39,13 +39,16 @@
 <meta property="article:modified_time" content="2019-12-07T15:31:44+08:00" />
 <meta itemprop="name" content="使用hugo搭建个人网站（四）- Front Matter 配置详解">
 <meta itemprop="description" content="Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 同样">
+
+
 <meta itemprop="datePublished" content="2019-12-07T15:31:44&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-07T15:31:44&#43;08:00" />
-<meta itemprop="wordCount" content="475">
+<meta itemprop="wordCount" content="491">
 
 
 
-<meta itemprop="keywords" content="go," /><meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="go," />
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用hugo搭建个人网站（四）- Front Matter 配置详解"/>
 <meta name="twitter:description" content="Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 同样"/>
 
@@ -152,7 +155,7 @@
     <div class="widget-body">
         <ul class="category-list">
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">4</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
@@ -174,7 +177,7 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">15</span></li>
+                    class="tag-list-count">16</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
@@ -246,39 +249,44 @@
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
       <p><code>Front Matter</code> 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。</p>
+
 <p><code>Front Matter</code> 同样支持很多数据格式<code>YAML</code>,<code>JSON</code>,<code>TOML</code>，可以通过<code>Front Matter</code>的前导符（包裹<code>Front Matter</code>的定界符）来告诉hugo我们使用的是什么配置语言</p>
+
 <p><code>Front Matter</code>支持的标准配置有很多，但是只有两个属性是必须的，那就是<code>title</code>和<code>date</code>，代表了文章的标题和写作时间</p>
+
 <p>下面是hugo默认支持的常用<code>Front Matter</code>属性：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">title: <span style="color:#e6db74">&#34;文章标题&#34;</span>
-date: <span style="color:#e6db74">2012-12-12</span>
-description: <span style="color:#e6db74">&#34;文章描述信息&#34;</span>
-tags: [<span style="color:#e6db74">&#34;标签1&#34;</span>, <span style="color:#e6db74">&#34;标签2&#34;</span>]
-categories: [<span style="color:#e6db74">&#34;分类1&#34;</span>, <span style="color:#e6db74">&#34;分类2&#34;</span>]
-keywords: [<span style="color:#e6db74">&#34;关键字1&#34;</span>, <span style="color:#e6db74">&#34;关键字2&#34;</span>]
-lastmod: <span style="color:#e6db74">2015-10-10</span>
 
-isCJKLanguage: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># 是否是CJK语言</span>
+<pre><code class="language-yaml">title: &quot;文章标题&quot;
+date: 2012-12-12
+description: &quot;文章描述信息&quot;
+tags: [&quot;标签1&quot;, &quot;标签2&quot;]
+categories: [&quot;分类1&quot;, &quot;分类2&quot;]
+keywords: [&quot;关键字1&quot;, &quot;关键字2&quot;]
+lastmod: 2015-10-10
 
-draft: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># 是否是草稿</span>
-expiryDate: <span style="color:#e6db74">2020-10-10</span> <span style="color:#75715e"># 文章过期时间</span>
-publishDate: <span style="color:#e6db74">2020-10-10</span> <span style="color:#75715e"># 文章发布时间</span>
+isCJKLanguage: true # 是否是CJK语言
 
-weight: <span style="color:#ae81ff">40</span> <span style="color:#75715e"># 文章排序权重</span>
+draft: true # 是否是草稿
+expiryDate: 2020-10-10 # 文章过期时间
+publishDate: 2020-10-10 # 文章发布时间
 
-<span style="color:#75715e"># 使用这两个参数会重置permalink，默认使用文件名</span>
+weight: 40 # 文章排序权重
+
+# 使用这两个参数会重置permalink，默认使用文件名
 url:
 slug:
 
-<span style="color:#75715e"># 文章地址的别名</span>
+# 文章地址的别名
 aliases:
 	- /posts/hxxxx
 	- xxxx
 
-<span style="color:#75715e"># type 和 layout 将会改变 hugo 寻找文章模板的顺序</span>
+# type 和 layout 将会改变 hugo 寻找文章模板的顺序
 type: review
 layout: reviewartical
 
-</code></pre></div>
+</code></pre>
+
     </div>
     <div class="article-footer">
     </div>

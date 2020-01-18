@@ -53,7 +53,21 @@
   
   <url>
     <loc>https://wangtingkui.github.io/tags/go/</loc>
-    <lastmod>2019-12-22T11:48:21+08:00</lastmod>
+    <lastmod>2020-01-05T15:33:50+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2020-01-05T15:33:50+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2020/01/go-file-operation/</loc>
+    <lastmod>2020-01-05T15:33:50+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -96,13 +110,6 @@
   <url>
     <loc>https://wangtingkui.github.io/2019/12/go-std-lib-filepath/</loc>
     <lastmod>2019-12-15T14:35:43+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2019-12-13T14:46:50+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        xiaok&#39;s site</title>
+        Go进行文件操作 - xiaok&#39;s site
+      </title>
     <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -22,27 +23,34 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  
+  <meta name="description" content="go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供" />
   <meta name="generator" content="Hugo 0.58.3 with theme pure" />
-  <title>xiaok&#39;s site</title>
+  <title>Go进行文件操作 - xiaok&#39;s site</title>
   
 
-  <link rel="alternate" type="application/rss+xml" href="https://wangtingkui.github.io/tags/cobra/index.xml" title="xiaok's site" />
   <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.css">
   <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
-  <meta property="og:title" content="cobra" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://wangtingkui.github.io/tags/cobra/" />
+  <meta property="og:title" content="Go进行文件操作" />
+<meta property="og:description" content="go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/2020/01/go-file-operation/" />
+<meta property="article:published_time" content="2020-01-05T15:33:50+08:00" />
+<meta property="article:modified_time" content="2020-01-05T15:33:50+08:00" />
+<meta itemprop="name" content="Go进行文件操作">
+<meta itemprop="description" content="go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供">
 
-<meta property="og:updated_time" content="2019-12-11T14:57:37+08:00" />
-<meta itemprop="name" content="cobra">
-<meta itemprop="description" content="">
 
+<meta itemprop="datePublished" content="2020-01-05T15:33:50&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-05T15:33:50&#43;08:00" />
+<meta itemprop="wordCount" content="826">
+
+
+
+<meta itemprop="keywords" content="go," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="cobra"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="Go进行文件操作"/>
+<meta name="twitter:description" content="go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供"/>
 
   <!--[if lte IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -200,46 +208,344 @@
 
     
     
-<main class="main" role="main">
-    <article class="content article article-tags post-type-list" itemscope="">
-        <header class="article-header">
-            <h1 itemprop="name" class="hidden-xs">cobra</h1>
-            <p class="text-muted hidden-xs">Total 8 tags</p>
-            <nav role="navigation" id="nav-main" class="okayNav">
-                <ul>
-                    <li><a href="https://wangtingkui.github.io/tags">All</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/cobra/">cobra</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/github-pages/">github pages</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/go/">go</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/php/">php</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/unicode/">unicode</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/utf-8/">utf-8</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/">字符编码</a></li>
-                    <li><a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析</a></li>
-                </ul>
-            </nav>
-        </header>
-        
-        <div class="article-body">
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-12-11 14:57:37 &#43;0800 CST"
-                itemprop="datePublished">2019-12-11</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/">go cli 应用框架cobra（二）- 源码分析</a>
-        </h3>
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2020/01/go-file-operation/"
+    >Go进行文件操作</a
+  >
+</h1>
+
+      <div class="article-meta">
+        <span class="article-date">
+  <i class="icon icon-calendar-check"></i>
+<a href="https://wangtingkui.github.io/2020/01/go-file-operation/" class="article-date">
+  <time datetime="2020-01-05 15:33:50 &#43;0800 CST" itemprop="datePublished">2020-01-05</time>
+</a>
+</span><span class="article-category">
+  <i class="icon icon-folder"></i>
+  <a class="article-category-link" href="/categories/go%E5%9F%BA%E7%A1%80/"> go基础 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+    <a class="article-tag-link" href="/tags/go/"> go </a>
+  </span>
+
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count:2minutes </span>
+      </div>
     </div>
-    <div class="panel-footer">
-        <a href="https://wangtingkui.github.io/tags/go" class="label label-default mb">go</a>
-        <a href="https://wangtingkui.github.io/tags/cobra" class="label label-default mb">cobra</a>
-        <a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90" class="label label-default mb">源码分析</a>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      
+
+<p>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供了一些常用的方法供开发者使用</p>
+
+<p>本文只列出了一些常用的方法，更多的操作可以参考：<a href="https://colobu.com/2016/10/12/go-file-operations">https://colobu.com/2016/10/12/go-file-operations</a></p>
+
+<h2 id="使用-os-包进行文件操作">使用 os 包进行文件操作</h2>
+
+<blockquote>
+<p>打开文件</p>
+</blockquote>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;os&quot;
+)
+
+func main() {
+
+	var (
+		file *os.File
+		err  error
+	)
+
+	// 以只读方式打开一个文件
+	file, err = os.Open(&quot;a.txt&quot;)
+	if err != nil {
+		panic(err)
+	}
+	_ = file.Close()
+
+	// 以指定的模式打开文件，这个方法更具有通用性
+	// 一般情况下我们应该尽量使用 os.Open 和 os.Create 方法而不是这个方法
+	file, err = os.OpenFile(&quot;a.txt&quot;, os.O_APPEND, 0666)
+	if err != nil {
+		panic(err)
+	}
+	_ = file.Close()
+}
+
+</code></pre>
+
+<blockquote>
+<p>创建文件</p>
+</blockquote>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;os&quot;
+)
+
+func main() {
+
+	// 创建一个空文件
+	// 看源码就可以发现它其实就是 OpenFile(name, O_RDWR|O_CREATE|O_TRUNC, 0666) 的快捷方式
+	file, err := os.Create(&quot;create.txt&quot;)
+	if err != nil {
+		panic(err)
+	}
+	_ = file.Close()
+
+	// 使用给定的unix文件描述符和名称创建文件，一般不使用
+	file = os.NewFile(3, &quot;haha.txt&quot;)
+	_ = file.Close()
+}
+
+</code></pre>
+
+<blockquote>
+<p>删除文件</p>
+</blockquote>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;os&quot;
+)
+
+func main() {
+	err := os.Remove(&quot;create.txt&quot;)
+	if err != nil {
+		panic(err)
+	}
+}
+
+</code></pre>
+
+<blockquote>
+<p>重命名和移动文件</p>
+</blockquote>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;os&quot;
+)
+
+func main() {
+	err := os.Rename(&quot;a.txt&quot;, &quot;b.txt&quot;)
+	if err != nil {
+		panic(err)
+	}
+}
+
+</code></pre>
+
+<blockquote>
+<p>清空文件</p>
+</blockquote>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;os&quot;
+)
+
+func main() {
+	// 第二个参数是要保留的字节数，如果传入0，就是清空整个文件
+	err := os.Truncate(&quot;b.txt&quot;, 2)
+	if err != nil {
+		panic(err)
+	}
+}
+
+</code></pre>
+
+<blockquote>
+<p>获取文件信息</p>
+</blockquote>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;fmt&quot;
+	&quot;os&quot;
+)
+
+var (
+	fileInfo os.FileInfo
+	err      error
+)
+
+func main() {
+	fileInfo, err = os.Stat(&quot;b.txt&quot;)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(&quot;File name:&quot;, fileInfo.Name())
+	fmt.Println(&quot;Size in bytes:&quot;, fileInfo.Size())
+	fmt.Println(&quot;Permissions:&quot;, fileInfo.Mode())
+	fmt.Println(&quot;Last modified:&quot;, fileInfo.ModTime())
+	fmt.Println(&quot;Is Directory: &quot;, fileInfo.IsDir())
+	fmt.Printf(&quot;System interface type: %T\n&quot;, fileInfo.Sys())
+	fmt.Printf(&quot;System info: %+v\n\n&quot;, fileInfo.Sys())
+}
+
+</code></pre>
+
+<blockquote>
+<p>文件读取</p>
+</blockquote>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;fmt&quot;
+	&quot;os&quot;
+)
+
+func main() {
+	file, err := os.Open(&quot;b.txt&quot;)
+	if err != nil {
+		panic(err)
+	}
+
+	buf := make([]byte, 10)
+	for {
+		l, err := file.Read(buf)
+		if l &gt; 0 {
+			fmt.Println(string(buf[:l]))
+		}
+		if err != nil {
+			break
+		}
+	}
+}
+
+</code></pre>
+
+<blockquote>
+<p>写文件</p>
+</blockquote>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;os&quot;
+)
+
+func main() {
+	file, err := os.Create(&quot;newfile.txt&quot;)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	file.Write([]byte(&quot;fuck1&quot;))
+	file.WriteString(&quot;fuck2&quot;)
+}
+
+</code></pre>
+
+<h2 id="使用-bufio-操作文件">使用 bufio 操作文件</h2>
+
+<blockquote>
+<p>按行读取文件</p>
+</blockquote>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;bufio&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+)
+
+func main() {
+	file, err := os.Open(&quot;b.txt&quot;)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	// 通过 bufio.Reader 读取行
+	// 默认 buffer 是4096
+	reader := bufio.NewReader(file)
+	for {
+		// 读取文件的一行，默认用 \r\n 或者 \n 分隔，读取出来的行是不包含分隔符的
+		// 如果文件的行太长，h超过了 bufio.Reader 内部的 buffer， 会将第二个返回参数 isPrefix 设置为 true
+		buf, _, err := reader.ReadLine()
+		if err != nil {
+			break
+		}
+		fmt.Println(string(buf))
+	}
+
+	// 通过bufio.Scanner 读取行
+	file.Seek(0, 0)
+	scanner := bufio.NewScanner(file)
+	// scanner.Split() ，可以通过这个函数设置自定义的分隔方式，默认是换行
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+}
+
+</code></pre>
+
+<h2 id="使用-io-ioutil-进行文件操作">使用 io/ioutil 进行文件操作</h2>
+
     </div>
-</article>
-            </div>
+    <div class="article-footer">
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://wangtingkui.github.io/2019/12/go-std-lib-net-http/" title="Go标准库（net/http）- 使用"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://wangtingkui.github.io/2020/01/php-multi-version/"
+                    title="php多版本管理"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
         </div>
-    </article>
+    </div>
+</nav>
+
+
 </main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
 <ul class="social-links">
     <li><a href="https://github.com/wangtingkui" target="_blank" title="github" data-toggle=tooltip data-placement=top >

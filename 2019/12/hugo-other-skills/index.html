@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="引用站点内其他文章 很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo" />
-  <meta name="generator" content="Hugo 0.62.2 with theme pure" />
+  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
   <title>使用hugo搭建个人网站（三）- 其他使用技巧 - xiaok&#39;s site</title>
   
 
@@ -39,13 +39,16 @@
 <meta property="article:modified_time" content="2019-12-02T14:12:07+08:00" />
 <meta itemprop="name" content="使用hugo搭建个人网站（三）- 其他使用技巧">
 <meta itemprop="description" content="引用站点内其他文章 很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo">
+
+
 <meta itemprop="datePublished" content="2019-12-02T14:12:07&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-02T14:12:07&#43;08:00" />
 <meta itemprop="wordCount" content="243">
 
 
 
-<meta itemprop="keywords" content="go," /><meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="go," />
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用hugo搭建个人网站（三）- 其他使用技巧"/>
 <meta name="twitter:description" content="引用站点内其他文章 很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo"/>
 
@@ -152,7 +155,7 @@
     <div class="widget-body">
         <ul class="category-list">
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">4</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
@@ -174,7 +177,7 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">15</span></li>
+                    class="tag-list-count">16</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
@@ -245,16 +248,23 @@
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      <h3 id="引用站点内其他文章">引用站点内其他文章</h3>
+      
+
+<h3 id="引用站点内其他文章">引用站点内其他文章</h3>
+
 <p>很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo 帮我们实现了这种功能，只需要在文章中使用 <code>{{&lt; ref &quot;posts/my_post.md&quot; &gt;}}</code>或者<code>{{&lt; relref &quot;posts/my_post.md&quot; &gt;}}</code>即可，前者是相对链接，后者是绝对链接</p>
+
 <p>一些例子：</p>
+
 <pre><code>{{&lt; ref &quot;blog/post.md&quot; &gt;}} =&gt; https://example.com/blog/post/
 {{&lt; ref &quot;post.md#tldr&quot; &gt;}} =&gt; https://example.com/blog/post/#tldr:caffebad
 {{&lt; relref &quot;post.md&quot; &gt;}} =&gt; /blog/post/
 {{&lt; relref &quot;blog/post.md#tldr&quot; &gt;}} =&gt; /blog/post/#tldr:caffebad
 {{&lt; ref &quot;#tldr&quot; &gt;}} =&gt; #tldr:badcaffe
 {{&lt; relref &quot;#tldr&quot; &gt;}} =&gt; #tldr:badcaffe
-</code></pre><p>如果是不是需要引用，而仅仅是需要展示<code>{{&lt; ref &quot;blog/post.md&quot; &gt;}}</code>这样的文本，需要在标签内加上<code>/* */</code>这样的注释，比如<code>{{&lt;/* ref &quot;blog/post.md&quot; */&gt;}}</code></p>
+</code></pre>
+
+<p>如果是不是需要引用，而仅仅是需要展示<code>{{&lt; ref &quot;blog/post.md&quot; &gt;}}</code>这样的文本，需要在标签内加上<code>/* */</code>这样的注释，比如<code>{{&lt;/* ref &quot;blog/post.md&quot; */&gt;}}</code></p>
 
     </div>
     <div class="article-footer">

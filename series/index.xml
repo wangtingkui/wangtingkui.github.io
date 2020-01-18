@@ -19,6 +19,15 @@
     </item>
     
     <item>
+      <title>Go进行文件操作</title>
+      <link>https://wangtingkui.github.io/2020/01/go-file-operation/</link>
+      <pubDate>Sun, 05 Jan 2020 15:33:50 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/01/go-file-operation/</guid>
+      <description>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供</description>
+    </item>
+    
+    <item>
       <title>Go标准库（net/http）- 使用</title>
       <link>https://wangtingkui.github.io/2019/12/go-std-lib-net-http/</link>
       <pubDate>Sun, 22 Dec 2019 11:48:21 +0800</pubDate>
