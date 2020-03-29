@@ -5,10 +5,19 @@
     <link>https://wangtingkui.github.io/tags/go/</link>
     <description>Recent content in go on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 05 Jan 2020 15:33:50 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 29 Mar 2020 17:51:54 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go标准库（log）- 使用</title>
+      <link>https://wangtingkui.github.io/2020/03/go-std-lib-log/</link>
+      <pubDate>Sun, 29 Mar 2020 17:51:54 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/03/go-std-lib-log/</guid>
+      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用 实例化 logger 进行日志记录 首先看一个最简单的 demo： package main import ( &amp;#34;log&amp;#34; &amp;#34;os&amp;#34; ) func main() { logger :=</description>
+    </item>
     
     <item>
       <title>php多版本管理</title>

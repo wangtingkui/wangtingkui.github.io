@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下" />
-  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
+  <meta name="generator" content="Hugo 0.65.3 with theme pure" />
   <title>go多版本管理 - xiaok&#39;s site</title>
   
 
@@ -39,16 +39,13 @@
 <meta property="article:modified_time" content="2019-12-13T14:46:50+08:00" />
 <meta itemprop="name" content="go多版本管理">
 <meta itemprop="description" content="之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下">
-
-
 <meta itemprop="datePublished" content="2019-12-13T14:46:50&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-13T14:46:50&#43;08:00" />
 <meta itemprop="wordCount" content="693">
 
 
 
-<meta itemprop="keywords" content="go," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="go," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="go多版本管理"/>
 <meta name="twitter:description" content="之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下"/>
 
@@ -156,7 +153,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">4</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">5</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
         </ul>
@@ -177,7 +174,7 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">16</span></li>
+                    class="tag-list-count">17</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
@@ -248,78 +245,54 @@
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      
-
-<p>之前写php，使用<code>phpbrew</code>来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具<code>gvm</code>，这篇文章就记录下如何在<code>mac</code>下使用<code>gvm</code>进行go的多版本管理</p>
-
-<p>gvm的信息可以参考：<a href="https://github.com/moovweb/gvm">https://github.com/moovweb/gvm</a></p>
-
+      <p>之前写php，使用<code>phpbrew</code>来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具<code>gvm</code>，这篇文章就记录下如何在<code>mac</code>下使用<code>gvm</code>进行go的多版本管理</p>
+<p>gvm的信息可以参考：https://github.com/moovweb/gvm</p>
 <h3 id="环境信息">环境信息</h3>
-
 <ul>
 <li>macOS 10.15.2</li>
 <li>brew 2.1.16</li>
 </ul>
-
 <h3 id="安装gvm">安装gvm</h3>
-
-<pre><code class="language-sh">bash &lt; &lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
-</code></pre>
-
-<p>下载好之后，需要修改下个人配置文件，使<code>gvm</code>相关命令生效，如果用的是bash，则修改<code>~/.bashrc</code>，如果习惯用zsh，那就修改<code>~/.zshrc</code>，以此类推</p>
-
-<pre><code class="language-sh">[[ -s &quot;$HOME/.gvm/scripts/gvm&quot; ]] &amp;&amp; source &quot;$HOME/.gvm/scripts/gvm&quot;
-</code></pre>
-
-<p>修改之后，重开一会会话或者直接<code>source ~/.zshrc</code>（我用的是zsh）让刚才的修改生效。执行一下看下效果</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">bash &lt; &lt;<span style="color:#f92672">(</span>curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer<span style="color:#f92672">)</span>
+</code></pre></div><p>下载好之后，需要修改下个人配置文件，使<code>gvm</code>相关命令生效，如果用的是bash，则修改<code>~/.bashrc</code>，如果习惯用zsh，那就修改<code>~/.zshrc</code>，以此类推</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#f92672">[[</span> -s <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.gvm/scripts/gvm&#34;</span> <span style="color:#f92672">]]</span> <span style="color:#f92672">&amp;&amp;</span> source <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.gvm/scripts/gvm&#34;</span>
+</code></pre></div><p>修改之后，重开一会会话或者直接<code>source ~/.zshrc</code>（我用的是zsh）让刚才的修改生效。执行一下看下效果</p>
 <pre><code>╰─$ gvm version
 Go Version Manager v1.0.22 installed at /Users/wangtingkui/.gvm
-</code></pre>
-
-<p>可以看到，我装的是 1.0.22 的版本</p>
-
+</code></pre><p>可以看到，我装的是 1.0.22 的版本</p>
 <h3 id="常用命令">常用命令</h3>
-
-<pre><code class="language-sh"># 查看gvm版本
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e"># 查看gvm版本</span>
 gvm version
 
-# 查看所有可以安装的版本
+<span style="color:#75715e"># 查看所有可以安装的版本</span>
 gvm listall
 
-# 查看本地已经安装的版本
+<span style="color:#75715e"># 查看本地已经安装的版本</span>
 gvm list
 
-# 安装指定版本
+<span style="color:#75715e"># 安装指定版本</span>
 gvm install go1.13.5
 
-# 删除指定版本
+<span style="color:#75715e"># 删除指定版本</span>
 gvm uninstall go1.13.5
 
-# 临时切换版本
+<span style="color:#75715e"># 临时切换版本</span>
 gvm use go1.13.5
 
-# 切换版本并指定为默认版本
+<span style="color:#75715e"># 切换版本并指定为默认版本</span>
 gvm use go1.13.5 --default
 
-</code></pre>
-
-<h3 id="使用">使用</h3>
-
+</code></pre></div><h3 id="使用">使用</h3>
 <p>由于go是使用自举的方式来编译，也就是用go来编译go，所有我们使用gvm来初始安装一个版本的时候，首先需要保证在自己的环境中有go，我是直接使用brew安装的，大家也可以使用其他方式下载安装</p>
-
 <blockquote>
 <p>下面是我的安装过程</p>
 </blockquote>
-
 <pre><code>brew install go
 gvm listall # 看下有哪些版本
 gvm install go1.13.6 # 选择一个版本安装
 brew unlink go # 使用gvm安装完之后就可以不适用brew安装的go了，所以直接断开连接
 gvm use go1.13.6 --default # 选择刚才安装的版本并且设置为默认版本
-</code></pre>
-
-<p>当我们使用<code>gvm use &lt;version&gt;</code>切换版本的时候，可以使用<code>go env GOPATH</code>看下，可以发现随着我们切换版本，GOPATH的路径也在变换，这样就不用害怕不同版本GOPATH下的内容冲突了</p>
+</code></pre><p>当我们使用<code>gvm use &lt;version&gt;</code>切换版本的时候，可以使用<code>go env GOPATH</code>看下，可以发现随着我们切换版本，GOPATH的路径也在变换，这样就不用害怕不同版本GOPATH下的内容冲突了</p>
 
     </div>
     <div class="article-footer">

@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模" />
-  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
+  <meta name="generator" content="Hugo 0.65.3 with theme pure" />
   <title>使用hugo搭建个人网站（五）- 模板选择顺序 - xiaok&#39;s site</title>
   
 
@@ -39,16 +39,13 @@
 <meta property="article:modified_time" content="2019-12-07T15:55:24+08:00" />
 <meta itemprop="name" content="使用hugo搭建个人网站（五）- 模板选择顺序">
 <meta itemprop="description" content="加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模">
-
-
 <meta itemprop="datePublished" content="2019-12-07T15:55:24&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-07T15:55:24&#43;08:00" />
 <meta itemprop="wordCount" content="124">
 
 
 
-<meta itemprop="keywords" content="go," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="go," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用hugo搭建个人网站（五）- 模板选择顺序"/>
 <meta name="twitter:description" content="加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模"/>
 
@@ -156,7 +153,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">4</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">5</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
         </ul>
@@ -177,7 +174,7 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">16</span></li>
+                    class="tag-list-count">17</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
@@ -249,9 +246,7 @@
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
       <p>加入我们要寻找<code>content/posts</code>下文章的模板</p>
-
 <p>当我们未在<code>Front Matter</code>中指定<code>type</code>和<code>layout</code>属性的时候，hugo默认的模板查找顺序是：</p>
-
 <pre><code>&lt;project_path&gt;/layouts/UNSPECIFIED/UNSPECIFIED.html
 &lt;project_path&gt;/layouts/posts/UNSPECIFIED.html
 &lt;project_path&gt;/layouts/UNSPECIFIED/single.html
@@ -262,10 +257,7 @@
 &lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/UNSPECIFIED/single.html
 &lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/posts/single.html
 &lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/_default/single.html
-</code></pre>
-
-<p>当指定了<code>type</code>和<code>layout</code>属性的时候，查找顺序是：</p>
-
+</code></pre><p>当指定了<code>type</code>和<code>layout</code>属性的时候，查找顺序是：</p>
 <pre><code>&lt;project_path&gt;/layouts/review/reviewarticle.html
 &lt;project_path&gt;/layouts/posts/reviewarticle.html
 &lt;project_path&gt;/layouts/review/single.html
@@ -277,7 +269,6 @@
 &lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/posts/single.html
 &lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/_default/single.html
 </code></pre>
-
     </div>
     <div class="article-footer">
     </div>

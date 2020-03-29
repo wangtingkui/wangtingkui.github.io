@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架 一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users" />
-  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
+  <meta name="generator" content="Hugo 0.65.3 with theme pure" />
   <title>go cli 应用框架cobra（一）- 简介 - xiaok&#39;s site</title>
   
 
@@ -39,16 +39,13 @@
 <meta property="article:modified_time" content="2019-12-01T10:17:30+08:00" />
 <meta itemprop="name" content="go cli 应用框架cobra（一）- 简介">
 <meta itemprop="description" content="简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架 一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users">
-
-
 <meta itemprop="datePublished" content="2019-12-01T10:17:30&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-01T10:17:30&#43;08:00" />
 <meta itemprop="wordCount" content="841">
 
 
 
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="go cli 应用框架cobra（一）- 简介"/>
 <meta name="twitter:description" content="简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架 一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users"/>
 
@@ -156,7 +153,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">4</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">5</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
         </ul>
@@ -177,7 +174,7 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">16</span></li>
+                    class="tag-list-count">17</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
@@ -241,31 +238,20 @@
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      
-
-<h3 id="简介">简介</h3>
-
+      <h3 id="简介">简介</h3>
 <p><code>cobra</code>是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架</p>
-
 <h3 id="一些基础概念">一些基础概念</h3>
-
 <p><code>cobra</code>推崇的是<code>The best applications will read like sentences when used. Users will know how to use the application because they will natively understand how to use it.</code>也就是我们的应用应该做到自解释，让使用者可以很容易的上手，使用的时候就像是说话一样的简单和自然</p>
-
 <p>一个遵循这个理念的命令行应用模式是 <code>APPNAME VERB NOUN -ADJECTIVE</code> 或者换种表达方式 <code>APPNAME COMMADN ARG --FLAG</code></p>
-
 <ul>
 <li><code>APPNAME</code>是我们应用的名称</li>
 <li><code>COMMAND</code>是我们要执行的动作，一般是个动词</li>
 <li><code>ARG</code>是我们动作作用的对象，一般是个名词</li>
 <li><code>--FLAG</code>是用来调整我们动作的行为，一般是个形容词</li>
 </ul>
-
 <p>一个例子：<code>git clone URL --bare</code></p>
-
 <h3 id="项目结构">项目结构</h3>
-
 <p>我们可以按照自己的喜好去组织我们的项目代码，但是一般情况下，基于cobra的项目会有以下的项目结构</p>
-
 <pre><code>╰─$ tree
 .
 ├── LICENSE
@@ -274,12 +260,8 @@
 └── main.go
 
 1 directory, 3 files
-</code></pre>
-
-<h3 id="快速上手构建项目">快速上手构建项目</h3>
-
+</code></pre><h3 id="快速上手构建项目">快速上手构建项目</h3>
 <p>上面也提到了，cobra 不仅仅是一个命令行框架，它也能辅助我们快速生成我们的项目文件，接下来就让我们使用 cobra 提供的脚手架帮助我们生成基于 cobra 框架的命令行应用（如果还没有安装cobra脚手架，可以进入<code>github.com/spf13/cobra/cobra</code>然后<code>go install</code>一下）</p>
-
 <pre><code># 创建项目
 cobra init --pkg-name github.com/wangtingkui/testCobra ./testCobra # 创建完成之后，就可以看到我们上面那个默认的目录结构了
 
@@ -287,10 +269,7 @@ cobra init --pkg-name github.com/wangtingkui/testCobra ./testCobra # 创建完�
 cobra add serve # 添加 serve 命令
 cobra add config # 添加 config 命令
 cobra add create -p 'configCmd' # 给 config 命令添加 create 子命令，`-p`指定这个命令的父命令，这个没有什么逻辑校验，就是在新命令的文件中init方法里面添加`configCmd.AddCommand(createCmd)`这行代码而已
-</code></pre>
-
-<p>创建完成之后，再来看下最终生成的目录结构</p>
-
+</code></pre><p>创建完成之后，再来看下最终生成的目录结构</p>
 <pre><code>╰─$ tree
 .
 ├── LICENSE
@@ -302,12 +281,8 @@ cobra add create -p 'configCmd' # 给 config 命令添加 create 子命令，`-p
 └── main.go
 
 1 directory, 6 files
-</code></pre>
-
-<p>测试下我们的项目</p>
-
+</code></pre><p>测试下我们的项目</p>
 <p>主应用</p>
-
 <pre><code>╰─$ ./testCobra
 A longer description that spans multiple lines and likely contains
 examples and usage of using your application. For example:
@@ -330,14 +305,10 @@ Flags:
   -t, --toggle          Help message for toggle
 
 Use &quot;testCobra [command] --help&quot; for more information about a command.
-</code></pre>
-
-<p>serve 命令</p>
-
+</code></pre><p>serve 命令</p>
 <pre><code>╰─$ ./testCobra serve
 serve called
 </code></pre>
-
     </div>
     <div class="article-footer">
     </div>

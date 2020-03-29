@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s" />
-  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
+  <meta name="generator" content="Hugo 0.65.3 with theme pure" />
   <title>Go标准库（net/url）- 使用 - xiaok&#39;s site</title>
   
 
@@ -39,16 +39,13 @@
 <meta property="article:modified_time" content="2019-12-21T22:21:40+08:00" />
 <meta itemprop="name" content="Go标准库（net/url）- 使用">
 <meta itemprop="description" content="net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s">
-
-
 <meta itemprop="datePublished" content="2019-12-21T22:21:40&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-21T22:21:40&#43;08:00" />
-<meta itemprop="wordCount" content="842">
+<meta itemprop="wordCount" content="838">
 
 
 
-<meta itemprop="keywords" content="go," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="go," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Go标准库（net/url）- 使用"/>
 <meta name="twitter:description" content="net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s"/>
 
@@ -156,7 +153,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">4</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">5</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
         </ul>
@@ -177,7 +174,7 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">16</span></li>
+                    class="tag-list-count">17</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
@@ -248,156 +245,131 @@
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      
-
-<p><code>net/url</code>包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用</p>
-
+      <p><code>net/url</code>包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用</p>
 <h3 id="url-结构">url 结构</h3>
-
 <p>在学习使用这个库之前，我们先来了解下 url 的标准结构：<code>scheme://[userinfo@]host/path[?query][#fragment]</code>，如果 scheme 之后不是以斜线开头的，那么结构被认为是 <code>scheme:opaque[?query][#fragment]</code>，也就是用户信息、域名和路径部分是<strong>不透明</strong>的，可以认为是被加密或者被编码过的</p>
-
 <h3 id="环境">环境</h3>
-
 <ul>
 <li>go1.12</li>
 </ul>
-
 <h3 id="包中的基本结构体">包中的基本结构体</h3>
-
 <p>这个包中有3个比较基本的结构体：</p>
-
 <ul>
 <li>URL：代表一个被解析的url</li>
 <li>UserInfo：代表 url 中的用户信息部分</li>
-
-<li><p>Values：存放 query 参数或者 form 参数</p>
-
-<pre><code class="language-go">
-type URL struct {
-	Scheme     string
-	Opaque     string    // encoded opaque data
-	User       *Userinfo // username and password information
-	Host       string    // host or host:port
-	Path       string    // path (relative paths may omit leading slash)
-	RawPath    string    // encoded path hint (see EscapedPath method)
-	ForceQuery bool      // append a query ('?') even if RawQuery is empty
-	RawQuery   string    // encoded query values, without '?'
-	Fragment   string    // fragment for references, without '#'
-}
-
-type Userinfo struct {
-	username    string
-	password    string
-	passwordSet bool
-}
-
-type Values map[string][]string
-</code></pre></li>
+<li>Values：存放 query 参数或者 form 参数</li>
 </ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">URL</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Scheme</span>     <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Opaque</span>     <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// encoded opaque data
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">User</span>       <span style="color:#f92672">*</span><span style="color:#a6e22e">Userinfo</span> <span style="color:#75715e">// username and password information
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Host</span>       <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// host or host:port
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Path</span>       <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// path (relative paths may omit leading slash)
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">RawPath</span>    <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// encoded path hint (see EscapedPath method)
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">ForceQuery</span> <span style="color:#66d9ef">bool</span>      <span style="color:#75715e">// append a query (&#39;?&#39;) even if RawQuery is empty
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">RawQuery</span>   <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// encoded query values, without &#39;?&#39;
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Fragment</span>   <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// fragment for references, without &#39;#&#39;
+</span><span style="color:#75715e"></span>}
 
-<h3 id="基本使用">基本使用</h3>
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Userinfo</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">username</span>    <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">password</span>    <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">passwordSet</span> <span style="color:#66d9ef">bool</span>
+}
 
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Values</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>][]<span style="color:#66d9ef">string</span>
+</code></pre></div><h3 id="基本使用">基本使用</h3>
 <h4 id="编码和解码操作">编码和解码操作</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 
-<pre><code class="language-go">func main() {
-
-	var (
-		rowUrl       = &quot;http://www.baidu.com?q=我 曹#123&quot;
-		escapedUrl   string
-		unescapedUrl string
+	<span style="color:#66d9ef">var</span> (
+		<span style="color:#a6e22e">rowUrl</span>       = <span style="color:#e6db74">&#34;http://www.baidu.com?q=我 曹#123&#34;</span>
+		<span style="color:#a6e22e">escapedUrl</span>   <span style="color:#66d9ef">string</span>
+		<span style="color:#a6e22e">unescapedUrl</span> <span style="color:#66d9ef">string</span>
 	)
 
-	// 可以保证安全的放在query中
-	escapedUrl = url.QueryEscape(rowUrl)
-	unescapedUrl, _ = url.QueryUnescape(escapedUrl)
+	<span style="color:#75715e">// 可以保证安全的放在query中
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">escapedUrl</span> = <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">QueryEscape</span>(<span style="color:#a6e22e">rowUrl</span>)
+	<span style="color:#a6e22e">unescapedUrl</span>, <span style="color:#a6e22e">_</span> = <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">QueryUnescape</span>(<span style="color:#a6e22e">escapedUrl</span>)
 
-	fmt.Println(escapedUrl)
-	fmt.Println(unescapedUrl)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">escapedUrl</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">unescapedUrl</span>)
 
-	// 可以保证安全的放在path段中
-	escapedUrl = url.PathEscape(rowUrl)
-	unescapedUrl, _ = url.PathUnescape(escapedUrl)
+	<span style="color:#75715e">// 可以保证安全的放在path段中
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">escapedUrl</span> = <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">PathEscape</span>(<span style="color:#a6e22e">rowUrl</span>)
+	<span style="color:#a6e22e">unescapedUrl</span>, <span style="color:#a6e22e">_</span> = <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">PathUnescape</span>(<span style="color:#a6e22e">escapedUrl</span>)
 
-	fmt.Println(escapedUrl)
-	fmt.Println(unescapedUrl)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">escapedUrl</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">unescapedUrl</span>)
 }
 
-// http%3A%2F%2Fwww.baidu.com%3Fq%3D%E6%88%91+%E6%9B%B9%23123
-// http://www.baidu.com?q=我 曹#123
-// http:%2F%2Fwww.baidu.com%3Fq=%E6%88%91%20%E6%9B%B9%23123
-// http://www.baidu.com?q=我 曹#123
+<span style="color:#75715e">// http%3A%2F%2Fwww.baidu.com%3Fq%3D%E6%88%91+%E6%9B%B9%23123
+</span><span style="color:#75715e">// http://www.baidu.com?q=我 曹#123
+</span><span style="color:#75715e">// http:%2F%2Fwww.baidu.com%3Fq=%E6%88%91%20%E6%9B%B9%23123
+</span><span style="color:#75715e">// http://www.baidu.com?q=我 曹#123
+</span><span style="color:#75715e"></span>
+</code></pre></div><h4 id="解析-url-链接生成-url-结构体">解析 url 链接生成 URL 结构体</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 从指定的url解析生成URL对象
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">rawurl</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">url</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">URL</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>)
 
-</code></pre>
+<span style="color:#75715e">// 这个方法也是解析 url， 和 Parse 不同的是，这个方法假定接受的原始 url 是从 http 请求拿来的，一定是绝对路径，并且也没有 fragment 后缀(浏览器在发送请求的时候会去掉)
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ParseRequestURI</span>(<span style="color:#a6e22e">rawurl</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">url</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">URL</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>)
+</code></pre></div><h4 id="url-其他常用方法">URL 其他常用方法</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 
-<h4 id="解析-url-链接生成-url-结构体">解析 url 链接生成 URL 结构体</h4>
+	<span style="color:#a6e22e">rowUrl</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;http://www.baidu.com/fuck?a=a&amp;b=b&amp;c=c#123&#34;</span>
+	<span style="color:#a6e22e">url</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">rowUrl</span>)
 
-<pre><code class="language-go">// 从指定的url解析生成URL对象
-func Parse(rawurl string) (url *URL, err error)
+	<span style="color:#75715e">// 是否是绝对路径（scheme是否为空）
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">IsAbs</span>())
 
-// 这个方法也是解析 url， 和 Parse 不同的是，这个方法假定接受的原始 url 是从 http 请求拿来的，一定是绝对路径，并且也没有 fragment 后缀(浏览器在发送请求的时候会去掉)
-func ParseRequestURI(rawurl string) (url *URL, err error)
-</code></pre>
+	<span style="color:#75715e">// 返回拆分后的query
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">Query</span>())
 
-<h4 id="url-其他常用方法">URL 其他常用方法</h4>
-
-<pre><code class="language-go">func main() {
-
-	rowUrl := &quot;http://www.baidu.com/fuck?a=a&amp;b=b&amp;c=c#123&quot;
-	url, _ := url.Parse(rowUrl)
-
-	// 是否是绝对路径（scheme是否为空）
-	fmt.Println(url.IsAbs())
-
-	// 返回拆分后的query
-	fmt.Println(url.Query())
-
-	// 返回域名之后的部分
-	fmt.Println(url.RequestURI())
+	<span style="color:#75715e">// 返回域名之后的部分
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">RequestURI</span>())
 }
 
-// true
-// map[a:[a] b:[b] c:[c]]
-// /fuck?a=a&amp;b=b&amp;c=c
-</code></pre>
+<span style="color:#75715e">// true
+</span><span style="color:#75715e">// map[a:[a] b:[b] c:[c]]
+</span><span style="color:#75715e">// /fuck?a=a&amp;b=b&amp;c=c
+</span></code></pre></div><h4 id="values-常用方法">Values 常用方法</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 
-<h4 id="values-常用方法">Values 常用方法</h4>
+	<span style="color:#a6e22e">rowUrl</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;http://www.baidu.com/fuck?a=a&amp;b=b&amp;c=c#123&#34;</span>
+	<span style="color:#a6e22e">url</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">rowUrl</span>)
 
-<pre><code class="language-go">func main() {
+	<span style="color:#a6e22e">values</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">Query</span>()
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>)
 
-	rowUrl := &quot;http://www.baidu.com/fuck?a=a&amp;b=b&amp;c=c#123&quot;
-	url, _ := url.Parse(rowUrl)
+	<span style="color:#75715e">// 添加一个元素
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#e6db74">&#34;d&#34;</span>, <span style="color:#e6db74">&#34;d&#34;</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>)
 
-	values := url.Query()
-	fmt.Println(values)
+	<span style="color:#75715e">// 删除一个元素
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Del</span>(<span style="color:#e6db74">&#34;a&#34;</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>)
 
-	// 添加一个元素
-	values.Add(&quot;d&quot;, &quot;d&quot;)
-	fmt.Println(values)
+	<span style="color:#75715e">// 获取一个元素
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#e6db74">&#34;b&#34;</span>))
 
-	// 删除一个元素
-	values.Del(&quot;a&quot;)
-	fmt.Println(values)
+	<span style="color:#75715e">// 设置一个元素
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;c&#34;</span>, <span style="color:#e6db74">&#34;ccc&#34;</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>)
+	<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;王&#34;</span>)
 
-	// 获取一个元素
-	fmt.Println(values.Get(&quot;b&quot;))
-
-	// 设置一个元素
-	values.Set(&quot;c&quot;, &quot;ccc&quot;)
-	fmt.Println(values)
-	values.Set(&quot;name&quot;, &quot;王&quot;)
-
-	// 编码成 url query 格式
-	fmt.Println(values.Encode())
+	<span style="color:#75715e">// 编码成 url query 格式
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Encode</span>())
 }
 
-// map[a:[a] b:[b] c:[c]]
-// map[a:[a] b:[b] c:[c] d:[d]]
-// map[b:[b] c:[c] d:[d]]
-// b
-// map[b:[b] c:[ccc] d:[d]]
-// b=b&amp;c=ccc&amp;d=d&amp;name=%E7%8E%8B
-</code></pre>
-
+<span style="color:#75715e">// map[a:[a] b:[b] c:[c]]
+</span><span style="color:#75715e">// map[a:[a] b:[b] c:[c] d:[d]]
+</span><span style="color:#75715e">// map[b:[b] c:[c] d:[d]]
+</span><span style="color:#75715e">// b
+</span><span style="color:#75715e">// map[b:[b] c:[ccc] d:[d]]
+</span><span style="color:#75715e">// b=b&amp;c=ccc&amp;d=d&amp;name=%E7%8E%8B
+</span></code></pre></div>
     </div>
     <div class="article-footer">
     </div>
