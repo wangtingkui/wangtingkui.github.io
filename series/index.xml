@@ -10,6 +10,15 @@
     
     
     <item>
+      <title>Time</title>
+      <link>https://wangtingkui.github.io/2020/04/time/</link>
+      <pubDate>Sun, 12 Apr 2020 23:31:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/04/time/</guid>
+      <description>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时</description>
+    </item>
+    
+    <item>
       <title>Go标准库（log）- 使用</title>
       <link>https://wangtingkui.github.io/2020/03/go-std-lib-log/</link>
       <pubDate>Sun, 29 Mar 2020 17:51:54 +0800</pubDate>
@@ -137,11 +146,11 @@
     
     <item>
       <title>使用hugo搭建个人网站（四）- Front Matter 配置详解</title>
-      <link>https://wangtingkui.github.io/2019/12/hugo-front-matter/</link>
+      <link>https://wangtingkui.github.io/2019/12/front-matter/</link>
       <pubDate>Sat, 07 Dec 2019 15:31:44 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/hugo-front-matter/</guid>
-      <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 同样</description>
+      <guid>https://wangtingkui.github.io/2019/12/front-matter/</guid>
+      <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 支持</description>
     </item>
     
     <item>

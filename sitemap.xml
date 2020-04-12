@@ -3,6 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://wangtingkui.github.io/posts/</loc>
+    <lastmod>2020-04-12T23:31:09+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2020/04/time/</loc>
+    <lastmod>2020-04-12T23:31:09+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/</loc>
+    <lastmod>2020-04-12T23:31:09+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://wangtingkui.github.io/categories/</loc>
     <lastmod>2020-03-29T17:51:54+08:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -31,21 +52,7 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/posts/</loc>
-    <lastmod>2020-03-29T17:51:54+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://wangtingkui.github.io/tags/</loc>
-    <lastmod>2020-03-29T17:51:54+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/</loc>
     <lastmod>2020-03-29T17:51:54+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -199,7 +206,7 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/hugo-front-matter/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/front-matter/</loc>
     <lastmod>2019-12-07T15:31:44+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
