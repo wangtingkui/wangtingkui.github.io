@@ -24,7 +24,11 @@
   
   
   <meta name="description" content="hugo 是一个静态网页生成器，关于它的使用就不再多说，可以参考之前写过的使用hugo搭建个人站点系列文章。本系列主要是分析下 hugo 的源码，看下其他人是" />
+<<<<<<< HEAD
+  <meta name="generator" content="Hugo 0.62.2 with theme pure" />
+=======
   <meta name="generator" content="Hugo 0.65.3 with theme pure" />
+>>>>>>> d4b7766ab07caa7ea4018bd332c956020e43c79b
   <title>hugo源码分析（一）- version - xiaok&#39;s site</title>
   
 
@@ -249,8 +253,8 @@ Hugo Static Site Generator v0.57.2-A849CB2D darwin/amd64 BuildDate: 2019-08-17T1
 </code></pre><h3 id="源码分析">源码分析</h3>
 <p><code>hugo</code>是基于 <a href="https://github.com/spf13/cobra">cobra</a> 这个命令行应用框架做的，如果能了解下<code>cobra</code>的基本使用会对我们的源码分析过程有比较大的帮助，关于 <code>cobra</code>，可以参考之前的两篇文章</p>
 <ul>
-<li><a href="https://wangtingkui.github.io/2019/12/cobra-introduction/">go cli 应用框架cobra（一）- 简介</a></li>
-<li><a href="https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/">go cli 应用框架cobra（二）- 源码分析</a></li>
+<li><a href="">go cli 应用框架cobra（一）- 简介</a></li>
+<li><a href="">go cli 应用框架cobra（二）- 源码分析</a></li>
 </ul>
 <p>为了使我们的分析过程比较轻松，先来看下在 <code>hugo version</code> 这条主线中，会涉及到哪些比较主要的结构体</p>
 <blockquote>
@@ -302,7 +306,11 @@ Hugo Static Site Generator v0.57.2-A849CB2D darwin/amd64 BuildDate: 2019-08-17T1
 }
 </code></pre></div><p>commands.Execute</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Execute adds all child commands to the root command HugoCmd and sets flags appropriately.
+<<<<<<< HEAD
+</span><span style="color:#75715e"></span><span style="color:#75715e">// The args are usually filled with os.Args[1:].
+=======
 </span><span style="color:#75715e">// The args are usually filled with os.Args[1:].
+>>>>>>> d4b7766ab07caa7ea4018bd332c956020e43c79b
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">args</span> []<span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">Response</span> {
 	<span style="color:#75715e">// 通过commandsBuilder生成hugoCmd，这个比较简单，就不深入看了
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">hugoCmd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">newCommandsBuilder</span>().<span style="color:#a6e22e">addAll</span>().<span style="color:#a6e22e">build</span>()
@@ -355,7 +363,7 @@ Hugo Static Site Generator v0.57.2-A849CB2D darwin/amd64 BuildDate: 2019-08-17T1
                         aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
             </li>
             <li class="next">
-                <a href="https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/"
+                <a href="https://wangtingkui.github.io/2019/12/cobra/"
                     title="go cli 应用框架cobra（二）- 源码分析"><span>Newer&nbsp;&nbsp;</span><i
                         class="icon icon-angle-right" aria-hidden="true"></i></a>
             </li>
