@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Go标准库（net/url）- 使用 - xiaok&#39;s site
+      </title>
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  
+  <meta name="theme-color" content="#000000" />
+  
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <meta name="description" content="net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s" />
+  <meta name="generator" content="Hugo 0.62.2 with theme pure" />
+  <title>Go标准库（net/url）- 使用 - xiaok&#39;s site</title>
+  
+
+  <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+  <meta property="og:title" content="Go标准库（net/url）- 使用" />
+<meta property="og:description" content="net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/2019/12/net-url/" />
+<meta property="article:published_time" content="2019-12-21T22:21:40+08:00" />
+<meta property="article:modified_time" content="2019-12-21T22:21:40+08:00" />
+<meta itemprop="name" content="Go标准库（net/url）- 使用">
+<meta itemprop="description" content="net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s">
+<meta itemprop="datePublished" content="2019-12-21T22:21:40&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-21T22:21:40&#43;08:00" />
+<meta itemprop="wordCount" content="838">
+
+
+
+<meta itemprop="keywords" content="go," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go标准库（net/url）- 使用"/>
+<meta name="twitter:description" content="net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s"/>
+
+  <!--[if lte IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+    <![endif]-->
+
+  <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  </head>
+  
+
+  <body class="main-center theme-blue" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="" target="_blank">
+            <img class="img-circle img-rotate" src="https://wangtingkui.github.io/avatar.jpg" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">无敌小k</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Beijing, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>来者皆是客</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">2</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">5</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/cobra/" class="tag-list-link">cobra</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/github-pages/" class="tag-list-link">github-pages</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">16</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/utf-8/" class="tag-list-link">utf-8</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/" class="tag-list-link">字符编码</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="tag-list-link">源码分析</a><span
+                    class="tag-list-count">1</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2019/12/net-url/"
+    >Go标准库（net/url）- 使用</a
+  >
+</h1>
+
+      <div class="article-meta">
+        <span class="article-date">
+  <i class="icon icon-calendar-check"></i>
+<a href="https://wangtingkui.github.io/2019/12/net-url/" class="article-date">
+  <time datetime="2019-12-21 22:21:40 &#43;0800 CST" itemprop="datePublished">2019-12-21</time>
+</a>
+</span><span class="article-category">
+  <i class="icon icon-folder"></i>
+  <a class="article-category-link" href="/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/"> Go标准库使用 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+    <a class="article-tag-link" href="/tags/go/"> go </a>
+  </span>
+
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count:2minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <p><code>net/url</code>包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用</p>
+<h3 id="url-结构">url 结构</h3>
+<p>在学习使用这个库之前，我们先来了解下 url 的标准结构：<code>scheme://[userinfo@]host/path[?query][#fragment]</code>，如果 scheme 之后不是以斜线开头的，那么结构被认为是 <code>scheme:opaque[?query][#fragment]</code>，也就是用户信息、域名和路径部分是<strong>不透明</strong>的，可以认为是被加密或者被编码过的</p>
+<h3 id="环境">环境</h3>
+<ul>
+<li>go1.12</li>
+</ul>
+<h3 id="包中的基本结构体">包中的基本结构体</h3>
+<p>这个包中有3个比较基本的结构体：</p>
+<ul>
+<li>URL：代表一个被解析的url</li>
+<li>UserInfo：代表 url 中的用户信息部分</li>
+<li>Values：存放 query 参数或者 form 参数</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">URL</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Scheme</span>     <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Opaque</span>     <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// encoded opaque data
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">User</span>       <span style="color:#f92672">*</span><span style="color:#a6e22e">Userinfo</span> <span style="color:#75715e">// username and password information
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Host</span>       <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// host or host:port
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Path</span>       <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// path (relative paths may omit leading slash)
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">RawPath</span>    <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// encoded path hint (see EscapedPath method)
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">ForceQuery</span> <span style="color:#66d9ef">bool</span>      <span style="color:#75715e">// append a query (&#39;?&#39;) even if RawQuery is empty
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">RawQuery</span>   <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// encoded query values, without &#39;?&#39;
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Fragment</span>   <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// fragment for references, without &#39;#&#39;
+</span><span style="color:#75715e"></span>}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Userinfo</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">username</span>    <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">password</span>    <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">passwordSet</span> <span style="color:#66d9ef">bool</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Values</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>][]<span style="color:#66d9ef">string</span>
+</code></pre></div><h3 id="基本使用">基本使用</h3>
+<h4 id="编码和解码操作">编码和解码操作</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+
+	<span style="color:#66d9ef">var</span> (
+		<span style="color:#a6e22e">rowUrl</span>       = <span style="color:#e6db74">&#34;http://www.baidu.com?q=我 曹#123&#34;</span>
+		<span style="color:#a6e22e">escapedUrl</span>   <span style="color:#66d9ef">string</span>
+		<span style="color:#a6e22e">unescapedUrl</span> <span style="color:#66d9ef">string</span>
+	)
+
+	<span style="color:#75715e">// 可以保证安全的放在query中
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">escapedUrl</span> = <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">QueryEscape</span>(<span style="color:#a6e22e">rowUrl</span>)
+	<span style="color:#a6e22e">unescapedUrl</span>, <span style="color:#a6e22e">_</span> = <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">QueryUnescape</span>(<span style="color:#a6e22e">escapedUrl</span>)
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">escapedUrl</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">unescapedUrl</span>)
+
+	<span style="color:#75715e">// 可以保证安全的放在path段中
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">escapedUrl</span> = <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">PathEscape</span>(<span style="color:#a6e22e">rowUrl</span>)
+	<span style="color:#a6e22e">unescapedUrl</span>, <span style="color:#a6e22e">_</span> = <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">PathUnescape</span>(<span style="color:#a6e22e">escapedUrl</span>)
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">escapedUrl</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">unescapedUrl</span>)
+}
+
+<span style="color:#75715e">// http%3A%2F%2Fwww.baidu.com%3Fq%3D%E6%88%91+%E6%9B%B9%23123
+</span><span style="color:#75715e"></span><span style="color:#75715e">// http://www.baidu.com?q=我 曹#123
+</span><span style="color:#75715e"></span><span style="color:#75715e">// http:%2F%2Fwww.baidu.com%3Fq=%E6%88%91%20%E6%9B%B9%23123
+</span><span style="color:#75715e"></span><span style="color:#75715e">// http://www.baidu.com?q=我 曹#123
+</span><span style="color:#75715e"></span>
+</code></pre></div><h4 id="解析-url-链接生成-url-结构体">解析 url 链接生成 URL 结构体</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 从指定的url解析生成URL对象
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">rawurl</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">url</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">URL</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>)
+
+<span style="color:#75715e">// 这个方法也是解析 url， 和 Parse 不同的是，这个方法假定接受的原始 url 是从 http 请求拿来的，一定是绝对路径，并且也没有 fragment 后缀(浏览器在发送请求的时候会去掉)
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ParseRequestURI</span>(<span style="color:#a6e22e">rawurl</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">url</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">URL</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>)
+</code></pre></div><h4 id="url-其他常用方法">URL 其他常用方法</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+
+	<span style="color:#a6e22e">rowUrl</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;http://www.baidu.com/fuck?a=a&amp;b=b&amp;c=c#123&#34;</span>
+	<span style="color:#a6e22e">url</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">rowUrl</span>)
+
+	<span style="color:#75715e">// 是否是绝对路径（scheme是否为空）
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">IsAbs</span>())
+
+	<span style="color:#75715e">// 返回拆分后的query
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">Query</span>())
+
+	<span style="color:#75715e">// 返回域名之后的部分
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">RequestURI</span>())
+}
+
+<span style="color:#75715e">// true
+</span><span style="color:#75715e"></span><span style="color:#75715e">// map[a:[a] b:[b] c:[c]]
+</span><span style="color:#75715e"></span><span style="color:#75715e">// /fuck?a=a&amp;b=b&amp;c=c
+</span></code></pre></div><h4 id="values-常用方法">Values 常用方法</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+
+	<span style="color:#a6e22e">rowUrl</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;http://www.baidu.com/fuck?a=a&amp;b=b&amp;c=c#123&#34;</span>
+	<span style="color:#a6e22e">url</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">rowUrl</span>)
+
+	<span style="color:#a6e22e">values</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">Query</span>()
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>)
+
+	<span style="color:#75715e">// 添加一个元素
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#e6db74">&#34;d&#34;</span>, <span style="color:#e6db74">&#34;d&#34;</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>)
+
+	<span style="color:#75715e">// 删除一个元素
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Del</span>(<span style="color:#e6db74">&#34;a&#34;</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>)
+
+	<span style="color:#75715e">// 获取一个元素
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#e6db74">&#34;b&#34;</span>))
+
+	<span style="color:#75715e">// 设置一个元素
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;c&#34;</span>, <span style="color:#e6db74">&#34;ccc&#34;</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>)
+	<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;王&#34;</span>)
+
+	<span style="color:#75715e">// 编码成 url query 格式
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">values</span>.<span style="color:#a6e22e">Encode</span>())
+}
+
+<span style="color:#75715e">// map[a:[a] b:[b] c:[c]]
+</span><span style="color:#75715e"></span><span style="color:#75715e">// map[a:[a] b:[b] c:[c] d:[d]]
+</span><span style="color:#75715e"></span><span style="color:#75715e">// map[b:[b] c:[c] d:[d]]
+</span><span style="color:#75715e"></span><span style="color:#75715e">// b
+</span><span style="color:#75715e"></span><span style="color:#75715e">// map[b:[b] c:[ccc] d:[d]]
+</span><span style="color:#75715e"></span><span style="color:#75715e">// b=b&amp;c=ccc&amp;d=d&amp;name=%E7%8E%8B
+</span></code></pre></div>
+    </div>
+    <div class="article-footer">
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://wangtingkui.github.io/2019/12/go-third-lib-zap/" title="go日志库zap使用"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://wangtingkui.github.io/2019/12/net-http/"
+                    title="Go标准库（net/http）- 使用"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        
+        <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal"
+            data-target="#donateModal"><span>$</span></button>
+        
+        <div class="bar-right">
+        </div>
+    </div>
+</nav>
+
+
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content donate">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <div class="modal-body">
+                <div class="donate-box">
+                    <div class="donate-head">
+                        <p>Maybe you could buy me a cup of coffee.</p>
+                    </div>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/alipay.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/wechat.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                    </div>
+                    <div class="donate-footer">
+                        <ul class="nav nav-tabs nav-justified" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay"
+                                    aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab"
+                                    aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i>
+                                    wechat payment</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/wangtingkui" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://wangtingkui.github.io/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/rust.min.js"></script>
+<script type="text/javascript"
+    src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/application.js"></script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/plugin.js"></script>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/wangtingkui.github.io',
+            CONTENT_URL: 'https:\/\/wangtingkui.github.io\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/insight.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+  </body>
+</html>

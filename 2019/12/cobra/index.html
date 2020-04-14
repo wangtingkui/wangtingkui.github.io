@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        go cli 应用框架cobra（二）- 源码分析 - xiaok&#39;s site
+      </title>
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  
+  <meta name="theme-color" content="#000000" />
+  
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <meta name="description" content="上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，" />
+  <meta name="generator" content="Hugo 0.62.2 with theme pure" />
+  <title>go cli 应用框架cobra（二）- 源码分析 - xiaok&#39;s site</title>
+  
+
+  <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+  <meta property="og:title" content="go cli 应用框架cobra（二）- 源码分析" />
+<meta property="og:description" content="上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/2019/12/cobra/" />
+<meta property="article:published_time" content="2019-12-11T14:57:37+08:00" />
+<meta property="article:modified_time" content="2019-12-11T14:57:37+08:00" />
+<meta itemprop="name" content="go cli 应用框架cobra（二）- 源码分析">
+<meta itemprop="description" content="上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，">
+<meta itemprop="datePublished" content="2019-12-11T14:57:37&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-11T14:57:37&#43;08:00" />
+<meta itemprop="wordCount" content="2586">
+
+
+
+<meta itemprop="keywords" content="go,cobra,源码分析," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="go cli 应用框架cobra（二）- 源码分析"/>
+<meta name="twitter:description" content="上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，"/>
+
+  <!--[if lte IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+    <![endif]-->
+
+  <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  </head>
+  
+
+  <body class="main-center theme-blue" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="" target="_blank">
+            <img class="img-circle img-rotate" src="https://wangtingkui.github.io/avatar.jpg" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">无敌小k</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Beijing, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>来者皆是客</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">2</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">5</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/cobra/" class="tag-list-link">cobra</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/github-pages/" class="tag-list-link">github-pages</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">16</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/utf-8/" class="tag-list-link">utf-8</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/" class="tag-list-link">字符编码</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="tag-list-link">源码分析</a><span
+                    class="tag-list-count">1</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2019/12/cobra/"
+    >go cli 应用框架cobra（二）- 源码分析</a
+  >
+</h1>
+
+      <div class="article-meta">
+        <span class="article-date">
+  <i class="icon icon-calendar-check"></i>
+<a href="https://wangtingkui.github.io/2019/12/cobra/" class="article-date">
+  <time datetime="2019-12-11 14:57:37 &#43;0800 CST" itemprop="datePublished">2019-12-11</time>
+</a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+    <a class="article-tag-link" href="/tags/go/"> go </a>
+    <a class="article-tag-link" href="/tags/cobra/"> cobra </a>
+    <a class="article-tag-link" href="/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"> 源码分析 </a>
+  </span>
+
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count:6minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <p>上一篇文章中简单介绍了如何使用<code>cobra</code>框架，这篇文章让我们来看下<code>cobra</code>的源码，本文基于的<code>cobra</code>版本是<code>v0.0.5</code></p>
+<p>首先需要了解的是，在<code>cobra</code>中，所有的命令会组成一个树的结构，必然有一个根命令，我们应用的每次执行，都是从这个根命令开始的，官方文档也说过，基于<code>cobra</code>的应用的<code>main</code>包中的代码是很简单的，几乎没有额外的操作，仅有的操作其实就是执行我们的根命令。所以自然而然的，我们的代码分析之旅也是从根命令的执行开始的。</p>
+<p>为了有个直观的感受，我简单生成了一个基于<code>cobra</code>的应用。这个应用有一个根命令和一个<code>test1</code>的子命令，项目结构如下：</p>
+<pre><code>╰─$ tree .
+.
+├── LICENSE
+├── cmd
+│   ├── root.go
+│   └── test1.go
+├── go.mod
+├── go.sum
+└── main.go
+
+1 directory, 6 files
+</code></pre><h3 id="主线执行分析">主线执行分析</h3>
+<p>所有的项目不可能都是简单的一条线到底，代码总会有很多分支，但我们阅读源码的时候精力和关注度总是有限的（不是有人说人在同一时间关注的点不能超过7个还是几个来着么），如果代码里面的每个分支都去看，每个函数的调用都进去瞅瞅，很快我们就会迷失在复杂的代码里面，忘了我们怎么看到的这行代码，所以本文去分析源码的时候，会优先挑一条主线，主要跟踪这条主线上的逻辑和调用，忽略其他支线。当然，也会有比较重要的其他支线，但是和当前的主线无关，会单开一个小节去阅读分析</p>
+<p><code>cobra</code>主线自然是<code>入口-找到目标命令-分析参数-执行</code>这条路径啦~</p>
+<p>看下<code>main.go</code>文件中都有点啥</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;learnCobra/cmd&#34;</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+  <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Execute</span>()
+}
+</code></pre></div><p>简洁的一比，直接进入<code>cmd.Execute</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Execute</span>() {
+  <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rootCmd</span>.<span style="color:#a6e22e">Execute</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">err</span>)
+    <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Exit</span>(<span style="color:#ae81ff">1</span>)
+  }
+}
+</code></pre></div><p>可以看到，其实就是执行了根命令的<code>Execute</code>方法，这个方法才是我们的重头戏。当然，所谓的<em><strong>根命令</strong></em>只是从命令的组织形态上来说的，所有的命令都是<code>cobra.Command</code>的这个结构体，后面绝大多数的代码也都是对这个结构体的成员和方法的分析</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">Execute</span>() <span style="color:#66d9ef">error</span> {
+	<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ExecuteC</span>()
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+}
+</code></pre></div><p>毫无波澜，直接进<code>c.ExecuteC()</code>，这里开始我会在源码里面写点注释了</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">ExecuteC</span>() (<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+	<span style="color:#75715e">// Regardless of what command execute is called on, run on Root only
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 前面说过，我们所有的命令构成了一棵树，每次执行都是从根命令开始执行的
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 如果我们手残在代码的某处直接执行了一个子命令，这个方法也会向上遍历到根，然后执行根命令的
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">HasParent</span>() {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Root</span>().<span style="color:#a6e22e">ExecuteC</span>()
+	}
+
+	<span style="color:#75715e">// windows hook
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// windows 系统的钩子，不用care
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">preExecHookFn</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">preExecHookFn</span>(<span style="color:#a6e22e">c</span>)
+	}
+
+	<span style="color:#75715e">// initialize help as the last point possible to allow for user
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// overriding
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 初始化默认的帮助命令，不是我们的主线，不care
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">InitDefaultHelpCmd</span>()
+
+	<span style="color:#a6e22e">args</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">args</span>
+
+	<span style="color:#75715e">// Workaround FAIL with &#34;go test -v&#34; or &#34;cobra.test -test.v&#34;, see #155
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 如果没有设置过命令的调用参数，使用os.Args[1:]作为默认参数
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">args</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Base</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Args</span>[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;cobra.test&#34;</span> {
+		<span style="color:#a6e22e">args</span> = <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Args</span>[<span style="color:#ae81ff">1</span>:]
+	}
+
+	<span style="color:#75715e">// 找真正要执行的命令，并解析flag
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// cobra为我们提供了两种flag，一种叫 persistant flag，
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 这种 flag 可以在子命令中也获取到
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 另外一种叫 local flag
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 这种 flag 只会在指定命令中被解析
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 默认情况下，cobra 只会解析目标命令的 local flag，父命令中的local flag将会被忽略
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 可以将命令的 TraverseChildren 属性置为 true ，cobra 会在执行命令前解析所有命令
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 的 local flag
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">flags</span> []<span style="color:#66d9ef">string</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">TraverseChildren</span> {
+		<span style="color:#a6e22e">cmd</span>, <span style="color:#a6e22e">flags</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Traverse</span>(<span style="color:#a6e22e">args</span>)
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#75715e">// 我们当然是挑软柿子捏，当然挑这条简单的路走
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">cmd</span>, <span style="color:#a6e22e">flags</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">args</span>)
+	}
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#75715e">// If found parse to a subcommand and then failed, talk about the subcommand
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">c</span> = <span style="color:#a6e22e">cmd</span>
+		}
+		<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">SilenceErrors</span> {
+			<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Error:&#34;</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>())
+			<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Run &#39;%v --help&#39; for usage.\n&#34;</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">CommandPath</span>())
+		}
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">err</span>
+	}
+
+	<span style="color:#75715e">// 记录这个命令被调用过了，和被调用的名字
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">commandCalledAs</span>.<span style="color:#a6e22e">called</span> = <span style="color:#66d9ef">true</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">commandCalledAs</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
+		<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">commandCalledAs</span>.<span style="color:#a6e22e">name</span> = <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Name</span>()
+	}
+
+	<span style="color:#75715e">// 执行找到的命令
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">execute</span>(<span style="color:#a6e22e">flags</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#75715e">// Always show help if requested, even if SilenceErrors is in
+</span><span style="color:#75715e"></span>		<span style="color:#75715e">// effect
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">ErrHelp</span> {
+			<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">HelpFunc</span>()(<span style="color:#a6e22e">cmd</span>, <span style="color:#a6e22e">args</span>)
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cmd</span>, <span style="color:#66d9ef">nil</span>
+		}
+
+		<span style="color:#75715e">// If root command has SilentErrors flagged,
+</span><span style="color:#75715e"></span>		<span style="color:#75715e">// all subcommands should respect it
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">SilenceErrors</span> <span style="color:#f92672">&amp;&amp;</span> !<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">SilenceErrors</span> {
+			<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Error:&#34;</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>())
+		}
+
+		<span style="color:#75715e">// If root command has SilentUsage flagged,
+</span><span style="color:#75715e"></span>		<span style="color:#75715e">// all subcommands should respect it
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">SilenceUsage</span> <span style="color:#f92672">&amp;&amp;</span> !<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">SilenceUsage</span> {
+			<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">UsageString</span>())
+		}
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cmd</span>, <span style="color:#a6e22e">err</span>
+}
+</code></pre></div><p>这里就有两个比较重要的方法了，<code>c.Find</code>和<code>cmd.execute</code>，我们先来看下怎么找到的目的命令</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">args</span> []<span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, []<span style="color:#66d9ef">string</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#75715e">// 声明了一个函数类型的变量
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">innerfind</span> <span style="color:#66d9ef">func</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, []<span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, []<span style="color:#66d9ef">string</span>)
+
+	<span style="color:#75715e">// 定义了这个函数
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">innerfind</span> = <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, <span style="color:#a6e22e">innerArgs</span> []<span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, []<span style="color:#66d9ef">string</span>) {
+		<span style="color:#75715e">// 去掉 flag， 剩下的就是参数
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">argsWOflags</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">stripFlags</span>(<span style="color:#a6e22e">innerArgs</span>, <span style="color:#a6e22e">c</span>)
+		<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">argsWOflags</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">innerArgs</span>
+		}
+		<span style="color:#75715e">// 参数的第一个就是要执行的命令
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">nextSubCmd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">argsWOflags</span>[<span style="color:#ae81ff">0</span>]
+
+		<span style="color:#75715e">// 在子命令中去找有没有匹配 nextSubCmd 的子命令
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">findNext</span>(<span style="color:#a6e22e">nextSubCmd</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#75715e">// 递归的判断有没有匹配的子命令了
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">innerfind</span>(<span style="color:#a6e22e">cmd</span>, <span style="color:#a6e22e">argsMinusFirstX</span>(<span style="color:#a6e22e">innerArgs</span>, <span style="color:#a6e22e">nextSubCmd</span>))
+		}
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">innerArgs</span>
+	}
+
+	<span style="color:#75715e">// 调用了上面定义的那个函数，我擦，我也不知道作者为什么这样写
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 怕了怕了。。。先跳上去看逻辑吧
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">commandFound</span>, <span style="color:#a6e22e">a</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">innerfind</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">args</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">commandFound</span>.<span style="color:#a6e22e">Args</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">commandFound</span>, <span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">legacyArgs</span>(<span style="color:#a6e22e">commandFound</span>, <span style="color:#a6e22e">stripFlags</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">commandFound</span>))
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">commandFound</span>, <span style="color:#a6e22e">a</span>, <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p>然后我们再来看看<code>cmd.execute</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">execute</span>(<span style="color:#a6e22e">a</span> []<span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+	<span style="color:#75715e">// 如果命令是个nil，那还执行个蛋
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;Called Execute() on a nil Command&#34;</span>)
+	}
+
+	<span style="color:#75715e">// 通过 Deprecated 这个属性判断这个命令是否将要被废弃
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Deprecated</span>) &gt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Command %q is deprecated, %s\n&#34;</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Name</span>(), <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Deprecated</span>)
+	}
+
+	<span style="color:#75715e">// initialize help and version flag at the last point possible to allow for user
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// overriding
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 添加默认的帮助flag和版本flag
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">InitDefaultHelpFlag</span>()
+	<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">InitDefaultVersionFlag</span>()
+
+	<span style="color:#75715e">// 解析flag
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ParseFlags</span>(<span style="color:#a6e22e">a</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">FlagErrorFunc</span>()(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#75715e">// If help is called, regardless of other flags, return we want help.
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// Also say we need help if the command isn&#39;t runnable.
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 如果使用了帮助flag，忽略其他的flag
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">helpVal</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Flags</span>().<span style="color:#a6e22e">GetBool</span>(<span style="color:#e6db74">&#34;help&#34;</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#75715e">// should be impossible to get here as we always declare a help
+</span><span style="color:#75715e"></span>		<span style="color:#75715e">// flag in InitDefaultHelpFlag()
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;\&#34;help\&#34; flag declared as non-bool. Please correct your code&#34;</span>)
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+
+	<span style="color:#75715e">// 如果指定了帮助flag，返回一个帮助类型错误，上层会处理，调用命令的 HelpFunc
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">helpVal</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">ErrHelp</span>
+	}
+
+	<span style="color:#75715e">// for back-compat, only add version flag behavior if version is defined
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 如果设置了Version属性，并且传递了 version flag，输出版本信息
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Version</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;&#34;</span> {
+		<span style="color:#a6e22e">versionVal</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Flags</span>().<span style="color:#a6e22e">GetBool</span>(<span style="color:#e6db74">&#34;version&#34;</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;\&#34;version\&#34; flag declared as non-bool. Please correct your code&#34;</span>)
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+		}
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">versionVal</span> {
+			<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">tmpl</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">OutOrStdout</span>(), <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">VersionTemplate</span>(), <span style="color:#a6e22e">c</span>)
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+				<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">err</span>)
+			}
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+		}
+	}
+
+	<span style="color:#75715e">// 判断是否可运行（也就是是否设置了命令的 Run 或者 RunE 属性）
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Runnable</span>() {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">ErrHelp</span>
+	}
+
+	<span style="color:#75715e">// 执行准备，其实就是执行通过cobra.OnInitialize注册的初始化方法
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">preRun</span>()
+
+	<span style="color:#75715e">// 获取所有flag之外的参数
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">argWoFlags</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Flags</span>().<span style="color:#a6e22e">Args</span>()
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">DisableFlagParsing</span> {
+		<span style="color:#75715e">// 如果设置了 DisableFlagParsing 为 false
+</span><span style="color:#75715e"></span>		<span style="color:#75715e">// 也就是不解析 flag，把所有的参数当做命令的参数
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">argWoFlags</span> = <span style="color:#a6e22e">a</span>
+	}
+
+	<span style="color:#75715e">// 通过命令的 Args 属性设置的方法验证我们的参数
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ValidateArgs</span>(<span style="color:#a6e22e">argWoFlags</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+
+	<span style="color:#75715e">// PersistentPreRun 钩子函数
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>; <span style="color:#a6e22e">p</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span>; <span style="color:#a6e22e">p</span> = <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">Parent</span>() {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">PersistentPreRunE</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">PersistentPreRunE</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">argWoFlags</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+				<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+			}
+			<span style="color:#66d9ef">break</span>
+		} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">PersistentPreRun</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">PersistentPreRun</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">argWoFlags</span>)
+			<span style="color:#66d9ef">break</span>
+		}
+	}
+	<span style="color:#75715e">// PreRun 钩子函数
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">PreRunE</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">PreRunE</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">argWoFlags</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+		}
+	} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">PreRun</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">PreRun</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">argWoFlags</span>)
+	}
+
+	<span style="color:#75715e">// 验证所有必要的flag
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">validateRequiredFlags</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+
+	<span style="color:#75715e">// 执行自定义逻辑函数
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">RunE</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">RunE</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">argWoFlags</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+		}
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">argWoFlags</span>)
+	}
+
+	<span style="color:#75715e">// PostRun 钩子
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">PostRunE</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">PostRunE</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">argWoFlags</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+		}
+	} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">PostRun</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">PostRun</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">argWoFlags</span>)
+	}
+
+	<span style="color:#75715e">// PersistentPostRun 钩子
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>; <span style="color:#a6e22e">p</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span>; <span style="color:#a6e22e">p</span> = <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">Parent</span>() {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">PersistentPostRunE</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">PersistentPostRunE</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">argWoFlags</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+				<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+			}
+			<span style="color:#66d9ef">break</span>
+		} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">PersistentPostRun</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">PersistentPostRun</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">argWoFlags</span>)
+			<span style="color:#66d9ef">break</span>
+		}
+	}
+
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p>到此，大概的命令执行流程我们就分析完了。可以发现，这次的分析过程，我们并没有预先把<code>cobra.Command</code>结构里面的成员先看一遍，因为里面的成员实在是太太太多了，简单看一遍几乎是秒忘，所以对于这种成员非常多的结构体，建议直接跟流程，看到用什么成员，再去结构里看这个成员的说明。</p>
+<p>以上就是我们的整个分析过程了，如果有空，之后会补充一些重要的支线逻辑</p>
+
+    </div>
+    <div class="article-footer">
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://wangtingkui.github.io/2019/12/version/" title="hugo源码分析（一）- version"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://wangtingkui.github.io/2019/12/go-multi-version-manage/"
+                    title="go多版本管理"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        
+        <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal"
+            data-target="#donateModal"><span>$</span></button>
+        
+        <div class="bar-right">
+        </div>
+    </div>
+</nav>
+
+
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content donate">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <div class="modal-body">
+                <div class="donate-box">
+                    <div class="donate-head">
+                        <p>Maybe you could buy me a cup of coffee.</p>
+                    </div>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/alipay.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/wechat.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                    </div>
+                    <div class="donate-footer">
+                        <ul class="nav nav-tabs nav-justified" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay"
+                                    aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab"
+                                    aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i>
+                                    wechat payment</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/wangtingkui" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://wangtingkui.github.io/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/rust.min.js"></script>
+<script type="text/javascript"
+    src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/application.js"></script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/plugin.js"></script>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/wangtingkui.github.io',
+            CONTENT_URL: 'https:\/\/wangtingkui.github.io\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/insight.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+  </body>
+</html>

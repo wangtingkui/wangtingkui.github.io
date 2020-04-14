@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概" />
-  <meta name="generator" content="Hugo 0.65.3 with theme pure" />
+  <meta name="generator" content="Hugo 0.62.2 with theme pure" />
   <title>go日志库zap使用 - xiaok&#39;s site</title>
   
 
@@ -174,7 +174,11 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">17</span></li>
+                    class="tag-list-count">16</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
+                    class="tag-list-count">1</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
@@ -320,7 +324,7 @@
 }
 
 <span style="color:#75715e">// {&#34;level&#34;:&#34;debug&#34;,&#34;msg&#34;:&#34;我是debug信息&#34;,&#34;k&#34;:&#34;v&#34;}
-</span><span style="color:#75715e">// {&#34;level&#34;:&#34;info&#34;,&#34;msg&#34;:&#34;我是info信息&#34;,&#34;b&#34;:true}
+</span><span style="color:#75715e"></span><span style="color:#75715e">// {&#34;level&#34;:&#34;info&#34;,&#34;msg&#34;:&#34;我是info信息&#34;,&#34;b&#34;:true}
 </span><span style="color:#75715e"></span>
 </code></pre></div><p>可以看到这样用起来就非常方便了，如果我们取看他的源码，会发现其实就是封装了我们上面创建一个 Logger 的过程</p>
 <blockquote>
@@ -333,7 +337,7 @@
 }
 
 <span style="color:#75715e">// 2019-12-17T11:40:33.606+0800    DEBUG   zap/main.go:9   我是debug信息   {&#34;k&#34;: &#34;v&#34;}
-</span><span style="color:#75715e">// 2019-12-17T11:40:33.606+0800    INFO    zap/main.go:10  我是info信息    {&#34;b&#34;: true}
+</span><span style="color:#75715e"></span><span style="color:#75715e">// 2019-12-17T11:40:33.606+0800    INFO    zap/main.go:10  我是info信息    {&#34;b&#34;: true}
 </span><span style="color:#75715e"></span>
 </code></pre></div><blockquote>
 <p>zap.NewProduction</p>
@@ -369,10 +373,10 @@
 }
 
 <span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:12  sugar info message
-</span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:13  sugar info formatted message hehe
-</span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:14  sugar info message with extra context   {&#34;key1&#34;: &#34;val1&#34;, &#34;ket2&#34;: true}
-</span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    DEBUG   zap/main.go:18  我是debug信息   {&#34;k&#34;: &#34;v&#34;}
-</span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:19  我是info信息    {&#34;b&#34;: true}
+</span><span style="color:#75715e"></span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:13  sugar info formatted message hehe
+</span><span style="color:#75715e"></span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:14  sugar info message with extra context   {&#34;key1&#34;: &#34;val1&#34;, &#34;ket2&#34;: true}
+</span><span style="color:#75715e"></span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    DEBUG   zap/main.go:18  我是debug信息   {&#34;k&#34;: &#34;v&#34;}
+</span><span style="color:#75715e"></span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:19  我是info信息    {&#34;b&#34;: true}
 </span><span style="color:#75715e"></span>
 </code></pre></div><h4 id="zap-高级配置">zap 高级配置</h4>
 <p>可以参考：https://godoc.org/go.uber.org/zap#pkg-examples</p>
@@ -388,12 +392,12 @@
     <div class="bar-inner">
         <ul class="pager pull-left">
             <li class="prev">
-                <a href="https://wangtingkui.github.io/2019/12/go-std-lib-filepath/" title="Go标准库（path/filepath）- 使用"><i
+                <a href="https://wangtingkui.github.io/2019/12/path-filepath/" title="Go标准库（path/filepath）- 使用"><i
                         class="icon icon-angle-left"
                         aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
             </li>
             <li class="next">
-                <a href="https://wangtingkui.github.io/2019/12/go-std-lib-net-url/"
+                <a href="https://wangtingkui.github.io/2019/12/net-url/"
                     title="Go标准库（net/url）- 使用"><span>Newer&nbsp;&nbsp;</span><i
                         class="icon icon-angle-right" aria-hidden="true"></i></a>
             </li>
@@ -408,11 +412,62 @@
                 </a>
             </li>
         </ul>
+        
+        <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal"
+            data-target="#donateModal"><span>$</span></button>
+        
         <div class="bar-right">
         </div>
     </div>
 </nav>
 
+
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content donate">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <div class="modal-body">
+                <div class="donate-box">
+                    <div class="donate-head">
+                        <p>Maybe you could buy me a cup of coffee.</p>
+                    </div>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/alipay.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/wechat.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                    </div>
+                    <div class="donate-footer">
+                        <ul class="nav nav-tabs nav-justified" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay"
+                                    aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab"
+                                    aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i>
+                                    wechat payment</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
 <ul class="social-links">

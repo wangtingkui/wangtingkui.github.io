@@ -3,6 +3,20 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://wangtingkui.github.io/2019/09/introduction/</loc>
+    <lastmod>2019-09-22T15:28:34+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2019/12/deploy-on-github-pages/</loc>
+    <lastmod>2019-12-01T13:56:09+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://wangtingkui.github.io/posts/</loc>
     <lastmod>2020-04-12T23:31:09+08:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -45,7 +59,7 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2020/03/go-std-lib-log/</loc>
+    <loc>https://wangtingkui.github.io/2020/03/log/</loc>
     <lastmod>2020-03-29T17:51:54+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -94,14 +108,14 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/go-std-lib-net-http/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/net-http/</loc>
     <lastmod>2019-12-22T11:48:21+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/go-std-lib-net-url/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/net-url/</loc>
     <lastmod>2019-12-21T22:21:40+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -122,7 +136,7 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/go-std-lib-filepath/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/path-filepath/</loc>
     <lastmod>2019-12-15T14:35:43+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -143,7 +157,7 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/cobra/</loc>
     <lastmod>2019-12-11T14:57:37+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -157,7 +171,7 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/hugo-source-code-analysis-version/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/version/</loc>
     <lastmod>2019-12-10T17:00:24+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -213,35 +227,35 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/hugo-other-skills/</loc>
+    <loc>https://wangtingkui.github.io/tags/hugo/</loc>
     <lastmod>2019-12-02T14:12:07+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/go-std-lib-flag-source-code/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/ref-other-article/</loc>
+    <lastmod>2019-12-02T14:12:07+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2019/12/flag/</loc>
     <lastmod>2019-12-02T14:07:56+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/go-std-lib-flag/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/flag/</loc>
     <lastmod>2019-12-01T17:28:45+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2019/12/hugo-with-github-pages/</loc>
-    <lastmod>2019-12-01T13:56:09+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/2019/12/cobra-introduction/</loc>
+    <loc>https://wangtingkui.github.io/2019/12/cobra/</loc>
     <lastmod>2019-12-01T10:17:30+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -271,13 +285,6 @@
   <url>
     <loc>https://wangtingkui.github.io/2019/09/unicode/</loc>
     <lastmod>2019-09-22T15:45:32+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/2019/09/hugo-introduction/</loc>
-    <lastmod>2019-09-22T15:28:34+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

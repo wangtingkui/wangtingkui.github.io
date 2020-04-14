@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时" />
-  <meta name="generator" content="Hugo 0.65.3 with theme pure" />
+  <meta name="generator" content="Hugo 0.62.2 with theme pure" />
   <title>Time - xiaok&#39;s site</title>
   
 
@@ -174,7 +174,11 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">17</span></li>
+                    class="tag-list-count">16</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
+                    class="tag-list-count">1</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
@@ -283,7 +287,7 @@
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Format</span>(<span style="color:#e6db74">&#34;2006-01-02 03:04:05&#34;</span>))
 }
 
-<span style="color:#a6e22e">在</span> <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">中</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">时间的格式化非常特别</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">是通过一些指定的数字来进行格式化的</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">这些数字也非常有记忆点</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">口诀是</span><span style="color:#e6db74">`2006 1 2 3 4 5`</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">也就是2006年1月2日下午3点4分5秒</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">不同的格式化就是通过摆弄这些数字来得到的</span>
+<span style="color:#a6e22e">在</span> <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">中</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">时间的格式化非常特别</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">是通过一些指定的数字来进行格式化的</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">这些数字也非常有记忆点</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">口诀是</span><span style="color:#e6db74">`</span><span style="color:#e6db74">2006 1 2 3 4 5</span><span style="color:#e6db74">`</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">也就是2006年1月2日下午3点4分5秒</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">不同的格式化就是通过摆弄这些数字来得到的</span>
 
 </code></pre></div><h3 id="时间段">时间段</h3>
 <p>在 go 中，时间段是使用 <code>time.Duration</code> 来表示的，也是纳秒精度的一个数值，同时 go 也定义了一系列常用的时间精度，比如秒，小时等，看 go 中的源码很简单就能看明白：</p>
@@ -341,9 +345,14 @@ func main() {
     <div class="bar-inner">
         <ul class="pager pull-left">
             <li class="prev">
-                <a href="https://wangtingkui.github.io/2020/03/go-std-lib-log/" title="Go标准库（log）- 使用"><i
+                <a href="https://wangtingkui.github.io/2020/03/log/" title="Go标准库（log）- 使用"><i
                         class="icon icon-angle-left"
                         aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://wangtingkui.github.io/2019/12/deploy-on-github-pages/"
+                    title="使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
             </li>
             
             <li class="toggle-toc">
@@ -356,11 +365,62 @@ func main() {
                 </a>
             </li>
         </ul>
+        
+        <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal"
+            data-target="#donateModal"><span>$</span></button>
+        
         <div class="bar-right">
         </div>
     </div>
 </nav>
 
+
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content donate">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <div class="modal-body">
+                <div class="donate-box">
+                    <div class="donate-head">
+                        <p>Maybe you could buy me a cup of coffee.</p>
+                    </div>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/alipay.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/wechat.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                    </div>
+                    <div class="donate-footer">
+                        <ul class="nav nav-tabs nav-justified" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay"
+                                    aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab"
+                                    aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i>
+                                    wechat payment</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
 <ul class="social-links">
