@@ -11,6 +11,42 @@
     
     
     <item>
+      <title>使用hugo搭建个人网站（一）- hugo使用入门</title>
+      <link>https://wangtingkui.github.io/2019/09/introduction/</link>
+      <pubDate>Sun, 22 Sep 2019 15:28:34 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/09/introduction/</guid>
+      <description>以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</title>
+      <link>https://wangtingkui.github.io/2019/12/deploy-on-github-pages/</link>
+      <pubDate>Sun, 01 Dec 2019 13:56:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/deploy-on-github-pages/</guid>
+      <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点</description>
+    </item>
+    
+    <item>
+      <title>Time</title>
+      <link>https://wangtingkui.github.io/2020/04/time/</link>
+      <pubDate>Sun, 12 Apr 2020 23:31:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/04/time/</guid>
+      <description>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（log）- 使用</title>
+      <link>https://wangtingkui.github.io/2020/03/log/</link>
+      <pubDate>Sun, 29 Mar 2020 17:51:54 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/03/log/</guid>
+      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用 实例化 logger 进行日志记录 首先看一个最简单的 demo： package main import ( &amp;#34;log&amp;#34; &amp;#34;os&amp;#34; ) func main() { logger :=</description>
+    </item>
+    
+    <item>
       <title>php多版本管理</title>
       <link>https://wangtingkui.github.io/2020/01/php-multi-version/</link>
       <pubDate>Tue, 14 Jan 2020 19:11:11 +0800</pubDate>
@@ -30,19 +66,19 @@
     
     <item>
       <title>Go标准库（net/http）- 使用</title>
-      <link>https://wangtingkui.github.io/2019/12/go-std-lib-net-http/</link>
+      <link>https://wangtingkui.github.io/2019/12/net-http/</link>
       <pubDate>Sun, 22 Dec 2019 11:48:21 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/go-std-lib-net-http/</guid>
+      <guid>https://wangtingkui.github.io/2019/12/net-http/</guid>
       <description>net/http 包为我们提供了对 http 协议的处理，包含了客户端和服务端两大部分的实现 版本 go1.12 主要结构体 几乎任何语言中的http包都是围绕客户端，服务端，请求和响</description>
     </item>
     
     <item>
       <title>Go标准库（net/url）- 使用</title>
-      <link>https://wangtingkui.github.io/2019/12/go-std-lib-net-url/</link>
+      <link>https://wangtingkui.github.io/2019/12/net-url/</link>
       <pubDate>Sat, 21 Dec 2019 22:21:40 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/go-std-lib-net-url/</guid>
+      <guid>https://wangtingkui.github.io/2019/12/net-url/</guid>
       <description>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s</description>
     </item>
     
@@ -57,10 +93,10 @@
     
     <item>
       <title>Go标准库（path/filepath）- 使用</title>
-      <link>https://wangtingkui.github.io/2019/12/go-std-lib-filepath/</link>
+      <link>https://wangtingkui.github.io/2019/12/path-filepath/</link>
       <pubDate>Sun, 15 Dec 2019 14:35:43 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/go-std-lib-filepath/</guid>
+      <guid>https://wangtingkui.github.io/2019/12/path-filepath/</guid>
       <description>简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示 而且要注意</description>
     </item>
     
@@ -75,19 +111,19 @@
     
     <item>
       <title>go cli 应用框架cobra（二）- 源码分析</title>
-      <link>https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/</link>
+      <link>https://wangtingkui.github.io/2019/12/cobra/</link>
       <pubDate>Wed, 11 Dec 2019 14:57:37 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/cobra-source-code-analysis/</guid>
+      <guid>https://wangtingkui.github.io/2019/12/cobra/</guid>
       <description>上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，</description>
     </item>
     
     <item>
       <title>hugo源码分析（一）- version</title>
-      <link>https://wangtingkui.github.io/2019/12/hugo-source-code-analysis-version/</link>
+      <link>https://wangtingkui.github.io/2019/12/version/</link>
       <pubDate>Tue, 10 Dec 2019 17:00:24 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/hugo-source-code-analysis-version/</guid>
+      <guid>https://wangtingkui.github.io/2019/12/version/</guid>
       <description>hugo 是一个静态网页生成器，关于它的使用就不再多说，可以参考之前写过的使用hugo搭建个人站点系列文章。本系列主要是分析下 hugo 的源码，看下其他人是</description>
     </item>
     
@@ -129,55 +165,46 @@
     
     <item>
       <title>使用hugo搭建个人网站（四）- Front Matter 配置详解</title>
-      <link>https://wangtingkui.github.io/2019/12/hugo-front-matter/</link>
+      <link>https://wangtingkui.github.io/2019/12/front-matter/</link>
       <pubDate>Sat, 07 Dec 2019 15:31:44 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/hugo-front-matter/</guid>
-      <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 同样</description>
+      <guid>https://wangtingkui.github.io/2019/12/front-matter/</guid>
+      <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 支持</description>
     </item>
     
     <item>
-      <title>使用hugo搭建个人网站（三）- 其他使用技巧</title>
-      <link>https://wangtingkui.github.io/2019/12/hugo-other-skills/</link>
+      <title>使用hugo搭建个人网站（三）- 引用其他文章</title>
+      <link>https://wangtingkui.github.io/2019/12/ref-other-article/</link>
       <pubDate>Mon, 02 Dec 2019 14:12:07 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/hugo-other-skills/</guid>
-      <description>引用站点内其他文章 很多情况下，我们会产出所谓的系列文章，这时候，我们可能会想在系列文章中加上同系列其他文章的引用链接，方便读者阅读，hugo</description>
+      <guid>https://wangtingkui.github.io/2019/12/ref-other-article/</guid>
+      <description>我们可以在文章中引用自己的其他文章，hugo 帮我们实现了这种功能，只需要在文章中使用 {{&amp;lt; ref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}或者{{&amp;lt; relref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}即可，</description>
     </item>
     
     <item>
       <title>Go标准库（flag）- 源码分析</title>
-      <link>https://wangtingkui.github.io/2019/12/go-std-lib-flag-source-code/</link>
+      <link>https://wangtingkui.github.io/2019/12/flag/</link>
       <pubDate>Mon, 02 Dec 2019 14:07:56 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/go-std-lib-flag-source-code/</guid>
+      <guid>https://wangtingkui.github.io/2019/12/flag/</guid>
       <description>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用</description>
     </item>
     
     <item>
       <title>Go标准库（flag）- 使用</title>
-      <link>https://wangtingkui.github.io/2019/12/go-std-lib-flag/</link>
+      <link>https://wangtingkui.github.io/2019/12/flag/</link>
       <pubDate>Sun, 01 Dec 2019 17:28:45 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/go-std-lib-flag/</guid>
+      <guid>https://wangtingkui.github.io/2019/12/flag/</guid>
       <description>本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提</description>
     </item>
     
     <item>
-      <title>使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</title>
-      <link>https://wangtingkui.github.io/2019/12/hugo-with-github-pages/</link>
-      <pubDate>Sun, 01 Dec 2019 13:56:09 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2019/12/hugo-with-github-pages/</guid>
-      <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点</description>
-    </item>
-    
-    <item>
       <title>go cli 应用框架cobra（一）- 简介</title>
-      <link>https://wangtingkui.github.io/2019/12/cobra-introduction/</link>
+      <link>https://wangtingkui.github.io/2019/12/cobra/</link>
       <pubDate>Sun, 01 Dec 2019 10:17:30 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/cobra-introduction/</guid>
+      <guid>https://wangtingkui.github.io/2019/12/cobra/</guid>
       <description>简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架 一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users</description>
     </item>
     
@@ -188,15 +215,6 @@
       
       <guid>https://wangtingkui.github.io/2019/09/unicode/</guid>
       <description>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型</description>
-    </item>
-    
-    <item>
-      <title>使用hugo搭建个人网站（一）- hugo使用入门</title>
-      <link>https://wangtingkui.github.io/2019/09/hugo-introduction/</link>
-      <pubDate>Sun, 22 Sep 2019 15:28:34 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2019/09/hugo-introduction/</guid>
-      <description>以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们</description>
     </item>
     
   </channel>

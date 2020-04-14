@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装 第一步 首先需要下载二进制文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar chmod" />
-  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
+  <meta name="generator" content="Hugo 0.62.2 with theme pure" />
   <title>php多版本管理 - xiaok&#39;s site</title>
   
 
@@ -39,16 +39,13 @@
 <meta property="article:modified_time" content="2020-01-14T19:11:11+08:00" />
 <meta itemprop="name" content="php多版本管理">
 <meta itemprop="description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装 第一步 首先需要下载二进制文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar chmod">
-
-
 <meta itemprop="datePublished" content="2020-01-14T19:11:11&#43;08:00" />
 <meta itemprop="dateModified" content="2020-01-14T19:11:11&#43;08:00" />
-<meta itemprop="wordCount" content="1196">
+<meta itemprop="wordCount" content="1259">
 
 
 
-<meta itemprop="keywords" content="php," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="php," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="php多版本管理"/>
 <meta name="twitter:description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装 第一步 首先需要下载二进制文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar chmod"/>
 
@@ -156,7 +153,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">4</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">5</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
         </ul>
@@ -178,6 +175,10 @@
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
                     class="tag-list-count">16</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
+                    class="tag-list-count">1</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
@@ -248,31 +249,20 @@
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      
-
-<p>本篇文章是写一下我怎么进行php的多版本管理，利用的是<code>phpbrew</code>这个工具</p>
-
+      <p>本篇文章是写一下我怎么进行php的多版本管理，利用的是<code>phpbrew</code>这个工具</p>
 <ul>
 <li><a href="https://github.com/phpbrew/phpbrew/blob/master/README.cn.md">phpbrew github 地址</a></li>
 </ul>
-
 <h3 id="phpbrew安装">phpbrew安装</h3>
-
 <h4 id="第一步">第一步</h4>
-
 <p>首先需要下载二进制文件</p>
-
 <pre><code>curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar
 chmod +x phpbrew.phar
 
 # Move the file to some directory within your $PATH
 sudo mv phpbrew.phar /usr/local/bin/phpbrew
-</code></pre>
-
-<h4 id="第二步">第二步</h4>
-
+</code></pre><h4 id="第二步">第二步</h4>
 <p>安装好二进制文件之后，phpbrew还需要一点简单的配置才能使用</p>
-
 <pre><code># 初始化phpbrew shell脚本
 phpbrew init
 
@@ -281,16 +271,10 @@ echo &quot;[[ -e ~/.phpbrew/bashrc ]] &amp;&amp; source ~/.phpbrew/bashrc&quot; 
 
 # 重新加载shell配置文件
 source ~/.zshrc
-</code></pre>
-
-<h4 id="第三步">第三步</h4>
-
+</code></pre><h4 id="第三步">第三步</h4>
 <p>设置用于查找库文件的默认前缀，可选值有 macports，homebrew，debian，ubuntu 或是自定义路径。</p>
-
 <p>对于使用homebrew的用户，可以设置<code>phpbrew lookup-prefix homebrew</code></p>
-
 <h3 id="phpbrew命令简单使用">phpbrew命令简单使用</h3>
-
 <pre><code># 查看phpbrew版本
 phpbrew --version
 
@@ -323,18 +307,11 @@ phpbrew fpm [start|restart|stop]
 
 # 升级phpbrew
 phpbrew self-update
-</code></pre>
-
-<h3 id="编译安装指定版本php">编译安装指定版本php</h3>
-
+</code></pre><h3 id="编译安装指定版本php">编译安装指定版本php</h3>
 <p>之所以单独将安装命令拿出来写，是因为相对而言，phpbrew的安装命令比较复杂，phpbrew提出了一个<code>Variants</code>的概念，将php编译的复杂的配置选项屏蔽起来</p>
-
 <p>你只需简单地指定某个 Variant 即可，phpbrew 会自动在配置过程中检测引用目录、编译选项等。</p>
-
 <p>PHPBrew 提供默认的 Variants ，以及一些虚拟 Variants。 「Default Variants」包含绝大多数公共 Variants； 「Virtual Variants」可包含多个 Variants，使用一个虚拟 Variants 即可一次性启用多个 Variants。</p>
-
 <p>可以使用<code>phpbrew variants</code>查看都有哪些<code>variants</code></p>
-
 <pre><code>➜  ~ phpbrew variants
 Variants:
   all, apxs2, bcmath, bz2, calendar, cgi, cli, ctype, curl, dba, debug, dom,
@@ -370,20 +347,22 @@ Using variants to build PHP:
   phpbrew install php-5.3.10 +mysql +pdo
   phpbrew install php-5.3.10 +mysql +pdo +apxs2
   phpbrew install php-5.3.10 +mysql +pdo +apxs2=/usr/bin/apxs2
-</code></pre>
-
-<p>在mac下安装，我们几乎必然会遇到某些依赖的头文件找不到的问题，遇到这种问题，我们可以先手动下载依赖库，然后在使用<code>Variants</code>的时候明确指定下依赖库的路径即可</p>
-
+</code></pre><p>在mac下安装，我们几乎必然会遇到某些依赖的头文件找不到的问题，遇到这种问题，我们可以先手动下载依赖库，然后在使用<code>Variants</code>的时候明确指定下依赖库的路径即可</p>
 <p>比如遇到下面的情况，明显是找不到openssl的依赖库，所以我们可以执行下面的操作</p>
-
 <pre><code># 先手动安装openssl
 brew install openssl
 # 明确指定openssl的位置
 phpbrew install 7.0.13 +all +openssl=/usr/local/opt/openssl
+</code></pre><p>如果有些配置没有被包含到<code>variants</code>中，我们可以在安装命令的末尾添加原始的编译选项<code>-- 原始选项</code>，注意<code>--</code>是必不可少的，他是<code>variants</code>和原始编译选项的分隔符</p>
+<p>我安装的一个demo</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">phpbrew install 7.0.33 +default +mb +dbs +fpm -pgsql +zlib<span style="color:#f92672">=</span>/usr/local/opt/zlib
+</code></pre></div><h3 id="mac安装过程中经常会缺少的库报错集合">mac安装过程中经常会缺少的库报错集合</h3>
+<pre><code># error
+configure: error: utf8_mime2text() has new signature, but U8T_CANONICAL is missing. This should not happen. Check config.log for additional information.
+
+#fix
+brew install imap-uw
 </code></pre>
-
-<p>如果有些配置没有被包含到<code>variants</code>中，我们可以在安装命令的末尾添加原始的编译选项<code>-- 原始选项</code>，注意<code>--</code>是必不可少的，他是<code>variants</code>和原始编译选项的分隔符</p>
-
     </div>
     <div class="article-footer">
     </div>
@@ -398,6 +377,11 @@ phpbrew install 7.0.13 +all +openssl=/usr/local/opt/openssl
                 <a href="https://wangtingkui.github.io/2020/01/go-file-operation/" title="Go进行文件操作"><i
                         class="icon icon-angle-left"
                         aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://wangtingkui.github.io/2020/03/log/"
+                    title="Go标准库（log）- 使用"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
             </li>
             
             <li class="toggle-toc">
