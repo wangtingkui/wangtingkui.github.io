@@ -24,7 +24,11 @@
   
   
   <meta name="description" content="hugo 是一个静态网页生成器，关于它的使用就不再多说，可以参考之前写过的使用hugo搭建个人站点系列文章。本系列主要是分析下 hugo 的源码，看下其他人是" />
+<<<<<<< HEAD
   <meta name="generator" content="Hugo 0.62.2 with theme pure" />
+=======
+  <meta name="generator" content="Hugo 0.65.3 with theme pure" />
+>>>>>>> d4b7766ab07caa7ea4018bd332c956020e43c79b
   <title>hugo源码分析（一）- version - xiaok&#39;s site</title>
   
 
@@ -302,7 +306,11 @@ Hugo Static Site Generator v0.57.2-A849CB2D darwin/amd64 BuildDate: 2019-08-17T1
 }
 </code></pre></div><p>commands.Execute</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Execute adds all child commands to the root command HugoCmd and sets flags appropriately.
+<<<<<<< HEAD
 </span><span style="color:#75715e"></span><span style="color:#75715e">// The args are usually filled with os.Args[1:].
+=======
+</span><span style="color:#75715e">// The args are usually filled with os.Args[1:].
+>>>>>>> d4b7766ab07caa7ea4018bd332c956020e43c79b
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">args</span> []<span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">Response</span> {
 	<span style="color:#75715e">// 通过commandsBuilder生成hugoCmd，这个比较简单，就不深入看了
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">hugoCmd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">newCommandsBuilder</span>().<span style="color:#a6e22e">addAll</span>().<span style="color:#a6e22e">build</span>()

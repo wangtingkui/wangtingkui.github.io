@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用" />
-  <meta name="generator" content="Hugo 0.58.3 with theme pure" />
+  <meta name="generator" content="Hugo 0.65.3 with theme pure" />
   <title>Go标准库（flag）- 源码分析 - xiaok&#39;s site</title>
   
 
@@ -39,16 +39,13 @@
 <meta property="article:modified_time" content="2019-12-02T14:07:56+08:00" />
 <meta itemprop="name" content="Go标准库（flag）- 源码分析">
 <meta itemprop="description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用">
-
-
 <meta itemprop="datePublished" content="2019-12-02T14:07:56&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-02T14:07:56&#43;08:00" />
 <meta itemprop="wordCount" content="1976">
 
 
 
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Go标准库（flag）- 源码分析"/>
 <meta name="twitter:description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用"/>
 
@@ -156,7 +153,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">4</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">5</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">8</span></li>
         </ul>
@@ -177,7 +174,7 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">16</span></li>
+                    class="tag-list-count">17</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
@@ -241,256 +238,219 @@
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      
-
-<p>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考<a href="https://wangtingkui.github.io/2019/12/go-std-lib-flag/">Go标准库（flag）- 使用</a></p>
-
+      <p>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考<!-- raw HTML omitted -->Go标准库（flag）- 使用<!-- raw HTML omitted --></p>
 <h3 id="核心数据类型">核心数据类型</h3>
-
 <p>首先还是来看下flag包中有哪些核心的类型，主要有两个接口和两个结构体</p>
-
 <p>interface:</p>
-
-<pre><code class="language-go">// 抽象类型， 我们后续也是通过这个接口来扩展我们flag包支持的数据类型的
-type Value interface {
-    String() string
-    Set(string) error
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 抽象类型， 我们后续也是通过这个接口来扩展我们flag包支持的数据类型的
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Value</span> <span style="color:#66d9ef">interface</span> {
+    <span style="color:#a6e22e">String</span>() <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">Set</span>(<span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span>
 }
 
-type Getter interface {
-    Value
-    Get() interface{}
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Getter</span> <span style="color:#66d9ef">interface</span> {
+    <span style="color:#a6e22e">Value</span>
+    <span style="color:#a6e22e">Get</span>() <span style="color:#66d9ef">interface</span>{}
 }
-</code></pre>
+</code></pre></div><p>struct:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 代表一个命令行选项
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Flag</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Name</span>     <span style="color:#66d9ef">string</span> <span style="color:#75715e">// name as it appears on command line  // 标签在命令行显示的名字
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">Usage</span>    <span style="color:#66d9ef">string</span> <span style="color:#75715e">// help message  // 帮助信息
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">Value</span>    <span style="color:#a6e22e">Value</span>  <span style="color:#75715e">// value as set  // 标签的值
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">DefValue</span> <span style="color:#66d9ef">string</span> <span style="color:#75715e">// default value (as text); for usage message  // 默认值（文本格式）；这也是一个用法的信息说明
+</span><span style="color:#75715e"></span>}
 
-<p>struct:</p>
+<span style="color:#75715e">// 代表一个选项集合，其实可以认为就是在shell中敲入的命令被拆分解析之后就是FlagSet
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">FlagSet</span> <span style="color:#66d9ef">struct</span> {
 
-<pre><code class="language-go">// 代表一个命令行选项
-type Flag struct {
-    Name     string // name as it appears on command line  // 标签在命令行显示的名字
-    Usage    string // help message  // 帮助信息
-    Value    Value  // value as set  // 标签的值
-    DefValue string // default value (as text); for usage message  // 默认值（文本格式）；这也是一个用法的信息说明
-}
+    <span style="color:#75715e">// 当解析标签出现错误的时候，Usage就会被调用。这个字段是一个函数（不是一个方法），它可以指向
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 用户自己定义的错误处理函数。
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Usage</span> <span style="color:#66d9ef">func</span>()
 
-// 代表一个选项集合，其实可以认为就是在shell中敲入的命令被拆分解析之后就是FlagSet
-type FlagSet struct {
-
-    // 当解析标签出现错误的时候，Usage就会被调用。这个字段是一个函数（不是一个方法），它可以指向
-    // 用户自己定义的错误处理函数。
-	Usage func()
-
-	name          string // 名字，一般默认是os.Args[0]
-	parsed        bool	// 是否已经解析过了（是否调用过flag.Parse()）
-	actual        map[string]*Flag // 解析过得flag数组
-	formal        map[string]*Flag // 注册的flag数组
-	args          []string // 解析过后，剩余的non-flag参数
-	errorHandling ErrorHandling // 解析失败后的处理方式
-	output        io.Writer // nil means stderr; use out() accessor
-}
-</code></pre>
-
-<h3 id="源码分析">源码分析</h3>
-
+	<span style="color:#a6e22e">name</span>          <span style="color:#66d9ef">string</span> <span style="color:#75715e">// 名字，一般默认是os.Args[0]
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">parsed</span>        <span style="color:#66d9ef">bool</span>	<span style="color:#75715e">// 是否已经解析过了（是否调用过flag.Parse()）
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">actual</span>        <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">Flag</span> <span style="color:#75715e">// 解析过得flag数组
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">formal</span>        <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">Flag</span> <span style="color:#75715e">// 注册的flag数组
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">args</span>          []<span style="color:#66d9ef">string</span> <span style="color:#75715e">// 解析过后，剩余的non-flag参数
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">errorHandling</span> <span style="color:#a6e22e">ErrorHandling</span> <span style="color:#75715e">// 解析失败后的处理方式
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">output</span>        <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Writer</span> <span style="color:#75715e">// nil means stderr; use out() accessor
+</span><span style="color:#75715e"></span>}
+</code></pre></div><h3 id="源码分析">源码分析</h3>
 <p>很多包在提供了底层类型的同时，为了方便我们使用，经常会在包内初始化一个默认对象，然后在开放一些导出函数供我们使用，flag 包也是这样的，标准库的实现者在包内初始化了一个名为<code>CommandLine</code>的<code>FlagSet</code>类型对象，我们经常使用的<code>flag.String()</code>,<code>flag.BoolVal()</code>等方法其实就是对这个对象的操作</p>
-
 <p>接下来就让我们追踪下最常用的<code>flag.String</code>的调用，看下flag包的内部实现逻辑吧</p>
-
 <h4 id="注册">注册</h4>
-
 <p><code>flag.String</code></p>
-
-<pre><code class="language-go">// 可以看到，flag.String 其实是对 CommandLine 对象 String 方法的包装，和我们刚才提到的是吻合的
-func String(name string, value string, usage string) *string {
-	return CommandLine.String(name, value, usage)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 可以看到，flag.String 其实是对 CommandLine 对象 String 方法的包装，和我们刚才提到的是吻合的
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">value</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">usage</span> <span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#66d9ef">string</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">CommandLine</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">usage</span>)
 }
-</code></pre>
-
-<p><code>CommandLine.String</code></p>
-
-<pre><code class="language-go">// 帮我们创建了一个string类型的指针，返回给后续使用，
-// 这里也可以看到，Xxx()这种方法比XxxVar()的方法只是多了一步帮我们创建变量的过程，其实更底层是一样的
-func (f *FlagSet) String(name string, value string, usage string) *string {
-	p := new(string)
-	f.StringVar(p, name, value, usage)
-	return p
+</code></pre></div><p><code>CommandLine.String</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 帮我们创建了一个string类型的指针，返回给后续使用，
+</span><span style="color:#75715e">// 这里也可以看到，Xxx()这种方法比XxxVar()的方法只是多了一步帮我们创建变量的过程，其实更底层是一样的
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">f</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">FlagSet</span>) <span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">value</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">usage</span> <span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#66d9ef">string</span> {
+	<span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> new(<span style="color:#66d9ef">string</span>)
+	<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">StringVar</span>(<span style="color:#a6e22e">p</span>, <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">usage</span>)
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">p</span>
 }
-</code></pre>
-
-<p><code>f.StringVar</code></p>
-
-<pre><code class="language-go">// FlagSet.StringVar 将我们的string类型的指针包装成了 stringValue 这个实现了 Value 接口的类型
-func (f *FlagSet) StringVar(p *string, name string, value string, usage string) {
-	f.Var(newStringValue(value, p), name, usage)
+</code></pre></div><p><code>f.StringVar</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// FlagSet.StringVar 将我们的string类型的指针包装成了 stringValue 这个实现了 Value 接口的类型
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">f</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">FlagSet</span>) <span style="color:#a6e22e">StringVar</span>(<span style="color:#a6e22e">p</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">value</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">usage</span> <span style="color:#66d9ef">string</span>) {
+	<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">Var</span>(<span style="color:#a6e22e">newStringValue</span>(<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">p</span>), <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">usage</span>)
 }
-</code></pre>
-
-<p><code>f.Var</code></p>
-
-<pre><code class="language-go">func (f *FlagSet) Var(value Value, name string, usage string) {
-	// 创建一个Flag对象
-	flag := &amp;Flag{name, usage, value, value.String()}
-	// 检测是否已经注册过同名的flag
-	_, alreadythere := f.formal[name]
-	if alreadythere {
-		var msg string
-		if f.name == &quot;&quot; {
-			msg = fmt.Sprintf(&quot;flag redefined: %s&quot;, name)
-		} else {
-			msg = fmt.Sprintf(&quot;%s flag redefined: %s&quot;, f.name, name)
+</code></pre></div><p><code>f.Var</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">f</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">FlagSet</span>) <span style="color:#a6e22e">Var</span>(<span style="color:#a6e22e">value</span> <span style="color:#a6e22e">Value</span>, <span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">usage</span> <span style="color:#66d9ef">string</span>) {
+	<span style="color:#75715e">// 创建一个Flag对象
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">flag</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Flag</span>{<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">usage</span>, <span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">String</span>()}
+	<span style="color:#75715e">// 检测是否已经注册过同名的flag
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">alreadythere</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">formal</span>[<span style="color:#a6e22e">name</span>]
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">alreadythere</span> {
+		<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">msg</span> <span style="color:#66d9ef">string</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
+			<span style="color:#a6e22e">msg</span> = <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;flag redefined: %s&#34;</span>, <span style="color:#a6e22e">name</span>)
+		} <span style="color:#66d9ef">else</span> {
+			<span style="color:#a6e22e">msg</span> = <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s flag redefined: %s&#34;</span>, <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">name</span>)
 		}
-		fmt.Fprintln(f.Output(), msg)
-		panic(msg) // Happens only if flags are declared with identical names
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintln</span>(<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">Output</span>(), <span style="color:#a6e22e">msg</span>)
+		panic(<span style="color:#a6e22e">msg</span>) <span style="color:#75715e">// Happens only if flags are declared with identical names
+</span><span style="color:#75715e"></span>	}
+	<span style="color:#75715e">// 初始化formal
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">formal</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">formal</span> = make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">Flag</span>)
 	}
-	// 初始化formal
-	if f.formal == nil {
-		f.formal = make(map[string]*Flag)
-	}
-	// 放到注册的标记集合中
-	f.formal[name] = flag
+	<span style="color:#75715e">// 放到注册的标记集合中
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">formal</span>[<span style="color:#a6e22e">name</span>] = <span style="color:#a6e22e">flag</span>
 }
-</code></pre>
-
-<h4 id="解析">解析</h4>
-
+</code></pre></div><h4 id="解析">解析</h4>
 <p>执行到这里，我们的选项注册工作已经完成了，下一步就是命令行参数的解析，从而把用户真正的输入拿到，执行解析，我们调用的方法是<code>flag.Parse</code></p>
-
 <p><code>flag.Parse</code></p>
-
-<pre><code class="language-go">// 其实是对FlagSet.Parse的封装
-// 同时也看到，flag包对参数的解析默认是从命令行输入的第二个字符串开始的
-func Parse() {
-	// Ignore errors; CommandLine is set for ExitOnError.
-	CommandLine.Parse(os.Args[1:])
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 其实是对FlagSet.Parse的封装
+</span><span style="color:#75715e">// 同时也看到，flag包对参数的解析默认是从命令行输入的第二个字符串开始的
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Parse</span>() {
+	<span style="color:#75715e">// Ignore errors; CommandLine is set for ExitOnError.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">CommandLine</span>.<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Args</span>[<span style="color:#ae81ff">1</span>:])
 }
-</code></pre>
-
-<p><code>CommandLine.Parse</code></p>
-
-<pre><code class="language-go">func (f *FlagSet) Parse(arguments []string) error {
-	// 将解析标记置为true，标记这个FlagSet已经被解析过了
-	f.parsed = true
-	// 将所有参数放到盛放non-flag参数的容器中
-	// 后续解析过程会一个一个参数从这个容器中往外拿，直到解析结束
-	f.args = arguments
-	for {
-		// 逐个解析参数
-		seen, err := f.parseOne()
-		if seen {
-			continue
+</code></pre></div><p><code>CommandLine.Parse</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">f</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">FlagSet</span>) <span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">arguments</span> []<span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#75715e">// 将解析标记置为true，标记这个FlagSet已经被解析过了
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">parsed</span> = <span style="color:#66d9ef">true</span>
+	<span style="color:#75715e">// 将所有参数放到盛放non-flag参数的容器中
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 后续解析过程会一个一个参数从这个容器中往外拿，直到解析结束
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">args</span> = <span style="color:#a6e22e">arguments</span>
+	<span style="color:#66d9ef">for</span> {
+		<span style="color:#75715e">// 逐个解析参数
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">seen</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">parseOne</span>()
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">seen</span> {
+			<span style="color:#66d9ef">continue</span>
 		}
-		// 解析完成，退出循环，f.parseOne 返回 false,nil 的时候
-		if err == nil {
-			break
+		<span style="color:#75715e">// 解析完成，退出循环，f.parseOne 返回 false,nil 的时候
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">break</span>
 		}
-		// 如果有error发生，根据设置定的error处理方式处理error
-		switch f.errorHandling {
-		case ContinueOnError:
-			return err
-		case ExitOnError:
-			os.Exit(2)
-		case PanicOnError:
-			panic(err)
+		<span style="color:#75715e">// 如果有error发生，根据设置定的error处理方式处理error
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">errorHandling</span> {
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">ContinueOnError</span>:
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">ExitOnError</span>:
+			<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Exit</span>(<span style="color:#ae81ff">2</span>)
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">PanicOnError</span>:
+			panic(<span style="color:#a6e22e">err</span>)
 		}
 	}
-	return nil
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
 }
-</code></pre>
-
-<p><code>f.parseOne</code></p>
-
-<pre><code class="language-go">// 这个方法是最主要的一个方法，他解析我们的参数
-// 这个方法是被循环调用的，决定解析是否终止的条件也在这个方法中，在源码中我会标记出来
-func (f *FlagSet) parseOne() (bool, error) {
-	// 没有参数，不需要解析
-	if len(f.args) == 0 {
-		return false, nil
+</code></pre></div><p><code>f.parseOne</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 这个方法是最主要的一个方法，他解析我们的参数
+</span><span style="color:#75715e">// 这个方法是被循环调用的，决定解析是否终止的条件也在这个方法中，在源码中我会标记出来
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">f</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">FlagSet</span>) <span style="color:#a6e22e">parseOne</span>() (<span style="color:#66d9ef">bool</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#75715e">// 没有参数，不需要解析
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">args</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>, <span style="color:#66d9ef">nil</span>
 	}
-	s := f.args[0]
-	// 结束条件1：字符串长度小于零或者不是以 - 字符开头的
-	if len(s) &lt; 2 || s[0] != '-' {
-		return false, nil
+	<span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>]
+	<span style="color:#75715e">// 结束条件1：字符串长度小于零或者不是以 - 字符开头的
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">s</span>) &lt; <span style="color:#ae81ff">2</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">s</span>[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;-&#39;</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>, <span style="color:#66d9ef">nil</span>
 	}
-	numMinuses := 1
-	if s[1] == '-' {
-		numMinuses++
-		// 结束条件2：字符串是以 -- 开头的
-		if len(s) == 2 { // &quot;--&quot; terminates the flags
-			f.args = f.args[1:]
-			return false, nil
+	<span style="color:#a6e22e">numMinuses</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">s</span>[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;-&#39;</span> {
+		<span style="color:#a6e22e">numMinuses</span><span style="color:#f92672">++</span>
+		<span style="color:#75715e">// 结束条件2：字符串是以 -- 开头的
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">s</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span> { <span style="color:#75715e">// &#34;--&#34; terminates the flags
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">args</span> = <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">1</span>:]
+			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>, <span style="color:#66d9ef">nil</span>
 		}
 	}
 
-	// 取出真正的字符值（去掉前缀 - 或者 -- ）
-	name := s[numMinuses:]
+	<span style="color:#75715e">// 取出真正的字符值（去掉前缀 - 或者 -- ）
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">name</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">s</span>[<span style="color:#a6e22e">numMinuses</span>:]
 
-	// 字符串合法检测
-	if len(name) == 0 || name[0] == '-' || name[0] == '=' {
-		return false, f.failf(&quot;bad flag syntax: %s&quot;, s)
+	<span style="color:#75715e">// 字符串合法检测
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">name</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">name</span>[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;-&#39;</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">name</span>[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;=&#39;</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>, <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">failf</span>(<span style="color:#e6db74">&#34;bad flag syntax: %s&#34;</span>, <span style="color:#a6e22e">s</span>)
 	}
 
-	// it's a flag. does it have an argument?
-	f.args = f.args[1:]
-	hasValue := false
-	value := &quot;&quot;
-	// 通过等号判断是不是 &quot;name=value&quot; 这种格式类型的flag
-	for i := 1; i &lt; len(name); i++ { // equals cannot be first
-		if name[i] == '=' {
-			value = name[i+1:]
-			hasValue = true
-			name = name[0:i]
-			break
+	<span style="color:#75715e">// it&#39;s a flag. does it have an argument?
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">args</span> = <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">1</span>:]
+	<span style="color:#a6e22e">hasValue</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">false</span>
+	<span style="color:#a6e22e">value</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;&#34;</span>
+	<span style="color:#75715e">// 通过等号判断是不是 &#34;name=value&#34; 这种格式类型的flag
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">name</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> { <span style="color:#75715e">// equals cannot be first
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">name</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;=&#39;</span> {
+			<span style="color:#a6e22e">value</span> = <span style="color:#a6e22e">name</span>[<span style="color:#a6e22e">i</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>:]
+			<span style="color:#a6e22e">hasValue</span> = <span style="color:#66d9ef">true</span>
+			<span style="color:#a6e22e">name</span> = <span style="color:#a6e22e">name</span>[<span style="color:#ae81ff">0</span>:<span style="color:#a6e22e">i</span>]
+			<span style="color:#66d9ef">break</span>
 		}
 	}
-	m := f.formal
-	// 判断是否注册过指定名称的flag
-	flag, alreadythere := m[name] // BUG
-	if !alreadythere {
-		// 默认支持解析 help 和 h 选项
-		if name == &quot;help&quot; || name == &quot;h&quot; { // special case for nice help message.
-			f.usage()
-			return false, ErrHelp
+	<span style="color:#a6e22e">m</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">formal</span>
+	<span style="color:#75715e">// 判断是否注册过指定名称的flag
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">flag</span>, <span style="color:#a6e22e">alreadythere</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">m</span>[<span style="color:#a6e22e">name</span>] <span style="color:#75715e">// BUG
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">alreadythere</span> {
+		<span style="color:#75715e">// 默认支持解析 help 和 h 选项
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;help&#34;</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">name</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;h&#34;</span> { <span style="color:#75715e">// special case for nice help message.
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">usage</span>()
+			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>, <span style="color:#a6e22e">ErrHelp</span>
 		}
-		return false, f.failf(&quot;flag provided but not defined: -%s&quot;, name)
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>, <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">failf</span>(<span style="color:#e6db74">&#34;flag provided but not defined: -%s&#34;</span>, <span style="color:#a6e22e">name</span>)
 	}
 
-	// bool类型的flag支持 -flag 形式的写法，传了标记就是true，不传就依赖默认值
-	if fv, ok := flag.Value.(boolFlag); ok &amp;&amp; fv.IsBoolFlag() { // special case: doesn't need an arg
-		if hasValue {
-			if err := fv.Set(value); err != nil {
-				return false, f.failf(&quot;invalid boolean value %q for -%s: %v&quot;, value, name, err)
+	<span style="color:#75715e">// bool类型的flag支持 -flag 形式的写法，传了标记就是true，不传就依赖默认值
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">fv</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Value</span>.(<span style="color:#a6e22e">boolFlag</span>); <span style="color:#a6e22e">ok</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">fv</span>.<span style="color:#a6e22e">IsBoolFlag</span>() { <span style="color:#75715e">// special case: doesn&#39;t need an arg
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">hasValue</span> {
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fv</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#a6e22e">value</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+				<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>, <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">failf</span>(<span style="color:#e6db74">&#34;invalid boolean value %q for -%s: %v&#34;</span>, <span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">err</span>)
 			}
-		} else {
-			if err := fv.Set(&quot;true&quot;); err != nil {
-				return false, f.failf(&quot;invalid boolean flag %s: %v&quot;, name, err)
+		} <span style="color:#66d9ef">else</span> {
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fv</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;true&#34;</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+				<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>, <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">failf</span>(<span style="color:#e6db74">&#34;invalid boolean flag %s: %v&#34;</span>, <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">err</span>)
 			}
 		}
-	} else {
-		// It must have a value, which might be the next argument.
-		if !hasValue &amp;&amp; len(f.args) &gt; 0 {
-			// value is the next arg
-			hasValue = true
-			value, f.args = f.args[0], f.args[1:]
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#75715e">// It must have a value, which might be the next argument.
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">hasValue</span> <span style="color:#f92672">&amp;&amp;</span> len(<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">args</span>) &gt; <span style="color:#ae81ff">0</span> {
+			<span style="color:#75715e">// value is the next arg
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">hasValue</span> = <span style="color:#66d9ef">true</span>
+			<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">args</span> = <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">0</span>], <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">args</span>[<span style="color:#ae81ff">1</span>:]
 		}
-		if !hasValue {
-			return false, f.failf(&quot;flag needs an argument: -%s&quot;, name)
+		<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">hasValue</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>, <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">failf</span>(<span style="color:#e6db74">&#34;flag needs an argument: -%s&#34;</span>, <span style="color:#a6e22e">name</span>)
 		}
-		if err := flag.Value.Set(value); err != nil {
-			return false, f.failf(&quot;invalid value %q for flag -%s: %v&quot;, value, name, err)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Value</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#a6e22e">value</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>, <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">failf</span>(<span style="color:#e6db74">&#34;invalid value %q for flag -%s: %v&#34;</span>, <span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">err</span>)
 		}
 	}
 
-	// 初始化f.actual
-	if f.actual == nil {
-		f.actual = make(map[string]*Flag)
+	<span style="color:#75715e">// 初始化f.actual
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">actual</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">actual</span> = make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">Flag</span>)
 	}
 
-	// 放在解析后的容器里面
-	f.actual[name] = flag
-	return true, nil
+	<span style="color:#75715e">// 放在解析后的容器里面
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">actual</span>[<span style="color:#a6e22e">name</span>] = <span style="color:#a6e22e">flag</span>
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>, <span style="color:#66d9ef">nil</span>
 }
-</code></pre>
-
+</code></pre></div>
     </div>
     <div class="article-footer">
     </div>
