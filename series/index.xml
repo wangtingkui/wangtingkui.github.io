@@ -28,6 +28,15 @@
     </item>
     
     <item>
+      <title>使用 pkg/errors 进行错误处理</title>
+      <link>https://wangtingkui.github.io/2020/04/errors/</link>
+      <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/04/errors/</guid>
+      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： if err != nil { return err } 然后层层传递，最终将错误传递到最上层，这里面存在着两个</description>
+    </item>
+    
+    <item>
       <title>Time</title>
       <link>https://wangtingkui.github.io/2020/04/time/</link>
       <pubDate>Sun, 12 Apr 2020 23:31:09 +0800</pubDate>
@@ -83,10 +92,10 @@
     
     <item>
       <title>go日志库zap使用</title>
-      <link>https://wangtingkui.github.io/2019/12/go-third-lib-zap/</link>
+      <link>https://wangtingkui.github.io/2019/12/zap/</link>
       <pubDate>Mon, 16 Dec 2019 22:45:34 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/go-third-lib-zap/</guid>
+      <guid>https://wangtingkui.github.io/2019/12/zap/</guid>
       <description>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概</description>
     </item>
     

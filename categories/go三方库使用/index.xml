@@ -5,7 +5,7 @@
     <link>https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
     <description>Recent content in go三方库使用 on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 16 Dec 2019 22:45:34 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 28 Apr 2020 16:53:09 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
     
@@ -26,6 +26,15 @@
       
       <guid>https://wangtingkui.github.io/2019/12/deploy-on-github-pages/</guid>
       <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点</description>
+    </item>
+    
+    <item>
+      <title>使用 pkg/errors 进行错误处理</title>
+      <link>https://wangtingkui.github.io/2020/04/errors/</link>
+      <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/04/errors/</guid>
+      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： if err != nil { return err } 然后层层传递，最终将错误传递到最上层，这里面存在着两个</description>
     </item>
     
     <item>
@@ -84,10 +93,10 @@
     
     <item>
       <title>go日志库zap使用</title>
-      <link>https://wangtingkui.github.io/2019/12/go-third-lib-zap/</link>
+      <link>https://wangtingkui.github.io/2019/12/zap/</link>
       <pubDate>Mon, 16 Dec 2019 22:45:34 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2019/12/go-third-lib-zap/</guid>
+      <guid>https://wangtingkui.github.io/2019/12/zap/</guid>
       <description>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概</description>
     </item>
     
