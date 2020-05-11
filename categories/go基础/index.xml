@@ -29,6 +29,33 @@
     </item>
     
     <item>
+      <title>alfred workflow 推荐</title>
+      <link>https://wangtingkui.github.io/2020/05/plugin-recommend/</link>
+      <pubDate>Sun, 10 May 2020 11:44:38 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/plugin-recommend/</guid>
+      <description>这篇文站整理下自己经常使用的 alfred workflow TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录 alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目</description>
+    </item>
+    
+    <item>
+      <title>使用zsh插件</title>
+      <link>https://wangtingkui.github.io/2020/05/plugin/</link>
+      <pubDate>Sun, 10 May 2020 11:02:41 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/plugin/</guid>
+      <description>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.z</description>
+    </item>
+    
+    <item>
+      <title>使用 viper 处理项目配置</title>
+      <link>https://wangtingkui.github.io/2020/05/viper/</link>
+      <pubDate>Sun, 03 May 2020 12:05:47 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/viper/</guid>
+      <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置</description>
+    </item>
+    
+    <item>
       <title>使用 pkg/errors 进行错误处理</title>
       <link>https://wangtingkui.github.io/2020/04/errors/</link>
       <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
