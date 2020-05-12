@@ -29,6 +29,15 @@
     </item>
     
     <item>
+      <title>使用zsh主题</title>
+      <link>https://wangtingkui.github.io/2020/05/theme/</link>
+      <pubDate>Tue, 12 May 2020 23:21:29 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/theme/</guid>
+      <description>和插件一样，zsh 为我们提供了丰富的主题和自定义主题的能力，主题也分为两大类，一类是内置主题，另一类是自定义的扩展主题 内置主题 这个其实没啥好</description>
+    </item>
+    
+    <item>
       <title>alfred workflow 推荐</title>
       <link>https://wangtingkui.github.io/2020/05/plugin-recommend/</link>
       <pubDate>Sun, 10 May 2020 11:44:38 +0800</pubDate>

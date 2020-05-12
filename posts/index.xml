@@ -5,7 +5,7 @@
     <link>https://wangtingkui.github.io/posts/</link>
     <description>Recent content in Posts on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 10 May 2020 11:44:38 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 12 May 2020 23:21:29 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
@@ -26,6 +26,15 @@
       
       <guid>https://wangtingkui.github.io/2019/12/deploy-on-github-pages/</guid>
       <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点</description>
+    </item>
+    
+    <item>
+      <title>使用zsh主题</title>
+      <link>https://wangtingkui.github.io/2020/05/theme/</link>
+      <pubDate>Tue, 12 May 2020 23:21:29 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/theme/</guid>
+      <description>和插件一样，zsh 为我们提供了丰富的主题和自定义主题的能力，主题也分为两大类，一类是内置主题，另一类是自定义的扩展主题 内置主题 这个其实没啥好</description>
     </item>
     
     <item>

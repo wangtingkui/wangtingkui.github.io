@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置" />
-  <meta name="generator" content="Hugo 0.62.2 with theme pure" />
+  <meta name="generator" content="Hugo 0.65.3 with theme pure" />
   <title>使用 viper 处理项目配置 - xiaok&#39;s site</title>
   
 
@@ -269,14 +269,14 @@
 <h3 id="快速上手">快速上手</h3>
 <p>一个使用 viper 的基本示例如下，基本上完成一个应用也就使用这些功能</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># myconfig.yaml</span>
-name: xiaok
-age: <span style="color:#ae81ff">28</span>
-sex: male
-book:
+<span style="color:#66d9ef">name</span>: xiaok
+<span style="color:#66d9ef">age</span>: <span style="color:#ae81ff">28</span>
+<span style="color:#66d9ef">sex</span>: male
+<span style="color:#66d9ef">book</span>:
   - php
   - java
   - c
-other: other_value
+<span style="color:#66d9ef">other</span>: other_value
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
 <span style="color:#f92672">import</span> (
