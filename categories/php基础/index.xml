@@ -11,6 +11,15 @@
     
     
     <item>
+      <title>在go中使用单元测试</title>
+      <link>https://wangtingkui.github.io/2020/05/unit-testing/</link>
+      <pubDate>Sun, 17 May 2020 11:22:21 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/unit-testing/</guid>
+      <description>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持 单测基本规则 单元测试文件必须以_test.go结尾 单元测</description>
+    </item>
+    
+    <item>
       <title>推荐的atom插件</title>
       <link>https://wangtingkui.github.io/2020/05/pakage/</link>
       <pubDate>Sat, 16 May 2020 10:33:59 +0800</pubDate>

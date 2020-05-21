@@ -3,35 +3,56 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://wangtingkui.github.io/tags/atom/</loc>
-    <lastmod>2020-05-16T10:33:59+08:00</lastmod>
+    <loc>https://wangtingkui.github.io/categories/</loc>
+    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/categories/</loc>
-    <lastmod>2020-05-16T10:33:59+08:00</lastmod>
+    <loc>https://wangtingkui.github.io/tags/go/</loc>
+    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://wangtingkui.github.io/posts/</loc>
-    <lastmod>2020-05-16T10:33:59+08:00</lastmod>
+    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://wangtingkui.github.io/tags/</loc>
-    <lastmod>2020-05-16T10:33:59+08:00</lastmod>
+    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://wangtingkui.github.io/</loc>
+    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2020/05/unit-testing/</loc>
+    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/atom/</loc>
     <lastmod>2020-05-16T10:33:59+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -96,13 +117,6 @@
   <url>
     <loc>https://wangtingkui.github.io/2020/05/viper/</loc>
     <lastmod>2020-05-03T12:05:47+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/tags/go/</loc>
-    <lastmod>2020-04-28T16:53:09+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -180,13 +194,6 @@
   <url>
     <loc>https://wangtingkui.github.io/2020/01/php-multi-version/</loc>
     <lastmod>2020-01-14T19:11:11+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2020-01-05T15:33:50+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
