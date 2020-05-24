@@ -5,10 +5,28 @@
     <link>https://wangtingkui.github.io/tags/</link>
     <description>Recent content in Tags on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 17 May 2020 11:22:21 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 23 May 2020 23:04:47 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>vscode推荐扩展</title>
+      <link>https://wangtingkui.github.io/2020/05/extension/</link>
+      <pubDate>Sat, 23 May 2020 23:04:47 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/extension/</guid>
+      <description>vscode 扩展推荐 实用 扩展名 用途 推荐主题 主题名 备注 vscode-icons 可以替换vscode的默认图标 Atom One Dark Theme Monokai Pro</description>
+    </item>
+    
+    <item>
+      <title>alfred配置同步</title>
+      <link>https://wangtingkui.github.io/2020/05/sync-setting/</link>
+      <pubDate>Sat, 23 May 2020 20:16:08 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/sync-setting/</guid>
+      <description>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用 alfred 的同步功能本质上是将配置打包成一个文件，然后借助第</description>
+    </item>
     
     <item>
       <title>在go中使用单元测试</title>

@@ -4,7 +4,63 @@
   
   <url>
     <loc>https://wangtingkui.github.io/categories/</loc>
-    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
+    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/posts/</loc>
+    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/</loc>
+    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/vscode/</loc>
+    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2020/05/extension/</loc>
+    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/</loc>
+    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/alfred/</loc>
+    <lastmod>2020-05-23T20:16:08+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2020/05/sync-setting/</loc>
+    <lastmod>2020-05-23T20:16:08+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -18,27 +74,6 @@
   
   <url>
     <loc>https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/posts/</loc>
-    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/tags/</loc>
-    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/</loc>
     <lastmod>2020-05-17T11:22:21+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -59,13 +94,6 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2020-05-16T10:33:59+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://wangtingkui.github.io/2020/05/pakage/</loc>
     <lastmod>2020-05-16T10:33:59+08:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -75,13 +103,6 @@
   <url>
     <loc>https://wangtingkui.github.io/2020/05/theme/</loc>
     <lastmod>2020-05-12T23:21:29+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/tags/alfred/</loc>
-    <lastmod>2020-05-10T11:44:38+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
