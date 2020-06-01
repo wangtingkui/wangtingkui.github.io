@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        VMware funsion 安装 centos7 后配置 NAT 网络 - xiaok&#39;s site
+      </title>
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  
+  <meta name="theme-color" content="#000000" />
+  
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <meta name="description" content="在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络 一、确定" />
+  <meta name="generator" content="Hugo 0.65.3 with theme pure" />
+  <title>VMware funsion 安装 centos7 后配置 NAT 网络 - xiaok&#39;s site</title>
+  
+
+  <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+  <meta property="og:title" content="VMware funsion 安装 centos7 后配置 NAT 网络" />
+<meta property="og:description" content="在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络 一、确定" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/2020/05/net-fix-on-centos-7/" />
+<meta property="article:published_time" content="2020-05-31T08:40:51+08:00" />
+<meta property="article:modified_time" content="2020-05-31T08:40:51+08:00" />
+<meta itemprop="name" content="VMware funsion 安装 centos7 后配置 NAT 网络">
+<meta itemprop="description" content="在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络 一、确定">
+<meta itemprop="datePublished" content="2020-05-31T08:40:51&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-31T08:40:51&#43;08:00" />
+<meta itemprop="wordCount" content="503">
+
+
+
+<meta itemprop="keywords" content="vmware," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VMware funsion 安装 centos7 后配置 NAT 网络"/>
+<meta name="twitter:description" content="在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络 一、确定"/>
+
+  <!--[if lte IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+    <![endif]-->
+
+  <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  </head>
+  
+
+  <body class="main-center theme-blue" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="" target="_blank">
+            <img class="img-circle img-rotate" src="https://wangtingkui.github.io/avatar.jpg" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">无敌小k</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Beijing, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>来者皆是客</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">2</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">4</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">5</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">8</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/alfred/" class="tag-list-link">alfred</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/atom/" class="tag-list-link">atom</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/cobra/" class="tag-list-link">cobra</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/github-pages/" class="tag-list-link">github-pages</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">19</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/nas/" class="tag-list-link">nas</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/oh-my-zsh/" class="tag-list-link">oh-my-zsh</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/utf-8/" class="tag-list-link">utf-8</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/vmware/" class="tag-list-link">vmware</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/vscode/" class="tag-list-link">vscode</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/zsh/" class="tag-list-link">zsh</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/" class="tag-list-link">字符编码</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="tag-list-link">源码分析</a><span
+                    class="tag-list-count">1</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2020/05/net-fix-on-centos-7/"
+    >VMware funsion 安装 centos7 后配置 NAT 网络</a
+  >
+</h1>
+
+      <div class="article-meta">
+        <span class="article-date">
+  <i class="icon icon-calendar-check"></i>
+<a href="https://wangtingkui.github.io/2020/05/net-fix-on-centos-7/" class="article-date">
+  <time datetime="2020-05-31 08:40:51 &#43;0800 CST" itemprop="datePublished">2020-05-31</time>
+</a>
+</span><span class="article-category">
+  <i class="icon icon-folder"></i>
+  <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7/"> 工具 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+    <a class="article-tag-link" href="/tags/vmware/"> vmware </a>
+  </span>
+
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count:2minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <p>在<code>vmware funsion</code>上安装完<code>centos7</code>后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 <code>centos7</code> 虚拟机配置 <code>NAT</code> 模式的网络</p>
+<h2 id="一确定网络信息">一、确定网络信息</h2>
+<p>vmnet8是安装 <code>vmware funsion</code> 之后自动生成的一张虚拟网卡，<code>NAT</code> 模式使用的就是这张网卡</p>
+<h3 id="进入vmnet8网卡配置目录">进入vmnet8网卡配置目录</h3>
+<pre><code>&gt; cd /Library/Preferences/VMware Fusion/vmnet8
+</code></pre><h3 id="查看nat信息记住nat网关信息也就是ip和netmask字段">查看nat信息，记住nat网关信息，也就是ip和netmask字段</h3>
+<pre><code>&gt; cat nat.conf
+</code></pre><p>nat.conf 文件内容：</p>
+<pre><code>... # 省略文件其他部分
+[host]
+
+# NAT gateway address
+ip = 172.16.5.2
+netmask = 255.255.255.0
+... # 省略文件其他部分
+</code></pre><h3 id="查看dhcp信息记住range范围这里指的就是可用ip范围">查看dhcp信息，记住range范围，这里指的就是可用ip范围</h3>
+<pre><code>&gt; cat dhcpd.conf
+</code></pre><p>dhcpd.conf 文件信息：</p>
+<pre><code>... # 省略文件其他部分
+subnet 172.16.5.0 netmask 255.255.255.0 {
+	range 172.16.5.128 172.16.5.254;
+	option broadcast-address 172.16.5.255;
+	option domain-name-servers 172.16.5.2;
+	option domain-name localdomain;
+	default-lease-time 1800;                # default is 30 minutes
+	max-lease-time 7200;                    # default is 2 hours
+	option netbios-name-servers 172.16.5.2;
+	option routers 172.16.5.2;
+}
+... # 省略文件其他部分
+</code></pre><h3 id="确定dns">确定dns</h3>
+<p>在系统偏好设置中的网络查看当前主机的dns配置</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfbcp4t6duj30jd0fcdh5.jpg" alt=""></p>
+<h2 id="配置虚拟机网络设置">配置虚拟机网络设置</h2>
+<p>在设置中将网络模式设置为共享</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfbcqabyeaj30kw0ewjuc.jpg" alt=""></p>
+<h2 id="设置centos7网络">设置<code>centos7</code>网络</h2>
+<p>登录虚拟机，配置 <code>centos7</code> 的网卡</p>
+<pre><code>&gt; vim /etc/sysconfig/network-scripts/ifcfg-ens33
+</code></pre><p>上面部分<code>ifcfg-ens33</code>是网卡名称，不同的虚拟机有可能会变，这个注意下</p>
+<p>按照下面红框部分进行设置</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfbcuucnc4j30i60a2757.jpg" alt=""></p>
+<ul>
+<li><code>BOOTPROTO=static</code>：设置为固定ip</li>
+<li><code>ONBOOT=yes</code>: 设置开启网卡</li>
+<li><code>IPADDR=172.16.5.200</code>: 使用哪个静态ip</li>
+<li><code>GATEWAY=172.16.5.2</code>: 刚才看的vmnet8的网关</li>
+<li><code>NETMAST=255.255.255.0</code>:  vmnet8的掩码</li>
+<li><code>DNS1=192.168.50.1</code>: DNS</li>
+</ul>
+<h2 id="重启网卡">重启网卡</h2>
+<pre><code>&gt; service network restart
+</code></pre>
+    </div>
+    <div class="article-footer">
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://wangtingkui.github.io/2020/05/plex/" title="群辉nas使用plex套件"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://wangtingkui.github.io/2020/06/channel/"
+                    title="go中channel的使用"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        
+        <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal"
+            data-target="#donateModal"><span>$</span></button>
+        
+        <div class="bar-right">
+        </div>
+    </div>
+</nav>
+
+
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content donate">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <div class="modal-body">
+                <div class="donate-box">
+                    <div class="donate-head">
+                        <p>Maybe you could buy me a cup of coffee.</p>
+                    </div>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/alipay.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/wechat.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                    </div>
+                    <div class="donate-footer">
+                        <ul class="nav nav-tabs nav-justified" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay"
+                                    aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab"
+                                    aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i>
+                                    wechat payment</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/wangtingkui" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://wangtingkui.github.io/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/rust.min.js"></script>
+<script type="text/javascript"
+    src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/application.js"></script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/plugin.js"></script>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/wangtingkui.github.io',
+            CONTENT_URL: 'https:\/\/wangtingkui.github.io\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/insight.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+  </body>
+</html>

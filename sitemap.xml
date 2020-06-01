@@ -4,21 +4,84 @@
   
   <url>
     <loc>https://wangtingkui.github.io/categories/</loc>
-    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
+    <lastmod>2020-06-01T18:46:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/go/</loc>
+    <lastmod>2020-06-01T18:46:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2020/06/channel/</loc>
+    <lastmod>2020-06-01T18:46:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2020-06-01T18:46:47+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://wangtingkui.github.io/posts/</loc>
-    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
+    <lastmod>2020-06-01T18:46:47+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://wangtingkui.github.io/tags/</loc>
-    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
+    <lastmod>2020-06-01T18:46:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/</loc>
+    <lastmod>2020-06-01T18:46:47+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/vmware/</loc>
+    <lastmod>2020-05-31T08:40:51+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2020/05/net-fix-on-centos-7/</loc>
+    <lastmod>2020-05-31T08:40:51+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2020-05-31T08:40:51+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/nas/</loc>
+    <lastmod>2020-05-24T10:48:57+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2020/05/plex/</loc>
+    <lastmod>2020-05-24T10:48:57+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -38,20 +101,6 @@
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/</loc>
-    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2020-05-23T23:04:47+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://wangtingkui.github.io/tags/alfred/</loc>
     <lastmod>2020-05-23T20:16:08+08:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -61,20 +110,6 @@
   <url>
     <loc>https://wangtingkui.github.io/2020/05/sync-setting/</loc>
     <lastmod>2020-05-23T20:16:08+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/tags/go/</loc>
-    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2020-05-17T11:22:21+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

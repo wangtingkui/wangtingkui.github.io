@@ -5,10 +5,37 @@
     <link>https://wangtingkui.github.io/posts/</link>
     <description>Recent content in Posts on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 23 May 2020 23:04:47 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jun 2020 18:46:47 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>go中channel的使用</title>
+      <link>https://wangtingkui.github.io/2020/06/channel/</link>
+      <pubDate>Mon, 01 Jun 2020 18:46:47 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/06/channel/</guid>
+      <description>channel 类型 go 中 channel 类型分为两类： 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int) 不带缓冲区的 c</description>
+    </item>
+    
+    <item>
+      <title>VMware funsion 安装 centos7 后配置 NAT 网络</title>
+      <link>https://wangtingkui.github.io/2020/05/net-fix-on-centos-7/</link>
+      <pubDate>Sun, 31 May 2020 08:40:51 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/net-fix-on-centos-7/</guid>
+      <description>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络 一、确定</description>
+    </item>
+    
+    <item>
+      <title>群辉nas使用plex套件</title>
+      <link>https://wangtingkui.github.io/2020/05/plex/</link>
+      <pubDate>Sun, 24 May 2020 10:48:57 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/plex/</guid>
+      <description>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、</description>
+    </item>
     
     <item>
       <title>vscode推荐扩展</title>
