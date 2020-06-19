@@ -391,7 +391,7 @@
 		<span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">i</span>
 		<span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
 			<span style="color:#a6e22e">once</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#66d9ef">func</span>() {
-				<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">j</span>)<span style="color:#960050;background-color:#1e0010">$$</span>
+				<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">j</span>)
 			})
 		}()
 	}
@@ -603,7 +603,7 @@
         clientSecret: 'ca77301e0e249ace9839f5368fccba655fb35da6',
         repo: 'blogComment',
         owner: 'wangtingkui',
-        admin: ['[wangtingkui]'],
+        admin: ['wangtingkui'],
         id: md5(location.pathname),
         distractionFreeMode: true
     });
