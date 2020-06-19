@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on xiaok&#39;s site</title>
+    <link>https://wangtingkui.github.io/tags/</link>
+    <description>Recent content in Tags on xiaok&#39;s site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 19 Jun 2020 15:32:25 +0800</lastBuildDate>
+    
+        <atom:link href="https://wangtingkui.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go标准库（net/http）- 使用</title>
+      <link>https://wangtingkui.github.io/2019/12/net-http/</link>
+      <pubDate>Sun, 22 Dec 2019 11:48:21 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/net-http/</guid>
+      <description>net/http 包为我们提供了对 http 协议的处理，包含了客户端和服务端两大部分的实现 版本 go1.12 主要结构体 几乎任何语言中的http包都是围绕客户端，服务端，请求和响</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（net/url）- 使用</title>
+      <link>https://wangtingkui.github.io/2019/12/net-url/</link>
+      <pubDate>Sat, 21 Dec 2019 22:21:40 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/net-url/</guid>
+      <description>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s</description>
+    </item>
+    
+    <item>
+      <title>go日志库zap使用</title>
+      <link>https://wangtingkui.github.io/2019/12/zap/</link>
+      <pubDate>Mon, 16 Dec 2019 22:45:34 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/zap/</guid>
+      <description>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（path/filepath）- 使用</title>
+      <link>https://wangtingkui.github.io/2019/12/path-filepath/</link>
+      <pubDate>Sun, 15 Dec 2019 14:35:43 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/path-filepath/</guid>
+      <description>简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示 而且要注意</description>
+    </item>
+    
+    <item>
+      <title>go多版本管理</title>
+      <link>https://wangtingkui.github.io/2019/12/go-multi-version-manage/</link>
+      <pubDate>Fri, 13 Dec 2019 14:46:50 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/go-multi-version-manage/</guid>
+      <description>之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下</description>
+    </item>
+    
+    <item>
+      <title>go cli 应用框架cobra（二）- 源码分析</title>
+      <link>https://wangtingkui.github.io/2019/12/cobra/</link>
+      <pubDate>Wed, 11 Dec 2019 14:57:37 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/cobra/</guid>
+      <description>上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，</description>
+    </item>
+    
+    <item>
+      <title>hugo源码分析（一）- version</title>
+      <link>https://wangtingkui.github.io/2019/12/version/</link>
+      <pubDate>Tue, 10 Dec 2019 17:00:24 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/version/</guid>
+      <description>hugo 是一个静态网页生成器，关于它的使用就不再多说，可以参考之前写过的使用hugo搭建个人站点系列文章。本系列主要是分析下 hugo 的源码，看下其他人是</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（七）- 给你的文章分类</title>
+      <link>https://wangtingkui.github.io/2019/12/hugo-categorize-your-artical/</link>
+      <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/hugo-categorize-your-artical/</guid>
+      <description>hugo 内置了强大且支持自定义的分类系统，比如标签、类别、系列等，可以通过配置开启这些分类系统 在config.toml中配置： [taxonomies] tag = &amp;quot;tags&amp;quot; category = &amp;quot;categories&amp;quot; seris = &amp;quot;series&amp;quot;</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（八）- 自定义你的站点域名</title>
+      <link>https://wangtingkui.github.io/2019/12/hugo-custom-your-domain/</link>
+      <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/hugo-custom-your-domain/</guid>
+      <description>github pages 为我们提供的站点域名是 &amp;lt;username&amp;gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（六）- 定制你文章的url</title>
+      <link>https://wangtingkui.github.io/2019/12/hugo-custom-your-url/</link>
+      <pubDate>Sat, 07 Dec 2019 16:01:41 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/hugo-custom-your-url/</guid>
+      <description>默认情况下，站点文章的 url 和我们 content 目录下的文件结构是一一对应的，比如有 content/posts/test.md 这篇文章，当我们发布之后，在站点访问的 url 就是 &amp;lt;domian&amp;gt</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（五）- 模板选择顺序</title>
+      <link>https://wangtingkui.github.io/2019/12/hugo-template-order/</link>
+      <pubDate>Sat, 07 Dec 2019 15:55:24 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/hugo-template-order/</guid>
+      <description>加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（四）- Front Matter 配置详解</title>
+      <link>https://wangtingkui.github.io/2019/12/front-matter/</link>
+      <pubDate>Sat, 07 Dec 2019 15:31:44 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/front-matter/</guid>
+      <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 支持</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（三）- 引用其他文章</title>
+      <link>https://wangtingkui.github.io/2019/12/ref-other-article/</link>
+      <pubDate>Mon, 02 Dec 2019 14:12:07 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/ref-other-article/</guid>
+      <description>我们可以在文章中引用自己的其他文章，hugo 帮我们实现了这种功能，只需要在文章中使用 {{&amp;lt; ref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}或者{{&amp;lt; relref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}即可，</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（flag）- 源码分析</title>
+      <link>https://wangtingkui.github.io/2019/12/flag/</link>
+      <pubDate>Mon, 02 Dec 2019 14:07:56 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/flag/</guid>
+      <description>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（flag）- 使用</title>
+      <link>https://wangtingkui.github.io/2019/12/flag/</link>
+      <pubDate>Sun, 01 Dec 2019 17:28:45 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/flag/</guid>
+      <description>本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</title>
+      <link>https://wangtingkui.github.io/2019/12/deploy-on-github-pages/</link>
+      <pubDate>Sun, 01 Dec 2019 13:56:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/deploy-on-github-pages/</guid>
+      <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点</description>
+    </item>
+    
+    <item>
+      <title>go cli 应用框架cobra（一）- 简介</title>
+      <link>https://wangtingkui.github.io/2019/12/cobra/</link>
+      <pubDate>Sun, 01 Dec 2019 10:17:30 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/cobra/</guid>
+      <description>简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架 一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users</description>
+    </item>
+    
+    <item>
+      <title>详解字符编码</title>
+      <link>https://wangtingkui.github.io/2019/09/unicode/</link>
+      <pubDate>Sun, 22 Sep 2019 15:45:32 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/09/unicode/</guid>
+      <description>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（一）- hugo使用入门</title>
+      <link>https://wangtingkui.github.io/2019/09/introduction/</link>
+      <pubDate>Sun, 22 Sep 2019 15:28:34 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/09/introduction/</guid>
+      <description>以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们</description>
+    </item>
+    
+  </channel>
+</rss>

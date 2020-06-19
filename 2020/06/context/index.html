@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+        go中Context的使用 - xiaok&#39;s site
+      </title>
+        <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    
+    <meta name="theme-color" content="#000000" />
+    
+    <meta http-equiv="window-target" content="_top" />
+    
+    
+    <meta name="description" content="go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使" />
+    <meta name="generator" content="Hugo 0.65.3 with theme pure" />
+    <title>go中Context的使用 - xiaok&#39;s site</title>
+    
+    
+    <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" async>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+    <meta property="og:title" content="go中Context的使用" />
+<meta property="og:description" content="go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/2020/06/context/" />
+<meta property="article:published_time" content="2020-06-07T15:33:50+08:00" />
+<meta property="article:modified_time" content="2020-06-07T15:33:50+08:00" />
+<meta itemprop="name" content="go中Context的使用">
+<meta itemprop="description" content="go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使">
+<meta itemprop="datePublished" content="2020-06-07T15:33:50&#43;08:00" />
+<meta itemprop="dateModified" content="2020-06-07T15:33:50&#43;08:00" />
+<meta itemprop="wordCount" content="671">
+
+
+
+<meta itemprop="keywords" content="go," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="go中Context的使用"/>
+<meta name="twitter:description" content="go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使"/>
+
+    <!--[if lte IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+      <![endif]-->
+
+    <!--[if lt IE 9]>
+        <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+      <![endif]-->
+  </head>
+
+  
+  
+
+  <body class="main-center theme-blue" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="" target="_blank">
+            <img class="img-circle img-rotate" src="https://wangtingkui.github.io/avatar.jpg" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">无敌小k</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Beijing, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>来者皆是客</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">4</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">5</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">8</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/alfred/" class="tag-list-link">alfred</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/atom/" class="tag-list-link">atom</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/cobra/" class="tag-list-link">cobra</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/github-pages/" class="tag-list-link">github-pages</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">24</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/nas/" class="tag-list-link">nas</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/oh-my-zsh/" class="tag-list-link">oh-my-zsh</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/utf-8/" class="tag-list-link">utf-8</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/vmware/" class="tag-list-link">vmware</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/vscode/" class="tag-list-link">vscode</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/zsh/" class="tag-list-link">zsh</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/" class="tag-list-link">字符编码</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="tag-list-link">源码分析</a><span
+                    class="tag-list-count">1</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2020/06/context/"
+    >go中Context的使用</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://wangtingkui.github.io/2020/06/context/" class="article-date">
+  <time datetime="2020-06-07 15:33:50 &#43;0800 CST" itemprop="datePublished">2020-06-07</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/go%E5%9F%BA%E7%A1%80/"> go基础 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/go/"> go </a>
+  </span>
+
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 2minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <p>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使用比较少</p>
+<h2 id="使用">使用</h2>
+<p>Context 本身是 context 包对外暴露的一个接口</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Context</span> <span style="color:#66d9ef">interface</span> {
+    <span style="color:#a6e22e">Deadline</span>() (<span style="color:#a6e22e">deadline</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>, <span style="color:#a6e22e">ok</span> <span style="color:#66d9ef">bool</span>) <span style="color:#75715e">// 返回当前 Context 的截止日期
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">Done</span>() <span style="color:#f92672">&lt;-</span><span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">struct</span>{}  <span style="color:#75715e">// 返回一个 channel，这个channel会在 Context 截止日期到了或者被取消之后关闭，多次调用Done会返回同一个channel
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">Err</span>() <span style="color:#66d9ef">error</span> <span style="color:#75715e">// 表明 Done 的原因，如果是超时，为DeadlineExceeded错误。如果是被取消，则是Canceled错误
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">Value</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">interface</span>{}) <span style="color:#66d9ef">interface</span>{} <span style="color:#75715e">// 返回Context中key对应的value
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>当前 go 中为我们提供了多个方法来创建 Context：</p>
+<ul>
+<li><code>context.TODO</code> 和 <code>context.Background</code>，这两个方法都是返回一个预先实例化好的空 context 对象，如果没有特殊需求，所有的 context 应该都基于 <code>context.Background</code>来创建</li>
+<li><code>context.WithCancel</code>，创建可取消的上下文</li>
+<li><code>context.WithDeadline</code>，创建有超时时间的上下文</li>
+<li><code>context.WithTimeout</code>，对 <code>context.WithDeadline</code>的封装，更容易使用</li>
+<li><code>context.WithValue</code>，创建有键值对的上下文</li>
+</ul>
+<p>一个简单的使用 demo：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">cancel</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">WithTimeout</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>(), <span style="color:#ae81ff">1</span><span style="color:#f92672">*</span><span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
+    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">cancel</span>()
+
+    <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">handle</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#ae81ff">500</span><span style="color:#f92672">*</span><span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Millisecond</span>)
+
+    <span style="color:#66d9ef">select</span> {
+    <span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Done</span>():
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;main&#34;</span>, <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Err</span>())
+    }
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">handle</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">duration</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Duration</span>) {
+    <span style="color:#66d9ef">select</span> {
+    <span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Done</span>():
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;handle&#34;</span>, <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Err</span>())
+
+    <span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">After</span>(<span style="color:#a6e22e">duration</span>):
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;process request with&#34;</span>, <span style="color:#a6e22e">duration</span>)
+    }
+}
+</code></pre></div><p>输出：</p>
+<pre><code>$ go run context.go
+process request with 500ms
+main context deadline exceeded
+</code></pre><h2 id="使用-context-同步信号取消-goroutine执行的最佳实践">使用 context 同步信号，取消 goroutine执行的最佳实践</h2>
+<p>参考：<a href="https://mp.weixin.qq.com/s/780-KicWIQZNwmAtTAHmaw">学会使用context取消goroutine执行的方法</a></p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&amp;mid=2651438223&amp;idx=2&amp;sn=d7472b2fe24a12fbbb03a31b1fc4d324&amp;chksm=80bb627db7cceb6bdde8f5334dd76cb53524c63b6dd8d6afb2c21ef040153ef22127980be74e&amp;scene=21#wechat_redirect">大神是如何学习 Go 之并发编程与 Context</a></li>
+<li><a href="https://mp.weixin.qq.com/s/780-KicWIQZNwmAtTAHmaw">学会使用context取消goroutine执行的方法</a></li>
+</ul>
+
+    </div>
+    <div class="article-footer">
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://wangtingkui.github.io/2020/06/mail/" title="使用 jordan-wright/email 处理邮件发送"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://wangtingkui.github.io/2020/06/sync/"
+                    title="Go标准库（sync）- 使用"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        
+        <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal"
+            data-target="#donateModal"><span>$</span></button>
+        
+        <div class="bar-right">
+        </div>
+    </div>
+</nav>
+
+
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content donate">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <div class="modal-body">
+                <div class="donate-box">
+                    <div class="donate-head">
+                        <p>Maybe you could buy me a cup of coffee.</p>
+                    </div>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/alipay.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/wechat.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                    </div>
+                    <div class="donate-footer">
+                        <ul class="nav nav-tabs nav-justified" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay"
+                                    aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab"
+                                    aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i>
+                                    wechat payment</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/wangtingkui" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://wangtingkui.github.io/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://wangtingkui.github.io/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
+<script src="https://wangtingkui.github.io/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/wangtingkui.github.io',
+            CONTENT_URL: 'https:\/\/wangtingkui.github.io\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '06d682e66c398e155140',
+        clientSecret: 'ca77301e0e249ace9839f5368fccba655fb35da6',
+        repo: 'blog',
+        owner: 'wangtingkui',
+        admin: ['[wangtingkui]'],
+        id: md5(location.pathname),
+        distractionFreeMode: true
+    });
+    gitalk.render('comments');
+</script>
+
+  </body>
+</html>
