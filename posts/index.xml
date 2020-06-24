@@ -5,10 +5,19 @@
     <link>https://wangtingkui.github.io/posts/</link>
     <description>Recent content in Posts on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 19 Jun 2020 15:32:25 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 24 Jun 2020 11:53:13 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>php 中的匿名函数和 Closure</title>
+      <link>https://wangtingkui.github.io/2020/06/closure/</link>
+      <pubDate>Wed, 24 Jun 2020 11:53:13 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/06/closure/</guid>
+      <description>php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数 php 中的匿名函数是基于 Closure 这个类来实现的 基本使用 通常会将匿名函数用作</description>
+    </item>
     
     <item>
       <title>Go标准库（sync）- 使用</title>
@@ -179,15 +188,6 @@
       
       <guid>https://wangtingkui.github.io/2020/01/php-multi-version/</guid>
       <description>本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装 第一步 首先需要下载二进制文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar chmod</description>
-    </item>
-    
-    <item>
-      <title>Go进行文件操作</title>
-      <link>https://wangtingkui.github.io/2020/01/go-file-operation/</link>
-      <pubDate>Sun, 05 Jan 2020 15:33:50 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2020/01/go-file-operation/</guid>
-      <description>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供</description>
     </item>
     
   </channel>

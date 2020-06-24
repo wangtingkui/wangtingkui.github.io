@@ -5,10 +5,19 @@
     <link>https://wangtingkui.github.io/categories/</link>
     <description>Recent content in Categories on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 19 Jun 2020 15:32:25 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 24 Jun 2020 11:53:13 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go进行文件操作</title>
+      <link>https://wangtingkui.github.io/2020/01/go-file-operation/</link>
+      <pubDate>Sun, 05 Jan 2020 15:33:50 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/01/go-file-operation/</guid>
+      <description>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供</description>
+    </item>
     
     <item>
       <title>Go标准库（net/http）- 使用</title>

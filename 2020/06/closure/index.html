@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title>
-        go多版本管理 - xiaok&#39;s site
+        php 中的匿名函数和 Closure - xiaok&#39;s site
       </title>
         <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -20,9 +20,9 @@
     <meta http-equiv="window-target" content="_top" />
     
     
-    <meta name="description" content="之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下" />
+    <meta name="description" content="php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数 php 中的匿名函数是基于 Closure 这个类来实现的 基本使用 通常会将匿名函数用作" />
     <meta name="generator" content="Hugo 0.65.3 with theme pure" />
-    <title>go多版本管理 - xiaok&#39;s site</title>
+    <title>php 中的匿名函数和 Closure - xiaok&#39;s site</title>
     
     
     <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
@@ -30,23 +30,23 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" async>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
-    <meta property="og:title" content="go多版本管理" />
-<meta property="og:description" content="之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下" />
+    <meta property="og:title" content="php 中的匿名函数和 Closure" />
+<meta property="og:description" content="php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数 php 中的匿名函数是基于 Closure 这个类来实现的 基本使用 通常会将匿名函数用作" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://wangtingkui.github.io/2019/12/go-multi-version-manage/" />
-<meta property="article:published_time" content="2019-12-13T14:46:50+08:00" />
-<meta property="article:modified_time" content="2019-12-13T14:46:50+08:00" />
-<meta itemprop="name" content="go多版本管理">
-<meta itemprop="description" content="之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下">
-<meta itemprop="datePublished" content="2019-12-13T14:46:50&#43;08:00" />
-<meta itemprop="dateModified" content="2019-12-13T14:46:50&#43;08:00" />
-<meta itemprop="wordCount" content="693">
+<meta property="og:url" content="https://wangtingkui.github.io/2020/06/closure/" />
+<meta property="article:published_time" content="2020-06-24T11:53:13+08:00" />
+<meta property="article:modified_time" content="2020-06-24T11:53:13+08:00" />
+<meta itemprop="name" content="php 中的匿名函数和 Closure">
+<meta itemprop="description" content="php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数 php 中的匿名函数是基于 Closure 这个类来实现的 基本使用 通常会将匿名函数用作">
+<meta itemprop="datePublished" content="2020-06-24T11:53:13&#43;08:00" />
+<meta itemprop="dateModified" content="2020-06-24T11:53:13&#43;08:00" />
+<meta itemprop="wordCount" content="516">
 
 
 
-<meta itemprop="keywords" content="go," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="go多版本管理"/>
-<meta name="twitter:description" content="之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下"/>
+<meta itemprop="keywords" content="php," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="php 中的匿名函数和 Closure"/>
+<meta name="twitter:description" content="php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数 php 中的匿名函数是基于 Closure 这个类来实现的 基本使用 通常会将匿名函数用作"/>
 
     <!--[if lte IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -254,8 +254,8 @@
       <h1 itemprop="name">
   <a
     class="article-title"
-    href="/2019/12/go-multi-version-manage/"
-    >go多版本管理</a
+    href="/2020/06/closure/"
+    >php 中的匿名函数和 Closure</a
   >
 </h1>
 
@@ -263,71 +263,96 @@
         
 <span class="article-date">
   <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://wangtingkui.github.io/2019/12/go-multi-version-manage/" class="article-date">
-  <time datetime="2019-12-13 14:46:50 &#43;0800 CST" itemprop="datePublished">2019-12-13</time>
+<a href="https://wangtingkui.github.io/2020/06/closure/" class="article-date">
+  <time datetime="2020-06-24 11:53:13 &#43;0800 CST" itemprop="datePublished">2020-06-24</time>
 </a>
 </span>
 <span class="article-category">
   <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/go%E5%9F%BA%E7%A1%80/"> go基础 </a>
+  <a class="article-category-link" href="/categories/php%E5%9F%BA%E7%A1%80/"> php基础 </a>
 </span>  
   <span class="article-tag">
     <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/go/"> go </a>
+    <a class="article-tag-link" href="/tags/php/"> php </a>
   </span>
 
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 2minutes </span>
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      <p>之前写php，使用<code>phpbrew</code>来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具<code>gvm</code>，这篇文章就记录下如何在<code>mac</code>下使用<code>gvm</code>进行go的多版本管理</p>
-<p>gvm的信息可以参考：https://github.com/moovweb/gvm</p>
-<h3 id="环境信息">环境信息</h3>
+      <p>php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数</p>
+<p>php 中的匿名函数是基于 Closure 这个类来实现的</p>
+<h3 id="基本使用">基本使用</h3>
+<p>通常会将匿名函数用作回调函数</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">array_filter([1,2,3], function ($item) {
+    return $item % 2 == 0;
+});
+
+// 也可以赋值给变量，供后续使用
+$func = function () {
+    echo &#34;called&#34; . PHP_EOL;
+}
+
+$func();
+</code></pre></div><h3 id="使用父作用域变量">使用父作用域变量</h3>
+<p>接触过其他有闭包特性语言的同学，一定会知道闭包的一大特点是可以使用父作用域的变量，php中的必报同样可以，但是使用上稍微有些区别</p>
+<p>php 中使用父作用域的变量，需要使用 use 关键字传递</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$a = 1;
+$func = function () use ($a) {
+    echo $a;
+};
+$func(); // 1
+$a = 2;
+$func(); // 1
+</code></pre></div><p>可能有的同学会感到奇怪，为什么上面两次调用输出的都是1，这是因为在 php 中，传值方式默认使用的都是值传递，如果需要在匿名函数中保有对父作用域变量的引用，需要使用引用传值的方式</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$a = 1;
+$func = function () use (<span style="color:#960050;background-color:#1e0010">&amp;</span>$a) {
+    echo $a;
+};
+$func(); // 1
+$a = 2;
+$func(); // 2
+</code></pre></div><p><strong>特别需要注意的是</strong></p>
 <ul>
-<li>macOS 10.15.2</li>
-<li>brew 2.1.16</li>
+<li>闭包的父作用域指的是定义闭包时的作用域，而不是调用时的父作用域</li>
+<li>use 中传递的参数，不能是 <code>$this</code> 和 <code>超全局变量</code></li>
 </ul>
-<h3 id="安装gvm">安装gvm</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">bash &lt; &lt;<span style="color:#f92672">(</span>curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer<span style="color:#f92672">)</span>
-</code></pre></div><p>下载好之后，需要修改下个人配置文件，使<code>gvm</code>相关命令生效，如果用的是bash，则修改<code>~/.bashrc</code>，如果习惯用zsh，那就修改<code>~/.zshrc</code>，以此类推</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#f92672">[[</span> -s <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.gvm/scripts/gvm&#34;</span> <span style="color:#f92672">]]</span> <span style="color:#f92672">&amp;&amp;</span> source <span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.gvm/scripts/gvm&#34;</span>
-</code></pre></div><p>修改之后，重开一会会话或者直接<code>source ~/.zshrc</code>（我用的是zsh）让刚才的修改生效。执行一下看下效果</p>
-<pre><code>╰─$ gvm version
-Go Version Manager v1.0.22 installed at /Users/wangtingkui/.gvm
-</code></pre><p>可以看到，我装的是 1.0.22 的版本</p>
-<h3 id="常用命令">常用命令</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e"># 查看gvm版本</span>
-gvm version
+<h3 id="this-的自动绑定"><code>$this</code> 的自动绑定</h3>
+<p>当闭包定义在类中的时候，可以在闭包函数内使用 <code>$this</code> 代表类的对象</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
 
-<span style="color:#75715e"># 查看所有可以安装的版本</span>
-gvm listall
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>
+{
+    <span style="color:#66d9ef">protected</span> $a <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
 
-<span style="color:#75715e"># 查看本地已经安装的版本</span>
-gvm list
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">test</span>()
+    {
+        $func <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> () {
+            <span style="color:#66d9ef">echo</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">a</span>;
+        };
+        $func();
+    }
+}
 
-<span style="color:#75715e"># 安装指定版本</span>
-gvm install go1.13.5
+(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">A</span>())<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">test</span>(); <span style="color:#75715e">// 1
+</span></code></pre></div><p>如果不想自动绑定 <code>$this</code>，可以将闭包声明为静态的</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
 
-<span style="color:#75715e"># 删除指定版本</span>
-gvm uninstall go1.13.5
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>
+{
+    <span style="color:#66d9ef">protected</span> $a <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
 
-<span style="color:#75715e"># 临时切换版本</span>
-gvm use go1.13.5
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">test</span>()
+    {
+        $func <span style="color:#f92672">=</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">function</span> () {
+            <span style="color:#a6e22e">var_dump</span>($this); <span style="color:#75715e">// null
+</span><span style="color:#75715e"></span>        };
+        $func();
+    }
+}
 
-<span style="color:#75715e"># 切换版本并指定为默认版本</span>
-gvm use go1.13.5 --default
-
-</code></pre></div><h3 id="使用">使用</h3>
-<p>由于go是使用自举的方式来编译，也就是用go来编译go，所有我们使用gvm来初始安装一个版本的时候，首先需要保证在自己的环境中有go，我是直接使用brew安装的，大家也可以使用其他方式下载安装</p>
-<blockquote>
-<p>下面是我的安装过程</p>
-</blockquote>
-<pre><code>brew install go
-gvm listall # 看下有哪些版本
-gvm install go1.13.6 # 选择一个版本安装
-brew unlink go # 使用gvm安装完之后就可以不适用brew安装的go了，所以直接断开连接
-gvm use go1.13.6 --default # 选择刚才安装的版本并且设置为默认版本
-</code></pre><p>当我们使用<code>gvm use &lt;version&gt;</code>切换版本的时候，可以使用<code>go env GOPATH</code>看下，可以发现随着我们切换版本，GOPATH的路径也在变换，这样就不用害怕不同版本GOPATH下的内容冲突了</p>
+(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">A</span>())<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">test</span>(); <span style="color:#75715e">// 1
+</span></code></pre></div><p>这样就获取不到 <code>$this</code> 了</p>
 
     </div>
     <div class="article-footer">
@@ -340,14 +365,9 @@ gvm use go1.13.6 --default # 选择刚才安装的版本并且设置为默认版
     <div class="bar-inner">
         <ul class="pager pull-left">
             <li class="prev">
-                <a href="https://wangtingkui.github.io/2019/12/cobra/" title="go cli 应用框架cobra（二）- 源码分析"><i
+                <a href="https://wangtingkui.github.io/2020/06/sync/" title="Go标准库（sync）- 使用"><i
                         class="icon icon-angle-left"
                         aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
-            </li>
-            <li class="next">
-                <a href="https://wangtingkui.github.io/2019/12/path-filepath/"
-                    title="Go标准库（path/filepath）- 使用"><span>Newer&nbsp;&nbsp;</span><i
-                        class="icon icon-angle-right" aria-hidden="true"></i></a>
             </li>
             
             <li class="toggle-toc">
