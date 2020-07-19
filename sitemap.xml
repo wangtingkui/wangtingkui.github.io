@@ -4,48 +4,55 @@
   
   <url>
     <loc>https://wangtingkui.github.io/categories/</loc>
-    <lastmod>2020-06-24T11:53:13+08:00</lastmod>
+    <lastmod>2020-07-19T11:24:13+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://wangtingkui.github.io/tags/php/</loc>
-    <lastmod>2020-06-24T11:53:13+08:00</lastmod>
+    <lastmod>2020-07-19T11:24:13+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://wangtingkui.github.io/2020/06/closure/</loc>
-    <lastmod>2020-06-24T11:53:13+08:00</lastmod>
+    <loc>https://wangtingkui.github.io/2020/07/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</loc>
+    <lastmod>2020-07-19T11:24:13+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2020-06-24T11:53:13+08:00</lastmod>
+    <lastmod>2020-07-19T11:24:13+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://wangtingkui.github.io/posts/</loc>
-    <lastmod>2020-06-24T11:53:13+08:00</lastmod>
+    <lastmod>2020-07-19T11:24:13+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://wangtingkui.github.io/tags/</loc>
-    <lastmod>2020-06-24T11:53:13+08:00</lastmod>
+    <lastmod>2020-07-19T11:24:13+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://wangtingkui.github.io/</loc>
+    <lastmod>2020-07-19T11:24:13+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2020/06/closure/</loc>
     <lastmod>2020-06-24T11:53:13+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

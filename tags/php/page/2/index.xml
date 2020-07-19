@@ -5,10 +5,19 @@
     <link>https://wangtingkui.github.io/tags/php/</link>
     <description>Recent content in php on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 24 Jun 2020 11:53:13 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 19 Jul 2020 11:24:13 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>php多版本管理</title>
+      <link>https://wangtingkui.github.io/2020/01/php-multi-version/</link>
+      <pubDate>Tue, 14 Jan 2020 19:11:11 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/01/php-multi-version/</guid>
+      <description>本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装 第一步 首先需要下载二进制文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar chmod</description>
+    </item>
     
     <item>
       <title>Go进行文件操作</title>
@@ -179,15 +188,6 @@
       
       <guid>https://wangtingkui.github.io/2019/09/unicode/</guid>
       <description>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型</description>
-    </item>
-    
-    <item>
-      <title>使用hugo搭建个人网站（一）- hugo使用入门</title>
-      <link>https://wangtingkui.github.io/2019/09/introduction/</link>
-      <pubDate>Sun, 22 Sep 2019 15:28:34 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2019/09/introduction/</guid>
-      <description>以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们</description>
     </item>
     
   </channel>

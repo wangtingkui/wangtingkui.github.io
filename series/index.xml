@@ -10,6 +10,15 @@
     
     
     <item>
+      <title>Phpunit解决测试依赖</title>
+      <link>https://wangtingkui.github.io/2020/07/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</link>
+      <pubDate>Sun, 19 Jul 2020 11:24:13 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/07/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</guid>
+      <description>介绍 在书写单测代码的过程中，我们要测试的代码段往往会依赖其他的模块，如果是简单的模块还好，但是如果遇到复杂的模块（比如依赖各种其他的组件，d</description>
+    </item>
+    
+    <item>
       <title>php 中的匿名函数和 Closure</title>
       <link>https://wangtingkui.github.io/2020/06/closure/</link>
       <pubDate>Wed, 24 Jun 2020 11:53:13 +0800</pubDate>
@@ -178,15 +187,6 @@
       
       <guid>https://wangtingkui.github.io/2020/03/log/</guid>
       <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用 实例化 logger 进行日志记录 首先看一个最简单的 demo： package main import ( &amp;#34;log&amp;#34; &amp;#34;os&amp;#34; ) func main() { logger :=</description>
-    </item>
-    
-    <item>
-      <title>php多版本管理</title>
-      <link>https://wangtingkui.github.io/2020/01/php-multi-version/</link>
-      <pubDate>Tue, 14 Jan 2020 19:11:11 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2020/01/php-multi-version/</guid>
-      <description>本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装 第一步 首先需要下载二进制文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar chmod</description>
     </item>
     
   </channel>
