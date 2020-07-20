@@ -21,7 +21,7 @@
     
     
     <meta name="description" content="zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概" />
-    <meta name="generator" content="Hugo 0.65.3 with theme pure" />
+    <meta name="generator" content="Hugo 0.62.2 with theme pure" />
     <title>go日志库zap使用 - xiaok&#39;s site</title>
     
     
@@ -156,7 +156,7 @@
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">7</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">3</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">8</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">9</span></li>
         </ul>
     </div>
 </div>
@@ -175,6 +175,10 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/cobra/" class="tag-list-link">cobra</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/editorconfig/" class="tag-list-link">editorconfig</a><span
                     class="tag-list-count">1</span></li>
             
             
@@ -355,7 +359,7 @@
 }
 
 <span style="color:#75715e">// {&#34;level&#34;:&#34;debug&#34;,&#34;msg&#34;:&#34;我是debug信息&#34;,&#34;k&#34;:&#34;v&#34;}
-</span><span style="color:#75715e">// {&#34;level&#34;:&#34;info&#34;,&#34;msg&#34;:&#34;我是info信息&#34;,&#34;b&#34;:true}
+</span><span style="color:#75715e"></span><span style="color:#75715e">// {&#34;level&#34;:&#34;info&#34;,&#34;msg&#34;:&#34;我是info信息&#34;,&#34;b&#34;:true}
 </span><span style="color:#75715e"></span>
 </code></pre></div><p>可以看到这样用起来就非常方便了，如果我们取看他的源码，会发现其实就是封装了我们上面创建一个 Logger 的过程</p>
 <blockquote>
@@ -368,7 +372,7 @@
 }
 
 <span style="color:#75715e">// 2019-12-17T11:40:33.606+0800    DEBUG   zap/main.go:9   我是debug信息   {&#34;k&#34;: &#34;v&#34;}
-</span><span style="color:#75715e">// 2019-12-17T11:40:33.606+0800    INFO    zap/main.go:10  我是info信息    {&#34;b&#34;: true}
+</span><span style="color:#75715e"></span><span style="color:#75715e">// 2019-12-17T11:40:33.606+0800    INFO    zap/main.go:10  我是info信息    {&#34;b&#34;: true}
 </span><span style="color:#75715e"></span>
 </code></pre></div><blockquote>
 <p>zap.NewProduction</p>
@@ -404,10 +408,10 @@
 }
 
 <span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:12  sugar info message
-</span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:13  sugar info formatted message hehe
-</span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:14  sugar info message with extra context   {&#34;key1&#34;: &#34;val1&#34;, &#34;ket2&#34;: true}
-</span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    DEBUG   zap/main.go:18  我是debug信息   {&#34;k&#34;: &#34;v&#34;}
-</span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:19  我是info信息    {&#34;b&#34;: true}
+</span><span style="color:#75715e"></span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:13  sugar info formatted message hehe
+</span><span style="color:#75715e"></span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:14  sugar info message with extra context   {&#34;key1&#34;: &#34;val1&#34;, &#34;ket2&#34;: true}
+</span><span style="color:#75715e"></span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    DEBUG   zap/main.go:18  我是debug信息   {&#34;k&#34;: &#34;v&#34;}
+</span><span style="color:#75715e"></span><span style="color:#75715e">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:19  我是info信息    {&#34;b&#34;: true}
 </span><span style="color:#75715e"></span>
 </code></pre></div><h4 id="zap-高级配置">zap 高级配置</h4>
 <p>可以参考：https://godoc.org/go.uber.org/zap#pkg-examples</p>

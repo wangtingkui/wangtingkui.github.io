@@ -5,10 +5,19 @@
     <link>https://wangtingkui.github.io/categories/</link>
     <description>Recent content in Categories on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 19 Jul 2020 11:24:13 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jul 2020 14:01:14 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Editorconfig</title>
+      <link>https://wangtingkui.github.io/2020/07/editorconfig/</link>
+      <pubDate>Mon, 20 Jul 2020 14:01:14 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/07/editorconfig/</guid>
+      <description>现如今，各种开发工具百花齐放，每个开发者都会有自己最中意的一款编辑器，但是各种编辑器的配置方式不同，当我们切换编辑器的时候，又需要针对新的编</description>
+    </item>
     
     <item>
       <title>Phpunit解决测试依赖</title>
@@ -179,15 +188,6 @@
       
       <guid>https://wangtingkui.github.io/2020/04/time/</guid>
       <description>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时</description>
-    </item>
-    
-    <item>
-      <title>Go标准库（log）- 使用</title>
-      <link>https://wangtingkui.github.io/2020/03/log/</link>
-      <pubDate>Sun, 29 Mar 2020 17:51:54 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2020/03/log/</guid>
-      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用 实例化 logger 进行日志记录 首先看一个最简单的 demo： package main import ( &amp;#34;log&amp;#34; &amp;#34;os&amp;#34; ) func main() { logger :=</description>
     </item>
     
   </channel>

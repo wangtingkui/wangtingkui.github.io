@@ -21,7 +21,7 @@
     
     
     <meta name="description" content="net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s" />
-    <meta name="generator" content="Hugo 0.65.3 with theme pure" />
+    <meta name="generator" content="Hugo 0.62.2 with theme pure" />
     <title>Go标准库（net/url）- 使用 - xiaok&#39;s site</title>
     
     
@@ -156,7 +156,7 @@
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">7</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">3</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">8</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">9</span></li>
         </ul>
     </div>
 </div>
@@ -175,6 +175,10 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/cobra/" class="tag-list-link">cobra</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/editorconfig/" class="tag-list-link">editorconfig</a><span
                     class="tag-list-count">1</span></li>
             
             
@@ -340,9 +344,9 @@
 }
 
 <span style="color:#75715e">// http%3A%2F%2Fwww.baidu.com%3Fq%3D%E6%88%91+%E6%9B%B9%23123
-</span><span style="color:#75715e">// http://www.baidu.com?q=我 曹#123
-</span><span style="color:#75715e">// http:%2F%2Fwww.baidu.com%3Fq=%E6%88%91%20%E6%9B%B9%23123
-</span><span style="color:#75715e">// http://www.baidu.com?q=我 曹#123
+</span><span style="color:#75715e"></span><span style="color:#75715e">// http://www.baidu.com?q=我 曹#123
+</span><span style="color:#75715e"></span><span style="color:#75715e">// http:%2F%2Fwww.baidu.com%3Fq=%E6%88%91%20%E6%9B%B9%23123
+</span><span style="color:#75715e"></span><span style="color:#75715e">// http://www.baidu.com?q=我 曹#123
 </span><span style="color:#75715e"></span>
 </code></pre></div><h4 id="解析-url-链接生成-url-结构体">解析 url 链接生成 URL 结构体</h4>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 从指定的url解析生成URL对象
@@ -367,8 +371,8 @@
 }
 
 <span style="color:#75715e">// true
-</span><span style="color:#75715e">// map[a:[a] b:[b] c:[c]]
-</span><span style="color:#75715e">// /fuck?a=a&amp;b=b&amp;c=c
+</span><span style="color:#75715e"></span><span style="color:#75715e">// map[a:[a] b:[b] c:[c]]
+</span><span style="color:#75715e"></span><span style="color:#75715e">// /fuck?a=a&amp;b=b&amp;c=c
 </span></code></pre></div><h4 id="values-常用方法">Values 常用方法</h4>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 
@@ -399,11 +403,11 @@
 }
 
 <span style="color:#75715e">// map[a:[a] b:[b] c:[c]]
-</span><span style="color:#75715e">// map[a:[a] b:[b] c:[c] d:[d]]
-</span><span style="color:#75715e">// map[b:[b] c:[c] d:[d]]
-</span><span style="color:#75715e">// b
-</span><span style="color:#75715e">// map[b:[b] c:[ccc] d:[d]]
-</span><span style="color:#75715e">// b=b&amp;c=ccc&amp;d=d&amp;name=%E7%8E%8B
+</span><span style="color:#75715e"></span><span style="color:#75715e">// map[a:[a] b:[b] c:[c] d:[d]]
+</span><span style="color:#75715e"></span><span style="color:#75715e">// map[b:[b] c:[c] d:[d]]
+</span><span style="color:#75715e"></span><span style="color:#75715e">// b
+</span><span style="color:#75715e"></span><span style="color:#75715e">// map[b:[b] c:[ccc] d:[d]]
+</span><span style="color:#75715e"></span><span style="color:#75715e">// b=b&amp;c=ccc&amp;d=d&amp;name=%E7%8E%8B
 </span></code></pre></div>
     </div>
     <div class="article-footer">

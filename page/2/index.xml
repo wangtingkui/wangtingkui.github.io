@@ -5,10 +5,19 @@
     <link>https://wangtingkui.github.io/</link>
     <description>Recent content on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 19 Jul 2020 11:24:13 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jul 2020 14:01:14 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go标准库（log）- 使用</title>
+      <link>https://wangtingkui.github.io/2020/03/log/</link>
+      <pubDate>Sun, 29 Mar 2020 17:51:54 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/03/log/</guid>
+      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用 实例化 logger 进行日志记录 首先看一个最简单的 demo： package main import ( &amp;#34;log&amp;#34; &amp;#34;os&amp;#34; ) func main() { logger :=</description>
+    </item>
     
     <item>
       <title>php多版本管理</title>
@@ -179,15 +188,6 @@
       
       <guid>https://wangtingkui.github.io/2019/12/cobra/</guid>
       <description>简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架 一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users</description>
-    </item>
-    
-    <item>
-      <title>详解字符编码</title>
-      <link>https://wangtingkui.github.io/2019/09/unicode/</link>
-      <pubDate>Sun, 22 Sep 2019 15:45:32 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2019/09/unicode/</guid>
-      <description>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型</description>
     </item>
     
   </channel>

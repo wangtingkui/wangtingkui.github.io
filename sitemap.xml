@@ -4,7 +4,49 @@
   
   <url>
     <loc>https://wangtingkui.github.io/categories/</loc>
-    <lastmod>2020-07-19T11:24:13+08:00</lastmod>
+    <lastmod>2020-07-20T14:01:14+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/editorconfig/</loc>
+    <lastmod>2020-07-20T14:01:14+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2020/07/editorconfig/</loc>
+    <lastmod>2020-07-20T14:01:14+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/posts/</loc>
+    <lastmod>2020-07-20T14:01:14+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/</loc>
+    <lastmod>2020-07-20T14:01:14+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/</loc>
+    <lastmod>2020-07-20T14:01:14+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2020-07-20T14:01:14+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -25,27 +67,6 @@
   
   <url>
     <loc>https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2020-07-19T11:24:13+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/posts/</loc>
-    <lastmod>2020-07-19T11:24:13+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/tags/</loc>
-    <lastmod>2020-07-19T11:24:13+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/</loc>
     <lastmod>2020-07-19T11:24:13+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -123,13 +144,6 @@
   
   <url>
     <loc>https://wangtingkui.github.io/2020/05/net-fix-on-centos-7/</loc>
-    <lastmod>2020-05-31T08:40:51+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/</loc>
     <lastmod>2020-05-31T08:40:51+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

@@ -21,7 +21,7 @@
     
     
     <meta name="description" content="介绍 在书写单测代码的过程中，我们要测试的代码段往往会依赖其他的模块，如果是简单的模块还好，但是如果遇到复杂的模块（比如依赖各种其他的组件，d" />
-    <meta name="generator" content="Hugo 0.65.3 with theme pure" />
+    <meta name="generator" content="Hugo 0.62.2 with theme pure" />
     <title>Phpunit解决测试依赖 - xiaok&#39;s site</title>
     
     
@@ -40,7 +40,7 @@
 <meta itemprop="description" content="介绍 在书写单测代码的过程中，我们要测试的代码段往往会依赖其他的模块，如果是简单的模块还好，但是如果遇到复杂的模块（比如依赖各种其他的组件，d">
 <meta itemprop="datePublished" content="2020-07-19T11:24:13&#43;08:00" />
 <meta itemprop="dateModified" content="2020-07-19T11:24:13&#43;08:00" />
-<meta itemprop="wordCount" content="400">
+<meta itemprop="wordCount" content="398">
 
 
 
@@ -156,7 +156,7 @@
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">7</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">3</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">8</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">9</span></li>
         </ul>
     </div>
 </div>
@@ -175,6 +175,10 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/cobra/" class="tag-list-link">cobra</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/editorconfig/" class="tag-list-link">editorconfig</a><span
                     class="tag-list-count">1</span></li>
             
             
@@ -283,9 +287,11 @@
       <h2 id="介绍">介绍</h2>
 <p>在书写单测代码的过程中，我们要测试的代码段往往会依赖其他的模块，如果是简单的模块还好，但是如果遇到复杂的模块（比如依赖各种其他的组件，db、redis、api调用等等），被依赖模块的稳定程度会影响我们的单测。而且被依赖模块返回的不确定性也使得我们无法编写单测代码</p>
 <p>为了解决这类型问题，我们可以使用<a href="http://www.phpunit.cn/manual/6.5/zh_cn/test-doubles.html">测试替身</a>，本质其实就是对数据进行mock</p>
-<p>在 <code>phpunit</code> 中，使用<code>测试替身</code>有两种方式，一种是<code>Stubs（桩件）</code>，另外一种是<code>Mock Object（仿件对象）</code>。这两个概念有啥区别呢？其实是测试重点不同：
-- 桩件注重的是可以对我们被依赖的模块进行返回值的设置，让单测可以按照我们期望的路径运行，往往还需要在我们的单测代码中书写各种断言
-- 仿件对象注重的是被依赖模块的调用过程，比如被依赖对象中的A方法一定会被调用一次，使用仿件对象的单测，往往不需要在我们的单测代码中显示出现断言</p>
+<p>在 <code>phpunit</code> 中，使用<code>测试替身</code>有两种方式，一种是<code>Stubs（桩件）</code>，另外一种是<code>Mock Object（仿件对象）</code>。这两个概念有啥区别呢？其实是测试重点不同：</p>
+<ul>
+<li>桩件注重的是可以对我们被依赖的模块进行返回值的设置，让单测可以按照我们期望的路径运行，往往还需要在我们的单测代码中书写各种断言</li>
+<li>仿件对象注重的是被依赖模块的调用过程，比如被依赖对象中的A方法一定会被调用一次，使用仿件对象的单测，往往不需要在我们的单测代码中显示出现断言</li>
+</ul>
 <h2 id="使用">使用</h2>
 <p>关于测试替身的详细使用，可以直接参考<a href="http://www.phpunit.cn/manual/6.5/zh_cn/test-doubles.html">官方文档</a></p>
 
@@ -303,6 +309,11 @@
                 <a href="https://wangtingkui.github.io/2020/06/closure/" title="php 中的匿名函数和 Closure"><i
                         class="icon icon-angle-left"
                         aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://wangtingkui.github.io/2020/07/editorconfig/"
+                    title="Editorconfig"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
             </li>
             
             <li class="toggle-toc">

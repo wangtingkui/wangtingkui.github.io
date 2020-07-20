@@ -21,7 +21,7 @@
     
     
     <meta name="description" content="本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时" />
-    <meta name="generator" content="Hugo 0.65.3 with theme pure" />
+    <meta name="generator" content="Hugo 0.62.2 with theme pure" />
     <title>Go标准库（time）- 使用 - xiaok&#39;s site</title>
     
     
@@ -156,7 +156,7 @@
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">7</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">3</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">8</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">9</span></li>
         </ul>
     </div>
 </div>
@@ -175,6 +175,10 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/cobra/" class="tag-list-link">cobra</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/editorconfig/" class="tag-list-link">editorconfig</a><span
                     class="tag-list-count">1</span></li>
             
             
@@ -325,7 +329,7 @@
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Format</span>(<span style="color:#e6db74">&#34;2006-01-02 03:04:05&#34;</span>))
 }
 
-<span style="color:#a6e22e">在</span> <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">中</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">时间的格式化非常特别</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">是通过一些指定的数字来进行格式化的</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">这些数字也非常有记忆点</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">口诀是</span><span style="color:#e6db74">`2006 1 2 3 4 5`</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">也就是2006年1月2日下午3点4分5秒</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">不同的格式化就是通过摆弄这些数字来得到的</span>
+<span style="color:#a6e22e">在</span> <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">中</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">时间的格式化非常特别</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">是通过一些指定的数字来进行格式化的</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">这些数字也非常有记忆点</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">口诀是</span><span style="color:#e6db74">`</span><span style="color:#e6db74">2006 1 2 3 4 5</span><span style="color:#e6db74">`</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">也就是2006年1月2日下午3点4分5秒</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">不同的格式化就是通过摆弄这些数字来得到的</span>
 
 </code></pre></div><h3 id="时间段">时间段</h3>
 <p>在 go 中，时间段是使用 <code>time.Duration</code> 来表示的，也是纳秒精度的一个数值，同时 go 也定义了一系列常用的时间精度，比如秒，小时等，看 go 中的源码很简单就能看明白：</p>

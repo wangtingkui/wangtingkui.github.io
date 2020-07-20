@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>EditorConfig on xiaok&#39;s site</title>
+    <link>https://wangtingkui.github.io/tags/editorconfig/</link>
+    <description>Recent content in EditorConfig on xiaok&#39;s site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 20 Jul 2020 14:01:14 +0800</lastBuildDate>
+    
+        <atom:link href="https://wangtingkui.github.io/tags/editorconfig/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>详解字符编码</title>
+      <link>https://wangtingkui.github.io/2019/09/unicode/</link>
+      <pubDate>Sun, 22 Sep 2019 15:45:32 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/09/unicode/</guid>
+      <description>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（一）- hugo使用入门</title>
+      <link>https://wangtingkui.github.io/2019/09/introduction/</link>
+      <pubDate>Sun, 22 Sep 2019 15:28:34 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/09/introduction/</guid>
+      <description>以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们</description>
+    </item>
+    
+  </channel>
+</rss>
