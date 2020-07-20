@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>火焰图 on xiaok&#39;s site</title>
+    <link>https://wangtingkui.github.io/tags/%E7%81%AB%E7%84%B0%E5%9B%BE/</link>
+    <description>Recent content in 火焰图 on xiaok&#39;s site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 20 Jul 2020 15:45:48 +0800</lastBuildDate>
+    
+        <atom:link href="https://wangtingkui.github.io/tags/%E7%81%AB%E7%84%B0%E5%9B%BE/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用火焰图分析性能瓶颈</title>
+      <link>https://wangtingkui.github.io/2020/07/flame/</link>
+      <pubDate>Mon, 20 Jul 2020 15:45:48 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/07/flame/</guid>
+      <description>简介 火焰图是用来分析 CPU 瓶颈的利器，它利用可交互 svg 图片可视化的展示了 CPU 的占用情况，可以帮助我们快速的定位优化方向。因为生成的图片非常像一团熊熊</description>
+    </item>
+    
+    <item>
+      <title>Editorconfig</title>
+      <link>https://wangtingkui.github.io/2020/07/editorconfig/</link>
+      <pubDate>Mon, 20 Jul 2020 14:01:14 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/07/editorconfig/</guid>
+      <description>现如今，各种开发工具百花齐放，每个开发者都会有自己最中意的一款编辑器，但是各种编辑器的配置方式不同，当我们切换编辑器的时候，又需要针对新的编</description>
+    </item>
+    
+    <item>
+      <title>Phpunit解决测试依赖</title>
+      <link>https://wangtingkui.github.io/2020/07/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</link>
+      <pubDate>Sun, 19 Jul 2020 11:24:13 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/07/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</guid>
+      <description>介绍 在书写单测代码的过程中，我们要测试的代码段往往会依赖其他的模块，如果是简单的模块还好，但是如果遇到复杂的模块（比如依赖各种其他的组件，d</description>
+    </item>
+    
+    <item>
+      <title>php 中的匿名函数和 Closure</title>
+      <link>https://wangtingkui.github.io/2020/06/closure/</link>
+      <pubDate>Wed, 24 Jun 2020 11:53:13 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/06/closure/</guid>
+      <description>php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数 php 中的匿名函数是基于 Closure 这个类来实现的 基本使用 通常会将匿名函数用作</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（sync）- 使用</title>
+      <link>https://wangtingkui.github.io/2020/06/sync/</link>
+      <pubDate>Fri, 19 Jun 2020 15:32:25 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/06/sync/</guid>
+      <description>Go 的一大特点就是在语言级别实现了并发，一旦涉及并发，那么不可避免的就需要同步，来确保多个 goroutine 在访问共享资源的时候不会出现混乱的状况 Go 中的 sync 包提</description>
+    </item>
+    
+    <item>
+      <title>go中Context的使用</title>
+      <link>https://wangtingkui.github.io/2020/06/context/</link>
+      <pubDate>Sun, 07 Jun 2020 15:33:50 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/06/context/</guid>
+      <description>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使</description>
+    </item>
+    
+    <item>
+      <title>使用 jordan-wright/email 处理邮件发送</title>
+      <link>https://wangtingkui.github.io/2020/06/mail/</link>
+      <pubDate>Sun, 07 Jun 2020 14:49:31 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/06/mail/</guid>
+      <description>在 go 官方的标准库中，提供了 net/smtp 库可以让我们使用 smtp 协议来发送邮件，但是这个库使用起来不是很方便，而且官方也不再维护这个库，推荐我们使用功能更丰富</description>
+    </item>
+    
+    <item>
+      <title>go中channel的使用</title>
+      <link>https://wangtingkui.github.io/2020/06/channel/</link>
+      <pubDate>Mon, 01 Jun 2020 18:46:47 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/06/channel/</guid>
+      <description>channel 类型 go 中 channel 类型分为两类： 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int) 不带缓冲区的 c</description>
+    </item>
+    
+    <item>
+      <title>VMware funsion 安装 centos7 后配置 NAT 网络</title>
+      <link>https://wangtingkui.github.io/2020/05/net-fix-on-centos-7/</link>
+      <pubDate>Sun, 31 May 2020 08:40:51 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/net-fix-on-centos-7/</guid>
+      <description>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络 一、确定</description>
+    </item>
+    
+    <item>
+      <title>群辉nas使用plex套件</title>
+      <link>https://wangtingkui.github.io/2020/05/plex/</link>
+      <pubDate>Sun, 24 May 2020 10:48:57 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/plex/</guid>
+      <description>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、</description>
+    </item>
+    
+    <item>
+      <title>vscode推荐扩展</title>
+      <link>https://wangtingkui.github.io/2020/05/extension/</link>
+      <pubDate>Sat, 23 May 2020 23:04:47 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/extension/</guid>
+      <description>vscode 扩展推荐 实用 扩展名 用途 推荐主题 主题名 备注 vscode-icons 可以替换vscode的默认图标 Atom One Dark Theme Monokai Pro</description>
+    </item>
+    
+    <item>
+      <title>alfred配置同步</title>
+      <link>https://wangtingkui.github.io/2020/05/sync-setting/</link>
+      <pubDate>Sat, 23 May 2020 20:16:08 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/sync-setting/</guid>
+      <description>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用 alfred 的同步功能本质上是将配置打包成一个文件，然后借助第</description>
+    </item>
+    
+    <item>
+      <title>在go中使用单元测试</title>
+      <link>https://wangtingkui.github.io/2020/05/unit-testing/</link>
+      <pubDate>Sun, 17 May 2020 11:22:21 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/unit-testing/</guid>
+      <description>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持 单测基本规则 单元测试文件必须以_test.go结尾 单元测</description>
+    </item>
+    
+    <item>
+      <title>推荐的atom插件</title>
+      <link>https://wangtingkui.github.io/2020/05/pakage/</link>
+      <pubDate>Sat, 16 May 2020 10:33:59 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/pakage/</guid>
+      <description>atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件 project-manager（atom项目</description>
+    </item>
+    
+    <item>
+      <title>使用zsh主题</title>
+      <link>https://wangtingkui.github.io/2020/05/theme/</link>
+      <pubDate>Tue, 12 May 2020 23:21:29 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/theme/</guid>
+      <description>和插件一样，zsh 为我们提供了丰富的主题和自定义主题的能力，主题也分为两大类，一类是内置主题，另一类是自定义的扩展主题 内置主题 这个其实没啥好</description>
+    </item>
+    
+    <item>
+      <title>alfred workflow 推荐</title>
+      <link>https://wangtingkui.github.io/2020/05/plugin-recommend/</link>
+      <pubDate>Sun, 10 May 2020 11:44:38 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/plugin-recommend/</guid>
+      <description>这篇文站整理下自己经常使用的 alfred workflow TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录 alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目</description>
+    </item>
+    
+    <item>
+      <title>使用zsh插件</title>
+      <link>https://wangtingkui.github.io/2020/05/plugin/</link>
+      <pubDate>Sun, 10 May 2020 11:02:41 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/plugin/</guid>
+      <description>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.z</description>
+    </item>
+    
+    <item>
+      <title>使用 viper 处理项目配置</title>
+      <link>https://wangtingkui.github.io/2020/05/viper/</link>
+      <pubDate>Sun, 03 May 2020 12:05:47 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/viper/</guid>
+      <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置</description>
+    </item>
+    
+    <item>
+      <title>使用 pkg/errors 进行错误处理</title>
+      <link>https://wangtingkui.github.io/2020/04/errors/</link>
+      <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/04/errors/</guid>
+      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： if err != nil { return err } 然后层层传递，最终将错误传递到最上层，这里面存在着两个</description>
+    </item>
+    
+    <item>
+      <title>在hugo中使用shortcode</title>
+      <link>https://wangtingkui.github.io/2020/04/shortcodes/</link>
+      <pubDate>Tue, 14 Apr 2020 15:50:45 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/04/shortcodes/</guid>
+      <description>markdown 因为简洁的语法非常受到写文章的人的喜爱，但是某些情况下 markdown 也有不足，比如我们想展示一些特殊的样式或者格式的时候，往往需要直接书写 html 代码，这就</description>
+    </item>
+    
+  </channel>
+</rss>

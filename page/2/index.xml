@@ -5,10 +5,19 @@
     <link>https://wangtingkui.github.io/</link>
     <description>Recent content on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 20 Jul 2020 14:01:14 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jul 2020 15:45:48 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go标准库（time）- 使用</title>
+      <link>https://wangtingkui.github.io/2020/04/time/</link>
+      <pubDate>Sun, 12 Apr 2020 23:31:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/04/time/</guid>
+      <description>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时</description>
+    </item>
     
     <item>
       <title>Go标准库（log）- 使用</title>
@@ -179,15 +188,6 @@
       
       <guid>https://wangtingkui.github.io/2019/12/deploy-on-github-pages/</guid>
       <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点</description>
-    </item>
-    
-    <item>
-      <title>go cli 应用框架cobra（一）- 简介</title>
-      <link>https://wangtingkui.github.io/2019/12/cobra/</link>
-      <pubDate>Sun, 01 Dec 2019 10:17:30 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2019/12/cobra/</guid>
-      <description>简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架 一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users</description>
     </item>
     
   </channel>

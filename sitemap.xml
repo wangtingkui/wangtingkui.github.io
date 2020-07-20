@@ -4,7 +4,49 @@
   
   <url>
     <loc>https://wangtingkui.github.io/categories/</loc>
-    <lastmod>2020-07-20T14:01:14+08:00</lastmod>
+    <lastmod>2020-07-20T15:45:48+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/posts/</loc>
+    <lastmod>2020-07-20T15:45:48+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/</loc>
+    <lastmod>2020-07-20T15:45:48+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/</loc>
+    <lastmod>2020-07-20T15:45:48+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/2020/07/flame/</loc>
+    <lastmod>2020-07-20T15:45:48+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</loc>
+    <lastmod>2020-07-20T15:45:48+08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://wangtingkui.github.io/tags/%E7%81%AB%E7%84%B0%E5%9B%BE/</loc>
+    <lastmod>2020-07-20T15:45:48+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -18,27 +60,6 @@
   
   <url>
     <loc>https://wangtingkui.github.io/2020/07/editorconfig/</loc>
-    <lastmod>2020-07-20T14:01:14+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/posts/</loc>
-    <lastmod>2020-07-20T14:01:14+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/tags/</loc>
-    <lastmod>2020-07-20T14:01:14+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://wangtingkui.github.io/</loc>
     <lastmod>2020-07-20T14:01:14+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
