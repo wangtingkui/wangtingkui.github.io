@@ -20,8 +20,8 @@
     <meta http-equiv="window-target" content="_top" />
     
     
-    <meta name="description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装 第一步 首先需要下载二进制文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar chmod" />
-    <meta name="generator" content="Hugo 0.62.2 with theme pure" />
+    <meta name="description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装过程 第一步 首先需要下载二进制文件 curl -L -O" />
+    <meta name="generator" content="Hugo 0.65.3 with theme pure" />
     <title>php多版本管理 - xiaok&#39;s site</title>
     
     
@@ -31,22 +31,22 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" async>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
     <meta property="og:title" content="php多版本管理" />
-<meta property="og:description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装 第一步 首先需要下载二进制文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar chmod" />
+<meta property="og:description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装过程 第一步 首先需要下载二进制文件 curl -L -O" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://wangtingkui.github.io/2020/01/php-multi-version/" />
 <meta property="article:published_time" content="2020-01-14T19:11:11+08:00" />
 <meta property="article:modified_time" content="2020-01-14T19:11:11+08:00" />
 <meta itemprop="name" content="php多版本管理">
-<meta itemprop="description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装 第一步 首先需要下载二进制文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar chmod">
+<meta itemprop="description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装过程 第一步 首先需要下载二进制文件 curl -L -O">
 <meta itemprop="datePublished" content="2020-01-14T19:11:11&#43;08:00" />
 <meta itemprop="dateModified" content="2020-01-14T19:11:11&#43;08:00" />
-<meta itemprop="wordCount" content="1259">
+<meta itemprop="wordCount" content="1359">
 
 
 
 <meta itemprop="keywords" content="php," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="php多版本管理"/>
-<meta name="twitter:description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装 第一步 首先需要下载二进制文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar chmod"/>
+<meta name="twitter:description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装过程 第一步 首先需要下载二进制文件 curl -L -O"/>
 
     <!--[if lte IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -154,6 +154,7 @@
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">4</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">5</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/guzzle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="category-list-link">guzzle源码分析</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">3</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">9</span></li>
@@ -191,6 +192,10 @@
                     class="tag-list-count">24</span></li>
             
             
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/guzzle/" class="tag-list-link">guzzle</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
                     class="tag-list-count">2</span></li>
             
@@ -205,6 +210,14 @@
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
                     class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="tag-list-link">php源码分析</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/promise/" class="tag-list-link">promise</a><span
+                    class="tag-list-count">1</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
@@ -293,15 +306,15 @@
 <ul>
 <li><a href="https://github.com/phpbrew/phpbrew/blob/master/README.cn.md">phpbrew github 地址</a></li>
 </ul>
-<h3 id="phpbrew安装">phpbrew安装</h3>
-<h4 id="第一步">第一步</h4>
+<h2 id="phpbrew安装过程">phpbrew安装过程</h2>
+<h3 id="第一步">第一步</h3>
 <p>首先需要下载二进制文件</p>
 <pre><code>curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar
 chmod +x phpbrew.phar
 
 # Move the file to some directory within your $PATH
 sudo mv phpbrew.phar /usr/local/bin/phpbrew
-</code></pre><h4 id="第二步">第二步</h4>
+</code></pre><h3 id="第二步">第二步</h3>
 <p>安装好二进制文件之后，phpbrew还需要一点简单的配置才能使用</p>
 <pre><code># 初始化phpbrew shell脚本
 phpbrew init
@@ -311,10 +324,10 @@ echo &quot;[[ -e ~/.phpbrew/bashrc ]] &amp;&amp; source ~/.phpbrew/bashrc&quot; 
 
 # 重新加载shell配置文件
 source ~/.zshrc
-</code></pre><h4 id="第三步">第三步</h4>
+</code></pre><h3 id="第三步">第三步</h3>
 <p>设置用于查找库文件的默认前缀，可选值有 macports，homebrew，debian，ubuntu 或是自定义路径。</p>
 <p>对于使用homebrew的用户，可以设置<code>phpbrew lookup-prefix homebrew</code></p>
-<h3 id="phpbrew命令简单使用">phpbrew命令简单使用</h3>
+<h2 id="phpbrew命令简单使用">phpbrew命令简单使用</h2>
 <pre><code># 查看phpbrew版本
 phpbrew --version
 
@@ -347,7 +360,7 @@ phpbrew fpm [start|restart|stop]
 
 # 升级phpbrew
 phpbrew self-update
-</code></pre><h3 id="编译安装指定版本php">编译安装指定版本php</h3>
+</code></pre><h2 id="一个安装demo">一个安装demo</h2>
 <p>之所以单独将安装命令拿出来写，是因为相对而言，phpbrew的安装命令比较复杂，phpbrew提出了一个<code>Variants</code>的概念，将php编译的复杂的配置选项屏蔽起来</p>
 <p>你只需简单地指定某个 Variant 即可，phpbrew 会自动在配置过程中检测引用目录、编译选项等。</p>
 <p>PHPBrew 提供默认的 Variants ，以及一些虚拟 Variants。 「Default Variants」包含绝大多数公共 Variants； 「Virtual Variants」可包含多个 Variants，使用一个虚拟 Variants 即可一次性启用多个 Variants。</p>
@@ -396,13 +409,17 @@ phpbrew install 7.0.13 +all +openssl=/usr/local/opt/openssl
 </code></pre><p>如果有些配置没有被包含到<code>variants</code>中，我们可以在安装命令的末尾添加原始的编译选项<code>-- 原始选项</code>，注意<code>--</code>是必不可少的，他是<code>variants</code>和原始编译选项的分隔符</p>
 <p>我安装的一个demo</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">phpbrew install 7.0.33 +default +mb +dbs +fpm -pgsql +zlib<span style="color:#f92672">=</span>/usr/local/opt/zlib
-</code></pre></div><h3 id="mac安装过程中经常会缺少的库报错集合">mac安装过程中经常会缺少的库报错集合</h3>
+</code></pre></div><h2 id="常见问题">常见问题</h2>
+<h3 id="mac安装过程中经常会缺少的库报错集合">mac安装过程中经常会缺少的库报错集合</h3>
 <pre><code># error
 configure: error: utf8_mime2text() has new signature, but U8T_CANONICAL is missing. This should not happen. Check config.log for additional information.
 
 #fix
 brew install imap-uw
-</code></pre>
+</code></pre><h3 id="安装指定版本-php提示解压错误">安装指定版本 php，提示解压错误</h3>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ggzk3au02hj30y309pq55.jpg" alt=""></p>
+<p>这种问题一般都是通过phpbrew下载php压缩包文件格式不对，可以自己先将指定版本的压缩包下载到 ~/.phpbrew/distfiles 目录，这要就可以跳过 phpbrew 自身的下载过程，然后再重新执行 <code>phpbrew install</code> 就好了</p>
+
     </div>
     <div class="article-footer">
     </div>

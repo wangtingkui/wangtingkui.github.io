@@ -20,7 +20,7 @@
     
     
     
-    <meta name="generator" content="Hugo 0.62.2 with theme pure" />
+    <meta name="generator" content="Hugo 0.65.3 with theme pure" />
     <title>xiaok&#39;s site</title>
     
     <link rel="alternate" type="application/rss+xml" href="https://wangtingkui.github.io/index.xml" title="xiaok's site" />
@@ -34,7 +34,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://wangtingkui.github.io/" />
-<meta property="og:updated_time" content="2020-07-20T15:45:48+08:00" />
+<meta property="og:updated_time" content="2020-09-26T17:15:06+08:00" />
 <meta itemprop="name" content="xiaok&#39;s site">
 <meta itemprop="description" content=""><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="xiaok&#39;s site"/>
@@ -146,6 +146,7 @@
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">4</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">5</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/guzzle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="category-list-link">guzzle源码分析</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">3</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">9</span></li>
@@ -183,6 +184,10 @@
                     class="tag-list-count">24</span></li>
             
             
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/guzzle/" class="tag-list-link">guzzle</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
                     class="tag-list-count">2</span></li>
             
@@ -197,6 +202,14 @@
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
                     class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="tag-list-link">php源码分析</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/promise/" class="tag-list-link">promise</a><span
+                    class="tag-list-count">1</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
@@ -246,6 +259,46 @@
     
     
     
+    <article
+      class="article article-type-page"
+      itemscope
+      itemtype="http://schema.org/BlogPosting"
+    >
+      <div class="article-header">
+        <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2020/09/guzzle-promise/"
+    >Guzzle Promise 源码分析</a
+  >
+</h1>
+
+      </div>
+      <div class="article-entry text-muted" itemprop="description">
+        简介 这篇文章着重讲解下 guzzle/promise 这个包，guzzle 中大量了使用了这个包来进行异步编程 首先让我们介绍下什么是 promise 以及是用来干什么的：简单来讲，prom
+      </div>
+      <p class="article-meta">
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://wangtingkui.github.io/2020/09/guzzle-promise/" class="">
+  <time datetime="2020-09-26 17:15:06 &#43;0800 CST" itemprop="datePublished">2020-09-26</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/guzzle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"> guzzle源码分析 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/promise/"> promise </a>
+    <a class="article-tag-link" href="/tags/guzzle/"> guzzle </a>
+    <a class="article-tag-link" href="/tags/php%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"> php源码分析 </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/2020/09/guzzle-promise/#comments" class="article-comment-link">Comments</a></span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 1minutes </span>
+      </p>
+    </article>
     <article
       class="article article-type-page"
       itemscope
@@ -434,44 +487,6 @@
 
         <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/2020/06/sync/#comments" class="article-comment-link">Comments</a></span>
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 3minutes </span>
-      </p>
-    </article>
-    <article
-      class="article article-type-page"
-      itemscope
-      itemtype="http://schema.org/BlogPosting"
-    >
-      <div class="article-header">
-        <h1 itemprop="name">
-  <a
-    class="article-title"
-    href="/2020/06/context/"
-    >go中Context的使用</a
-  >
-</h1>
-
-      </div>
-      <div class="article-entry text-muted" itemprop="description">
-        go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使
-      </div>
-      <p class="article-meta">
-<span class="article-date">
-  <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://wangtingkui.github.io/2020/06/context/" class="">
-  <time datetime="2020-06-07 15:33:50 &#43;0800 CST" itemprop="datePublished">2020-06-07</time>
-</a>
-</span>
-<span class="article-category">
-  <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/go%E5%9F%BA%E7%A1%80/"> go基础 </a>
-</span>  
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/go/"> go </a>
-  </span>
-
-        <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/2020/06/context/#comments" class="article-comment-link">Comments</a></span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 2minutes </span>
       </p>
     </article></div>
   

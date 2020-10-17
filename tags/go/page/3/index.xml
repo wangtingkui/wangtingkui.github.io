@@ -11,6 +11,15 @@
     
     
     <item>
+      <title>使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</title>
+      <link>https://wangtingkui.github.io/2019/12/deploy-on-github-pages/</link>
+      <pubDate>Sun, 01 Dec 2019 13:56:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/deploy-on-github-pages/</guid>
+      <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点</description>
+    </item>
+    
+    <item>
       <title>go cli 应用框架cobra（一）- 简介</title>
       <link>https://wangtingkui.github.io/2019/12/cobra/</link>
       <pubDate>Sun, 01 Dec 2019 10:17:30 +0800</pubDate>

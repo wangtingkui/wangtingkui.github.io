@@ -21,7 +21,7 @@
     
     
     <meta name="description" content="Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 支持" />
-    <meta name="generator" content="Hugo 0.62.2 with theme pure" />
+    <meta name="generator" content="Hugo 0.65.3 with theme pure" />
     <title>使用hugo搭建个人网站（四）- Front Matter 配置详解 - xiaok&#39;s site</title>
     
     
@@ -154,6 +154,7 @@
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">4</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">5</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/guzzle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="category-list-link">guzzle源码分析</a><span class="category-list-count">1</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">3</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">9</span></li>
@@ -191,6 +192,10 @@
                     class="tag-list-count">24</span></li>
             
             
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/guzzle/" class="tag-list-link">guzzle</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
                     class="tag-list-count">2</span></li>
             
@@ -205,6 +210,14 @@
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
                     class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="tag-list-link">php源码分析</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/promise/" class="tag-list-link">promise</a><span
+                    class="tag-list-count">1</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
@@ -319,34 +332,34 @@
 </table>
 <p><code>Front Matter</code>支持的标准配置有很多，但是只有两个属性是必须的，那就是<code>title</code>和<code>date</code>，代表了文章的标题和写作时间</p>
 <p>下面是hugo默认支持的常用<code>Front Matter</code>属性：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">title: <span style="color:#e6db74">&#34;文章标题&#34;</span>
-date: <span style="color:#e6db74">2012-12-12</span>
-description: <span style="color:#e6db74">&#34;文章描述信息&#34;</span>
-tags: [<span style="color:#e6db74">&#34;标签1&#34;</span>, <span style="color:#e6db74">&#34;标签2&#34;</span>]
-categories: [<span style="color:#e6db74">&#34;分类1&#34;</span>, <span style="color:#e6db74">&#34;分类2&#34;</span>]
-keywords: [<span style="color:#e6db74">&#34;关键字1&#34;</span>, <span style="color:#e6db74">&#34;关键字2&#34;</span>]
-lastmod: <span style="color:#e6db74">2015-10-10</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">title</span>: <span style="color:#e6db74">&#34;文章标题&#34;</span>
+<span style="color:#66d9ef">date</span>: <span style="color:#e6db74">2012-12-12</span>
+<span style="color:#66d9ef">description</span>: <span style="color:#e6db74">&#34;文章描述信息&#34;</span>
+<span style="color:#66d9ef">tags</span>: [<span style="color:#e6db74">&#34;标签1&#34;</span>, <span style="color:#e6db74">&#34;标签2&#34;</span>]
+<span style="color:#66d9ef">categories</span>: [<span style="color:#e6db74">&#34;分类1&#34;</span>, <span style="color:#e6db74">&#34;分类2&#34;</span>]
+<span style="color:#66d9ef">keywords</span>: [<span style="color:#e6db74">&#34;关键字1&#34;</span>, <span style="color:#e6db74">&#34;关键字2&#34;</span>]
+<span style="color:#66d9ef">lastmod</span>: <span style="color:#e6db74">2015-10-10</span>
 
-isCJKLanguage: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># 是否是CJK语言</span>
+<span style="color:#66d9ef">isCJKLanguage</span>: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># 是否是CJK语言</span>
 
-draft: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># 是否是草稿</span>
-expiryDate: <span style="color:#e6db74">2020-10-10</span> <span style="color:#75715e"># 文章过期时间</span>
-publishDate: <span style="color:#e6db74">2020-10-10</span> <span style="color:#75715e"># 文章发布时间</span>
+<span style="color:#66d9ef">draft</span>: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># 是否是草稿</span>
+<span style="color:#66d9ef">expiryDate</span>: <span style="color:#e6db74">2020-10-10</span> <span style="color:#75715e"># 文章过期时间</span>
+<span style="color:#66d9ef">publishDate</span>: <span style="color:#e6db74">2020-10-10</span> <span style="color:#75715e"># 文章发布时间</span>
 
-weight: <span style="color:#ae81ff">40</span> <span style="color:#75715e"># 文章排序权重，数值越小越在前</span>
+<span style="color:#66d9ef">weight</span>: <span style="color:#ae81ff">40</span> <span style="color:#75715e"># 文章排序权重，数值越小越在前</span>
 
 <span style="color:#75715e"># 使用这两个参数会重置permalink，默认使用文件名</span>
-url:
-slug:
+<span style="color:#66d9ef">url</span>:
+<span style="color:#66d9ef">slug</span>:
 
 <span style="color:#75715e"># 文章地址的别名</span>
-aliases:
+<span style="color:#66d9ef">aliases</span>:
 	- /posts/hxxxx
 	- xxxx
 
 <span style="color:#75715e"># type 和 layout 将会改变 hugo 寻找文章模板的顺序</span>
-type: review
-layout: reviewartical
+<span style="color:#66d9ef">type</span>: review
+<span style="color:#66d9ef">layout</span>: reviewartical
 
 </code></pre></div><h3 id="参考">参考</h3>
 <ul>
