@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>go基础 on xiaok&#39;s blog</title>
+    <title>go基础 on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/</link>
-    <description>Recent content in go基础 on xiaok&#39;s blog</description>
+    <description>Recent content in go基础 on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Sun, 07 Jun 2020 15:33:50 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>go中Context的使用</title>
@@ -13,10 +13,7 @@
       <pubDate>Sun, 07 Jun 2020 15:33:50 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/context/</guid>
-      <description>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使用比较少
-使用 Context 本身是 context 包对外暴露的一个接口
-type Context interface { Deadline() (deadline time.Time, ok bool) // 返回当前 Context 的截止日期  Done() &amp;lt;-chan struct{} // 返回一个 channel，这个channel会在 Context 截止日期到了或者被取消之后关闭，多次调用Done会返回同一个channel  Err() error // 表明 Done 的原因，如果是超时，为DeadlineExceeded错误。如果是被取消，则是Canceled错误  Value(key interface{}) interface{} // 返回Context中key对应的value } 当前 go 中为我们提供了多个方法来创建 Context：
- context.TODO 和 context.Background，这两个方法都是返回一个预先实例化好的空 context 对象，如果没有特殊需求，所有的 context 应该都基于 context.Background来创建 context.WithCancel，创建可取消的上下文 context.WithDeadline，创建有超时时间的上下文 context.WithTimeout，对 context.WithDeadline的封装，更容易使用 context.WithValue，创建有键值对的上下文  一个简单的使用 demo：</description>
+      <description>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使</description>
     </item>
     
     <item>
@@ -25,10 +22,7 @@ type Context interface { Deadline() (deadline time.Time, ok bool) // 返回当�
       <pubDate>Mon, 01 Jun 2020 18:46:47 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/channel/</guid>
-      <description>channel 类型 go 中 channel 类型分为两类：
- 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int)  不带缓冲区的 channel，写入和读取都会阻塞，在使用的时候必须有对应的写入 goroutine 和读取 goroutine，否则会造成死锁；带缓冲区的 channel，在缓冲区没满的时候会先将数据发到缓冲区，然后立即返回，如果缓冲区满了，会阻塞 goroutine
-为了操作上的安全和可读性，我们还可以限制 channel 的读写属性，默认 channel 都是可读可写的，可以使用 &amp;lt;-chan 来限定只读 channel， 使用chan&amp;lt;-来限定只写 channel，需要注意的是，只读的channel是不能关闭的
-func main() { ch := make(chan int, 10) go func(ch chan&amp;lt;- int) { for i := 0; i &amp;lt; 10; i++ { ch &amp;lt;- 1 // 这里如果使用 &amp;lt;- ch，编译是不通过的 	} close(ch) }(ch) for i := 0; i &amp;lt; 10; i++ { fmt.</description>
+      <description>channel 类型 go 中 channel 类型分为两类： 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int) 不带缓冲区的 c</description>
     </item>
     
     <item>
@@ -37,12 +31,7 @@ func main() { ch := make(chan int, 10) go func(ch chan&amp;lt;- int) { for i := 
       <pubDate>Sun, 17 May 2020 11:22:21 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/unit-testing/</guid>
-      <description>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持
-单测基本规则  单元测试文件必须以_test.go结尾 单元测试文件名前面的部分最好和要被测试的方法所在的文件名保持一致 单元测试函数名称必须要以TestXxxx的格式书写，函数必须要接受一个testing.T类型的指针，不能有返回值 单元测试函数名最好能和被测试的函数保持对应，比如要测试的方法是Add，那么单测函数的名字最好是TestAdd，如果被测试的方法在同一个包下的多个结构体中都有，那么单测函数的名字可以是Test结构体名字_方法名，比如TestMyStruct_Add  一个demo 包文件结构
-❯ tree . ├── main.go └── main_test.go 0 directories, 2 files main.go文件内容
-package main func Add(x, y int) int { return x + y } func main() { } main_test.go内容
-package main import ( &amp;quot;testing&amp;quot; ) func TestAdd(t *testing.T) { if Add(1, 2) != 3 { t.Errorf(&amp;quot;test add func err&amp;quot;) } } 执行结果
-❯ go test PASS ok test-go/unit-testing	0.006s 使用testing.</description>
+      <description>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持 单测基本规则 单元测试文件必须以_test.go结尾 单元测</description>
     </item>
     
     <item>
@@ -51,10 +40,7 @@ package main import ( &amp;quot;testing&amp;quot; ) func TestAdd(t *testing.T) {
       <pubDate>Sun, 05 Jan 2020 15:33:50 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/go-file-operation/</guid>
-      <description>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供了一些常用的方法供开发者使用
-本文只列出了一些常用的方法，更多的操作可以参考：https://colobu.com/2016/10/12/go-file-operations
-使用 os 包进行文件操作  打开文件
- package main import ( &amp;#34;os&amp;#34; ) func main() { var ( file *os.File err error ) // 以只读方式打开一个文件 	file, err = os.Open(&amp;#34;a.txt&amp;#34;) if err != nil { panic(err) } _ = file.Close() // 以指定的模式打开文件，这个方法更具有通用性 	// 一般情况下我们应该尽量使用 os.Open 和 os.Create 方法而不是这个方法 	file, err = os.OpenFile(&amp;#34;a.txt&amp;#34;, os.O_APPEND, 0666) if err != nil { panic(err) } _ = file.</description>
+      <description>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供</description>
     </item>
     
     <item>
@@ -63,12 +49,7 @@ package main import ( &amp;quot;testing&amp;quot; ) func TestAdd(t *testing.T) {
       <pubDate>Fri, 13 Dec 2019 14:46:50 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/go-multi-version-manage/</guid>
-      <description>之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下使用gvm进行go的多版本管理
-gvm的信息可以参考：https://github.com/moovweb/gvm
-环境信息  macOS 10.15.2 brew 2.1.16  安装gvm bash &amp;lt; &amp;lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) 下载好之后，需要修改下个人配置文件，使gvm相关命令生效，如果用的是bash，则修改~/.bashrc，如果习惯用zsh，那就修改~/.zshrc，以此类推
-[[ -s &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; ]] &amp;amp;&amp;amp; source &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; 修改之后，重开一会会话或者直接source ~/.zshrc（我用的是zsh）让刚才的修改生效。执行一下看下效果
-╰─$ gvm version Go Version Manager v1.0.22 installed at /Users/wangtingkui/.gvm 可以看到，我装的是 1.0.22 的版本
-常用命令 # 查看gvm版本 gvm version # 查看所有可以安装的版本 gvm listall # 查看本地已经安装的版本 gvm list # 安装指定版本 gvm install go1.13.5 # 删除指定版本 gvm uninstall go1.13.5 # 临时切换版本 gvm use go1.13.5 # 切换版本并指定为默认版本 gvm use go1.</description>
+      <description>之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下</description>
     </item>
     
   </channel>

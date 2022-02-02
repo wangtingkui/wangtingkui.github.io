@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>使用hugo搭建个人网站 on xiaok&#39;s blog</title>
+    <title>使用hugo搭建个人网站 on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</link>
-    <description>Recent content in 使用hugo搭建个人网站 on xiaok&#39;s blog</description>
+    <description>Recent content in 使用hugo搭建个人网站 on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Tue, 14 Apr 2020 15:50:45 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在hugo中使用shortcode</title>
@@ -13,12 +13,7 @@
       <pubDate>Tue, 14 Apr 2020 15:50:45 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/shortcodes/</guid>
-      <description>markdown 因为简洁的语法非常受到写文章的人的喜爱，但是某些情况下 markdown 也有不足，比如我们想展示一些特殊的样式或者格式的时候，往往需要直接书写 html 代码，这就和 markdown 简洁的初衷相违背了，hugo 提供了shortcode的功能来弥补了 markdown 的这个不足。shortcode 本质上是一些模板，我们可以使用定义好的指令来引用这些模板，相当于书写了一段html在文章中，更多的说明可以查看官网，接下来我们来看看怎么使用 shortcode
-简单使用 使用 shortcode 的语法是 {{% shortcodename parameters %}}，其中：
- shortcodename 是 shortcode 的名字 parameters 是参数列表，如果有多个参数，使用空格分隔，如果某个参数中有空格，需要用双引号把这个参数包起来 % 是定界符，也有使用&amp;lt;和&amp;gt;做定界符的，{{&amp;lt; shortcodename parameters &amp;gt;}}  参数有两种传递方式，基于名字的({{% shortcodename name1=value1 name2=value2 %}}))和基于位置的({{% shortcodename value1 value2 %}})，使用哪种方式取决于 shortcode 自己模板的定义。
-有的 shortcode 使用的时候要求闭合，类似 html 标签，比如 {{&amp;lt; highlight go &amp;gt;}} A bunch of code here {{&amp;lt; /highlight &amp;gt;}}
-常用的内置 shortcode
-   shortcodename 说明 usage     ref 使用绝对路径引用博客内其他文章 {{% ref &amp;quot;blog/other_article.</description>
+      <description>markdown 因为简洁的语法非常受到写文章的人的喜爱，但是某些情况下 markdown 也有不足，比如我们想展示一些特殊的样式或者格式的时候，往往需要直接书写 html 代码，这就</description>
     </item>
     
     <item>
@@ -27,10 +22,7 @@
       <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/hugo-categorize-your-artical/</guid>
-      <description>hugo 内置了强大且支持自定义的分类系统，比如标签、类别、系列等，可以通过配置开启这些分类系统
-在config.toml中配置：
-[taxonomies] tag = &amp;quot;tags&amp;quot; category = &amp;quot;categories&amp;quot; seris = &amp;quot;series&amp;quot; 开启之后，只需要在文章的Front Matter对应的属性中，添加想要划分到的分类即可
---- title: &amp;quot;php入门&amp;quot; date: 2019-10-10 tags: [&amp;quot;php&amp;quot;] categories: [&amp;quot;php&amp;quot;] series: [&amp;quot;php入门系列&amp;quot;] </description>
+      <description>hugo 内置了强大且支持自定义的分类系统，比如标签、类别、系列等，可以通过配置开启这些分类系统 在config.toml中配置： 1[taxonomies] 2tag = &amp;#34;tags&amp;#34; 3category = &amp;#34;categories&amp;#34; 4seris = &amp;#34;series&amp;#34;</description>
     </item>
     
     <item>
@@ -39,16 +31,7 @@
       <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/hugo-custom-your-domain/</guid>
-      <description>github pages 为我们提供的站点域名是 &amp;lt;username&amp;gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到 github pages 上呢，当然是可以的
-github pages 支持多种域名类型，不同的域名类型配置有细微的区别
-配置二级域名 二级域名就是类似baidu.com这种，.com是顶级域,baidu是二级域
-首先进入到 github 仓库的设置，找到 GitHub Pages 项下的 Custom domain 配置项  
-输入你的二级域名，点击保存，这个操作会自动在你的仓库代码的根目录下添加一个CNAME文件  
-最后还需要在你的dns服务提供商那里配置一下域名解析，对于二级域名来说，你可以配置ALIAS记录,ANAME记录或者是A记录
-如果配置的是ALIAS或者ANAME，需要把你二级域名指向默认的站点域名，也就是&amp;lt;username.github,io&amp;gt;
-如果配置的是A记录，把你的二级域名指向下面的ip，具体会不会变化可以参考官方文档
-185.199.108.153 185.199.109.153 185.199.110.153 185.199.111.153 配置子域名 可以参考官方文档
-参考  github pages 官方文档  </description>
+      <description>github pages 为我们提供的站点域名是 &amp;lt;username&amp;gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到</description>
     </item>
     
     <item>
@@ -57,13 +40,7 @@ github pages 支持多种域名类型，不同的域名类型配置有细微的�
       <pubDate>Sat, 07 Dec 2019 16:01:41 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/hugo-custom-your-url/</guid>
-      <description>默认情况下，站点文章的 url 和我们 content 目录下的文件结构是一一对应的，比如有 content/posts/test.md 这篇文章，当我们发布之后，在站点访问的 url 就是 &amp;lt;domian&amp;gt;/posts/test，如果我们不想要这种形式，可以通过配置来改变默认的行为
-在使用配置之前，先让我们了解下 hugo 生成的 url 规则
- 
-知道了每个段的含义，我们就可以使用hugo提供给我们的配置项来进行url的自定义
-可以在config.toml文件中的[permalinks]配置指定url的格式，比如
-[permalinks] post = &amp;quot;/:year/:month/:title/&amp;quot; 所有可用的属性如下
-:month :monthname :day :weekday :weekdayname :yearday :section :title :slug :filename </description>
+      <description>默认情况下，站点文章的 url 和我们 content 目录下的文件结构是一一对应的，比如有 content/posts/test.md 这篇文章，当我们发布之后，在站点访问的 url 就是 &amp;lt;domian&amp;gt</description>
     </item>
     
     <item>
@@ -72,10 +49,7 @@ github pages 支持多种域名类型，不同的域名类型配置有细微的�
       <pubDate>Sat, 07 Dec 2019 15:55:24 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/hugo-template-order/</guid>
-      <description>加入我们要寻找content/posts下文章的模板
-当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模板查找顺序是：
-&amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html 当指定了type和layout属性的时候，查找顺序是：
-&amp;lt;project_path&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html </description>
+      <description>加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模</description>
     </item>
     
     <item>
@@ -84,9 +58,7 @@ github pages 支持多种域名类型，不同的域名类型配置有细微的�
       <pubDate>Sat, 07 Dec 2019 15:31:44 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/front-matter/</guid>
-      <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。
-Front Matter 支持4种配置语言 YAML,JSON,TOML,ORG，可以通过Front Matter的前导符（包裹Front Matter的定界符）来告诉hugo我们使用的是什么配置语言，各种配置语言的前导符如下：
-   格式 定界符     toml 开始和结束行使用+++   yaml 开始和结束行使用---   json 使用一个json对象，对象后需要跟一个空白行   org a group of Org mode keywords in the format ‘#+KEY: VALUE’. Any line that does not start with #+ ends the front matter section. Keyword values can be either strings (#+KEY: VALUE) or a whitespace separated list of strings (#+KEY[]: VALUE_1 VALUE_2).</description>
+      <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 支持</description>
     </item>
     
     <item>
@@ -95,10 +67,7 @@ Front Matter 支持4种配置语言 YAML,JSON,TOML,ORG，可以通过Front Matte
       <pubDate>Mon, 02 Dec 2019 14:12:07 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/ref-other-article/</guid>
-      <description>我们可以在文章中引用自己的其他文章，hugo 帮我们实现了这种功能，只需要在文章中使用 {{&amp;lt; ref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}或者{{&amp;lt; relref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}即可，前者是相对链接，后者是绝对链接
-这个功能其实是 hugo 提供的 Shortcodes功能
-一些例子：
-{{&amp;lt; ref &amp;quot;blog/post.md&amp;quot; &amp;gt;}} =&amp;gt; https://example.com/blog/post/ {{&amp;lt; ref &amp;quot;post.md#tldr&amp;quot; &amp;gt;}} =&amp;gt; https://example.com/blog/post/#tldr:caffebad {{&amp;lt; relref &amp;quot;post.md&amp;quot; &amp;gt;}} =&amp;gt; /blog/post/ {{&amp;lt; relref &amp;quot;blog/post.md#tldr&amp;quot; &amp;gt;}} =&amp;gt; /blog/post/#tldr:caffebad {{&amp;lt; ref &amp;quot;#tldr&amp;quot; &amp;gt;}} =&amp;gt; #tldr:badcaffe {{&amp;lt; relref &amp;quot;#tldr&amp;quot; &amp;gt;}} =&amp;gt; #tldr:badcaffe 如果是不是需要引用，而仅仅是需要展示{{&amp;lt; ref &amp;quot;blog/post.md&amp;quot; &amp;gt;}}这样的文本，需要在标签内加上/* */这样的注释，比如{{&amp;lt;/* ref &amp;quot;blog/post.md&amp;quot; */&amp;gt;}}</description>
+      <description>我们可以在文章中引用自己的其他文章，hugo 帮我们实现了这种功能，只需要在文章中使用 {{&amp;lt; ref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}或者{{&amp;lt; relref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}即可，</description>
     </item>
     
     <item>
@@ -107,12 +76,7 @@ Front Matter 支持4种配置语言 YAML,JSON,TOML,ORG，可以通过Front Matte
       <pubDate>Sun, 01 Dec 2019 13:56:09 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/deploy-on-github-pages/</guid>
-      <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点的生成，那么剩下的一个问题就是如何部署我们生成的站点，供其他人访问
-这篇文章帮助我们了解如何使用github pages的功能来部署我们的个人站点
-使用 github pages 的好处  完全免费 不需要自己购买服务器 不需要自己运行维护 可以方便的使用https  github pages 的限制 当然github pages本身还是有一些限制的
- 网站大小不能超过1GB 网站不能发布的过于频繁（每小时不超过10个版本） 每个月流量上限为1000GB  但是作为个人博客来说，这些限制几乎对我们没什么影响
-如何使用 github pages github pages 官方文档
- 申请一个github账号，每个github账号可以有一个个人站点和多个项目站点（这个以后有机会在单独写文章说一下） 创建一个&amp;lt;username&amp;gt;.github.io的仓库 当我们执行hugo命令去生成我们的静态站点的文件时，默认会放在当前目录的public目录（当然你也可以通过配置hugo从而指定目录），所以我们直接把创建好的仓库拉取到项目下的public目录即可git clone git@github.com:wangtingkui/wangtingkui.github.io.git ./public 指定hugo命令生成站点文件 进入public文件夹，将生成的文件提交到git，然后推送到远端即可  cd public git add . git commit -m &amp;#34;提交信息&amp;#34; git push -u origin master 推送之后，访问&amp;lt;username&amp;gt;.github.io你就会惊奇的发现你的个人站点已经可以访问了，如果访问的时候没有效果，也不要着急，那是github还在处理中，去休息一下，过段时间在访问就会生效啦~</description>
+      <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点</description>
     </item>
     
     <item>
@@ -121,18 +85,7 @@ Front Matter 支持4种配置语言 YAML,JSON,TOML,ORG，可以通过Front Matte
       <pubDate>Sun, 22 Sep 2019 15:28:34 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/introduction/</guid>
-      <description>以blog为例，看看hugo是如何使用的
-创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们的项目目录
-简单了解下目录的结构
-. ├── archetypes # 存储 .md 的模板文件 │ └── default.md ├── config.toml # 配置文件 ├── content # 存储网站所有的内容 ├── data # 存储数据文件供模板调用 ├── layouts # 存储 .html 模板 ├── static # 存储图片、css、js等静态文件，该目录下的文件会直接拷贝到 /public └── themes # 存储主题 6 directories, 2 files 快速体验 让我们快速体验下hugo的威力
-hugo创建出来的项目默认不带有任何主题，我们直接从github上随便搞一个，放到之前提到的themes文件夹下
-git clone https://github.com/budparr/gohugo-theme-ananke.git ./themes/ananke
-然后在配置文件中配置应用这个主题
-echo &#39;theme = &amp;quot;ananke&amp;quot;&#39; &amp;gt;&amp;gt; config.toml
-接下来该正常的用markdown写作我们的文章了，使用如下命令新建一个文章
-hugo new post/my-first-post.md
-可以看到在content文件夹下多出了一个post文件夹，里面有一个my-fisrt-post.md的markdown文件，我们看下创建出来的这个文件里面的内容都有什么
- content/post/my-first-post.</description>
+      <description>以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们</description>
     </item>
     
   </channel>

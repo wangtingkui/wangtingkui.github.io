@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>oh-my-zsh on xiaok&#39;s blog</title>
+    <title>oh-my-zsh on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/tags/oh-my-zsh/</link>
-    <description>Recent content in oh-my-zsh on xiaok&#39;s blog</description>
+    <description>Recent content in oh-my-zsh on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Sun, 10 May 2020 11:02:41 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/oh-my-zsh/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用zsh插件</title>
@@ -13,11 +13,7 @@
       <pubDate>Sun, 10 May 2020 11:02:41 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/plugin/</guid>
-      <description>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.zshrc配置文件中开启即可使用，另外一类是自定义插件，我们需要将这类插件下载到~/.oh-my-zsh/custom/plugins目录中，然后再配置使用
-我们使用插件的时候要按需启用，启用过多的插件会导致shell的启动很慢
-内建插件 内建插件的使用很简单，只需要在~/.zshrc中开启即可
-# .zshrc 文件 # Which plugins would you like to load? # Standard plugins can be found in ~/.oh-my-zsh/plugins/* # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/ # Example format: plugins=(rails git textmate ruby lighthouse) # Add wisely, as too many plugins slow down shell startup. plugins=(git ruby) 这里就列出一些自己常用的插件
-   插件名 描述 截图     git 显示git分支，改动状态等，还自带了很多git命令的缩写     urltools 提供urlencode 和 urldecode功能      自定义插件 自定义插件需要你手动将插件下载到~/.</description>
+      <description>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.z</description>
     </item>
     
   </channel>

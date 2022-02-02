@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>vmware on xiaok&#39;s blog</title>
+    <title>vmware on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/tags/vmware/</link>
-    <description>Recent content in vmware on xiaok&#39;s blog</description>
+    <description>Recent content in vmware on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Sun, 31 May 2020 08:40:51 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/vmware/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>VMware funsion 安装 centos7 后配置 NAT 网络</title>
@@ -13,11 +13,7 @@
       <pubDate>Sun, 31 May 2020 08:40:51 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/net-fix-on-centos-7/</guid>
-      <description>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络
-一、确定网络信息 vmnet8是安装 vmware funsion 之后自动生成的一张虚拟网卡，NAT 模式使用的就是这张网卡
-进入vmnet8网卡配置目录 &amp;gt; cd /Library/Preferences/VMware Fusion/vmnet8 查看nat信息，记住nat网关信息，也就是ip和netmask字段 &amp;gt; cat nat.conf nat.conf 文件内容：
-... # 省略文件其他部分 [host] # NAT gateway address ip = 172.16.5.2 netmask = 255.255.255.0 ... # 省略文件其他部分 查看dhcp信息，记住range范围，这里指的就是可用ip范围 &amp;gt; cat dhcpd.conf dhcpd.conf 文件信息：
-... # 省略文件其他部分 subnet 172.16.5.0 netmask 255.255.255.0 { range 172.16.5.128 172.16.5.254; option broadcast-address 172.16.5.255; option domain-name-servers 172.16.5.2; option domain-name localdomain; default-lease-time 1800; # default is 30 minutes max-lease-time 7200; # default is 2 hours option netbios-name-servers 172.</description>
+      <description>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络 一、确定</description>
     </item>
     
   </channel>

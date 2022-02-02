@@ -1,584 +1,610 @@
-<!DOCTYPE html>
-<html lang="en-us">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示
-而且要注意的是，path/filepath这个库并不会去判断你指定的路径存不存在，也不会去判断指定的路径是一个文件还是一个目录
-环境 ╰─$ go version go version go1.12.14 darwin/amd64 说明 获取指定路径的目录 filepath.Dir() 代码：
-func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, &amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, } for _, path := range examples { fmt.Println(filepath.Dir(path)) } } 输出：
-╰─$ go run main.go /etc /etc / etc . . 获取指定路径的文件名 filepath.Base() 代码：
-func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, // 在拆分之前会去除末尾的斜杠，相当于 /etc 	&amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, // 如果是空字符串，返回 .'><title>Go标准库（path/filepath）- 使用</title>
+<!doctype html><html lang="zh-cn" data-palette="blue"
+  >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Go标准库（path/filepath）- 使用 - Hugo Bootstrap</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.com/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.com/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.com/manifest.json">
+<meta name="keywords" content="" />
+<meta name="description" content="简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示 而且要注意" /><meta itemprop="name" content="Go标准库（path/filepath）- 使用">
+<meta itemprop="description" content="简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示 而且要注意"><meta itemprop="datePublished" content="2019-12-15T14:35:43+08:00" />
+<meta itemprop="dateModified" content="2019-12-15T14:35:43+08:00" />
+<meta itemprop="wordCount" content="1018">
+<meta itemprop="keywords" content="go," /><meta property="og:title" content="Go标准库（path/filepath）- 使用" />
+<meta property="og:description" content="简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示 而且要注意" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.com/posts/go/path-filepath/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-12-15T14:35:43+08:00" />
+<meta property="article:modified_time" content="2019-12-15T14:35:43+08:00" /><meta property="og:site_name" content="Hugo Bootstrap" />
 
-<link rel='canonical' href='https://wangtingkui.com/posts/go/path-filepath/'>
-
-<link rel="stylesheet" href="/scss/style.min.8f4416a35036b6471a6978873128b5652464226c8db8a9620ed1b94bc11bd353.css"><meta property='og:title' content='Go标准库（path/filepath）- 使用'>
-<meta property='og:description' content='简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示
-而且要注意的是，path/filepath这个库并不会去判断你指定的路径存不存在，也不会去判断指定的路径是一个文件还是一个目录
-环境 ╰─$ go version go version go1.12.14 darwin/amd64 说明 获取指定路径的目录 filepath.Dir() 代码：
-func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, &amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, } for _, path := range examples { fmt.Println(filepath.Dir(path)) } } 输出：
-╰─$ go run main.go /etc /etc / etc . . 获取指定路径的文件名 filepath.Base() 代码：
-func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, // 在拆分之前会去除末尾的斜杠，相当于 /etc 	&amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, // 如果是空字符串，返回 .'>
-<meta property='og:url' content='https://wangtingkui.com/posts/go/path-filepath/'>
-<meta property='og:site_name' content='xiaok&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='go' /><meta property='article:published_time' content='2019-12-15T14:35:43&#43;08:00'/><meta property='article:modified_time' content='2019-12-15T14:35:43&#43;08:00'/>
-<meta name="twitter:title" content="Go标准库（path/filepath）- 使用">
-<meta name="twitter:description" content="简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示
-而且要注意的是，path/filepath这个库并不会去判断你指定的路径存不存在，也不会去判断指定的路径是一个文件还是一个目录
-环境 ╰─$ go version go version go1.12.14 darwin/amd64 说明 获取指定路径的目录 filepath.Dir() 代码：
-func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, &amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, } for _, path := range examples { fmt.Println(filepath.Dir(path)) } } 输出：
-╰─$ go run main.go /etc /etc / etc . . 获取指定路径的文件名 filepath.Base() 代码：
-func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, // 在拆分之前会去除末尾的斜杠，相当于 /etc 	&amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, // 如果是空字符串，返回 .">
-    </head>
-    <body class="
-    article-page has-toc
-">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "dark");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex 
-    
-        extended
-    
-">
-    
-        <div id="article-toolbar">
-            <a href="/" class="back-home">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="15 6 9 12 15 18" />
-</svg>
-
-
-
-                <span>返回</span>
-            </a>
-        </div>
-    
-<main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-    <header class="article-category">
-        
-            <a href="/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" >
-                Go标准库使用
-            </a>
-        
-    </header>
-    
-
-    <h2 class="article-title">
-        <a href="/posts/go/path-filepath/">Go标准库（path/filepath）- 使用</a>
-    </h2>
-
-    
-
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Dec 15, 2019</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    阅读时长: 3 分钟
-                </time>
-            </div>
-        
-    </footer>
-    
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go标准库（path/filepath）- 使用"/>
+<meta name="twitter:description" content="简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示 而且要注意"/>
+<link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.com">xiaok&#39;s blog
+    </a>
+    <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">Share</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body">
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
+      target="_blank" href="https://twitter.com/intent/tweet?title=Go%e6%a0%87%e5%87%86%e5%ba%93%ef%bc%88path%2ffilepath%ef%bc%89-%20%e4%bd%bf%e7%94%a8&url=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fpath-filepath%2f">
+      <i class="fab fa-fw fa-twitter"></i> Twitter
+    </a>
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fpath-filepath%2f">
+      <i class="fab fa-fw fa-facebook-f"></i> Facebook
+    </a>
+  </div>
 </div>
-</header>
+    <button class="navbar-settings" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
+  aria-controls="offcanvasSettings" aria-label="Toggle settings">
+  <i class="fas fa-ellipsis-v"></i>
+</button>
 
-    <section class="article-content">
-    
-    
-    <h3 id="简介">简介</h3>
-<p>这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示</p>
-<p>而且要注意的是，<code>path/filepath</code>这个库并不会去判断你指定的路径存不存在，也不会去判断指定的路径是一个文件还是一个目录</p>
-<h3 id="环境">环境</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">╰─$ go version
-go version go1.12.14 darwin/amd64
-</code></pre></div><h3 id="说明">说明</h3>
-<h4 id="获取指定路径的目录-filepathdir">获取指定路径的目录 filepath.Dir()</h4>
-<p>代码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">examples</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
-		<span class="s">&#34;/etc/a.txt&#34;</span><span class="p">,</span>
-		<span class="s">&#34;/etc/&#34;</span><span class="p">,</span>
-		<span class="s">&#34;/etc&#34;</span><span class="p">,</span>
-		<span class="s">&#34;etc/a.txt&#34;</span><span class="p">,</span>
-		<span class="s">&#34;etc&#34;</span><span class="p">,</span>
-		<span class="s">&#34;&#34;</span><span class="p">,</span>
-	<span class="p">}</span>
-
-	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">path</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">examples</span> <span class="p">{</span>
-		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">filepath</span><span class="p">.</span><span class="nf">Dir</span><span class="p">(</span><span class="nx">path</span><span class="p">))</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-
-</code></pre></div><p>输出：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">╰─$ go run main.go
-/etc
-/etc
-/
-etc
-.
-.
-</code></pre></div><h4 id="获取指定路径的文件名-filepathbase">获取指定路径的文件名 filepath.Base()</h4>
-<p>代码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">examples</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
-		<span class="s">&#34;/etc/a.txt&#34;</span><span class="p">,</span>
-		<span class="s">&#34;/etc/&#34;</span><span class="p">,</span> <span class="c1">// 在拆分之前会去除末尾的斜杠，相当于 /etc
-</span><span class="c1"></span>		<span class="s">&#34;/etc&#34;</span><span class="p">,</span>
-		<span class="s">&#34;etc/a.txt&#34;</span><span class="p">,</span>
-		<span class="s">&#34;etc&#34;</span><span class="p">,</span>
-		<span class="s">&#34;&#34;</span><span class="p">,</span> <span class="c1">// 如果是空字符串，返回 .
-</span><span class="c1"></span>		<span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="c1">// 如果是 / ，返回 /
-</span><span class="c1"></span>	<span class="p">}</span>
-
-	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">path</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">examples</span> <span class="p">{</span>
-		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">filepath</span><span class="p">.</span><span class="nf">Base</span><span class="p">(</span><span class="nx">path</span><span class="p">))</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div><p>输出：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">╰─$ go run main.go
-a.txt
-etc
-etc
-a.txt
-etc
-.
-/
-</code></pre></div><h4 id="绝对路径和相对路径相关处理">绝对路径和相对路径相关处理</h4>
-<p>代码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="kd">var</span> <span class="p">(</span>
-		<span class="nx">absPath</span> <span class="p">=</span> <span class="s">&#34;/etc/a.txt&#34;</span>
-		<span class="nx">relPath</span> <span class="p">=</span> <span class="s">&#34;a.txt&#34;</span>
-		<span class="nx">tmpPath</span> <span class="kt">string</span>
-		<span class="nx">err</span>     <span class="kt">error</span>
-	<span class="p">)</span>
-	<span class="c1">// 判断是否绝对路径
-</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;absPath is asb path:&#34;</span><span class="p">,</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">IsAbs</span><span class="p">(</span><span class="nx">absPath</span><span class="p">))</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;relPath is abs path:&#34;</span><span class="p">,</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">IsAbs</span><span class="p">(</span><span class="nx">relPath</span><span class="p">))</span>
-	<span class="c1">// 获取相对路径的绝对路径
-</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">tmpPath</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="nx">relPath</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;the abs path of rel path is:&#34;</span><span class="p">,</span> <span class="nx">tmpPath</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="c1">// 获取绝对路径的相对路径
-</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">tmpPath</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Rel</span><span class="p">(</span><span class="s">&#34;/etc/a&#34;</span><span class="p">,</span> <span class="s">&#34;/etc/a.txt&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;the rel path of /etc/a.txt based on /etc/a is:&#34;</span><span class="p">,</span> <span class="nx">tmpPath</span><span class="p">)</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div><p>输出：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">╰─$ go run main.go 
-absPath is asb path: <span class="nb">true</span>
-relPath is abs path: <span class="nb">false</span>
-the abs path of rel path is: /Users/wangtingkui/Projects/learnGo/filepath/a.txt
-the rel path of /etc/a.txt based on /etc/a is: ../a.txt
-</code></pre></div><h4 id="文件路径的拆分">文件路径的拆分</h4>
-<p>对于一个确定是文件的路径，我们可以使用<code>Split</code>将他拆分为目录路径和文件名，这个函数拆分之后一定会保证 <code>path = dir + file</code></p>
-<p>代码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="kd">var</span> <span class="p">(</span>
-		<span class="nx">filePaths</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
-			<span class="s">&#34;/etc/a.txt&#34;</span><span class="p">,</span>
-			<span class="s">&#34;/etc/&#34;</span><span class="p">,</span>
-			<span class="s">&#34;/etc&#34;</span><span class="p">,</span>
-			<span class="s">&#34;etc/&#34;</span><span class="p">,</span>
-			<span class="s">&#34;etc&#34;</span><span class="p">,</span>
-			<span class="s">&#34;&#34;</span><span class="p">,</span>
-		<span class="p">}</span>
-	<span class="p">)</span>
-
-	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">filePath</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">filePaths</span> <span class="p">{</span>
-		<span class="nx">dir</span><span class="p">,</span> <span class="nx">file</span> <span class="o">:=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Split</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)</span>
-		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;dir is :%s , file is :%s\n&#34;</span><span class="p">,</span> <span class="nx">dir</span><span class="p">,</span> <span class="nx">file</span><span class="p">)</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div><p>输出：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">dir is :/etc/ , file is :a.txt
-dir is :/etc/ , file is :
-dir is :/ , file is :etc
-dir is :etc/ , file is :
-dir is : , file is :etc
-dir is : , file is :
-</code></pre></div><h4 id="规范化路径">规范化路径</h4>
-<p>有的路径虽然可以使用，但是看起来非常的绕，不易阅读和维护，比如<code>ls /../etc/../etc/</code> 其实就是<code>ls /etc</code>，<code>Clean</code>就是用来清理这样的路径的</p>
-<p>代码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="kd">var</span> <span class="p">(</span>
-		<span class="nx">filePaths</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
-			<span class="s">&#34;/../etc/../etc/&#34;</span><span class="p">,</span>
-			<span class="s">&#34;../a/./../a&#34;</span><span class="p">,</span>
-		<span class="p">}</span>
-	<span class="p">)</span>
-
-	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">filePath</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">filePaths</span> <span class="p">{</span>
-		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">filepath</span><span class="p">.</span><span class="nf">Clean</span><span class="p">(</span><span class="nx">filePath</span><span class="p">))</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div><p>输出：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">╰─$ go run main.go 
-/etc
-../a
-
-</code></pre></div><h4 id="路径的拼接">路径的拼接</h4>
-<p>可以使用<code>Join</code>来拼任意多段路径，这个函数会根据情况添加合适的路径分隔符，也会保证返回的结果是<code>Clean</code>过的</p>
-<p>代码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">filepath</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="s">&#34;/etc/&#34;</span><span class="p">,</span> <span class="s">&#34;/a.txt&#34;</span><span class="p">))</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">filepath</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="s">&#34;/etc&#34;</span><span class="p">,</span> <span class="s">&#34;a.txt&#34;</span><span class="p">))</span>
-<span class="p">}</span>
-</code></pre></div><p>输出：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">╰─$ go run main.go
-/etc/a.txt
-/etc/a.txt
-
-</code></pre></div><h4 id="返回符合指定模式的文件列表">返回符合指定模式的文件列表</h4>
-<p>代码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-
-	<span class="k">if</span> <span class="nx">paths</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Glob</span><span class="p">(</span><span class="s">&#34;./*.go&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-		<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">path</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">paths</span> <span class="p">{</span>
-			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div><p>输出：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">╰─$ go run main.go 
-main.go
-</code></pre></div><h4 id="遍历目录树">遍历目录树</h4>
-<p><code>filepath</code>这个包给我们提供了一个方便的方法<code>Walk</code>来遍历我们的目录树</p>
-<p>代码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">filepath</span><span class="p">.</span><span class="nf">Walk</span><span class="p">(</span><span class="s">&#34;.&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">info</span> <span class="nx">os</span><span class="p">.</span><span class="nx">FileInfo</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="nx">info</span><span class="p">.</span><span class="nf">IsDir</span><span class="p">()</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="kc">nil</span>
-		<span class="p">}</span>
-		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;file:&#34;</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nf">Name</span><span class="p">(),</span> <span class="s">&#34;in directory:&#34;</span><span class="p">,</span> <span class="nx">path</span><span class="p">)</span>
-		<span class="k">return</span> <span class="kc">nil</span>
-	<span class="p">})</span>
-<span class="p">}</span>
-</code></pre></div><p>输出：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">╰─$ go run main.go
-file: main.go in directory: main.go
-
-</code></pre></div>
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettings">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">设置</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-language"></i> 语言</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="dropdown">
+        <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          简体中文
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.com/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/zh-tw/">繁體中文</a></li></ul>
+      </div>
+    </div>
+  </form>
 </section>
 
 
-    <footer class="article-footer">
+<section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-adjust"></i> 模式</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="modeSwitcher">
+      </div>
+    </div>
+  </form>
+</section>
+
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> 字体大小</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> 配色</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <a id="btnPalette" class="btn btn-sm btn-outline-primary" role="button" aria-label="palettePicker">
+        <i class="fas fa-eye-dropper"></i>
+      </a>
+    </div>
+  </form>
+  <div class="mt-2 d-flex justify-content-between visually-hidden" id="palettePicker"><button type="button" id="palette-blue" aria-label="蓝色"
+        class="btn btn-sm w-100 palette" data-palette="blue">
+      </button><button type="button" id="palette-blue-gray" aria-label="蓝灰色"
+        class="btn btn-sm w-100 palette" data-palette="blue-gray">
+      </button><button type="button" id="palette-brown" aria-label="棕色"
+        class="btn btn-sm w-100 palette" data-palette="brown">
+      </button><button type="button" id="palette-cyan" aria-label="青色"
+        class="btn btn-sm w-100 palette" data-palette="cyan">
+      </button><button type="button" id="palette-green" aria-label="绿色"
+        class="btn btn-sm w-100 palette" data-palette="green">
+      </button><button type="button" id="palette-indigo" aria-label="靛青色"
+        class="btn btn-sm w-100 palette" data-palette="indigo">
+      </button><button type="button" id="palette-orange" aria-label="橙色"
+        class="btn btn-sm w-100 palette" data-palette="orange">
+      </button><button type="button" id="palette-pink" aria-label="粉色"
+        class="btn btn-sm w-100 palette" data-palette="pink">
+      </button><button type="button" id="palette-purple" aria-label="紫色"
+        class="btn btn-sm w-100 palette" data-palette="purple">
+      </button><button type="button" id="palette-red" aria-label="红色"
+        class="btn btn-sm w-100 palette" data-palette="red">
+      </button><button type="button" id="palette-teal" aria-label="蓝绿色"
+        class="btn btn-sm w-100 palette" data-palette="teal">
+      </button><button type="button" id="palette-yellow" aria-label="黄色"
+        class="btn btn-sm w-100 palette" data-palette="yellow">
+      </button></div>
+</section>
+<section class="setting actions d-flex justify-content-around mt-auto overflow-auto">
+  <a role="button" class="action action-go-back" href="javascript: window.history.back();">
+    <span class="action-icon"><i class="fas fa-2x fa-arrow-left"></i></span> 返回
+  </a>
+  <a role="button" class="action action-reload-page">
+    <span class="action-icon"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+  </a>
+  <a role="button" class="action action-copy-url">
+    <span class="action-icon"><i class="fas fa-2x fa-link"></i></span> 复制链接
+  </a><a class="action action-social-share" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSocialShare"
+    aria-controls="offcanvasSocialShare" aria-label="Toggle social share">
+    <span class="action-icon"><i class="fas fa-2x fa-share-alt"></i></span> 分享
+  </a></section>
+
+</div>
+</div>
+
+    <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
+      <form class="search-bar my-1" action="https://wangtingkui.com/search">
+  <div class="input-group input-group-sm">
+    <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+    <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
+  </div>
+</form>
+      <ul class="navbar-nav ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.com/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.com/posts/">文章</a></li><li class="breadcrumb-item active">Go标准库（path/Filepath）- 使用</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper">
+  <div class="d-flex flex-column component rounded post-panel">
     
-    <section class="article-tags">
-        
-            <a href="/tags/go/">go</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    <aside class="related-contents--wrapper">
-    
-    
-        <h2 class="section-title">相关文章</h2>
-        <div class="related-contents">
-            <div class="flex article-list--tile">
-                
-                    
-<article class="">
-    <a href="/posts/go/sort/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Go 中 sort 包的使用</h2>
-        </div>
+    <a class="action action-panel-toggler" role="button" title="Panel toggler">
+      <i class="fas fa-fw fa-chevron-circle-down"></i>
     </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/posts/go/sync/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Go标准库（sync）- 使用</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/posts/go/time/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Go标准库（time）- 使用</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/posts/go/log/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Go标准库（log）- 使用</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/posts/go/%E4%BD%BF%E7%94%A8net-http/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Go标准库（net/http）- 使用</h2>
-        </div>
-    </a>
-</article>
-                
-            </div>
-        </div>
-    
-</aside>
-
-     
-    
-        
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2020 - 
-        
-        2022 xiaok&#39;s blog
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.7.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
-</footer>
-
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
 
     
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    <a class="action" href="#post-copyright" role="button" aria-label="Copyright" title="Copyright">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a class="action" href="#post-comments" role="button" aria-label="Comments" title="Comments">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    <a class="action" href="#postTOC" aria-controls="Table of contents" role="button" title="Table of contents">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
     
-    <div class="pswp__bg"></div>
+  </div>
+</div>
+<article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title">Go标准库（path/Filepath）- 使用
+</h1>
+  </div>
+  <div class="card-body"><div class="post-meta">
+  <span class="post-date" title="创建于 2019-12-15 14:35:43 &#43;0800 CST。">
+    2019-12-15
+  </span><span class="post-reading-time">
+    3 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-content mb-3"><h3 id="简介">简介<a class="anchor ms-1" href="#简介"><i class="fas fa-link"></i></a></h3>
+<p>这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示</p>
+<p>而且要注意的是，<code>path/filepath</code>这个库并不会去判断你指定的路径存不存在，也不会去判断指定的路径是一个文件还是一个目录</p>
+<h3 id="环境">环境<a class="anchor ms-1" href="#环境"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="ln">1</span>╰─$ go version
+<span class="ln">2</span>go version go1.12.14 darwin/amd64
+</code></pre></div><h3 id="说明">说明<a class="anchor ms-1" href="#说明"><i class="fas fa-link"></i></a></h3>
+<h4 id="获取指定路径的目录-filepathdir">获取指定路径的目录 filepath.Dir()<a class="anchor ms-1" href="#获取指定路径的目录-filepathdir"><i class="fas fa-link"></i></a></h4>
+<p>代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">examples</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+<span class="ln"> 3</span>		<span class="s">&#34;/etc/a.txt&#34;</span><span class="p">,</span>
+<span class="ln"> 4</span>		<span class="s">&#34;/etc/&#34;</span><span class="p">,</span>
+<span class="ln"> 5</span>		<span class="s">&#34;/etc&#34;</span><span class="p">,</span>
+<span class="ln"> 6</span>		<span class="s">&#34;etc/a.txt&#34;</span><span class="p">,</span>
+<span class="ln"> 7</span>		<span class="s">&#34;etc&#34;</span><span class="p">,</span>
+<span class="ln"> 8</span>		<span class="s">&#34;&#34;</span><span class="p">,</span>
+<span class="ln"> 9</span>	<span class="p">}</span>
+<span class="ln">10</span>
+<span class="ln">11</span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">path</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">examples</span> <span class="p">{</span>
+<span class="ln">12</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">filepath</span><span class="p">.</span><span class="nf">Dir</span><span class="p">(</span><span class="nx">path</span><span class="p">))</span>
+<span class="ln">13</span>	<span class="p">}</span>
+<span class="ln">14</span><span class="p">}</span>
+<span class="ln">15</span>
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="ln">1</span>╰─$ go run main.go
+<span class="ln">2</span>/etc
+<span class="ln">3</span>/etc
+<span class="ln">4</span>/
+<span class="ln">5</span>etc
+<span class="ln">6</span>.
+<span class="ln">7</span>.
+</code></pre></div><h4 id="获取指定路径的文件名-filepathbase">获取指定路径的文件名 filepath.Base()<a class="anchor ms-1" href="#获取指定路径的文件名-filepathbase"><i class="fas fa-link"></i></a></h4>
+<p>代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">examples</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+<span class="ln"> 3</span>		<span class="s">&#34;/etc/a.txt&#34;</span><span class="p">,</span>
+<span class="ln"> 4</span>		<span class="s">&#34;/etc/&#34;</span><span class="p">,</span> <span class="c1">// 在拆分之前会去除末尾的斜杠，相当于 /etc
+</span><span class="ln"> 5</span><span class="c1"></span>		<span class="s">&#34;/etc&#34;</span><span class="p">,</span>
+<span class="ln"> 6</span>		<span class="s">&#34;etc/a.txt&#34;</span><span class="p">,</span>
+<span class="ln"> 7</span>		<span class="s">&#34;etc&#34;</span><span class="p">,</span>
+<span class="ln"> 8</span>		<span class="s">&#34;&#34;</span><span class="p">,</span> <span class="c1">// 如果是空字符串，返回 .
+</span><span class="ln"> 9</span><span class="c1"></span>		<span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="c1">// 如果是 / ，返回 /
+</span><span class="ln">10</span><span class="c1"></span>	<span class="p">}</span>
+<span class="ln">11</span>
+<span class="ln">12</span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">path</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">examples</span> <span class="p">{</span>
+<span class="ln">13</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">filepath</span><span class="p">.</span><span class="nf">Base</span><span class="p">(</span><span class="nx">path</span><span class="p">))</span>
+<span class="ln">14</span>	<span class="p">}</span>
+<span class="ln">15</span><span class="p">}</span>
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="ln">1</span>╰─$ go run main.go
+<span class="ln">2</span>a.txt
+<span class="ln">3</span>etc
+<span class="ln">4</span>etc
+<span class="ln">5</span>a.txt
+<span class="ln">6</span>etc
+<span class="ln">7</span>.
+<span class="ln">8</span>/
+</code></pre></div><h4 id="绝对路径和相对路径相关处理">绝对路径和相对路径相关处理<a class="anchor ms-1" href="#绝对路径和相对路径相关处理"><i class="fas fa-link"></i></a></h4>
+<p>代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="kd">var</span> <span class="p">(</span>
+<span class="ln"> 3</span>		<span class="nx">absPath</span> <span class="p">=</span> <span class="s">&#34;/etc/a.txt&#34;</span>
+<span class="ln"> 4</span>		<span class="nx">relPath</span> <span class="p">=</span> <span class="s">&#34;a.txt&#34;</span>
+<span class="ln"> 5</span>		<span class="nx">tmpPath</span> <span class="kt">string</span>
+<span class="ln"> 6</span>		<span class="nx">err</span>     <span class="kt">error</span>
+<span class="ln"> 7</span>	<span class="p">)</span>
+<span class="ln"> 8</span>	<span class="c1">// 判断是否绝对路径
+</span><span class="ln"> 9</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;absPath is asb path:&#34;</span><span class="p">,</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">IsAbs</span><span class="p">(</span><span class="nx">absPath</span><span class="p">))</span>
+<span class="ln">10</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;relPath is abs path:&#34;</span><span class="p">,</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">IsAbs</span><span class="p">(</span><span class="nx">relPath</span><span class="p">))</span>
+<span class="ln">11</span>	<span class="c1">// 获取相对路径的绝对路径
+</span><span class="ln">12</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">tmpPath</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="nx">relPath</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">13</span>		<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="ln">14</span>	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="ln">15</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;the abs path of rel path is:&#34;</span><span class="p">,</span> <span class="nx">tmpPath</span><span class="p">)</span>
+<span class="ln">16</span>	<span class="p">}</span>
+<span class="ln">17</span>	<span class="c1">// 获取绝对路径的相对路径
+</span><span class="ln">18</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">tmpPath</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Rel</span><span class="p">(</span><span class="s">&#34;/etc/a&#34;</span><span class="p">,</span> <span class="s">&#34;/etc/a.txt&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">19</span>		<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="ln">20</span>	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="ln">21</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;the rel path of /etc/a.txt based on /etc/a is:&#34;</span><span class="p">,</span> <span class="nx">tmpPath</span><span class="p">)</span>
+<span class="ln">22</span>	<span class="p">}</span>
+<span class="ln">23</span><span class="p">}</span>
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="ln">1</span>╰─$ go run main.go 
+<span class="ln">2</span>absPath is asb path: <span class="nb">true</span>
+<span class="ln">3</span>relPath is abs path: <span class="nb">false</span>
+<span class="ln">4</span>the abs path of rel path is: /Users/wangtingkui/Projects/learnGo/filepath/a.txt
+<span class="ln">5</span>the rel path of /etc/a.txt based on /etc/a is: ../a.txt
+</code></pre></div><h4 id="文件路径的拆分">文件路径的拆分<a class="anchor ms-1" href="#文件路径的拆分"><i class="fas fa-link"></i></a></h4>
+<p>对于一个确定是文件的路径，我们可以使用<code>Split</code>将他拆分为目录路径和文件名，这个函数拆分之后一定会保证 <code>path = dir + file</code></p>
+<p>代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="kd">var</span> <span class="p">(</span>
+<span class="ln"> 3</span>		<span class="nx">filePaths</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+<span class="ln"> 4</span>			<span class="s">&#34;/etc/a.txt&#34;</span><span class="p">,</span>
+<span class="ln"> 5</span>			<span class="s">&#34;/etc/&#34;</span><span class="p">,</span>
+<span class="ln"> 6</span>			<span class="s">&#34;/etc&#34;</span><span class="p">,</span>
+<span class="ln"> 7</span>			<span class="s">&#34;etc/&#34;</span><span class="p">,</span>
+<span class="ln"> 8</span>			<span class="s">&#34;etc&#34;</span><span class="p">,</span>
+<span class="ln"> 9</span>			<span class="s">&#34;&#34;</span><span class="p">,</span>
+<span class="ln">10</span>		<span class="p">}</span>
+<span class="ln">11</span>	<span class="p">)</span>
+<span class="ln">12</span>
+<span class="ln">13</span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">filePath</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">filePaths</span> <span class="p">{</span>
+<span class="ln">14</span>		<span class="nx">dir</span><span class="p">,</span> <span class="nx">file</span> <span class="o">:=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Split</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)</span>
+<span class="ln">15</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;dir is :%s , file is :%s\n&#34;</span><span class="p">,</span> <span class="nx">dir</span><span class="p">,</span> <span class="nx">file</span><span class="p">)</span>
+<span class="ln">16</span>	<span class="p">}</span>
+<span class="ln">17</span><span class="p">}</span>
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="ln">1</span>dir is :/etc/ , file is :a.txt
+<span class="ln">2</span>dir is :/etc/ , file is :
+<span class="ln">3</span>dir is :/ , file is :etc
+<span class="ln">4</span>dir is :etc/ , file is :
+<span class="ln">5</span>dir is : , file is :etc
+<span class="ln">6</span>dir is : , file is :
+</code></pre></div><h4 id="规范化路径">规范化路径<a class="anchor ms-1" href="#规范化路径"><i class="fas fa-link"></i></a></h4>
+<p>有的路径虽然可以使用，但是看起来非常的绕，不易阅读和维护，比如<code>ls /../etc/../etc/</code> 其实就是<code>ls /etc</code>，<code>Clean</code>就是用来清理这样的路径的</p>
+<p>代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="kd">var</span> <span class="p">(</span>
+<span class="ln"> 3</span>		<span class="nx">filePaths</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+<span class="ln"> 4</span>			<span class="s">&#34;/../etc/../etc/&#34;</span><span class="p">,</span>
+<span class="ln"> 5</span>			<span class="s">&#34;../a/./../a&#34;</span><span class="p">,</span>
+<span class="ln"> 6</span>		<span class="p">}</span>
+<span class="ln"> 7</span>	<span class="p">)</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">filePath</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">filePaths</span> <span class="p">{</span>
+<span class="ln">10</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">filepath</span><span class="p">.</span><span class="nf">Clean</span><span class="p">(</span><span class="nx">filePath</span><span class="p">))</span>
+<span class="ln">11</span>	<span class="p">}</span>
+<span class="ln">12</span><span class="p">}</span>
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="ln">1</span>╰─$ go run main.go 
+<span class="ln">2</span>/etc
+<span class="ln">3</span>../a
+<span class="ln">4</span>
+</code></pre></div><h4 id="路径的拼接">路径的拼接<a class="anchor ms-1" href="#路径的拼接"><i class="fas fa-link"></i></a></h4>
+<p>可以使用<code>Join</code>来拼任意多段路径，这个函数会根据情况添加合适的路径分隔符，也会保证返回的结果是<code>Clean</code>过的</p>
+<p>代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">2</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">filepath</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="s">&#34;/etc/&#34;</span><span class="p">,</span> <span class="s">&#34;/a.txt&#34;</span><span class="p">))</span>
+<span class="ln">3</span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">filepath</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="s">&#34;/etc&#34;</span><span class="p">,</span> <span class="s">&#34;a.txt&#34;</span><span class="p">))</span>
+<span class="ln">4</span><span class="p">}</span>
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="ln">1</span>╰─$ go run main.go
+<span class="ln">2</span>/etc/a.txt
+<span class="ln">3</span>/etc/a.txt
+<span class="ln">4</span>
+</code></pre></div><h4 id="返回符合指定模式的文件列表">返回符合指定模式的文件列表<a class="anchor ms-1" href="#返回符合指定模式的文件列表"><i class="fas fa-link"></i></a></h4>
+<p>代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span>	<span class="k">if</span> <span class="nx">paths</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Glob</span><span class="p">(</span><span class="s">&#34;./*.go&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 4</span>		<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="ln"> 5</span>	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="ln"> 6</span>		<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">path</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">paths</span> <span class="p">{</span>
+<span class="ln"> 7</span>			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+<span class="ln"> 8</span>		<span class="p">}</span>
+<span class="ln"> 9</span>	<span class="p">}</span>
+<span class="ln">10</span><span class="p">}</span>
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="ln">1</span>╰─$ go run main.go 
+<span class="ln">2</span>main.go
+</code></pre></div><h4 id="遍历目录树">遍历目录树<a class="anchor ms-1" href="#遍历目录树"><i class="fas fa-link"></i></a></h4>
+<p><code>filepath</code>这个包给我们提供了一个方便的方法<code>Walk</code>来遍历我们的目录树</p>
+<p>代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">2</span>	<span class="nx">filepath</span><span class="p">.</span><span class="nf">Walk</span><span class="p">(</span><span class="s">&#34;.&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">info</span> <span class="nx">os</span><span class="p">.</span><span class="nx">FileInfo</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+<span class="ln">3</span>		<span class="k">if</span> <span class="nx">info</span><span class="p">.</span><span class="nf">IsDir</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln">4</span>			<span class="k">return</span> <span class="kc">nil</span>
+<span class="ln">5</span>		<span class="p">}</span>
+<span class="ln">6</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;file:&#34;</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nf">Name</span><span class="p">(),</span> <span class="s">&#34;in directory:&#34;</span><span class="p">,</span> <span class="nx">path</span><span class="p">)</span>
+<span class="ln">7</span>		<span class="k">return</span> <span class="kc">nil</span>
+<span class="ln">8</span>	<span class="p">})</span>
+<span class="ln">9</span><span class="p">}</span>
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="ln">1</span>╰─$ go run main.go
+<span class="ln">2</span>file: main.go in directory: main.go
+<span class="ln">3</span>
+</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-coffee"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary" aria-label="Close"><i class="fas fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/alipay.jpeg" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/wechat.jpeg" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+  <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="https://wangtingkui.com/posts/go/go-multi-version-manage/">Go多版本管理
+</a>
+  </div><div class="post-nav post-next">
+    <a href="https://wangtingkui.com/posts/go/zap/">Go日志库zap使用
+</a>
+    <i class="fas fa-fw fa-chevron-right"></i>
+  </div></div></div>
+</article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
 
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
 
     </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
-            >
-
-            </main>
+</div><section class="related-posts row card component">
+    <div class="card-header">
+      <h2 class="card-title">相关文章</h2>
+    </div>
+    <div class="card-body">
+      <ul class="post-list"><li>
+          <a href="https://wangtingkui.com/posts/go/go-multi-version-manage/">Go多版本管理
+</a>
+          <span class="float-end post-date">2019-12-13
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/cobra/">Go Cli 应用框架cobra（二）- 源码分析
+</a>
+          <span class="float-end post-date">2019-12-11
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/tool/hugo-categorize-your-artical/">使用hugo搭建个人网站（七）- 给你的文章分类
+</a>
+          <span class="float-end post-date">2019-12-07
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/tool/hugo-custom-your-domain/">使用hugo搭建个人网站（八）- 自定义你的站点域名
+</a>
+          <span class="float-end post-date">2019-12-07
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/tool/hugo-custom-your-url/">使用hugo搭建个人网站（六）- 定制你文章的url
+</a>
+          <span class="float-end post-date">2019-12-07
+</span>
+        </li></ul>
+    </div>
+  </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script></div>
+</div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
     
-        <aside class="sidebar right-sidebar sticky">
-            <section class="widget archives">
-                <div class="widget-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-                </div>
-                <h2 class="widget-title section-title">目录</h2>
-                
-                <div class="widget--toc">
-                    <nav id="TableOfContents">
-  <ol>
+    <section class="card row text-center profile component">
+  <div class="card-body">
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.com/images/avatar.jpeg" loading="lazy"
+   width="959" height="959"
+   />
+</div>
+    <div class="col-12 profile-meta"><div class="profile-name">无敌小k</div><div class="profile-bio">Gopher, PHPer.</div><div class="profile-about"><i class="fas fa-fw fa-user"></i><a target="_blank" rel="noopener noreferrer" href="https://domain.tld">关于我</a></div><nav class="social-links nav justify-content-center"><a class="nav-link social-link" href="mailto:wangtingkui_coder@163.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a><a class="nav-link social-link" target="_blank" href="https://github.com/wangtingkui" title="GitHub" rel="noopener noreferrer">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a></nav>
+</div>
+  </div>
+</section>
+  <div class="post-toc row mb-4 card component" id="postTOC">
+  <div class="card-header">
+    <h2 class="card-title">目录</h2>
+  </div>
+  <div class="card-body">
+    <nav id="TableOfContents">
+  <ul>
     <li>
-      <ol>
+      <ul>
         <li><a href="#简介">简介</a></li>
         <li><a href="#环境">环境</a></li>
-        <li><a href="#说明">说明</a>
-          <ol>
-            <li><a href="#获取指定路径的目录-filepathdir">获取指定路径的目录 filepath.Dir()</a></li>
-            <li><a href="#获取指定路径的文件名-filepathbase">获取指定路径的文件名 filepath.Base()</a></li>
-            <li><a href="#绝对路径和相对路径相关处理">绝对路径和相对路径相关处理</a></li>
-            <li><a href="#文件路径的拆分">文件路径的拆分</a></li>
-            <li><a href="#规范化路径">规范化路径</a></li>
-            <li><a href="#路径的拼接">路径的拼接</a></li>
-            <li><a href="#返回符合指定模式的文件列表">返回符合指定模式的文件列表</a></li>
-            <li><a href="#遍历目录树">遍历目录树</a></li>
-          </ol>
-        </li>
-      </ol>
+        <li><a href="#说明">说明</a></li>
+      </ul>
     </li>
-  </ol>
+  </ul>
 </nav>
-                </div>
-            </section>
-        </aside>
+  </div>
+</div><section class="series-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/series">专栏</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section><section class="categories-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/categories">分类</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
+            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
+            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.com/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+            性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section><section class="tags-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/tags">标签</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">25</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
+            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/oh-my-zsh/" class="badge rounded post-taxonomy" title="oh-my-zsh">
+            oh-my-zsh<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section>
     
+  </div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"></nav>
+<div class="copyright mb-2">
+  Copyright © 2016-2022 Razon Yang. All Rights Reserved.
+</div>
 
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
-                defer="false"
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
+    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
+</a>
+</footer>
+<script src="https://wangtingkui.com/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.com/js/icons.min.a35670f2f90c398e5ee5c8e509b428fae75aa2746854cee10b60794633076859.js" integrity="sha256-o1Zw8vkMOY5e5cjlCbQo&#43;udaonRoVM7hC2B5RjMHaFk=" crossorigin="anonymous" defer></script>
 <script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-    </body>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.com\/service-worker.js').then(function(reg) {
+      console.log('Successfully registered service worker', reg);
+    }).catch(function(err) {
+      console.warn('Error whilst registering service worker', err);
+    });
+  });
+}
+</script><script src="https://wangtingkui.com/js/viewer.min.4dba52a0a790f909408b7385316651299158381686401d50ff1f04dda6476473.js" integrity="sha256-TbpSoKeQ&#43;QlAi3OFMWZRKZFYOBaGQB1Q/x8E3aZHZHM=" crossorigin="anonymous" defer></script>
+</body>
 </html>

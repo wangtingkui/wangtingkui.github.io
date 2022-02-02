@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>性能调优 on xiaok&#39;s blog</title>
+    <title>性能调优 on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</link>
-    <description>Recent content in 性能调优 on xiaok&#39;s blog</description>
+    <description>Recent content in 性能调优 on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Mon, 20 Jul 2020 15:45:48 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用火焰图分析性能瓶颈</title>
@@ -13,11 +13,7 @@
       <pubDate>Mon, 20 Jul 2020 15:45:48 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/performance/flame/</guid>
-      <description>简介 火焰图是用来分析 CPU 瓶颈的利器，它利用可交互 svg 图片可视化的展示了 CPU 的占用情况，可以帮助我们快速的定位优化方向。因为生成的图片非常像一团熊熊燃烧的火焰，所以起名为火焰图。
-使用火焰图的步骤 使用火焰图有两个步骤
- 使用trace工具收集采样数据 使用火焰图生成工具将收集的采样数据生成火焰图  火焰图的类型 根据要分析的问题不同，火焰图有不同的类型，一般由以下五种，其中最常用的是 CPU（也就是常说的ON-CPU） 类型
- CPU Memory Off-CPU Hot/Cold Differential  在 Linux 下使用火焰图进行 CPU 性能分析 收集采样信息 在 linux 下，一般使用操作系统自带的 perf 命令收集采样信息
-# 查找指定程序的pid ps -ef | grep &amp;lt;target_program_name&amp;gt; # 生成cpu采样文件 perf record -F 99 -p &amp;lt;target_program_pid&amp;gt; -g -o perf.data -- sleep 60 # -F 指定的是采样频率，每秒99次 # -p 指定要采样的程序pid # -g 纪录调用栈 # sleep 60 持续60秒 生成火焰图 一般使用FlameGraph来生成火焰图</description>
+      <description>简介 火焰图 是用来分析 CPU 瓶颈的利器，它利用可交互 svg 图片可视化的展示了 CPU 的占用情况，可以帮助我们快速的定位优化方向。因为生成的图片非常像一团熊熊</description>
     </item>
     
   </channel>

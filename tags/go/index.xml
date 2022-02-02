@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>go on xiaok&#39;s blog</title>
+    <title>go on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/tags/go/</link>
-    <description>Recent content in go on xiaok&#39;s blog</description>
+    <description>Recent content in go on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Wed, 14 Oct 2020 14:42:29 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go 中 sort 包的使用</title>
@@ -13,10 +13,7 @@
       <pubDate>Wed, 14 Oct 2020 14:42:29 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/sort/</guid>
-      <description>排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序
-Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实现了 sort.Interface 接口，就可以调用 sort.Sort(data Interface) 进行排序操作了
-先来看下 sort.Interface 都定义了哪些方法：
-type Interface interface { // Len is the number of elements in the collection.  // Len 为集合内元素的总数  Len() int // Less reports whether the element with  // index i should sort before the element with index j.  //  // Less 返回索引为 i 的元素是否应排在索引为 j 的元素之前。  Less(i, j int) bool // Swap swaps the elements with indexes i and j.</description>
+      <description>排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序 Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实</description>
     </item>
     
     <item>
@@ -25,15 +22,7 @@ type Interface interface { // Len is the number of elements in the collection.  
       <pubDate>Fri, 19 Jun 2020 15:32:25 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/sync/</guid>
-      <description>Go 的一大特点就是在语言级别实现了并发，一旦涉及并发，那么不可避免的就需要同步，来确保多个 goroutine 在访问共享资源的时候不会出现混乱的状况
-Go 中的 sync 包提供了常见的并发编程同步原语，我们接下来就看下各种同步的方式如何使用，以及不同的同步方式都适用于什么样的场景，从而能让我们在日常使用中可以有针对性的挑选
-sync.Mutex sync.Mutex 是使用最广泛的一种原语，它保证同一时刻，只有一个 goroutine 可以访问临界资源，也就是我们常说的互斥锁
-m := &amp;amp;sync.Mutex{} m.Lock() // 临界区 m.Unlock() sync.RWMutex sync.RWMutex 是一个读写锁，它有两种锁的方式，读锁和写锁，当一个 goroutine 成功获取读锁的时候，其他 goroutine 也可以成功获取读锁，但是无法获取写锁。如果一个 goroutine 成功获取了写锁的时候，其他 goroutine 读锁和写锁都无法获得
-sync.RWMutex是基于sync.Mutex实现的，具体原理在这里就不多说了，可以看下另外一篇文章
-m := sync.RWMutex{} m.Lock() // 执行一些写操作 m.Unlock() m.RLock() // 执行一些可以并发的读操作 m.RUnlock() sync.RWMutex常用于读写场景都有，但是读场景远远多于写场景的情况
-sync.WaitGroup sync.WaitGroup 常常用来等待一组 goroutine 执行完成
-wg := &amp;amp;sync.WaitGroup{} wg.Add(2) go func() { wg.Done() }() go func() { wg.Done() }() wg.Wait() sync.Map Go 中的 map 类型本身是非并发安全的，如果在并发场景下，必须加锁来保证数据安全，sync.Map是一个并发版本的map，可以直接在并发场景下使用
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;sync&amp;#34; ) func main() { m := sync.</description>
+      <description>Go 的一大特点就是在语言级别实现了并发，一旦涉及并发，那么不可避免的就需要同步，来确保多个 goroutine 在访问共享资源的时候不会出现混乱的状况 Go 中的 sync 包提</description>
     </item>
     
     <item>
@@ -42,10 +31,7 @@ package main import ( &amp;#34;fmt&amp;#34; &amp;#34;sync&amp;#34; ) func main()
       <pubDate>Sun, 07 Jun 2020 15:33:50 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/context/</guid>
-      <description>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使用比较少
-使用 Context 本身是 context 包对外暴露的一个接口
-type Context interface { Deadline() (deadline time.Time, ok bool) // 返回当前 Context 的截止日期  Done() &amp;lt;-chan struct{} // 返回一个 channel，这个channel会在 Context 截止日期到了或者被取消之后关闭，多次调用Done会返回同一个channel  Err() error // 表明 Done 的原因，如果是超时，为DeadlineExceeded错误。如果是被取消，则是Canceled错误  Value(key interface{}) interface{} // 返回Context中key对应的value } 当前 go 中为我们提供了多个方法来创建 Context：
- context.TODO 和 context.Background，这两个方法都是返回一个预先实例化好的空 context 对象，如果没有特殊需求，所有的 context 应该都基于 context.Background来创建 context.WithCancel，创建可取消的上下文 context.WithDeadline，创建有超时时间的上下文 context.WithTimeout，对 context.WithDeadline的封装，更容易使用 context.WithValue，创建有键值对的上下文  一个简单的使用 demo：</description>
+      <description>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使</description>
     </item>
     
     <item>
@@ -54,11 +40,7 @@ type Context interface { Deadline() (deadline time.Time, ok bool) // 返回当�
       <pubDate>Sun, 07 Jun 2020 14:49:31 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/mail/</guid>
-      <description>在 go 官方的标准库中，提供了 net/smtp 库可以让我们使用 smtp 协议来发送邮件，但是这个库使用起来不是很方便，而且官方也不再维护这个库，推荐我们使用功能更丰富的第三方库来处理邮件发送
-jordan-wright/email就是一个使用的比较多的用来处理邮件发送的类库，它底层还是基于net/smtp实现的，但是提供了方便的调用方式供使用者使用
-安装 go get github.com/jordan-wright/email
-使用demo e := email.NewEmail() e.From = &amp;#34;Jordan Wright &amp;lt;test@gmail.com&amp;gt;&amp;#34; e.To = []string{&amp;#34;test@example.com&amp;#34;} e.Bcc = []string{&amp;#34;test_bcc@example.com&amp;#34;} e.Cc = []string{&amp;#34;test_cc@example.com&amp;#34;} e.Subject = &amp;#34;Awesome Subject&amp;#34; e.Text = []byte(&amp;#34;Text Body is, of course, supported!&amp;#34;) e.HTML = []byte(&amp;#34;&amp;lt;h1&amp;gt;Fancy HTML is supported, too!&amp;lt;/h1&amp;gt;&amp;#34;) e.Send(&amp;#34;smtp.gmail.com:587&amp;#34;, smtp.PlainAuth(&amp;#34;&amp;#34;, &amp;#34;test@gmail.com&amp;#34;, &amp;#34;password123&amp;#34;, &amp;#34;smtp.gmail.com&amp;#34;)) 可以看到这个类库调用起来还是非常的语义化的
-更多的使用可以参考官方文档</description>
+      <description>在 go 官方的标准库中，提供了 net/smtp 库可以让我们使用 smtp 协议来发送邮件，但是这个库使用起来不是很方便，而且官方也不再维护这个库，推荐我们使用功能更丰富</description>
     </item>
     
     <item>
@@ -67,10 +49,7 @@ jordan-wright/email就是一个使用的比较多的用来处理邮件发送的�
       <pubDate>Mon, 01 Jun 2020 18:46:47 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/channel/</guid>
-      <description>channel 类型 go 中 channel 类型分为两类：
- 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int)  不带缓冲区的 channel，写入和读取都会阻塞，在使用的时候必须有对应的写入 goroutine 和读取 goroutine，否则会造成死锁；带缓冲区的 channel，在缓冲区没满的时候会先将数据发到缓冲区，然后立即返回，如果缓冲区满了，会阻塞 goroutine
-为了操作上的安全和可读性，我们还可以限制 channel 的读写属性，默认 channel 都是可读可写的，可以使用 &amp;lt;-chan 来限定只读 channel， 使用chan&amp;lt;-来限定只写 channel，需要注意的是，只读的channel是不能关闭的
-func main() { ch := make(chan int, 10) go func(ch chan&amp;lt;- int) { for i := 0; i &amp;lt; 10; i++ { ch &amp;lt;- 1 // 这里如果使用 &amp;lt;- ch，编译是不通过的 	} close(ch) }(ch) for i := 0; i &amp;lt; 10; i++ { fmt.</description>
+      <description>channel 类型 go 中 channel 类型分为两类： 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int) 不带缓冲区的 c</description>
     </item>
     
     <item>
@@ -79,12 +58,7 @@ func main() { ch := make(chan int, 10) go func(ch chan&amp;lt;- int) { for i := 
       <pubDate>Sun, 17 May 2020 11:22:21 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/unit-testing/</guid>
-      <description>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持
-单测基本规则  单元测试文件必须以_test.go结尾 单元测试文件名前面的部分最好和要被测试的方法所在的文件名保持一致 单元测试函数名称必须要以TestXxxx的格式书写，函数必须要接受一个testing.T类型的指针，不能有返回值 单元测试函数名最好能和被测试的函数保持对应，比如要测试的方法是Add，那么单测函数的名字最好是TestAdd，如果被测试的方法在同一个包下的多个结构体中都有，那么单测函数的名字可以是Test结构体名字_方法名，比如TestMyStruct_Add  一个demo 包文件结构
-❯ tree . ├── main.go └── main_test.go 0 directories, 2 files main.go文件内容
-package main func Add(x, y int) int { return x + y } func main() { } main_test.go内容
-package main import ( &amp;quot;testing&amp;quot; ) func TestAdd(t *testing.T) { if Add(1, 2) != 3 { t.Errorf(&amp;quot;test add func err&amp;quot;) } } 执行结果
-❯ go test PASS ok test-go/unit-testing	0.006s 使用testing.</description>
+      <description>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持 单测基本规则 单元测试文件必须以_test.go结尾 单元测</description>
     </item>
     
     <item>
@@ -93,10 +67,7 @@ package main import ( &amp;quot;testing&amp;quot; ) func TestAdd(t *testing.T) {
       <pubDate>Sun, 03 May 2020 12:05:47 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/viper/</guid>
-      <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置。
-配置优先级 viper 可以从环境变量，配置文件等地方读取配置，甚至可以手动的在运行时设置值，那么 viper 读取配置的优先级是什么呢？根据官网，viper 读取的值得优先级如下
- 通过 Set 设置的值 从命令行选项读取的值 环境变量的值 配置文件的值 key/value store 默认值  快速上手 一个使用 viper 的基本示例如下，基本上完成一个应用也就使用这些功能
-# myconfig.yamlname:xiaokage:28sex:malebook:- php- java- cother:other_valuepackage main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.com/spf13/viper&amp;#34; ) func main() { viper.AddConfigPath(&amp;#34;.&amp;#34;) // viper 不会帮我们设置任何默认路径，我们需要至少添加一个寻找配置文件的路径 	viper.SetConfigName(&amp;#34;myconfig&amp;#34;) // 设置配置文件名称 	viper.SetConfigType(&amp;#34;yaml&amp;#34;) // 如果配置文件没有后缀的话，这个值必须设置  err := viper.ReadInConfig() if err != nil { panic(fmt.Sprintf(&amp;#34;Read config file err: %v&amp;#34;, err)) } // 读取 	name := viper.</description>
+      <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置</description>
     </item>
     
     <item>
@@ -105,12 +76,7 @@ package main import ( &amp;quot;testing&amp;quot; ) func TestAdd(t *testing.T) {
       <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/errors/</guid>
-      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下：
-if err != nil { return err } 然后层层传递，最终将错误传递到最上层，这里面存在着两个问题：
- 没有错误发生时的上下文信息（或者叫堆栈信息） 在层层的错误传递过程中，有可能已经将原始错误转化，丢失了最原始的 error  当前，比较优雅的方式是使用 github.com/pkg/errors 这个包来进行错误处理，官方文档
-QUICK START 一个基本的使用如下：
-package main import ( e &amp;#34;errors&amp;#34; &amp;#34;fmt&amp;#34; &amp;#34;github.com/pkg/errors&amp;#34; ) func main() { oldErr := e.New(&amp;#34;我是底层error&amp;#34;) // 添加错误信息和堆栈信息，生成一个新的 error 	wrappedErr := errors.Wrap(oldErr, &amp;#34;我是封装error&amp;#34;) // 输出错误信息 	fmt.Printf(&amp;#34;%v\n&amp;#34;, wrappedErr) fmt.Println(&amp;#34;===============================&amp;#34;) // 输出错误信息和堆栈信息 	fmt.Printf(&amp;#34;%+v\n&amp;#34;, wrappedErr) fmt.Println(&amp;#34;===============================&amp;#34;) // 获取底层错误 	err := errors.Cause(wrappedErr) fmt.Println(err) } 我们也可以使用errors.WithMessage和errors.WithStack单独添加错误信息和堆栈信息
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.</description>
+      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2 return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两</description>
     </item>
     
     <item>
@@ -119,10 +85,7 @@ package main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.</description>
       <pubDate>Sun, 12 Apr 2020 23:31:09 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/time/</guid>
-      <description>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面：
- 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时器的操作  本文只是列举比较常用的场景，更多的细节还是要参考官方文档
-时间点 在 go 中，时间点使用 time.Time 来表示，这是一个基于纳秒精度的时间表示，我们还是通过一些例子来来学习
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; ) func main() { // 获取时间 	now := time.Now() // 获取当前时间点对象 	t := time.Unix(1586708379, 0) // 从指定时间戳实例化Time对象，第二个参数可以指定纳秒的精度  s, _ := time.Parse(&amp;#34;2006-01-02 03:04:05&amp;#34;, time.Now().Format(&amp;#34;2006-01-02 03:04:05&amp;#34;)) // 从时间字符串解析 	fmt.Println(now, t, s) // 分解时间中的时间元素 	year := t.Year() // 获取年 	month := t.</description>
+      <description>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时</description>
     </item>
     
     <item>
@@ -131,14 +94,7 @@ package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; ) func main()
       <pubDate>Sun, 29 Mar 2020 17:51:54 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/log/</guid>
-      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用
-实例化 logger 进行日志记录 首先看一个最简单的 demo：
-package main import ( &amp;#34;log&amp;#34; &amp;#34;os&amp;#34; ) func main() { logger := log.New(os.Stdout, &amp;#34;我是自定义日志前缀：&amp;#34;, log.LstdFlags) logger.Println(&amp;#34;I&amp;#39;m print call&amp;#34;) } // 我是自定义日志前缀：2020/03/29 20:45:43 I&amp;#39;m print call  log 包最终输出到哪里和包本身无关，取决于 io.Writer（第一个参数） 对应的实际对象底层传递的是什么。
-log 可以支持我们指定每条日志的前缀（第二个参数）和一些固定的标记（第三个参数）
-logger 有Print、Fatal、Panic三个系列的方法，区别如下
- Print只记录日志 Fatal记录日志后会调用os.Exit(1)推出应用 Panic记录日志后会调用Panic  每个系列也都提供了三种调用方式，比如Print系列有以下三种方式：
- Print输出给定的信息 Println输出给定的信息并且在后面追加一个换行 Printf支持使用格式化参数  使用辅助方法进行日志记录 log 包还提供了一些快捷方法，可以直接通过包的方法调用，比如
-package main import ( &amp;#34;log&amp;#34; ) func main() { log.Println(&amp;#34;hahahha&amp;#34;) } // 2020/03/29 20:47:42 hahahha  它其实是在包内生成了一个输出到 stdout 的 logger，方便我们使用而已</description>
+      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用 实例化 logger 进行日志记录 首先看一个最简单的 demo： 1package main 2 3import ( 4 &amp;#34;log&amp;#34; 5 &amp;#34;os&amp;#34; 6) 7 8func</description>
     </item>
     
     <item>
@@ -147,10 +103,7 @@ package main import ( &amp;#34;log&amp;#34; ) func main() { log.Println(&amp;#34
       <pubDate>Sun, 05 Jan 2020 15:33:50 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/go-file-operation/</guid>
-      <description>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供了一些常用的方法供开发者使用
-本文只列出了一些常用的方法，更多的操作可以参考：https://colobu.com/2016/10/12/go-file-operations
-使用 os 包进行文件操作  打开文件
- package main import ( &amp;#34;os&amp;#34; ) func main() { var ( file *os.File err error ) // 以只读方式打开一个文件 	file, err = os.Open(&amp;#34;a.txt&amp;#34;) if err != nil { panic(err) } _ = file.Close() // 以指定的模式打开文件，这个方法更具有通用性 	// 一般情况下我们应该尽量使用 os.Open 和 os.Create 方法而不是这个方法 	file, err = os.OpenFile(&amp;#34;a.txt&amp;#34;, os.O_APPEND, 0666) if err != nil { panic(err) } _ = file.</description>
+      <description>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供</description>
     </item>
     
     <item>
@@ -159,11 +112,7 @@ package main import ( &amp;#34;log&amp;#34; ) func main() { log.Println(&amp;#34
       <pubDate>Sun, 22 Dec 2019 11:48:21 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8net-http/</guid>
-      <description>net/http 包为我们提供了对 http 协议的处理，包含了客户端和服务端两大部分的实现
-版本  go1.12  主要结构体 几乎任何语言中的http包都是围绕客户端，服务端，请求和响应这4个对象展开的，go 也不例外。本篇主要是讲解包的使用，所以还是通过例子来说明
-客户端 快速入门 http 客户端基本的使用流程：
- 构造请求 构造客户端 使用客户端发送请求获取响应 使用响应  下面用一个最简单的例子来展示下上面的流程：
-func main() { // 创建一个请求 	req, err := http.NewRequest(&amp;#34;GET&amp;#34;, &amp;#34;http://www.baidu.com&amp;#34;, nil) if err != nil { panic(err) } // 创建一个客户端 	client := http.Client{} // 使用客户端发送请求 	resp, err := client.Do(req) if err != nil { panic(err) } // 使用响应 	defer resp.Body.Close() if ret, err := ioutil.</description>
+      <description>net/http 包为我们提供了对 http 协议的处理，包含了客户端和服务端两大部分的实现 版本 go1.12 主要结构体 几乎任何语言中的http包都是围绕客户端，服务端，请求和响</description>
     </item>
     
     <item>
@@ -172,10 +121,7 @@ func main() { // 创建一个请求 	req, err := http.NewRequest(&amp;#34;GET&am
       <pubDate>Sat, 21 Dec 2019 22:21:40 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/net-url/</guid>
-      <description>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用
-url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：scheme://[userinfo@]host/path[?query][#fragment]，如果 scheme 之后不是以斜线开头的，那么结构被认为是 scheme:opaque[?query][#fragment]，也就是用户信息、域名和路径部分是不透明的，可以认为是被加密或者被编码过的
-环境  go1.12  包中的基本结构体 这个包中有3个比较基本的结构体：
- URL：代表一个被解析的url UserInfo：代表 url 中的用户信息部分 Values：存放 query 参数或者 form 参数  type URL struct { Scheme string Opaque string // encoded opaque data 	User *Userinfo // username and password information 	Host string // host or host:port 	Path string // path (relative paths may omit leading slash) 	RawPath string // encoded path hint (see EscapedPath method) 	ForceQuery bool // append a query (&amp;#39;?</description>
+      <description>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s</description>
     </item>
     
     <item>
@@ -184,19 +130,7 @@ url 结构 在学习使用这个库之前，我们先来了解下 url 的标准�
       <pubDate>Mon, 16 Dec 2019 22:45:34 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/zap/</guid>
-      <description>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap
-版本 本篇基于的 zap 版本是 v1.10.0
-使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概念，方便在我们阅读 demo 或者写代码的时候能大体的感知到我们在用什么，为什么这样用。为了不产生翻译上的歧义，书写过程中涉及到的概念会用 zap 源码中的命名
- Logger
- 这是 zap 暴露给我们类型，正常情况下，我们也是通过 Logger 这个结构体的方法来记录日志的
- Config
- 这个是 zap 提供给我们的 Logger 的配置，我们可以按需配置，然后通过 Build 方法来构造出我们想要的 Logger，是典型的的构造者模式
- Field
- 除了日志级别、日志时间、日志信息等这些基本的通用字段之外，我们在记录日志的时候通常会想记录一些额外的字段（用来记录打日志时的上下文），这些字段在 zap 中需要封装成 Field 类型
- Core
- Logger 是一个结构体，为我们暴露了使用日志的方法，而 Core 是一个接口，它被包含在 Logger 中，用来真正提供日志格式化和输出功能，这样的实现使日志记录器的使用和输出实现了高度解耦。我们可以实现自己的 Core 从而达到不同的输出的目的
- Encoder
- Encoder 同样是一个接口，刚才说到 Core 是实现具体输出行为的核心，而 Encoder 是 Core 中真正进行日志信息和字段格式化的编码器，它把我们输入的各种日志信息经过处理得到字节切片。从而可以记录在各种存储载体中。zap 对于 Encoder 自带了两个实现，jsonEncoder 和 consoleEncoder</description>
+      <description>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概</description>
     </item>
     
     <item>
@@ -205,12 +139,7 @@ url 结构 在学习使用这个库之前，我们先来了解下 url 的标准�
       <pubDate>Sun, 15 Dec 2019 14:35:43 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/path-filepath/</guid>
-      <description>简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示
-而且要注意的是，path/filepath这个库并不会去判断你指定的路径存不存在，也不会去判断指定的路径是一个文件还是一个目录
-环境 ╰─$ go version go version go1.12.14 darwin/amd64 说明 获取指定路径的目录 filepath.Dir() 代码：
-func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, &amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, } for _, path := range examples { fmt.Println(filepath.Dir(path)) } } 输出：
-╰─$ go run main.go /etc /etc / etc . . 获取指定路径的文件名 filepath.Base() 代码：
-func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, // 在拆分之前会去除末尾的斜杠，相当于 /etc 	&amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, // 如果是空字符串，返回 .</description>
+      <description>简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示 而且要注意</description>
     </item>
     
     <item>
@@ -219,12 +148,7 @@ func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/
       <pubDate>Fri, 13 Dec 2019 14:46:50 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/go-multi-version-manage/</guid>
-      <description>之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下使用gvm进行go的多版本管理
-gvm的信息可以参考：https://github.com/moovweb/gvm
-环境信息  macOS 10.15.2 brew 2.1.16  安装gvm bash &amp;lt; &amp;lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) 下载好之后，需要修改下个人配置文件，使gvm相关命令生效，如果用的是bash，则修改~/.bashrc，如果习惯用zsh，那就修改~/.zshrc，以此类推
-[[ -s &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; ]] &amp;amp;&amp;amp; source &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; 修改之后，重开一会会话或者直接source ~/.zshrc（我用的是zsh）让刚才的修改生效。执行一下看下效果
-╰─$ gvm version Go Version Manager v1.0.22 installed at /Users/wangtingkui/.gvm 可以看到，我装的是 1.0.22 的版本
-常用命令 # 查看gvm版本 gvm version # 查看所有可以安装的版本 gvm listall # 查看本地已经安装的版本 gvm list # 安装指定版本 gvm install go1.13.5 # 删除指定版本 gvm uninstall go1.13.5 # 临时切换版本 gvm use go1.13.5 # 切换版本并指定为默认版本 gvm use go1.</description>
+      <description>之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下</description>
     </item>
     
     <item>
@@ -233,15 +157,7 @@ gvm的信息可以参考：https://github.com/moovweb/gvm
       <pubDate>Wed, 11 Dec 2019 14:57:37 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/cobra/</guid>
-      <description>上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5
-首先需要了解的是，在cobra中，所有的命令会组成一个树的结构，必然有一个根命令，我们应用的每次执行，都是从这个根命令开始的，官方文档也说过，基于cobra的应用的main包中的代码是很简单的，几乎没有额外的操作，仅有的操作其实就是执行我们的根命令。所以自然而然的，我们的代码分析之旅也是从根命令的执行开始的。
-为了有个直观的感受，我简单生成了一个基于cobra的应用。这个应用有一个根命令和一个test1的子命令，项目结构如下：
-╰─$ tree . . ├── LICENSE ├── cmd │ ├── root.go │ └── test1.go ├── go.mod ├── go.sum └── main.go 1 directory, 6 files 主线执行分析 所有的项目不可能都是简单的一条线到底，代码总会有很多分支，但我们阅读源码的时候精力和关注度总是有限的（不是有人说人在同一时间关注的点不能超过7个还是几个来着么），如果代码里面的每个分支都去看，每个函数的调用都进去瞅瞅，很快我们就会迷失在复杂的代码里面，忘了我们怎么看到的这行代码，所以本文去分析源码的时候，会优先挑一条主线，主要跟踪这条主线上的逻辑和调用，忽略其他支线。当然，也会有比较重要的其他支线，但是和当前的主线无关，会单开一个小节去阅读分析
-cobra主线自然是入口-找到目标命令-分析参数-执行这条路径啦~
-看下main.go文件中都有点啥
-package main import &amp;#34;learnCobra/cmd&amp;#34; func main() { cmd.Execute() } 简洁的一比，直接进入cmd.Execute
-func Execute() { if err := rootCmd.Execute(); err != nil { fmt.Println(err) os.Exit(1) } } 可以看到，其实就是执行了根命令的Execute方法，这个方法才是我们的重头戏。当然，所谓的根命令只是从命令的组织形态上来说的，所有的命令都是cobra.Command的这个结构体，后面绝大多数的代码也都是对这个结构体的成员和方法的分析
-func (c *Command) Execute() error { _, err := c.ExecuteC() return err } 毫无波澜，直接进c.</description>
+      <description>上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，</description>
     </item>
     
     <item>
@@ -250,10 +166,7 @@ func (c *Command) Execute() error { _, err := c.ExecuteC() return err } 毫无�
       <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/hugo-categorize-your-artical/</guid>
-      <description>hugo 内置了强大且支持自定义的分类系统，比如标签、类别、系列等，可以通过配置开启这些分类系统
-在config.toml中配置：
-[taxonomies] tag = &amp;quot;tags&amp;quot; category = &amp;quot;categories&amp;quot; seris = &amp;quot;series&amp;quot; 开启之后，只需要在文章的Front Matter对应的属性中，添加想要划分到的分类即可
---- title: &amp;quot;php入门&amp;quot; date: 2019-10-10 tags: [&amp;quot;php&amp;quot;] categories: [&amp;quot;php&amp;quot;] series: [&amp;quot;php入门系列&amp;quot;] </description>
+      <description>hugo 内置了强大且支持自定义的分类系统，比如标签、类别、系列等，可以通过配置开启这些分类系统 在config.toml中配置： 1[taxonomies] 2tag = &amp;#34;tags&amp;#34; 3category = &amp;#34;categories&amp;#34; 4seris = &amp;#34;series&amp;#34;</description>
     </item>
     
     <item>
@@ -262,16 +175,7 @@ func (c *Command) Execute() error { _, err := c.ExecuteC() return err } 毫无�
       <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/hugo-custom-your-domain/</guid>
-      <description>github pages 为我们提供的站点域名是 &amp;lt;username&amp;gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到 github pages 上呢，当然是可以的
-github pages 支持多种域名类型，不同的域名类型配置有细微的区别
-配置二级域名 二级域名就是类似baidu.com这种，.com是顶级域,baidu是二级域
-首先进入到 github 仓库的设置，找到 GitHub Pages 项下的 Custom domain 配置项  
-输入你的二级域名，点击保存，这个操作会自动在你的仓库代码的根目录下添加一个CNAME文件  
-最后还需要在你的dns服务提供商那里配置一下域名解析，对于二级域名来说，你可以配置ALIAS记录,ANAME记录或者是A记录
-如果配置的是ALIAS或者ANAME，需要把你二级域名指向默认的站点域名，也就是&amp;lt;username.github,io&amp;gt;
-如果配置的是A记录，把你的二级域名指向下面的ip，具体会不会变化可以参考官方文档
-185.199.108.153 185.199.109.153 185.199.110.153 185.199.111.153 配置子域名 可以参考官方文档
-参考  github pages 官方文档  </description>
+      <description>github pages 为我们提供的站点域名是 &amp;lt;username&amp;gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到</description>
     </item>
     
     <item>
@@ -280,13 +184,7 @@ github pages 支持多种域名类型，不同的域名类型配置有细微的�
       <pubDate>Sat, 07 Dec 2019 16:01:41 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/hugo-custom-your-url/</guid>
-      <description>默认情况下，站点文章的 url 和我们 content 目录下的文件结构是一一对应的，比如有 content/posts/test.md 这篇文章，当我们发布之后，在站点访问的 url 就是 &amp;lt;domian&amp;gt;/posts/test，如果我们不想要这种形式，可以通过配置来改变默认的行为
-在使用配置之前，先让我们了解下 hugo 生成的 url 规则
- 
-知道了每个段的含义，我们就可以使用hugo提供给我们的配置项来进行url的自定义
-可以在config.toml文件中的[permalinks]配置指定url的格式，比如
-[permalinks] post = &amp;quot;/:year/:month/:title/&amp;quot; 所有可用的属性如下
-:month :monthname :day :weekday :weekdayname :yearday :section :title :slug :filename </description>
+      <description>默认情况下，站点文章的 url 和我们 content 目录下的文件结构是一一对应的，比如有 content/posts/test.md 这篇文章，当我们发布之后，在站点访问的 url 就是 &amp;lt;domian&amp;gt</description>
     </item>
     
     <item>
@@ -295,10 +193,7 @@ github pages 支持多种域名类型，不同的域名类型配置有细微的�
       <pubDate>Sat, 07 Dec 2019 15:55:24 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/hugo-template-order/</guid>
-      <description>加入我们要寻找content/posts下文章的模板
-当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模板查找顺序是：
-&amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html 当指定了type和layout属性的时候，查找顺序是：
-&amp;lt;project_path&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html </description>
+      <description>加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模</description>
     </item>
     
     <item>
@@ -307,9 +202,7 @@ github pages 支持多种域名类型，不同的域名类型配置有细微的�
       <pubDate>Sat, 07 Dec 2019 15:31:44 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/front-matter/</guid>
-      <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。
-Front Matter 支持4种配置语言 YAML,JSON,TOML,ORG，可以通过Front Matter的前导符（包裹Front Matter的定界符）来告诉hugo我们使用的是什么配置语言，各种配置语言的前导符如下：
-   格式 定界符     toml 开始和结束行使用+++   yaml 开始和结束行使用---   json 使用一个json对象，对象后需要跟一个空白行   org a group of Org mode keywords in the format ‘#+KEY: VALUE’. Any line that does not start with #+ ends the front matter section. Keyword values can be either strings (#+KEY: VALUE) or a whitespace separated list of strings (#+KEY[]: VALUE_1 VALUE_2).</description>
+      <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 支持</description>
     </item>
     
     <item>
@@ -318,17 +211,7 @@ Front Matter 支持4种配置语言 YAML,JSON,TOML,ORG，可以通过Front Matte
       <pubDate>Sun, 01 Dec 2019 17:28:45 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8flag/</guid>
-      <description>本文所讨论内容基于的go版本：go1.13
-在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提供了解析命令行参数的功能
-要使用flag包，主要有3个步骤：定义flag、解析flag、使用flag
-定义flag flag包为我们提供了两种定义flag的方式，flag.Xxx()方式和flag.XxxVar()方式,其中Xxx可以是Int,String等类型，其中第一种会返回对应类型的指针，第二种则是将flag绑定到一个变量上
-// 方式1 var config *string = flag.String(&amp;#34;config&amp;#34;. &amp;#34;path/to/config&amp;#34;, &amp;#34;配置文件路径&amp;#34;) // 方式2 var intval int flag.IntVal(&amp;amp;intval, &amp;#34;intval&amp;#34;, 1, &amp;#34;a intger value&amp;#34;) 除了标准库中提供的基础数据类型的解析，如果我们需要解析自定义的类型，可以使用flag.Val()方法，只要绑定的类型实现了flag.Value接口即可
-解析flag 当定义完了所有的flag之后，我们可以调用flag.Parse()方法解析命令行参数
-使用flag 当使用命令行传递flag的时候，有以下三种语法格式（虽说官方只写了一个-，但其实当flag是bool类型的时候--也是支持的，但最好还是按照官方的来）
--flag // 只支持 bool 类型 -flag value // 只支持非 bool 类型，因为比如有`cmd -x false`这种格式，不能确定false到底是flag的值还是一个参数 -flag=value 在命令行传递参数时，如果是int类型，可以传递十进制、十六进制、八进制或者是负数；如果是bool类型，可以使用1,0,t,g,true,false,TRUE,FALSE,True,Flase；如果是duration，可以接受任何time.ParseDuration可以解析的类型
-non-flag 参数 在上面的说明中我们知道，传递参数的时候有固定格式，那不符合这些格式的参数就是non-flag参数
-在代码中，我们可以通过下面的这些方法来获取和使用non-flag参数
-flag.Arg(i int) // 获取第i个non-flag参数 flag.Args() // 获取所有的non-flag参数 flag.NArg() // 获取non-flag参数的个数 一个例子 package main import ( &amp;#34;flag&amp;#34; &amp;#34;fmt&amp;#34; ) func main() { var ( s = flag.</description>
+      <description>本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提</description>
     </item>
     
     <item>
@@ -337,12 +220,7 @@ flag.Arg(i int) // 获取第i个non-flag参数 flag.Args() // 获取所有的non
       <pubDate>Sun, 01 Dec 2019 13:56:09 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/deploy-on-github-pages/</guid>
-      <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点的生成，那么剩下的一个问题就是如何部署我们生成的站点，供其他人访问
-这篇文章帮助我们了解如何使用github pages的功能来部署我们的个人站点
-使用 github pages 的好处  完全免费 不需要自己购买服务器 不需要自己运行维护 可以方便的使用https  github pages 的限制 当然github pages本身还是有一些限制的
- 网站大小不能超过1GB 网站不能发布的过于频繁（每小时不超过10个版本） 每个月流量上限为1000GB  但是作为个人博客来说，这些限制几乎对我们没什么影响
-如何使用 github pages github pages 官方文档
- 申请一个github账号，每个github账号可以有一个个人站点和多个项目站点（这个以后有机会在单独写文章说一下） 创建一个&amp;lt;username&amp;gt;.github.io的仓库 当我们执行hugo命令去生成我们的静态站点的文件时，默认会放在当前目录的public目录（当然你也可以通过配置hugo从而指定目录），所以我们直接把创建好的仓库拉取到项目下的public目录即可git clone git@github.com:wangtingkui/wangtingkui.github.io.git ./public 指定hugo命令生成站点文件 进入public文件夹，将生成的文件提交到git，然后推送到远端即可  cd public git add . git commit -m &amp;#34;提交信息&amp;#34; git push -u origin master 推送之后，访问&amp;lt;username&amp;gt;.github.io你就会惊奇的发现你的个人站点已经可以访问了，如果访问的时候没有效果，也不要着急，那是github还在处理中，去休息一下，过段时间在访问就会生效啦~</description>
+      <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点</description>
     </item>
     
     <item>
@@ -351,18 +229,7 @@ flag.Arg(i int) // 获取第i个non-flag参数 flag.Args() // 获取所有的non
       <pubDate>Sun, 22 Sep 2019 15:28:34 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/introduction/</guid>
-      <description>以blog为例，看看hugo是如何使用的
-创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们的项目目录
-简单了解下目录的结构
-. ├── archetypes # 存储 .md 的模板文件 │ └── default.md ├── config.toml # 配置文件 ├── content # 存储网站所有的内容 ├── data # 存储数据文件供模板调用 ├── layouts # 存储 .html 模板 ├── static # 存储图片、css、js等静态文件，该目录下的文件会直接拷贝到 /public └── themes # 存储主题 6 directories, 2 files 快速体验 让我们快速体验下hugo的威力
-hugo创建出来的项目默认不带有任何主题，我们直接从github上随便搞一个，放到之前提到的themes文件夹下
-git clone https://github.com/budparr/gohugo-theme-ananke.git ./themes/ananke
-然后在配置文件中配置应用这个主题
-echo &#39;theme = &amp;quot;ananke&amp;quot;&#39; &amp;gt;&amp;gt; config.toml
-接下来该正常的用markdown写作我们的文章了，使用如下命令新建一个文章
-hugo new post/my-first-post.md
-可以看到在content文件夹下多出了一个post文件夹，里面有一个my-fisrt-post.md的markdown文件，我们看下创建出来的这个文件里面的内容都有什么
- content/post/my-first-post.</description>
+      <description>以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们</description>
     </item>
     
   </channel>

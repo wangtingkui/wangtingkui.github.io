@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>工具 on xiaok&#39;s blog</title>
+    <title>工具 on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/</link>
-    <description>Recent content in 工具 on xiaok&#39;s blog</description>
+    <description>Recent content in 工具 on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Mon, 20 Jul 2020 14:01:14 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Editorconfig</title>
@@ -13,13 +13,7 @@
       <pubDate>Mon, 20 Jul 2020 14:01:14 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/editorconfig/</guid>
-      <description>现如今，各种开发工具百花齐放，每个开发者都会有自己最中意的一款编辑器，但是各种编辑器的配置方式不同，当我们切换编辑器的时候，又需要针对新的编辑器进行配置，以保证代码格式的相同。那么有没有什么方式可以让我们在不同的编辑器之间随意切换而不用考虑配置带来的成本呢？那就是 EditorConfig
-官方网站 https://editorconfig.org/
-原理 EditorConfig 的运作原理是设计了一套标准的配置文件，然后在各种编辑器中开发对应的插件，插件解析配置文件，从而保证不同编辑器的配置相同
-现在几乎大部分编辑器都内置了 EditorConfig 的支持，不需要额外的安装插件
-配置文件 EditorConfig 的配置文件是一个 ini 格式的文件，名字为 .editorconfig，项目中每个文件夹下都可以有自己的 .editorconfig 文件，就近原则生效
-配置文件格式 一个简单的配置文件demo:
-# EditorConfig is awesome: https://EditorConfig.org # top-most EditorConfig file root = true # Unix-style newlines with a newline ending every file [*] end_of_line = lf insert_final_newline = true # Matches multiple files with brace expansion notation # Set default charset [*.{js,py}] charset = utf-8 # 4 space indentation [*.py] indent_style = space indent_size = 4 # Tab indentation (no size specified) [Makefile] indent_style = tab # Indentation override for all JS under lib directory [lib/**.</description>
+      <description>现如今，各种开发工具百花齐放，每个开发者都会有自己最中意的一款编辑器，但是各种编辑器的配置方式不同，当我们切换编辑器的时候，又需要针对新的编</description>
     </item>
     
     <item>
@@ -28,11 +22,7 @@
       <pubDate>Sun, 31 May 2020 08:40:51 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/net-fix-on-centos-7/</guid>
-      <description>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络
-一、确定网络信息 vmnet8是安装 vmware funsion 之后自动生成的一张虚拟网卡，NAT 模式使用的就是这张网卡
-进入vmnet8网卡配置目录 &amp;gt; cd /Library/Preferences/VMware Fusion/vmnet8 查看nat信息，记住nat网关信息，也就是ip和netmask字段 &amp;gt; cat nat.conf nat.conf 文件内容：
-... # 省略文件其他部分 [host] # NAT gateway address ip = 172.16.5.2 netmask = 255.255.255.0 ... # 省略文件其他部分 查看dhcp信息，记住range范围，这里指的就是可用ip范围 &amp;gt; cat dhcpd.conf dhcpd.conf 文件信息：
-... # 省略文件其他部分 subnet 172.16.5.0 netmask 255.255.255.0 { range 172.16.5.128 172.16.5.254; option broadcast-address 172.16.5.255; option domain-name-servers 172.16.5.2; option domain-name localdomain; default-lease-time 1800; # default is 30 minutes max-lease-time 7200; # default is 2 hours option netbios-name-servers 172.</description>
+      <description>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络 一、确定</description>
     </item>
     
     <item>
@@ -41,23 +31,7 @@
       <pubDate>Sun, 24 May 2020 10:48:57 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/plex/</guid>
-      <description>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、演员等），易用程度和美观程度都非常高
-本片文章主要写一下 plex 在群辉nas上的基本使用
-第一步 安装 Plex Media Server 套件
- 
-第二步 根据步骤注册 plex 账号
-第三步 点击头像旁边的+号，添加资料库
- 
-选择要添加的资料库类型，官网强烈建议不同的媒体类型分类存储，比如电影和电视剧最好分开，否则可能会造成元信息搜索不到或者不准确
- 
-这里假设我们要创建电影类型的资料库
- 
- 
-选择文件夹的时候要注意，plex只能展示第一层文件夹，比如我们的电影存储路径在/a/b/c，plex只能展示/a/b，所以这里我们最好是直接手动输入电影路径
- 
-点击添加就好了
-第四步 通常在完成上面的操作后还是扫描不到文件夹里面的电影，这是因为 plex 没有对电影所在文件夹的操作权限，所以需要我们手动添加一下
-打开file station选中我们电影存储的文件夹，右键选择属性，点击权限，新增，给plex账户添加读写权限即可</description>
+      <description>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、</description>
     </item>
     
     <item>
@@ -66,8 +40,7 @@
       <pubDate>Sat, 23 May 2020 23:04:47 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/extension/</guid>
-      <description>vscode 扩展推荐
-实用    扩展名 用途    推荐主题    主题名 备注     vscode-icons 可以替换vscode的默认图标   Atom One Dark Theme    Monokai Pro     </description>
+      <description>vscode 扩展推荐 实用 扩展名 用途 推荐主题 主题名 备注 vscode-icons 可以替换vscode的默认图标 Atom One Dark Theme Monokai Pro</description>
     </item>
     
     <item>
@@ -76,10 +49,7 @@
       <pubDate>Sat, 23 May 2020 20:16:08 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/sync-setting/</guid>
-      <description>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用
-alfred 的同步功能本质上是将配置打包成一个文件，然后借助第三方云同步功能同步这个文件，所以首先我们需要有个可用的云同步的文件夹，alfred 官方推荐的是 dropbox，但是由于一些不可描述的原因在国内使用起来不是很方便，所以这里我推荐另外一个软件，坚果云
-具体坚果云的配置非常简单，这里就不赘述了，下面说一下怎么开启 alfred 的同步功能
-配置  打开偏好设置 找到Advanced配置项 右下角一个 Syncing 的配置 点击 Set preferences folder.. 按钮，选择我们的云同步文件夹就好了  </description>
+      <description>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用 alfred 的同步功能本质上是将配置打包成一个文件，然后借助第</description>
     </item>
     
     <item>
@@ -88,14 +58,7 @@ alfred 的同步功能本质上是将配置打包成一个文件，然后借助�
       <pubDate>Sat, 16 May 2020 10:33:59 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/pakage/</guid>
-      <description>atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件
-project-manager（atom项目管理） 可以将文件保存为项目，方便管理。我一般会配合 alfred workflow 方便的打开自己想要的项目
-sync-settings（atom配置同步） 如果使用多台电脑，必不能少的插件，将atom配置同步到 github gist 来达到同步目的
-pretty-json（json格式化） 开发中经常用的，可以对json字符串进行格式化
-ide-yaml（yaml格式化和校验） yaml格式化和校验
-pp-markdown（markdown预览） markdown预览
-atom-beautify（代码格式化） 代码格式化
-css-snippets（css代码提示） 支持css、scss、sass、less</description>
+      <description>atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件 project-manager（atom项目</description>
     </item>
     
     <item>
@@ -104,18 +67,7 @@ css-snippets（css代码提示） 支持css、scss、sass、less</description>
       <pubDate>Tue, 12 May 2020 23:21:29 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/theme/</guid>
-      <description>和插件一样，zsh 为我们提供了丰富的主题和自定义主题的能力，主题也分为两大类，一类是内置主题，另一类是自定义的扩展主题
-内置主题 这个其实没啥好说的，在官网浏览下，挑选自己喜欢的，然后再~/.zshrc中配置对应的主题名称就行
-以官网中下图这个主题为例，主题名字叫robbyrussell
- 
-在配置文件中修改ZSH_THEME变量的值即可
-# Set name of the theme to load --- if set to &amp;#34;random&amp;#34;, it will # load a random theme each time oh-my-zsh is loaded, in which case, # to know which specific one was loaded, run: echo $RANDOM_THEME # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes ZSH_THEME=&amp;#34;robbyrussell&amp;#34; 自定义主题（也称为外部主题） 这种主题类似插件，需要下载到${ZSH_CUSTOM}/themes这个目录下，然后再去配置文件中配置即可
-下面以一个超推荐的外部主题powerlevel10k/powerlevel10k为例，超级强大和漂亮（已经超越了主题的范畴）
- step1
- 先下载主题：git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
- step2
- 修改主题
-# Set name of the theme to load --- if set to &amp;#34;random&amp;#34;, it will # load a random theme each time oh-my-zsh is loaded, in which case, # to know which specific one was loaded, run: echo $RANDOM_THEME # See https://github.</description>
+      <description>和插件一样，zsh 为我们提供了丰富的主题和自定义主题的能力，主题也分为两大类，一类是内置主题，另一类是自定义的扩展主题 内置主题 这个其实没啥好</description>
     </item>
     
     <item>
@@ -124,10 +76,7 @@ css-snippets（css代码提示） 支持css、scss、sass、less</description>
       <pubDate>Sun, 10 May 2020 11:44:38 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/plugin-recommend/</guid>
-      <description>这篇文站整理下自己经常使用的 alfred workflow
-TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录
-alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目
-YoudaoTranslate 有道词典翻译</description>
+      <description>这篇文站整理下自己经常使用的 alfred workflow TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录 alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目</description>
     </item>
     
     <item>
@@ -136,11 +85,7 @@ YoudaoTranslate 有道词典翻译</description>
       <pubDate>Sun, 10 May 2020 11:02:41 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/plugin/</guid>
-      <description>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.zshrc配置文件中开启即可使用，另外一类是自定义插件，我们需要将这类插件下载到~/.oh-my-zsh/custom/plugins目录中，然后再配置使用
-我们使用插件的时候要按需启用，启用过多的插件会导致shell的启动很慢
-内建插件 内建插件的使用很简单，只需要在~/.zshrc中开启即可
-# .zshrc 文件 # Which plugins would you like to load? # Standard plugins can be found in ~/.oh-my-zsh/plugins/* # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/ # Example format: plugins=(rails git textmate ruby lighthouse) # Add wisely, as too many plugins slow down shell startup. plugins=(git ruby) 这里就列出一些自己常用的插件
-   插件名 描述 截图     git 显示git分支，改动状态等，还自带了很多git命令的缩写     urltools 提供urlencode 和 urldecode功能      自定义插件 自定义插件需要你手动将插件下载到~/.</description>
+      <description>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.z</description>
     </item>
     
   </channel>

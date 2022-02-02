@@ -1,508 +1,435 @@
-<!DOCTYPE html>
-<html lang="en-us">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='加入我们要寻找content/posts下文章的模板
-当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模板查找顺序是：
-&amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html 当指定了type和layout属性的时候，查找顺序是：
-&amp;lt;project_path&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html '><title>使用hugo搭建个人网站（五）- 模板选择顺序</title>
+<!doctype html><html lang="zh-cn" data-palette="blue"
+  >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>使用hugo搭建个人网站（五）- 模板选择顺序 - Hugo Bootstrap</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.com/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.com/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.com/manifest.json">
+<meta name="keywords" content="" />
+<meta name="description" content="加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模" /><meta itemprop="name" content="使用hugo搭建个人网站（五）- 模板选择顺序">
+<meta itemprop="description" content="加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模"><meta itemprop="datePublished" content="2019-12-07T15:55:24+08:00" />
+<meta itemprop="dateModified" content="2019-12-07T15:55:24+08:00" />
+<meta itemprop="wordCount" content="124">
+<meta itemprop="keywords" content="go," /><meta property="og:title" content="使用hugo搭建个人网站（五）- 模板选择顺序" />
+<meta property="og:description" content="加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.com/posts/tool/hugo-template-order/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-12-07T15:55:24+08:00" />
+<meta property="article:modified_time" content="2019-12-07T15:55:24+08:00" /><meta property="og:site_name" content="Hugo Bootstrap" />
 
-<link rel='canonical' href='https://wangtingkui.com/posts/tool/hugo-template-order/'>
-
-<link rel="stylesheet" href="/scss/style.min.8f4416a35036b6471a6978873128b5652464226c8db8a9620ed1b94bc11bd353.css"><meta property='og:title' content='使用hugo搭建个人网站（五）- 模板选择顺序'>
-<meta property='og:description' content='加入我们要寻找content/posts下文章的模板
-当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模板查找顺序是：
-&amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html 当指定了type和layout属性的时候，查找顺序是：
-&amp;lt;project_path&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html '>
-<meta property='og:url' content='https://wangtingkui.com/posts/tool/hugo-template-order/'>
-<meta property='og:site_name' content='xiaok&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='go' /><meta property='article:published_time' content='2019-12-07T15:55:24&#43;08:00'/><meta property='article:modified_time' content='2019-12-07T15:55:24&#43;08:00'/>
-<meta name="twitter:title" content="使用hugo搭建个人网站（五）- 模板选择顺序">
-<meta name="twitter:description" content="加入我们要寻找content/posts下文章的模板
-当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模板查找顺序是：
-&amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html 当指定了type和layout属性的时候，查找顺序是：
-&amp;lt;project_path&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html ">
-    </head>
-    <body class="
-    article-page 
-">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "dark");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex 
-    
-        on-phone--column extended
-    
-">
-    
-        <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用hugo搭建个人网站（五）- 模板选择顺序"/>
+<meta name="twitter:description" content="加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模"/>
+<link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.com">xiaok&#39;s blog
+    </a>
+    <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">Share</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
     </button>
-
-    <header class="site-info">
-        
-            
-            <figure class="site-avatar">
-                <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu1e42c191d071456c51ca463a5bad8871_29255_300x0_resize_q75_box.jpeg" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-                </a>
-                
-                    <span class="emoji">🍥</span>
-                
-            </figure>
-            
-        
-        
-        <h1 class="site-name"><a href="/">xiaok&#39;s blog</a></h1>
-        <h2 class="site-description"></h2><ol class="social-menu">
-                
-                    <li>
-                        <a 
-                            href='https://github.com/wangtingkui'
-                            target="_blank"
-                            title="GitHub"
-                        >
-                            
-                            
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                            
-                        </a>
-                    </li>
-                
-                    <li>
-                        <a 
-                            href='https://twitter.com'
-                            target="_blank"
-                            title="Twitter"
-                        >
-                            
-                            
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                            
-                        </a>
-                    </li>
-                
-            </ol></header>
-
-    <ol class="menu" id="main-menu">
-        
-        
-        
-
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/categories' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>Categorie</span>
-            </a>
-        </li>
-        
-
-        
-            <li id="dark-mode-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <span>暗色模式</span>
-            </li>
-        
-    </ol>
-</aside>
-
-    
-<main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-    <header class="article-category">
-        
-            <a href="/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" >
-                使用hugo搭建个人网站
-            </a>
-        
-    </header>
-    
-
-    <h2 class="article-title">
-        <a href="/posts/tool/hugo-template-order/">使用hugo搭建个人网站（五）- 模板选择顺序</a>
-    </h2>
-
-    
-
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Dec 07, 2019</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    阅读时长: 1 分钟
-                </time>
-            </div>
-        
-    </footer>
-    
+  </div>
+  <div class="offcanvas-body">
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
+      target="_blank" href="https://twitter.com/intent/tweet?title=%e4%bd%bf%e7%94%a8hugo%e6%90%ad%e5%bb%ba%e4%b8%aa%e4%ba%ba%e7%bd%91%e7%ab%99%ef%bc%88%e4%ba%94%ef%bc%89-%20%e6%a8%a1%e6%9d%bf%e9%80%89%e6%8b%a9%e9%a1%ba%e5%ba%8f&url=https%3a%2f%2fwangtingkui.com%2fposts%2ftool%2fhugo-template-order%2f">
+      <i class="fab fa-fw fa-twitter"></i> Twitter
+    </a>
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.com%2fposts%2ftool%2fhugo-template-order%2f">
+      <i class="fab fa-fw fa-facebook-f"></i> Facebook
+    </a>
+  </div>
 </div>
-</header>
+    <button class="navbar-settings" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
+  aria-controls="offcanvasSettings" aria-label="Toggle settings">
+  <i class="fas fa-ellipsis-v"></i>
+</button>
 
-    <section class="article-content">
-    
-    
-    <p>加入我们要寻找<code>content/posts</code>下文章的模板</p>
-<p>当我们未在<code>Front Matter</code>中指定<code>type</code>和<code>layout</code>属性的时候，hugo默认的模板查找顺序是：</p>
-<pre tabindex="0"><code>&lt;project_path&gt;/layouts/UNSPECIFIED/UNSPECIFIED.html
-&lt;project_path&gt;/layouts/posts/UNSPECIFIED.html
-&lt;project_path&gt;/layouts/UNSPECIFIED/single.html
-&lt;project_path&gt;/layouts/posts/single.html
-&lt;project_path&gt;/layouts/_default/single.html
-&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/UNSPECIFIED/UNSPECIFIED.html
-&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/posts/UNSPECIFIED.html
-&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/UNSPECIFIED/single.html
-&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/posts/single.html
-&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/_default/single.html
-</code></pre><p>当指定了<code>type</code>和<code>layout</code>属性的时候，查找顺序是：</p>
-<pre tabindex="0"><code>&lt;project_path&gt;/layouts/review/reviewarticle.html
-&lt;project_path&gt;/layouts/posts/reviewarticle.html
-&lt;project_path&gt;/layouts/review/single.html
-&lt;project_path&gt;/layouts/posts/single.html
-&lt;project_path&gt;/layouts/_default/single.html
-&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/review/reviewarticle.html
-&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/posts/reviewarticle.html
-&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/review/single.html
-&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/posts/single.html
-&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/_default/single.html
-</code></pre>
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettings">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">设置</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-language"></i> 语言</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="dropdown">
+        <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          简体中文
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.com/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/zh-tw/">繁體中文</a></li></ul>
+      </div>
+    </div>
+  </form>
 </section>
 
 
-    <footer class="article-footer">
+<section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-adjust"></i> 模式</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="modeSwitcher">
+      </div>
+    </div>
+  </form>
+</section>
+
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> 字体大小</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> 配色</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <a id="btnPalette" class="btn btn-sm btn-outline-primary" role="button" aria-label="palettePicker">
+        <i class="fas fa-eye-dropper"></i>
+      </a>
+    </div>
+  </form>
+  <div class="mt-2 d-flex justify-content-between visually-hidden" id="palettePicker"><button type="button" id="palette-blue" aria-label="蓝色"
+        class="btn btn-sm w-100 palette" data-palette="blue">
+      </button><button type="button" id="palette-blue-gray" aria-label="蓝灰色"
+        class="btn btn-sm w-100 palette" data-palette="blue-gray">
+      </button><button type="button" id="palette-brown" aria-label="棕色"
+        class="btn btn-sm w-100 palette" data-palette="brown">
+      </button><button type="button" id="palette-cyan" aria-label="青色"
+        class="btn btn-sm w-100 palette" data-palette="cyan">
+      </button><button type="button" id="palette-green" aria-label="绿色"
+        class="btn btn-sm w-100 palette" data-palette="green">
+      </button><button type="button" id="palette-indigo" aria-label="靛青色"
+        class="btn btn-sm w-100 palette" data-palette="indigo">
+      </button><button type="button" id="palette-orange" aria-label="橙色"
+        class="btn btn-sm w-100 palette" data-palette="orange">
+      </button><button type="button" id="palette-pink" aria-label="粉色"
+        class="btn btn-sm w-100 palette" data-palette="pink">
+      </button><button type="button" id="palette-purple" aria-label="紫色"
+        class="btn btn-sm w-100 palette" data-palette="purple">
+      </button><button type="button" id="palette-red" aria-label="红色"
+        class="btn btn-sm w-100 palette" data-palette="red">
+      </button><button type="button" id="palette-teal" aria-label="蓝绿色"
+        class="btn btn-sm w-100 palette" data-palette="teal">
+      </button><button type="button" id="palette-yellow" aria-label="黄色"
+        class="btn btn-sm w-100 palette" data-palette="yellow">
+      </button></div>
+</section>
+<section class="setting actions d-flex justify-content-around mt-auto overflow-auto">
+  <a role="button" class="action action-go-back" href="javascript: window.history.back();">
+    <span class="action-icon"><i class="fas fa-2x fa-arrow-left"></i></span> 返回
+  </a>
+  <a role="button" class="action action-reload-page">
+    <span class="action-icon"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+  </a>
+  <a role="button" class="action action-copy-url">
+    <span class="action-icon"><i class="fas fa-2x fa-link"></i></span> 复制链接
+  </a><a class="action action-social-share" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSocialShare"
+    aria-controls="offcanvasSocialShare" aria-label="Toggle social share">
+    <span class="action-icon"><i class="fas fa-2x fa-share-alt"></i></span> 分享
+  </a></section>
+
+</div>
+</div>
+
+    <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
+      <form class="search-bar my-1" action="https://wangtingkui.com/search">
+  <div class="input-group input-group-sm">
+    <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+    <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
+  </div>
+</form>
+      <ul class="navbar-nav ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.com/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.com/posts/">文章</a></li><li class="breadcrumb-item active">使用hugo搭建个人网站（五）- 模板选择顺序</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper">
+  <div class="d-flex flex-column component rounded post-panel">
     
-    <section class="article-tags">
-        
-            <a href="/tags/go/">go</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    <aside class="related-contents--wrapper">
-    
-    
-        <h2 class="section-title">相关文章</h2>
-        <div class="related-contents">
-            <div class="flex article-list--tile">
-                
-                    
-<article class="">
-    <a href="/posts/tool/hugo-categorize-your-artical/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">使用hugo搭建个人网站（七）- 给你的文章分类</h2>
-        </div>
+    <a class="action action-panel-toggler" role="button" title="Panel toggler">
+      <i class="fas fa-fw fa-chevron-circle-down"></i>
     </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/posts/tool/hugo-custom-your-domain/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">使用hugo搭建个人网站（八）- 自定义你的站点域名</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/posts/tool/hugo-custom-your-url/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">使用hugo搭建个人网站（六）- 定制你文章的url</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/posts/tool/front-matter/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">使用hugo搭建个人网站（四）- Front Matter 配置详解</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/posts/tool/deploy-on-github-pages/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</h2>
-        </div>
-    </a>
-</article>
-                
-            </div>
-        </div>
-    
-</aside>
-
-     
-    
-        
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2020 - 
-        
-        2022 xiaok&#39;s blog
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.7.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
-</footer>
-
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
 
     
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    <a class="action" href="#post-copyright" role="button" aria-label="Copyright" title="Copyright">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a class="action" href="#post-comments" role="button" aria-label="Comments" title="Comments">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
     
-    <div class="pswp__bg"></div>
-
     
-    <div class="pswp__scroll-wrap">
+  </div>
+</div>
+<article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title">使用hugo搭建个人网站（五）- 模板选择顺序
+</h1>
+  </div>
+  <div class="card-body"><div class="post-meta">
+  <span class="post-date" title="创建于 2019-12-07 15:55:24 &#43;0800 CST。">
+    2019-12-07
+  </span><span class="post-reading-time">
+    1 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge post-taxonomy">使用hugo搭建个人网站</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-content mb-3"><p>加入我们要寻找<code>content/posts</code>下文章的模板</p>
+<p>当我们未在<code>Front Matter</code>中指定<code>type</code>和<code>layout</code>属性的时候，hugo默认的模板查找顺序是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>&lt;project_path&gt;/layouts/UNSPECIFIED/UNSPECIFIED.html
+<span class="ln"> 2</span>&lt;project_path&gt;/layouts/posts/UNSPECIFIED.html
+<span class="ln"> 3</span>&lt;project_path&gt;/layouts/UNSPECIFIED/single.html
+<span class="ln"> 4</span>&lt;project_path&gt;/layouts/posts/single.html
+<span class="ln"> 5</span>&lt;project_path&gt;/layouts/_default/single.html
+<span class="ln"> 6</span>&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/UNSPECIFIED/UNSPECIFIED.html
+<span class="ln"> 7</span>&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/posts/UNSPECIFIED.html
+<span class="ln"> 8</span>&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/UNSPECIFIED/single.html
+<span class="ln"> 9</span>&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/posts/single.html
+<span class="ln">10</span>&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/_default/single.html
+</code></pre></div><p>当指定了<code>type</code>和<code>layout</code>属性的时候，查找顺序是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>&lt;project_path&gt;/layouts/review/reviewarticle.html
+<span class="ln"> 2</span>&lt;project_path&gt;/layouts/posts/reviewarticle.html
+<span class="ln"> 3</span>&lt;project_path&gt;/layouts/review/single.html
+<span class="ln"> 4</span>&lt;project_path&gt;/layouts/posts/single.html
+<span class="ln"> 5</span>&lt;project_path&gt;/layouts/_default/single.html
+<span class="ln"> 6</span>&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/review/reviewarticle.html
+<span class="ln"> 7</span>&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/posts/reviewarticle.html
+<span class="ln"> 8</span>&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/review/single.html
+<span class="ln"> 9</span>&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/posts/single.html
+<span class="ln">10</span>&lt;project_path&gt;/themes/&lt;THEME&gt;/layouts/_default/single.html
+</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-coffee"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary" aria-label="Close"><i class="fas fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/alipay.jpeg" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/wechat.jpeg" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+  <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="https://wangtingkui.com/posts/tool/front-matter/">使用hugo搭建个人网站（四）- Front Matter 配置详解
+</a>
+  </div><div class="post-nav post-next">
+    <a href="https://wangtingkui.com/posts/tool/hugo-custom-your-url/">使用hugo搭建个人网站（六）- 定制你文章的url
+</a>
+    <i class="fas fa-fw fa-chevron-right"></i>
+  </div></div></div>
+</article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
 
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
 
     </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
-            >
-
-            </main>
+</div><section class="related-posts row card component">
+    <div class="card-header">
+      <h2 class="card-title">相关文章</h2>
+    </div>
+    <div class="card-body">
+      <ul class="post-list"><li>
+          <a href="https://wangtingkui.com/posts/tool/front-matter/">使用hugo搭建个人网站（四）- Front Matter 配置详解
+</a>
+          <span class="float-end post-date">2019-12-07
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8flag/">Go标准库（flag）- 使用
+</a>
+          <span class="float-end post-date">2019-12-01
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/tool/deploy-on-github-pages/">使用hugo搭建个人网站（二）- 使用 Github Pages 部署 Hugo 生成的静态站点
+</a>
+          <span class="float-end post-date">2019-12-01
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/tool/introduction/">使用hugo搭建个人网站（一）- Hugo使用入门
+</a>
+          <span class="float-end post-date">2019-09-22
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/tool/ref-other-article/">使用hugo搭建个人网站（三）- 引用其他文章
+</a>
+          <span class="float-end post-date">2019-12-02
+</span>
+        </li></ul>
+    </div>
+  </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script></div>
+</div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
     
+    <section class="card row text-center profile component">
+  <div class="card-body">
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.com/images/avatar.jpeg" loading="lazy"
+   width="959" height="959"
+   />
+</div>
+    <div class="col-12 profile-meta"><div class="profile-name">无敌小k</div><div class="profile-bio">Gopher, PHPer.</div><div class="profile-about"><i class="fas fa-fw fa-user"></i><a target="_blank" rel="noopener noreferrer" href="https://domain.tld">关于我</a></div><nav class="social-links nav justify-content-center"><a class="nav-link social-link" href="mailto:wangtingkui_coder@163.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a><a class="nav-link social-link" target="_blank" href="https://github.com/wangtingkui" title="GitHub" rel="noopener noreferrer">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a></nav>
+</div>
+  </div>
+</section>
+  <section class="series-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/series">专栏</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section><section class="categories-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/categories">分类</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
+            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
+            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.com/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+            性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section><section class="tags-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/tags">标签</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">25</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
+            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/oh-my-zsh/" class="badge rounded post-taxonomy" title="oh-my-zsh">
+            oh-my-zsh<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section>
+    
+  </div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"></nav>
+<div class="copyright mb-2">
+  Copyright © 2016-2022 Razon Yang. All Rights Reserved.
+</div>
 
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
-                defer="false"
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
+    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
+</a>
+</footer>
+<script src="https://wangtingkui.com/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.com/js/icons.min.a35670f2f90c398e5ee5c8e509b428fae75aa2746854cee10b60794633076859.js" integrity="sha256-o1Zw8vkMOY5e5cjlCbQo&#43;udaonRoVM7hC2B5RjMHaFk=" crossorigin="anonymous" defer></script>
 <script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-    </body>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.com\/service-worker.js').then(function(reg) {
+      console.log('Successfully registered service worker', reg);
+    }).catch(function(err) {
+      console.warn('Error whilst registering service worker', err);
+    });
+  });
+}
+</script><script src="https://wangtingkui.com/js/viewer.min.4dba52a0a790f909408b7385316651299158381686401d50ff1f04dda6476473.js" integrity="sha256-TbpSoKeQ&#43;QlAi3OFMWZRKZFYOBaGQB1Q/x8E3aZHZHM=" crossorigin="anonymous" defer></script>
+</body>
 </html>

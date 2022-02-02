@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>go三方库使用 on xiaok&#39;s blog</title>
+    <title>go三方库使用 on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
-    <description>Recent content in go三方库使用 on xiaok&#39;s blog</description>
+    <description>Recent content in go三方库使用 on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Sun, 07 Jun 2020 14:49:31 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 jordan-wright/email 处理邮件发送</title>
@@ -13,11 +13,7 @@
       <pubDate>Sun, 07 Jun 2020 14:49:31 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/mail/</guid>
-      <description>在 go 官方的标准库中，提供了 net/smtp 库可以让我们使用 smtp 协议来发送邮件，但是这个库使用起来不是很方便，而且官方也不再维护这个库，推荐我们使用功能更丰富的第三方库来处理邮件发送
-jordan-wright/email就是一个使用的比较多的用来处理邮件发送的类库，它底层还是基于net/smtp实现的，但是提供了方便的调用方式供使用者使用
-安装 go get github.com/jordan-wright/email
-使用demo e := email.NewEmail() e.From = &amp;#34;Jordan Wright &amp;lt;test@gmail.com&amp;gt;&amp;#34; e.To = []string{&amp;#34;test@example.com&amp;#34;} e.Bcc = []string{&amp;#34;test_bcc@example.com&amp;#34;} e.Cc = []string{&amp;#34;test_cc@example.com&amp;#34;} e.Subject = &amp;#34;Awesome Subject&amp;#34; e.Text = []byte(&amp;#34;Text Body is, of course, supported!&amp;#34;) e.HTML = []byte(&amp;#34;&amp;lt;h1&amp;gt;Fancy HTML is supported, too!&amp;lt;/h1&amp;gt;&amp;#34;) e.Send(&amp;#34;smtp.gmail.com:587&amp;#34;, smtp.PlainAuth(&amp;#34;&amp;#34;, &amp;#34;test@gmail.com&amp;#34;, &amp;#34;password123&amp;#34;, &amp;#34;smtp.gmail.com&amp;#34;)) 可以看到这个类库调用起来还是非常的语义化的
-更多的使用可以参考官方文档</description>
+      <description>在 go 官方的标准库中，提供了 net/smtp 库可以让我们使用 smtp 协议来发送邮件，但是这个库使用起来不是很方便，而且官方也不再维护这个库，推荐我们使用功能更丰富</description>
     </item>
     
     <item>
@@ -26,10 +22,7 @@ jordan-wright/email就是一个使用的比较多的用来处理邮件发送的�
       <pubDate>Sun, 03 May 2020 12:05:47 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/viper/</guid>
-      <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置。
-配置优先级 viper 可以从环境变量，配置文件等地方读取配置，甚至可以手动的在运行时设置值，那么 viper 读取配置的优先级是什么呢？根据官网，viper 读取的值得优先级如下
- 通过 Set 设置的值 从命令行选项读取的值 环境变量的值 配置文件的值 key/value store 默认值  快速上手 一个使用 viper 的基本示例如下，基本上完成一个应用也就使用这些功能
-# myconfig.yamlname:xiaokage:28sex:malebook:- php- java- cother:other_valuepackage main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.com/spf13/viper&amp;#34; ) func main() { viper.AddConfigPath(&amp;#34;.&amp;#34;) // viper 不会帮我们设置任何默认路径，我们需要至少添加一个寻找配置文件的路径 	viper.SetConfigName(&amp;#34;myconfig&amp;#34;) // 设置配置文件名称 	viper.SetConfigType(&amp;#34;yaml&amp;#34;) // 如果配置文件没有后缀的话，这个值必须设置  err := viper.ReadInConfig() if err != nil { panic(fmt.Sprintf(&amp;#34;Read config file err: %v&amp;#34;, err)) } // 读取 	name := viper.</description>
+      <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置</description>
     </item>
     
     <item>
@@ -38,12 +31,7 @@ jordan-wright/email就是一个使用的比较多的用来处理邮件发送的�
       <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/errors/</guid>
-      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下：
-if err != nil { return err } 然后层层传递，最终将错误传递到最上层，这里面存在着两个问题：
- 没有错误发生时的上下文信息（或者叫堆栈信息） 在层层的错误传递过程中，有可能已经将原始错误转化，丢失了最原始的 error  当前，比较优雅的方式是使用 github.com/pkg/errors 这个包来进行错误处理，官方文档
-QUICK START 一个基本的使用如下：
-package main import ( e &amp;#34;errors&amp;#34; &amp;#34;fmt&amp;#34; &amp;#34;github.com/pkg/errors&amp;#34; ) func main() { oldErr := e.New(&amp;#34;我是底层error&amp;#34;) // 添加错误信息和堆栈信息，生成一个新的 error 	wrappedErr := errors.Wrap(oldErr, &amp;#34;我是封装error&amp;#34;) // 输出错误信息 	fmt.Printf(&amp;#34;%v\n&amp;#34;, wrappedErr) fmt.Println(&amp;#34;===============================&amp;#34;) // 输出错误信息和堆栈信息 	fmt.Printf(&amp;#34;%+v\n&amp;#34;, wrappedErr) fmt.Println(&amp;#34;===============================&amp;#34;) // 获取底层错误 	err := errors.Cause(wrappedErr) fmt.Println(err) } 我们也可以使用errors.WithMessage和errors.WithStack单独添加错误信息和堆栈信息
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.</description>
+      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2 return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两</description>
     </item>
     
     <item>
@@ -52,19 +40,7 @@ package main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.</description>
       <pubDate>Mon, 16 Dec 2019 22:45:34 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/zap/</guid>
-      <description>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap
-版本 本篇基于的 zap 版本是 v1.10.0
-使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概念，方便在我们阅读 demo 或者写代码的时候能大体的感知到我们在用什么，为什么这样用。为了不产生翻译上的歧义，书写过程中涉及到的概念会用 zap 源码中的命名
- Logger
- 这是 zap 暴露给我们类型，正常情况下，我们也是通过 Logger 这个结构体的方法来记录日志的
- Config
- 这个是 zap 提供给我们的 Logger 的配置，我们可以按需配置，然后通过 Build 方法来构造出我们想要的 Logger，是典型的的构造者模式
- Field
- 除了日志级别、日志时间、日志信息等这些基本的通用字段之外，我们在记录日志的时候通常会想记录一些额外的字段（用来记录打日志时的上下文），这些字段在 zap 中需要封装成 Field 类型
- Core
- Logger 是一个结构体，为我们暴露了使用日志的方法，而 Core 是一个接口，它被包含在 Logger 中，用来真正提供日志格式化和输出功能，这样的实现使日志记录器的使用和输出实现了高度解耦。我们可以实现自己的 Core 从而达到不同的输出的目的
- Encoder
- Encoder 同样是一个接口，刚才说到 Core 是实现具体输出行为的核心，而 Encoder 是 Core 中真正进行日志信息和字段格式化的编码器，它把我们输入的各种日志信息经过处理得到字节切片。从而可以记录在各种存储载体中。zap 对于 Encoder 自带了两个实现，jsonEncoder 和 consoleEncoder</description>
+      <description>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概</description>
     </item>
     
   </channel>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>hugo on xiaok&#39;s blog</title>
+    <title>hugo on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/tags/hugo/</link>
-    <description>Recent content in hugo on xiaok&#39;s blog</description>
+    <description>Recent content in hugo on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Tue, 14 Apr 2020 15:50:45 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在hugo中使用shortcode</title>
@@ -13,12 +13,7 @@
       <pubDate>Tue, 14 Apr 2020 15:50:45 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/shortcodes/</guid>
-      <description>markdown 因为简洁的语法非常受到写文章的人的喜爱，但是某些情况下 markdown 也有不足，比如我们想展示一些特殊的样式或者格式的时候，往往需要直接书写 html 代码，这就和 markdown 简洁的初衷相违背了，hugo 提供了shortcode的功能来弥补了 markdown 的这个不足。shortcode 本质上是一些模板，我们可以使用定义好的指令来引用这些模板，相当于书写了一段html在文章中，更多的说明可以查看官网，接下来我们来看看怎么使用 shortcode
-简单使用 使用 shortcode 的语法是 {{% shortcodename parameters %}}，其中：
- shortcodename 是 shortcode 的名字 parameters 是参数列表，如果有多个参数，使用空格分隔，如果某个参数中有空格，需要用双引号把这个参数包起来 % 是定界符，也有使用&amp;lt;和&amp;gt;做定界符的，{{&amp;lt; shortcodename parameters &amp;gt;}}  参数有两种传递方式，基于名字的({{% shortcodename name1=value1 name2=value2 %}}))和基于位置的({{% shortcodename value1 value2 %}})，使用哪种方式取决于 shortcode 自己模板的定义。
-有的 shortcode 使用的时候要求闭合，类似 html 标签，比如 {{&amp;lt; highlight go &amp;gt;}} A bunch of code here {{&amp;lt; /highlight &amp;gt;}}
-常用的内置 shortcode
-   shortcodename 说明 usage     ref 使用绝对路径引用博客内其他文章 {{% ref &amp;quot;blog/other_article.</description>
+      <description>markdown 因为简洁的语法非常受到写文章的人的喜爱，但是某些情况下 markdown 也有不足，比如我们想展示一些特殊的样式或者格式的时候，往往需要直接书写 html 代码，这就</description>
     </item>
     
     <item>
@@ -27,10 +22,7 @@
       <pubDate>Mon, 02 Dec 2019 14:12:07 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/ref-other-article/</guid>
-      <description>我们可以在文章中引用自己的其他文章，hugo 帮我们实现了这种功能，只需要在文章中使用 {{&amp;lt; ref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}或者{{&amp;lt; relref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}即可，前者是相对链接，后者是绝对链接
-这个功能其实是 hugo 提供的 Shortcodes功能
-一些例子：
-{{&amp;lt; ref &amp;quot;blog/post.md&amp;quot; &amp;gt;}} =&amp;gt; https://example.com/blog/post/ {{&amp;lt; ref &amp;quot;post.md#tldr&amp;quot; &amp;gt;}} =&amp;gt; https://example.com/blog/post/#tldr:caffebad {{&amp;lt; relref &amp;quot;post.md&amp;quot; &amp;gt;}} =&amp;gt; /blog/post/ {{&amp;lt; relref &amp;quot;blog/post.md#tldr&amp;quot; &amp;gt;}} =&amp;gt; /blog/post/#tldr:caffebad {{&amp;lt; ref &amp;quot;#tldr&amp;quot; &amp;gt;}} =&amp;gt; #tldr:badcaffe {{&amp;lt; relref &amp;quot;#tldr&amp;quot; &amp;gt;}} =&amp;gt; #tldr:badcaffe 如果是不是需要引用，而仅仅是需要展示{{&amp;lt; ref &amp;quot;blog/post.md&amp;quot; &amp;gt;}}这样的文本，需要在标签内加上/* */这样的注释，比如{{&amp;lt;/* ref &amp;quot;blog/post.md&amp;quot; */&amp;gt;}}</description>
+      <description>我们可以在文章中引用自己的其他文章，hugo 帮我们实现了这种功能，只需要在文章中使用 {{&amp;lt; ref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}或者{{&amp;lt; relref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}即可，</description>
     </item>
     
   </channel>

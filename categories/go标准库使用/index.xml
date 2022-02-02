@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Go标准库使用 on xiaok&#39;s blog</title>
+    <title>Go标准库使用 on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
-    <description>Recent content in Go标准库使用 on xiaok&#39;s blog</description>
+    <description>Recent content in Go标准库使用 on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Wed, 14 Oct 2020 14:42:29 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go 中 sort 包的使用</title>
@@ -13,10 +13,7 @@
       <pubDate>Wed, 14 Oct 2020 14:42:29 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/sort/</guid>
-      <description>排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序
-Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实现了 sort.Interface 接口，就可以调用 sort.Sort(data Interface) 进行排序操作了
-先来看下 sort.Interface 都定义了哪些方法：
-type Interface interface { // Len is the number of elements in the collection.  // Len 为集合内元素的总数  Len() int // Less reports whether the element with  // index i should sort before the element with index j.  //  // Less 返回索引为 i 的元素是否应排在索引为 j 的元素之前。  Less(i, j int) bool // Swap swaps the elements with indexes i and j.</description>
+      <description>排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序 Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实</description>
     </item>
     
     <item>
@@ -25,15 +22,7 @@ type Interface interface { // Len is the number of elements in the collection.  
       <pubDate>Fri, 19 Jun 2020 15:32:25 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/sync/</guid>
-      <description>Go 的一大特点就是在语言级别实现了并发，一旦涉及并发，那么不可避免的就需要同步，来确保多个 goroutine 在访问共享资源的时候不会出现混乱的状况
-Go 中的 sync 包提供了常见的并发编程同步原语，我们接下来就看下各种同步的方式如何使用，以及不同的同步方式都适用于什么样的场景，从而能让我们在日常使用中可以有针对性的挑选
-sync.Mutex sync.Mutex 是使用最广泛的一种原语，它保证同一时刻，只有一个 goroutine 可以访问临界资源，也就是我们常说的互斥锁
-m := &amp;amp;sync.Mutex{} m.Lock() // 临界区 m.Unlock() sync.RWMutex sync.RWMutex 是一个读写锁，它有两种锁的方式，读锁和写锁，当一个 goroutine 成功获取读锁的时候，其他 goroutine 也可以成功获取读锁，但是无法获取写锁。如果一个 goroutine 成功获取了写锁的时候，其他 goroutine 读锁和写锁都无法获得
-sync.RWMutex是基于sync.Mutex实现的，具体原理在这里就不多说了，可以看下另外一篇文章
-m := sync.RWMutex{} m.Lock() // 执行一些写操作 m.Unlock() m.RLock() // 执行一些可以并发的读操作 m.RUnlock() sync.RWMutex常用于读写场景都有，但是读场景远远多于写场景的情况
-sync.WaitGroup sync.WaitGroup 常常用来等待一组 goroutine 执行完成
-wg := &amp;amp;sync.WaitGroup{} wg.Add(2) go func() { wg.Done() }() go func() { wg.Done() }() wg.Wait() sync.Map Go 中的 map 类型本身是非并发安全的，如果在并发场景下，必须加锁来保证数据安全，sync.Map是一个并发版本的map，可以直接在并发场景下使用
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;sync&amp;#34; ) func main() { m := sync.</description>
+      <description>Go 的一大特点就是在语言级别实现了并发，一旦涉及并发，那么不可避免的就需要同步，来确保多个 goroutine 在访问共享资源的时候不会出现混乱的状况 Go 中的 sync 包提</description>
     </item>
     
     <item>
@@ -42,10 +31,7 @@ package main import ( &amp;#34;fmt&amp;#34; &amp;#34;sync&amp;#34; ) func main()
       <pubDate>Sun, 12 Apr 2020 23:31:09 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/time/</guid>
-      <description>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面：
- 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时器的操作  本文只是列举比较常用的场景，更多的细节还是要参考官方文档
-时间点 在 go 中，时间点使用 time.Time 来表示，这是一个基于纳秒精度的时间表示，我们还是通过一些例子来来学习
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; ) func main() { // 获取时间 	now := time.Now() // 获取当前时间点对象 	t := time.Unix(1586708379, 0) // 从指定时间戳实例化Time对象，第二个参数可以指定纳秒的精度  s, _ := time.Parse(&amp;#34;2006-01-02 03:04:05&amp;#34;, time.Now().Format(&amp;#34;2006-01-02 03:04:05&amp;#34;)) // 从时间字符串解析 	fmt.Println(now, t, s) // 分解时间中的时间元素 	year := t.Year() // 获取年 	month := t.</description>
+      <description>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时</description>
     </item>
     
     <item>
@@ -54,14 +40,7 @@ package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; ) func main()
       <pubDate>Sun, 29 Mar 2020 17:51:54 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/log/</guid>
-      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用
-实例化 logger 进行日志记录 首先看一个最简单的 demo：
-package main import ( &amp;#34;log&amp;#34; &amp;#34;os&amp;#34; ) func main() { logger := log.New(os.Stdout, &amp;#34;我是自定义日志前缀：&amp;#34;, log.LstdFlags) logger.Println(&amp;#34;I&amp;#39;m print call&amp;#34;) } // 我是自定义日志前缀：2020/03/29 20:45:43 I&amp;#39;m print call  log 包最终输出到哪里和包本身无关，取决于 io.Writer（第一个参数） 对应的实际对象底层传递的是什么。
-log 可以支持我们指定每条日志的前缀（第二个参数）和一些固定的标记（第三个参数）
-logger 有Print、Fatal、Panic三个系列的方法，区别如下
- Print只记录日志 Fatal记录日志后会调用os.Exit(1)推出应用 Panic记录日志后会调用Panic  每个系列也都提供了三种调用方式，比如Print系列有以下三种方式：
- Print输出给定的信息 Println输出给定的信息并且在后面追加一个换行 Printf支持使用格式化参数  使用辅助方法进行日志记录 log 包还提供了一些快捷方法，可以直接通过包的方法调用，比如
-package main import ( &amp;#34;log&amp;#34; ) func main() { log.Println(&amp;#34;hahahha&amp;#34;) } // 2020/03/29 20:47:42 hahahha  它其实是在包内生成了一个输出到 stdout 的 logger，方便我们使用而已</description>
+      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用 实例化 logger 进行日志记录 首先看一个最简单的 demo： 1package main 2 3import ( 4 &amp;#34;log&amp;#34; 5 &amp;#34;os&amp;#34; 6) 7 8func</description>
     </item>
     
     <item>
@@ -70,11 +49,7 @@ package main import ( &amp;#34;log&amp;#34; ) func main() { log.Println(&amp;#34
       <pubDate>Sun, 22 Dec 2019 11:48:21 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8net-http/</guid>
-      <description>net/http 包为我们提供了对 http 协议的处理，包含了客户端和服务端两大部分的实现
-版本  go1.12  主要结构体 几乎任何语言中的http包都是围绕客户端，服务端，请求和响应这4个对象展开的，go 也不例外。本篇主要是讲解包的使用，所以还是通过例子来说明
-客户端 快速入门 http 客户端基本的使用流程：
- 构造请求 构造客户端 使用客户端发送请求获取响应 使用响应  下面用一个最简单的例子来展示下上面的流程：
-func main() { // 创建一个请求 	req, err := http.NewRequest(&amp;#34;GET&amp;#34;, &amp;#34;http://www.baidu.com&amp;#34;, nil) if err != nil { panic(err) } // 创建一个客户端 	client := http.Client{} // 使用客户端发送请求 	resp, err := client.Do(req) if err != nil { panic(err) } // 使用响应 	defer resp.Body.Close() if ret, err := ioutil.</description>
+      <description>net/http 包为我们提供了对 http 协议的处理，包含了客户端和服务端两大部分的实现 版本 go1.12 主要结构体 几乎任何语言中的http包都是围绕客户端，服务端，请求和响</description>
     </item>
     
     <item>
@@ -83,10 +58,7 @@ func main() { // 创建一个请求 	req, err := http.NewRequest(&amp;#34;GET&am
       <pubDate>Sat, 21 Dec 2019 22:21:40 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/net-url/</guid>
-      <description>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用
-url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：scheme://[userinfo@]host/path[?query][#fragment]，如果 scheme 之后不是以斜线开头的，那么结构被认为是 scheme:opaque[?query][#fragment]，也就是用户信息、域名和路径部分是不透明的，可以认为是被加密或者被编码过的
-环境  go1.12  包中的基本结构体 这个包中有3个比较基本的结构体：
- URL：代表一个被解析的url UserInfo：代表 url 中的用户信息部分 Values：存放 query 参数或者 form 参数  type URL struct { Scheme string Opaque string // encoded opaque data 	User *Userinfo // username and password information 	Host string // host or host:port 	Path string // path (relative paths may omit leading slash) 	RawPath string // encoded path hint (see EscapedPath method) 	ForceQuery bool // append a query (&amp;#39;?</description>
+      <description>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s</description>
     </item>
     
     <item>
@@ -95,12 +67,7 @@ url 结构 在学习使用这个库之前，我们先来了解下 url 的标准�
       <pubDate>Sun, 15 Dec 2019 14:35:43 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/path-filepath/</guid>
-      <description>简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示
-而且要注意的是，path/filepath这个库并不会去判断你指定的路径存不存在，也不会去判断指定的路径是一个文件还是一个目录
-环境 ╰─$ go version go version go1.12.14 darwin/amd64 说明 获取指定路径的目录 filepath.Dir() 代码：
-func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, &amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, } for _, path := range examples { fmt.Println(filepath.Dir(path)) } } 输出：
-╰─$ go run main.go /etc /etc / etc . . 获取指定路径的文件名 filepath.Base() 代码：
-func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, // 在拆分之前会去除末尾的斜杠，相当于 /etc 	&amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, // 如果是空字符串，返回 .</description>
+      <description>简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示 而且要注意</description>
     </item>
     
     <item>
@@ -109,17 +76,7 @@ func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/
       <pubDate>Sun, 01 Dec 2019 17:28:45 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8flag/</guid>
-      <description>本文所讨论内容基于的go版本：go1.13
-在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提供了解析命令行参数的功能
-要使用flag包，主要有3个步骤：定义flag、解析flag、使用flag
-定义flag flag包为我们提供了两种定义flag的方式，flag.Xxx()方式和flag.XxxVar()方式,其中Xxx可以是Int,String等类型，其中第一种会返回对应类型的指针，第二种则是将flag绑定到一个变量上
-// 方式1 var config *string = flag.String(&amp;#34;config&amp;#34;. &amp;#34;path/to/config&amp;#34;, &amp;#34;配置文件路径&amp;#34;) // 方式2 var intval int flag.IntVal(&amp;amp;intval, &amp;#34;intval&amp;#34;, 1, &amp;#34;a intger value&amp;#34;) 除了标准库中提供的基础数据类型的解析，如果我们需要解析自定义的类型，可以使用flag.Val()方法，只要绑定的类型实现了flag.Value接口即可
-解析flag 当定义完了所有的flag之后，我们可以调用flag.Parse()方法解析命令行参数
-使用flag 当使用命令行传递flag的时候，有以下三种语法格式（虽说官方只写了一个-，但其实当flag是bool类型的时候--也是支持的，但最好还是按照官方的来）
--flag // 只支持 bool 类型 -flag value // 只支持非 bool 类型，因为比如有`cmd -x false`这种格式，不能确定false到底是flag的值还是一个参数 -flag=value 在命令行传递参数时，如果是int类型，可以传递十进制、十六进制、八进制或者是负数；如果是bool类型，可以使用1,0,t,g,true,false,TRUE,FALSE,True,Flase；如果是duration，可以接受任何time.ParseDuration可以解析的类型
-non-flag 参数 在上面的说明中我们知道，传递参数的时候有固定格式，那不符合这些格式的参数就是non-flag参数
-在代码中，我们可以通过下面的这些方法来获取和使用non-flag参数
-flag.Arg(i int) // 获取第i个non-flag参数 flag.Args() // 获取所有的non-flag参数 flag.NArg() // 获取non-flag参数的个数 一个例子 package main import ( &amp;#34;flag&amp;#34; &amp;#34;fmt&amp;#34; ) func main() { var ( s = flag.</description>
+      <description>本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提</description>
     </item>
     
   </channel>

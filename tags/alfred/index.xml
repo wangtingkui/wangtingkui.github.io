@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>alfred on xiaok&#39;s blog</title>
+    <title>alfred on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/tags/alfred/</link>
-    <description>Recent content in alfred on xiaok&#39;s blog</description>
+    <description>Recent content in alfred on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Sat, 23 May 2020 20:16:08 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/alfred/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>alfred配置同步</title>
@@ -13,10 +13,7 @@
       <pubDate>Sat, 23 May 2020 20:16:08 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/sync-setting/</guid>
-      <description>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用
-alfred 的同步功能本质上是将配置打包成一个文件，然后借助第三方云同步功能同步这个文件，所以首先我们需要有个可用的云同步的文件夹，alfred 官方推荐的是 dropbox，但是由于一些不可描述的原因在国内使用起来不是很方便，所以这里我推荐另外一个软件，坚果云
-具体坚果云的配置非常简单，这里就不赘述了，下面说一下怎么开启 alfred 的同步功能
-配置  打开偏好设置 找到Advanced配置项 右下角一个 Syncing 的配置 点击 Set preferences folder.. 按钮，选择我们的云同步文件夹就好了  </description>
+      <description>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用 alfred 的同步功能本质上是将配置打包成一个文件，然后借助第</description>
     </item>
     
     <item>
@@ -25,10 +22,7 @@ alfred 的同步功能本质上是将配置打包成一个文件，然后借助�
       <pubDate>Sun, 10 May 2020 11:44:38 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/plugin-recommend/</guid>
-      <description>这篇文站整理下自己经常使用的 alfred workflow
-TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录
-alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目
-YoudaoTranslate 有道词典翻译</description>
+      <description>这篇文站整理下自己经常使用的 alfred workflow TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录 alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目</description>
     </item>
     
   </channel>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>cobra on xiaok&#39;s blog</title>
+    <title>cobra on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/tags/cobra/</link>
-    <description>Recent content in cobra on xiaok&#39;s blog</description>
+    <description>Recent content in cobra on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Wed, 11 Dec 2019 14:57:37 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/cobra/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>go cli 应用框架cobra（二）- 源码分析</title>
@@ -13,15 +13,7 @@
       <pubDate>Wed, 11 Dec 2019 14:57:37 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/go/cobra/</guid>
-      <description>上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5
-首先需要了解的是，在cobra中，所有的命令会组成一个树的结构，必然有一个根命令，我们应用的每次执行，都是从这个根命令开始的，官方文档也说过，基于cobra的应用的main包中的代码是很简单的，几乎没有额外的操作，仅有的操作其实就是执行我们的根命令。所以自然而然的，我们的代码分析之旅也是从根命令的执行开始的。
-为了有个直观的感受，我简单生成了一个基于cobra的应用。这个应用有一个根命令和一个test1的子命令，项目结构如下：
-╰─$ tree . . ├── LICENSE ├── cmd │ ├── root.go │ └── test1.go ├── go.mod ├── go.sum └── main.go 1 directory, 6 files 主线执行分析 所有的项目不可能都是简单的一条线到底，代码总会有很多分支，但我们阅读源码的时候精力和关注度总是有限的（不是有人说人在同一时间关注的点不能超过7个还是几个来着么），如果代码里面的每个分支都去看，每个函数的调用都进去瞅瞅，很快我们就会迷失在复杂的代码里面，忘了我们怎么看到的这行代码，所以本文去分析源码的时候，会优先挑一条主线，主要跟踪这条主线上的逻辑和调用，忽略其他支线。当然，也会有比较重要的其他支线，但是和当前的主线无关，会单开一个小节去阅读分析
-cobra主线自然是入口-找到目标命令-分析参数-执行这条路径啦~
-看下main.go文件中都有点啥
-package main import &amp;#34;learnCobra/cmd&amp;#34; func main() { cmd.Execute() } 简洁的一比，直接进入cmd.Execute
-func Execute() { if err := rootCmd.Execute(); err != nil { fmt.Println(err) os.Exit(1) } } 可以看到，其实就是执行了根命令的Execute方法，这个方法才是我们的重头戏。当然，所谓的根命令只是从命令的组织形态上来说的，所有的命令都是cobra.Command的这个结构体，后面绝大多数的代码也都是对这个结构体的成员和方法的分析
-func (c *Command) Execute() error { _, err := c.ExecuteC() return err } 毫无波澜，直接进c.</description>
+      <description>上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，</description>
     </item>
     
   </channel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on xiaok&#39;s blog</title>
+    <link>https://wangtingkui.com/fr/categories/</link>
+    <description>Recent content in Categories on xiaok&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright><atom:link href="https://wangtingkui.com/fr/categories/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

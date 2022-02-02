@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>vscode on xiaok&#39;s blog</title>
+    <title>vscode on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/tags/vscode/</link>
-    <description>Recent content in vscode on xiaok&#39;s blog</description>
+    <description>Recent content in vscode on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Sat, 23 May 2020 23:04:47 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/vscode/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>vscode推荐扩展</title>
@@ -13,8 +13,7 @@
       <pubDate>Sat, 23 May 2020 23:04:47 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/extension/</guid>
-      <description>vscode 扩展推荐
-实用    扩展名 用途    推荐主题    主题名 备注     vscode-icons 可以替换vscode的默认图标   Atom One Dark Theme    Monokai Pro     </description>
+      <description>vscode 扩展推荐 实用 扩展名 用途 推荐主题 主题名 备注 vscode-icons 可以替换vscode的默认图标 Atom One Dark Theme Monokai Pro</description>
     </item>
     
   </channel>

@@ -1,183 +1,281 @@
-<!DOCTYPE html>
-<html lang="en-us">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持
-单测基本规则  单元测试文件必须以_test.go结尾 单元测试文件名前面的部分最好和要被测试的方法所在的文件名保持一致 单元测试函数名称必须要以TestXxxx的格式书写，函数必须要接受一个testing.T类型的指针，不能有返回值 单元测试函数名最好能和被测试的函数保持对应，比如要测试的方法是Add，那么单测函数的名字最好是TestAdd，如果被测试的方法在同一个包下的多个结构体中都有，那么单测函数的名字可以是Test结构体名字_方法名，比如TestMyStruct_Add  一个demo 包文件结构
-❯ tree . ├── main.go └── main_test.go 0 directories, 2 files main.go文件内容
-package main func Add(x, y int) int { return x &#43; y } func main() { } main_test.go内容
-package main import ( &amp;quot;testing&amp;quot; ) func TestAdd(t *testing.T) { if Add(1, 2) != 3 { t.Errorf(&amp;quot;test add func err&amp;quot;) } } 执行结果
-❯ go test PASS ok test-go/unit-testing	0.006s 使用testing.'><title>在go中使用单元测试</title>
+<!doctype html><html lang="zh-cn" data-palette="blue"
+  >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>在go中使用单元测试 - Hugo Bootstrap</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.com/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.com/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.com/manifest.json">
+<meta name="keywords" content="" />
+<meta name="description" content="单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持 单测基本规则 单元测试文件必须以_test.go结尾 单元测" /><meta itemprop="name" content="在go中使用单元测试">
+<meta itemprop="description" content="单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持 单测基本规则 单元测试文件必须以_test.go结尾 单元测"><meta itemprop="datePublished" content="2020-05-17T11:22:21+08:00" />
+<meta itemprop="dateModified" content="2020-05-17T11:22:21+08:00" />
+<meta itemprop="wordCount" content="1801">
+<meta itemprop="keywords" content="go," /><meta property="og:title" content="在go中使用单元测试" />
+<meta property="og:description" content="单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持 单测基本规则 单元测试文件必须以_test.go结尾 单元测" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.com/posts/go/unit-testing/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-05-17T11:22:21+08:00" />
+<meta property="article:modified_time" content="2020-05-17T11:22:21+08:00" /><meta property="og:site_name" content="Hugo Bootstrap" />
 
-<link rel='canonical' href='https://wangtingkui.com/posts/go/unit-testing/'>
-
-<link rel="stylesheet" href="/scss/style.min.8f4416a35036b6471a6978873128b5652464226c8db8a9620ed1b94bc11bd353.css"><meta property='og:title' content='在go中使用单元测试'>
-<meta property='og:description' content='单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持
-单测基本规则  单元测试文件必须以_test.go结尾 单元测试文件名前面的部分最好和要被测试的方法所在的文件名保持一致 单元测试函数名称必须要以TestXxxx的格式书写，函数必须要接受一个testing.T类型的指针，不能有返回值 单元测试函数名最好能和被测试的函数保持对应，比如要测试的方法是Add，那么单测函数的名字最好是TestAdd，如果被测试的方法在同一个包下的多个结构体中都有，那么单测函数的名字可以是Test结构体名字_方法名，比如TestMyStruct_Add  一个demo 包文件结构
-❯ tree . ├── main.go └── main_test.go 0 directories, 2 files main.go文件内容
-package main func Add(x, y int) int { return x &#43; y } func main() { } main_test.go内容
-package main import ( &amp;quot;testing&amp;quot; ) func TestAdd(t *testing.T) { if Add(1, 2) != 3 { t.Errorf(&amp;quot;test add func err&amp;quot;) } } 执行结果
-❯ go test PASS ok test-go/unit-testing	0.006s 使用testing.'>
-<meta property='og:url' content='https://wangtingkui.com/posts/go/unit-testing/'>
-<meta property='og:site_name' content='xiaok&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='go' /><meta property='article:published_time' content='2020-05-17T11:22:21&#43;08:00'/><meta property='article:modified_time' content='2020-05-17T11:22:21&#43;08:00'/>
-<meta name="twitter:title" content="在go中使用单元测试">
-<meta name="twitter:description" content="单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持
-单测基本规则  单元测试文件必须以_test.go结尾 单元测试文件名前面的部分最好和要被测试的方法所在的文件名保持一致 单元测试函数名称必须要以TestXxxx的格式书写，函数必须要接受一个testing.T类型的指针，不能有返回值 单元测试函数名最好能和被测试的函数保持对应，比如要测试的方法是Add，那么单测函数的名字最好是TestAdd，如果被测试的方法在同一个包下的多个结构体中都有，那么单测函数的名字可以是Test结构体名字_方法名，比如TestMyStruct_Add  一个demo 包文件结构
-❯ tree . ├── main.go └── main_test.go 0 directories, 2 files main.go文件内容
-package main func Add(x, y int) int { return x &#43; y } func main() { } main_test.go内容
-package main import ( &amp;quot;testing&amp;quot; ) func TestAdd(t *testing.T) { if Add(1, 2) != 3 { t.Errorf(&amp;quot;test add func err&amp;quot;) } } 执行结果
-❯ go test PASS ok test-go/unit-testing	0.006s 使用testing.">
-    </head>
-    <body class="
-    article-page has-toc
-">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "dark");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex 
-    
-        extended
-    
-">
-    
-        <div id="article-toolbar">
-            <a href="/" class="back-home">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="15 6 9 12 15 18" />
-</svg>
-
-
-
-                <span>返回</span>
-            </a>
-        </div>
-    
-<main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-    <header class="article-category">
-        
-            <a href="/categories/go%E5%9F%BA%E7%A1%80/" >
-                go基础
-            </a>
-        
-    </header>
-    
-
-    <h2 class="article-title">
-        <a href="/posts/go/unit-testing/">在go中使用单元测试</a>
-    </h2>
-
-    
-
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">May 17, 2020</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    阅读时长: 2 分钟
-                </time>
-            </div>
-        
-    </footer>
-    
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在go中使用单元测试"/>
+<meta name="twitter:description" content="单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持 单测基本规则 单元测试文件必须以_test.go结尾 单元测"/>
+<link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.com">xiaok&#39;s blog
+    </a>
+    <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">Share</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body">
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
+      target="_blank" href="https://twitter.com/intent/tweet?title=%e5%9c%a8go%e4%b8%ad%e4%bd%bf%e7%94%a8%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95&url=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2funit-testing%2f">
+      <i class="fab fa-fw fa-twitter"></i> Twitter
+    </a>
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2funit-testing%2f">
+      <i class="fab fa-fw fa-facebook-f"></i> Facebook
+    </a>
+  </div>
 </div>
-</header>
+    <button class="navbar-settings" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
+  aria-controls="offcanvasSettings" aria-label="Toggle settings">
+  <i class="fas fa-ellipsis-v"></i>
+</button>
 
-    <section class="article-content">
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettings">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">设置</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-language"></i> 语言</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="dropdown">
+        <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          简体中文
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.com/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/zh-tw/">繁體中文</a></li></ul>
+      </div>
+    </div>
+  </form>
+</section>
+
+
+<section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-adjust"></i> 模式</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="modeSwitcher">
+      </div>
+    </div>
+  </form>
+</section>
+
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> 字体大小</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> 配色</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <a id="btnPalette" class="btn btn-sm btn-outline-primary" role="button" aria-label="palettePicker">
+        <i class="fas fa-eye-dropper"></i>
+      </a>
+    </div>
+  </form>
+  <div class="mt-2 d-flex justify-content-between visually-hidden" id="palettePicker"><button type="button" id="palette-blue" aria-label="蓝色"
+        class="btn btn-sm w-100 palette" data-palette="blue">
+      </button><button type="button" id="palette-blue-gray" aria-label="蓝灰色"
+        class="btn btn-sm w-100 palette" data-palette="blue-gray">
+      </button><button type="button" id="palette-brown" aria-label="棕色"
+        class="btn btn-sm w-100 palette" data-palette="brown">
+      </button><button type="button" id="palette-cyan" aria-label="青色"
+        class="btn btn-sm w-100 palette" data-palette="cyan">
+      </button><button type="button" id="palette-green" aria-label="绿色"
+        class="btn btn-sm w-100 palette" data-palette="green">
+      </button><button type="button" id="palette-indigo" aria-label="靛青色"
+        class="btn btn-sm w-100 palette" data-palette="indigo">
+      </button><button type="button" id="palette-orange" aria-label="橙色"
+        class="btn btn-sm w-100 palette" data-palette="orange">
+      </button><button type="button" id="palette-pink" aria-label="粉色"
+        class="btn btn-sm w-100 palette" data-palette="pink">
+      </button><button type="button" id="palette-purple" aria-label="紫色"
+        class="btn btn-sm w-100 palette" data-palette="purple">
+      </button><button type="button" id="palette-red" aria-label="红色"
+        class="btn btn-sm w-100 palette" data-palette="red">
+      </button><button type="button" id="palette-teal" aria-label="蓝绿色"
+        class="btn btn-sm w-100 palette" data-palette="teal">
+      </button><button type="button" id="palette-yellow" aria-label="黄色"
+        class="btn btn-sm w-100 palette" data-palette="yellow">
+      </button></div>
+</section>
+<section class="setting actions d-flex justify-content-around mt-auto overflow-auto">
+  <a role="button" class="action action-go-back" href="javascript: window.history.back();">
+    <span class="action-icon"><i class="fas fa-2x fa-arrow-left"></i></span> 返回
+  </a>
+  <a role="button" class="action action-reload-page">
+    <span class="action-icon"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+  </a>
+  <a role="button" class="action action-copy-url">
+    <span class="action-icon"><i class="fas fa-2x fa-link"></i></span> 复制链接
+  </a><a class="action action-social-share" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSocialShare"
+    aria-controls="offcanvasSocialShare" aria-label="Toggle social share">
+    <span class="action-icon"><i class="fas fa-2x fa-share-alt"></i></span> 分享
+  </a></section>
+
+</div>
+</div>
+
+    <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
+      <form class="search-bar my-1" action="https://wangtingkui.com/search">
+  <div class="input-group input-group-sm">
+    <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+    <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
+  </div>
+</form>
+      <ul class="navbar-nav ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.com/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.com/posts/">文章</a></li><li class="breadcrumb-item active">在go中使用单元测试</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper">
+  <div class="d-flex flex-column component rounded post-panel">
     
+    <a class="action action-panel-toggler" role="button" title="Panel toggler">
+      <i class="fas fa-fw fa-chevron-circle-down"></i>
+    </a>
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
     
-    <p>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持</p>
-<h2 id="单测基本规则">单测基本规则</h2>
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    <a class="action" href="#post-copyright" role="button" aria-label="Copyright" title="Copyright">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a class="action" href="#post-comments" role="button" aria-label="Comments" title="Comments">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    <a class="action" href="#postTOC" aria-controls="Table of contents" role="button" title="Table of contents">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+  </div>
+</div>
+<article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title">在go中使用单元测试
+</h1>
+  </div>
+  <div class="card-body"><div class="post-meta">
+  <span class="post-date" title="创建于 2020-05-17 11:22:21 &#43;0800 CST。">
+    2020-05-17
+  </span><span class="post-reading-time">
+    4 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-content mb-3"><p>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持</p>
+<h2 id="单测基本规则">单测基本规则<a class="anchor ms-1" href="#单测基本规则"><i class="fas fa-link"></i></a></h2>
 <ul>
 <li>单元测试文件必须以<code>_test.go</code>结尾</li>
 <li>单元测试文件名前面的部分最好和要被测试的方法所在的文件名保持一致</li>
 <li>单元测试函数名称必须要以<code>TestXxxx</code>的格式书写，函数必须要接受一个<code>testing.T</code>类型的指针，不能有返回值</li>
 <li>单元测试函数名最好能和被测试的函数保持对应，比如要测试的方法是<code>Add</code>，那么单测函数的名字最好是<code>TestAdd</code>，如果被测试的方法在同一个包下的多个结构体中都有，那么单测函数的名字可以是<code>Test结构体名字_方法名</code>，比如<code>TestMyStruct_Add</code></li>
 </ul>
-<h2 id="一个demo">一个demo</h2>
+<h2 id="一个demo">一个demo<a class="anchor ms-1" href="#一个demo"><i class="fas fa-link"></i></a></h2>
 <p>包文件结构</p>
-<pre tabindex="0"><code>❯ tree
-.
-├── main.go
-└── main_test.go
-
-0 directories, 2 files
-</code></pre><p><code>main.go</code>文件内容</p>
-<pre tabindex="0"><code>package main
-
-func Add(x, y int) int {
-	return x + y
-}
-
-func main() {
-
-}
-
-</code></pre><p><code>main_test.go</code>内容</p>
-<pre tabindex="0"><code>package main
-
-import (
-	&quot;testing&quot;
-)
-
-func TestAdd(t *testing.T) {
-	if Add(1, 2) != 3 {
-		t.Errorf(&quot;test add func err&quot;)
-	}
-}
-
-</code></pre><p>执行结果</p>
-<pre tabindex="0"><code>❯ go test
-PASS
-ok  	test-go/unit-testing	0.006s
-</code></pre><h2 id="使用testingt标记单测成功和纪录运行时日志">使用<code>testing.T</code>标记单测成功和纪录运行时日志</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>❯ tree
+<span class="ln">2</span>.
+<span class="ln">3</span>├── main.go
+<span class="ln">4</span>└── main_test.go
+<span class="ln">5</span>
+<span class="ln">6</span>0 directories, 2 files
+</code></pre></div><p><code>main.go</code>文件内容</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span><span class="kd">func</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+<span class="ln"> 4</span>	<span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span>
+<span class="ln"> 5</span><span class="p">}</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="p">}</span>
+<span class="ln">10</span>
+</code></pre></div><p><code>main_test.go</code>内容</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span><span class="kn">import</span> <span class="p">(</span>
+<span class="ln"> 4</span>	<span class="s">&#34;testing&#34;</span>
+<span class="ln"> 5</span><span class="p">)</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span><span class="kd">func</span> <span class="nf">TestAdd</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 8</span>	<span class="k">if</span> <span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span> <span class="p">{</span>
+<span class="ln"> 9</span>		<span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;test add func err&#34;</span><span class="p">)</span>
+<span class="ln">10</span>	<span class="p">}</span>
+<span class="ln">11</span><span class="p">}</span>
+<span class="ln">12</span>
+</code></pre></div><p>执行结果</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>❯ go test
+<span class="ln">2</span>PASS
+<span class="ln">3</span>ok  	test-go/unit-testing	0.006s
+</code></pre></div><h2 id="使用testingt标记单测成功和纪录运行时日志">使用testing.T标记单测成功和纪录运行时日志<a class="anchor ms-1" href="#使用testingt标记单测成功和纪录运行时日志"><i class="fas fa-link"></i></a></h2>
 <p>可以看到，我们的单测方法都需要接受一个<code>testing.T</code>类型的指针，<code>testing.T</code>类型用于管理测试状态并支持格式化测试日志，测试日志会在执行测试的过程中不断积累，在这个单元测试方法结束的时候输出到标准输出</p>
 <p>测试函数结束的方式：</p>
 <ul>
@@ -205,7 +303,7 @@ ok  	test-go/unit-testing	0.006s
 <p><code>SkipNow:</code>跳过测试，测试中断
 <code>Skip:</code>相当于<code>Log + SkipNow</code>
 <code>Skipf:</code>相当于<code>Logf + SkipNow</code></p>
-<h2 id="执行单测">执行单测</h2>
+<h2 id="执行单测">执行单测<a class="anchor ms-1" href="#执行单测"><i class="fas fa-link"></i></a></h2>
 <p>执行单测的对象可以是以下三种：</p>
 <ul>
 <li>包的导入路径<code>go test &lt;package_import_path&gt;</code></li>
@@ -213,345 +311,282 @@ ok  	test-go/unit-testing	0.006s
 <li>可以测试单独文件<code>go test path_of_a.go path_of_a_test.go</code></li>
 </ul>
 <p>下面是常用的一些指令</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 执行当前包中的单测</span>
-go <span class="nb">test</span>
-
-<span class="c1"># 执行指定包的单测（注意使用的是包的导入路径）</span>
-go <span class="nb">test</span> testproject
-
-<span class="c1"># go test 默认只会输出最后包的测试结果，如果想要看中间的测试过程和输出，使用下面的命令</span>
-go <span class="nb">test</span> -v
-
-<span class="c1"># 测试指定文件</span>
-go <span class="nb">test</span> -v a.go a_test.go
-
-<span class="c1"># 测试指定方法，使用test.run变量可以用正则过滤要执行</span>
-go <span class="nb">test</span> -v -test.run TestFunc
-</code></pre></div><h2 id="使用testmain进行额外的setup设置或teardown拆卸">使用<code>TestMain</code>进行额外的<code>setup（设置）</code>或<code>teardown（拆卸）</code></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="ln"> 1</span><span class="c1"># 执行当前包中的单测</span>
+<span class="ln"> 2</span>go <span class="nb">test</span>
+<span class="ln"> 3</span>
+<span class="ln"> 4</span><span class="c1"># 执行指定包的单测（注意使用的是包的导入路径）</span>
+<span class="ln"> 5</span>go <span class="nb">test</span> testproject
+<span class="ln"> 6</span>
+<span class="ln"> 7</span><span class="c1"># go test 默认只会输出最后包的测试结果，如果想要看中间的测试过程和输出，使用下面的命令</span>
+<span class="ln"> 8</span>go <span class="nb">test</span> -v
+<span class="ln"> 9</span>
+<span class="ln">10</span><span class="c1"># 测试指定文件</span>
+<span class="ln">11</span>go <span class="nb">test</span> -v a.go a_test.go
+<span class="ln">12</span>
+<span class="ln">13</span><span class="c1"># 测试指定方法，使用test.run变量可以用正则过滤要执行</span>
+<span class="ln">14</span>go <span class="nb">test</span> -v -test.run TestFunc
+</code></pre></div><h2 id="使用testmain进行额外的setup设置或teardown拆卸">使用TestMain进行额外的setup（设置）或teardown（拆卸）<a class="anchor ms-1" href="#使用testmain进行额外的setup设置或teardown拆卸"><i class="fas fa-link"></i></a></h2>
 <p>很多情况下，我们的多个测试case会依赖同一段初始化逻辑，这时候我们要么在每个测试函数中重复书写初始化代码，要么会将初始化逻辑封装成一个函数，然后在测试函数中调用。</p>
 <p>go 的 testing 包提供了 <code>TestMain(* testing.M)</code>函数，如果测试文件中包含该函数，那么生成的测试将调用 TestMain(m)，而不是直接运行测试。TestMain 运行在主 goroutine 中 , 可以在调用 m.Run 前后做任何设置和拆卸。注意，在 TestMain 函数的最后，应该使用 m.Run 的返回值作为参数调用 os.Exit</p>
 <p>下面是一个demo（测试main包中的Add函数）</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
-
-<span class="kn">import</span> <span class="p">(</span>
-	<span class="s">&#34;flag&#34;</span>
-	<span class="s">&#34;os&#34;</span>
-	<span class="s">&#34;testing&#34;</span>
-<span class="p">)</span>
-
-<span class="kd">var</span> <span class="nx">result</span> <span class="kt">int</span>
-
-<span class="kd">func</span> <span class="nf">TestMain</span><span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">M</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">flag</span><span class="p">.</span><span class="nf">Parse</span><span class="p">()</span>
-	<span class="nx">result</span> <span class="p">=</span> <span class="mi">2</span>
-	<span class="nx">os</span><span class="p">.</span><span class="nf">Exit</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nf">Run</span><span class="p">())</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">TestAdd</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">if</span> <span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">result</span> <span class="p">{</span>
-		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">()</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-
-</code></pre></div><h2 id="注意事项">注意事项</h2>
-<h3 id="禁用缓存">禁用缓存</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span><span class="kn">import</span> <span class="p">(</span>
+<span class="ln"> 4</span>	<span class="s">&#34;flag&#34;</span>
+<span class="ln"> 5</span>	<span class="s">&#34;os&#34;</span>
+<span class="ln"> 6</span>	<span class="s">&#34;testing&#34;</span>
+<span class="ln"> 7</span><span class="p">)</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="kd">var</span> <span class="nx">result</span> <span class="kt">int</span>
+<span class="ln">10</span>
+<span class="ln">11</span><span class="kd">func</span> <span class="nf">TestMain</span><span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">M</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">12</span>	<span class="nx">flag</span><span class="p">.</span><span class="nf">Parse</span><span class="p">()</span>
+<span class="ln">13</span>	<span class="nx">result</span> <span class="p">=</span> <span class="mi">2</span>
+<span class="ln">14</span>	<span class="nx">os</span><span class="p">.</span><span class="nf">Exit</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nf">Run</span><span class="p">())</span>
+<span class="ln">15</span><span class="p">}</span>
+<span class="ln">16</span>
+<span class="ln">17</span><span class="kd">func</span> <span class="nf">TestAdd</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">18</span>	<span class="k">if</span> <span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">result</span> <span class="p">{</span>
+<span class="ln">19</span>		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">()</span>
+<span class="ln">20</span>	<span class="p">}</span>
+<span class="ln">21</span><span class="p">}</span>
+<span class="ln">22</span>
+</code></pre></div><h2 id="注意事项">注意事项<a class="anchor ms-1" href="#注意事项"><i class="fas fa-link"></i></a></h2>
+<h3 id="禁用缓存">禁用缓存<a class="anchor ms-1" href="#禁用缓存"><i class="fas fa-link"></i></a></h3>
 <p>当功能代码和测试代码都没有改动的时候，<code>go test</code>会在下次执行的时候直接取用缓存中的结果，并在执行结果中标记<code>cached</code>字样，如下图：</p>
-<p><figure 
-	>
-	<a href="https://tva1.sinaimg.cn/large/006tNbRwly1gbetgpzdomj30ie076aan.jpg" >
-		<img src="https://tva1.sinaimg.cn/large/006tNbRwly1gbetgpzdomj30ie076aan.jpg"
-			
-			
-			
-			loading="lazy"
-			>
-	</a>
-	
-</figure></p>
+<p><img class="img-fluid" alt="" src="https://tva1.sinaimg.cn/large/006tNbRwly1gbetgpzdomj30ie076aan.jpg" loading="lazy"
+  
+   />
+
+</p>
 <p>如果禁用缓存，需要在执行单测的时候添加<code>-count=1</code>的参数:<code>go test . -count=1 -v</code></p>
-<h3 id="注意init函数的影响">注意init函数的影响</h3>
+<h3 id="注意init函数的影响">注意init函数的影响<a class="anchor ms-1" href="#注意init函数的影响"><i class="fas fa-link"></i></a></h3>
 <p>如果执行的单测是包级别的，那么<code>go test</code>会执行包内的init函数，可能会影响测试结果</p>
-<h2 id="单测覆盖率">单测覆盖率</h2>
+<h2 id="单测覆盖率">单测覆盖率<a class="anchor ms-1" href="#单测覆盖率"><i class="fas fa-link"></i></a></h2>
 <p>go 也提供了检测单测覆盖率的工具，可以帮助我们快速定位没有包含在单测范围内的代码，可以在执行单测时添加<code>-coverprofile</code>选项开启</p>
 <p><code>-coverprofile</code> 的值是覆盖率相关数据导出的文件名称</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">go <span class="nb">test</span> -coverprofile<span class="o">=</span>c.out
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="ln">1</span>go <span class="nb">test</span> -coverprofile<span class="o">=</span>c.out
 </code></pre></div><p>首先可以看到覆盖率已经随着命令行输出</p>
-<pre tabindex="0"><code>╰─$ go test -coverprofile=c.out
-PASS
-coverage: 50.0% of statements
-ok  	timing/sub	0.012s
-</code></pre><p>然后通过<code>go tool cover</code>工具分析哪些代码不在单测涵盖的范围内，通过以下命令将刚才生成的覆盖率文件生成可视的html文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>╰─$ go test -coverprofile=c.out
+<span class="ln">2</span>PASS
+<span class="ln">3</span>coverage: 50.0% of statements
+<span class="ln">4</span>ok  	timing/sub	0.012s
+</code></pre></div><p>然后通过<code>go tool cover</code>工具分析哪些代码不在单测涵盖的范围内，通过以下命令将刚才生成的覆盖率文件生成可视的html文件</p>
 <p><code>go tool cover -html=c.out -o=info.html</code></p>
 <p>打开生成的html文件，可以看到工具已经为我们标记除了已经覆盖的（绿色）和未覆盖（红色）的代码了</p>
-<p><figure 
-	>
-	<a href="https://tva1.sinaimg.cn/large/006y8mN6ly1g7as73x0w9j30fb06qjs7.jpg" >
-		<img src="https://tva1.sinaimg.cn/large/006y8mN6ly1g7as73x0w9j30fb06qjs7.jpg"
-			
-			
-			
-			loading="lazy"
-			>
-	</a>
-	
-</figure></p>
-<h2 id="参考">参考</h2>
+<p><img class="img-fluid" alt="" src="https://tva1.sinaimg.cn/large/006y8mN6ly1g7as73x0w9j30fb06qjs7.jpg" loading="lazy"
+  
+   />
+
+</p>
+<h2 id="参考">参考<a class="anchor ms-1" href="#参考"><i class="fas fa-link"></i></a></h2>
 <ol>
-<li><a class="link" href="http://blog.studygolang.com/2017/10/how-to-test-with-go/"  target="_blank" rel="noopener"
-    >http://blog.studygolang.com/2017/10/how-to-test-with-go/</a></li>
-<li><a class="link" href="https://books.studygolang.com/The-Golang-Standard-Library-by-Example/chapter09/09.0.html"  target="_blank" rel="noopener"
-    >https://books.studygolang.com/The-Golang-Standard-Library-by-Example/chapter09/09.0.html</a></li>
+<li><a href="http://blog.studygolang.com/2017/10/how-to-test-with-go/" target="_blank" rel="noopener noreferrer">http://blog.studygolang.com/2017/10/how-to-test-with-go/</a>
+</li>
+<li><a href="https://books.studygolang.com/The-Golang-Standard-Library-by-Example/chapter09/09.0.html" target="_blank" rel="noopener noreferrer">https://books.studygolang.com/The-Golang-Standard-Library-by-Example/chapter09/09.0.html</a>
+</li>
 </ol>
+</div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-coffee"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary" aria-label="Close"><i class="fas fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/alipay.jpeg" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/wechat.jpeg" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+  <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="https://wangtingkui.com/posts/tool/pakage/">推荐的atom插件
+</a>
+  </div><div class="post-nav post-next">
+    <a href="https://wangtingkui.com/posts/tool/sync-setting/">Alfred配置同步
+</a>
+    <i class="fas fa-fw fa-chevron-right"></i>
+  </div></div></div>
+</article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
 
-</section>
-
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/go/">go</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    <aside class="related-contents--wrapper">
-    
-    
-        <h2 class="section-title">相关文章</h2>
-        <div class="related-contents">
-            <div class="flex article-list--tile">
-                
-                    
-<article class="">
-    <a href="/posts/go/context/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">go中Context的使用</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/posts/go/channel/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">go中channel的使用</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/posts/go/go-file-operation/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Go进行文件操作</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/posts/go/go-multi-version-manage/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">go多版本管理</h2>
-        </div>
-    </a>
-</article>
-                
-            </div>
-        </div>
-    
-</aside>
-
-     
-    
-        
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2020 - 
-        
-        2022 xiaok&#39;s blog
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.7.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
-</footer>
-
-
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
 
     </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
-            >
-
-            </main>
+</div><section class="related-posts row card component">
+    <div class="card-header">
+      <h2 class="card-title">相关文章</h2>
+    </div>
+    <div class="card-body">
+      <ul class="post-list"><li>
+          <a href="https://wangtingkui.com/posts/go/viper/">使用 Viper 处理项目配置
+</a>
+          <span class="float-end post-date">2020-05-03
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/errors/">使用 Pkg/Errors 进行错误处理
+</a>
+          <span class="float-end post-date">2020-04-28
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/time/">Go标准库（time）- 使用
+</a>
+          <span class="float-end post-date">2020-04-12
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/log/">Go标准库（log）- 使用
+</a>
+          <span class="float-end post-date">2020-03-29
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/go-file-operation/">Go进行文件操作
+</a>
+          <span class="float-end post-date">2020-01-05
+</span>
+        </li></ul>
+    </div>
+  </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script></div>
+</div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
     
-        <aside class="sidebar right-sidebar sticky">
-            <section class="widget archives">
-                <div class="widget-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-                </div>
-                <h2 class="widget-title section-title">目录</h2>
-                
-                <div class="widget--toc">
-                    <nav id="TableOfContents">
-  <ol>
+    <section class="card row text-center profile component">
+  <div class="card-body">
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.com/images/avatar.jpeg" loading="lazy"
+   width="959" height="959"
+   />
+</div>
+    <div class="col-12 profile-meta"><div class="profile-name">无敌小k</div><div class="profile-bio">Gopher, PHPer.</div><div class="profile-about"><i class="fas fa-fw fa-user"></i><a target="_blank" rel="noopener noreferrer" href="https://domain.tld">关于我</a></div><nav class="social-links nav justify-content-center"><a class="nav-link social-link" href="mailto:wangtingkui_coder@163.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a><a class="nav-link social-link" target="_blank" href="https://github.com/wangtingkui" title="GitHub" rel="noopener noreferrer">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a></nav>
+</div>
+  </div>
+</section>
+  <div class="post-toc row mb-4 card component" id="postTOC">
+  <div class="card-header">
+    <h2 class="card-title">目录</h2>
+  </div>
+  <div class="card-body">
+    <nav id="TableOfContents">
+  <ul>
     <li><a href="#单测基本规则">单测基本规则</a></li>
     <li><a href="#一个demo">一个demo</a></li>
     <li><a href="#使用testingt标记单测成功和纪录运行时日志">使用<code>testing.T</code>标记单测成功和纪录运行时日志</a></li>
     <li><a href="#执行单测">执行单测</a></li>
     <li><a href="#使用testmain进行额外的setup设置或teardown拆卸">使用<code>TestMain</code>进行额外的<code>setup（设置）</code>或<code>teardown（拆卸）</code></a></li>
     <li><a href="#注意事项">注意事项</a>
-      <ol>
+      <ul>
         <li><a href="#禁用缓存">禁用缓存</a></li>
         <li><a href="#注意init函数的影响">注意init函数的影响</a></li>
-      </ol>
+      </ul>
     </li>
     <li><a href="#单测覆盖率">单测覆盖率</a></li>
     <li><a href="#参考">参考</a></li>
-  </ol>
+  </ul>
 </nav>
-                </div>
-            </section>
-        </aside>
+  </div>
+</div><section class="series-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/series">专栏</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section><section class="categories-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/categories">分类</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
+            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
+            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.com/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+            性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section><section class="tags-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/tags">标签</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">25</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
+            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/oh-my-zsh/" class="badge rounded post-taxonomy" title="oh-my-zsh">
+            oh-my-zsh<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section>
     
+  </div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"></nav>
+<div class="copyright mb-2">
+  Copyright © 2016-2022 Razon Yang. All Rights Reserved.
+</div>
 
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
-                defer="false"
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
+    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
+</a>
+</footer>
+<script src="https://wangtingkui.com/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.com/js/icons.min.a35670f2f90c398e5ee5c8e509b428fae75aa2746854cee10b60794633076859.js" integrity="sha256-o1Zw8vkMOY5e5cjlCbQo&#43;udaonRoVM7hC2B5RjMHaFk=" crossorigin="anonymous" defer></script>
 <script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-    </body>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.com\/service-worker.js').then(function(reg) {
+      console.log('Successfully registered service worker', reg);
+    }).catch(function(err) {
+      console.warn('Error whilst registering service worker', err);
+    });
+  });
+}
+</script><script src="https://wangtingkui.com/js/viewer.min.4dba52a0a790f909408b7385316651299158381686401d50ff1f04dda6476473.js" integrity="sha256-TbpSoKeQ&#43;QlAi3OFMWZRKZFYOBaGQB1Q/x8E3aZHZHM=" crossorigin="anonymous" defer></script>
+</body>
 </html>

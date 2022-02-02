@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>nas on xiaok&#39;s blog</title>
+    <title>nas on Hugo Bootstrap</title>
     <link>https://wangtingkui.com/tags/nas/</link>
-    <description>Recent content in nas on xiaok&#39;s blog</description>
+    <description>Recent content in nas on Hugo Bootstrap</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Sun, 24 May 2020 10:48:57 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/nas/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>群辉nas使用plex套件</title>
@@ -13,23 +13,7 @@
       <pubDate>Sun, 24 May 2020 10:48:57 +0800</pubDate>
       
       <guid>https://wangtingkui.com/posts/tool/plex/</guid>
-      <description>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、演员等），易用程度和美观程度都非常高
-本片文章主要写一下 plex 在群辉nas上的基本使用
-第一步 安装 Plex Media Server 套件
- 
-第二步 根据步骤注册 plex 账号
-第三步 点击头像旁边的+号，添加资料库
- 
-选择要添加的资料库类型，官网强烈建议不同的媒体类型分类存储，比如电影和电视剧最好分开，否则可能会造成元信息搜索不到或者不准确
- 
-这里假设我们要创建电影类型的资料库
- 
- 
-选择文件夹的时候要注意，plex只能展示第一层文件夹，比如我们的电影存储路径在/a/b/c，plex只能展示/a/b，所以这里我们最好是直接手动输入电影路径
- 
-点击添加就好了
-第四步 通常在完成上面的操作后还是扫描不到文件夹里面的电影，这是因为 plex 没有对电影所在文件夹的操作权限，所以需要我们手动添加一下
-打开file station选中我们电影存储的文件夹，右键选择属性，点击权限，新增，给plex账户添加读写权限即可</description>
+      <description>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、</description>
     </item>
     
   </channel>
