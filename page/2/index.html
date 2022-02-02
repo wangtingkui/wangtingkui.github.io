@@ -186,6 +186,27 @@
 <div class="col-lg-8">
   <div class="container"><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
+      <a href="https://wangtingkui.com/posts/go/context/">Go中Context的使用
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2020-06-07 15:33:50 &#43;0800 CST。">
+    2020-06-07
+  </span><span class="post-reading-time">
+    2 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使用比较少
+使用 Context 本身是 context 包对外暴露的一个接口
+1type Context interface { 2 Deadline() (deadline time.Time, ok bool) // 返回当前 Context 的截止日期 3 Done() &lt;-chan struct{} // 返回一个 channel，这个channel会在 Context 截止日期到了或者被取消之后关闭，多次调用Done会返回同一...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.com/posts/go/context/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
       <a href="https://wangtingkui.com/posts/go/mail/">使用 Jordan-Wright/Email 处理邮件发送
 </a>
     </h2>
@@ -384,29 +405,6 @@ pp-markdown（markdown预览） markdown...</p><div><a class="btn btn-sm btn-pri
     </div>
   </div>
 </article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.com/posts/tool/plugin-recommend/">Alfred Workflow 推荐
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-05-10 11:44:38 &#43;0800 CST。">
-    2020-05-10
-  </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.com/tags/alfred/" class="badge post-taxonomy">alfred</a></span>
-</div>
-<div class="post-summary">
-      <p>这篇文站整理下自己经常使用的 alfred workflow
-TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录
-alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目
-YoudaoTranslate 有道词典翻译
-</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.com/posts/tool/plugin-recommend/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
 </div><div class="row table-responsive mb-3">
     <ul class="pagination pagination-default">
       <li class="page-item">
@@ -467,7 +465,7 @@ YoudaoTranslate 有道词典翻译
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
             使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
-            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">2</span></a></div>
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
@@ -492,7 +490,7 @@ YoudaoTranslate 有道词典翻译
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">27</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">

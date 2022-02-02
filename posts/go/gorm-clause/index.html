@@ -9,12 +9,12 @@
 <link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
 <link rel="manifest" href="https://wangtingkui.com/manifest.json">
 <meta name="keywords" content="" />
-<meta name="description" content="" /><meta itemprop="name" content="Gorm源码阅读 - 2.Clause">
-<meta itemprop="description" content=""><meta itemprop="datePublished" content="2022-02-02T18:05:41+08:00" />
+<meta name="description" content="承上 在基础流程篇中我们层多次提到 Clause 的概念，本片就让我们详细分析下 Clause 究竟是什么 从基础流程篇中我们可以知道 Clause 就是一个 sql 子句，我们调用 gorm 提供的链式" /><meta itemprop="name" content="Gorm源码阅读 - 2.Clause">
+<meta itemprop="description" content="承上 在基础流程篇中我们层多次提到 Clause 的概念，本片就让我们详细分析下 Clause 究竟是什么 从基础流程篇中我们可以知道 Clause 就是一个 sql 子句，我们调用 gorm 提供的链式"><meta itemprop="datePublished" content="2022-02-02T18:05:41+08:00" />
 <meta itemprop="dateModified" content="2022-02-02T18:05:41+08:00" />
 <meta itemprop="wordCount" content="2133">
 <meta itemprop="keywords" content="go," /><meta property="og:title" content="Gorm源码阅读 - 2.Clause" />
-<meta property="og:description" content="" />
+<meta property="og:description" content="承上 在基础流程篇中我们层多次提到 Clause 的概念，本片就让我们详细分析下 Clause 究竟是什么 从基础流程篇中我们可以知道 Clause 就是一个 sql 子句，我们调用 gorm 提供的链式" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://wangtingkui.com/posts/go/gorm-clause/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-02-02T18:05:41+08:00" />
@@ -23,7 +23,7 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Gorm源码阅读 - 2.Clause"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:description" content="承上 在基础流程篇中我们层多次提到 Clause 的概念，本片就让我们详细分析下 Clause 究竟是什么 从基础流程篇中我们可以知道 Clause 就是一个 sql 子句，我们调用 gorm 提供的链式"/>
 <link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
   <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
   <div class="container">
@@ -508,6 +508,10 @@
   <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
     <a href="https://wangtingkui.com/posts/go/gorm-base/">Gorm源码阅读 - 1.基础流程
 </a>
+  </div><div class="post-nav post-next">
+    <a href="https://wangtingkui.com/posts/go/gorm-read-write-split/">Gorm源码阅读 - 3.读写分离
+</a>
+    <i class="fas fa-fw fa-chevron-right"></i>
   </div></div></div>
 </article><div class="post-copyright mb-3 row card component" id="post-copyright">
     <div class="card-header">
@@ -607,7 +611,7 @@
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
             使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
-            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">2</span></a></div>
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
@@ -632,7 +636,7 @@
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">27</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">

@@ -189,6 +189,28 @@
   </div>
 </nav><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
+      <a href="https://wangtingkui.com/posts/go/gorm-read-write-split/">Gorm源码阅读 - 3.读写分离
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2022-02-02 22:05:41 &#43;0800 CST。">
+    2022-02-02
+  </span><span class="post-reading-time">
+    4 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge post-taxonomy">gorm 源码阅读</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>前言 数据库读写分离是企业级项目的基本能力，成熟的数据库类库基本都内置支持了读写分离的能力，在 gorm 中，读写分离是通过插件的方式实现的
+gorm 的插件能力 插件相关的简介可以参考官方文档 dbresolver gorm 实现了读写分离能力的插件叫做 dbresolver ，他提供了多数据库的支持，其中就包括读写分离
+源码分析 注册插件 下面这段代码是粘贴自 resolver 项目 readme
+1import ( 2 &#34;gorm.io/gorm&#34; 3 &#34;gorm.io/plugin/dbresolver&#34; 4 &#34;gorm.io/driver/mysql&#34; 5) 6 7DB, err :=...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.com/posts/go/gorm-read-write-split/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
       <a href="https://wangtingkui.com/posts/go/gorm-clause/">Gorm源码阅读 - 2.Clause
 </a>
     </h2>
@@ -202,7 +224,8 @@
   </span><span class="post-taxonomies"><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge post-taxonomy">gorm 源码阅读</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-summary">
-      <div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.com/posts/go/gorm-clause/">阅读更多</a></div>
+      <p>承上 在基础流程篇中我们层多次提到 Clause 的概念，本片就让我们详细分析下 Clause 究竟是什么
+从基础流程篇中我们可以知道 Clause 就是一个 sql 子句，我们调用 gorm 提供的链式api的过程，就是不断的添加子句，最后当调用 Finisher 方法的时候，将所有的子句构建成一个完整的 sql，然后执行。举个简单的例子，当我们调用db.Where(&#34;a = ?&#34;, 1)这个方法的时候，就是用这些参数去生成了一个clause.Where的Clause对象，不同的Clause对象（比如Where、Limit…）可能会有不同的参数，但他们都会实现Build方法。去根据自己需要的参数构建出真实的sql片段，比如上面的例...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.com/posts/go/gorm-clause/">阅读更多</a></div>
     </div>
   </div>
 </article>
@@ -378,28 +401,6 @@ jordan-wright/email 就是一个使用的比较多的用来处理邮件发送的
     </div>
   </div>
 </article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.com/posts/go/errors/">使用 Pkg/Errors 进行错误处理
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-04-28 16:53:09 &#43;0800 CST。">
-    2020-04-28
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">go三方库使用</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下：
-1if err != nil { 2 return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两个问题：
- 没有错误发生时的上下文信息（或者叫堆栈信息） 在层层的错误传递过程中，有可能已经将原始错误转化，丢失了最原始的 error  当前，比较优雅的方式是使用 github.com/pkg/errors 这个包来进行错误处理，官方文档 QUICK START 一个基本的使用如下：
-1package main 2 3import ( 4	e &#34;errors&#34; 5	&#34;fmt&#34; 6 7	&#34;github.com/pkg/errors&#34; 8) 9...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.com/posts/go/errors/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
 </div><div class="row table-responsive mb-3">
     <ul class="pagination pagination-default">
       <li class="page-item disabled">
@@ -454,7 +455,7 @@ jordan-wright/email 就是一个使用的比较多的用来处理邮件发送的
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
             使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
-            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">2</span></a></div>
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
@@ -479,7 +480,7 @@ jordan-wright/email 就是一个使用的比较多的用来处理邮件发送的
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">27</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">

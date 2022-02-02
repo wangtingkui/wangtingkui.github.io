@@ -1,0 +1,668 @@
+<!doctype html><html lang="zh-cn" data-palette="blue"
+  >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gorm源码阅读 - 3.读写分离 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.com/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.com/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.com/manifest.json">
+<meta name="keywords" content="" />
+<meta name="description" content="前言 数据库读写分离是企业级项目的基本能力，成熟的数据库类库基本都内置支持了读写分离的能力，在 gorm 中，读写分离是通过插件的方式实现的 gorm 的插件能力" /><meta itemprop="name" content="Gorm源码阅读 - 3.读写分离">
+<meta itemprop="description" content="前言 数据库读写分离是企业级项目的基本能力，成熟的数据库类库基本都内置支持了读写分离的能力，在 gorm 中，读写分离是通过插件的方式实现的 gorm 的插件能力"><meta itemprop="datePublished" content="2022-02-02T22:05:41+08:00" />
+<meta itemprop="dateModified" content="2022-02-02T22:05:41+08:00" />
+<meta itemprop="wordCount" content="1796">
+<meta itemprop="keywords" content="go," /><meta property="og:title" content="Gorm源码阅读 - 3.读写分离" />
+<meta property="og:description" content="前言 数据库读写分离是企业级项目的基本能力，成熟的数据库类库基本都内置支持了读写分离的能力，在 gorm 中，读写分离是通过插件的方式实现的 gorm 的插件能力" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.com/posts/go/gorm-read-write-split/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-02-02T22:05:41+08:00" />
+<meta property="article:modified_time" content="2022-02-02T22:05:41+08:00" />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Gorm源码阅读 - 3.读写分离"/>
+<meta name="twitter:description" content="前言 数据库读写分离是企业级项目的基本能力，成熟的数据库类库基本都内置支持了读写分离的能力，在 gorm 中，读写分离是通过插件的方式实现的 gorm 的插件能力"/>
+<link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.com">xiaok&#39;s blog
+    </a>
+    <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">Share</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body">
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
+      target="_blank" href="https://twitter.com/intent/tweet?title=Gorm%e6%ba%90%e7%a0%81%e9%98%85%e8%af%bb%20-%203.%e8%af%bb%e5%86%99%e5%88%86%e7%a6%bb&url=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fgorm-read-write-split%2f">
+      <i class="fab fa-fw fa-twitter"></i> Twitter
+    </a>
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fgorm-read-write-split%2f">
+      <i class="fab fa-fw fa-facebook-f"></i> Facebook
+    </a>
+  </div>
+</div>
+    <button class="navbar-settings" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
+  aria-controls="offcanvasSettings" aria-label="Toggle settings">
+  <i class="fas fa-ellipsis-v"></i>
+</button>
+
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettings">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">设置</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-language"></i> 语言</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="dropdown">
+        <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          简体中文
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.com/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/zh-tw/">繁體中文</a></li></ul>
+      </div>
+    </div>
+  </form>
+</section>
+
+
+<section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-adjust"></i> 模式</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="modeSwitcher">
+      </div>
+    </div>
+  </form>
+</section>
+
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> 字体大小</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> 配色</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <a id="btnPalette" class="btn btn-sm btn-outline-primary" role="button" aria-label="palettePicker">
+        <i class="fas fa-eye-dropper"></i>
+      </a>
+    </div>
+  </form>
+  <div class="mt-2 d-flex justify-content-between visually-hidden" id="palettePicker"><button type="button" id="palette-blue" aria-label="蓝色"
+        class="btn btn-sm w-100 palette" data-palette="blue">
+      </button><button type="button" id="palette-blue-gray" aria-label="蓝灰色"
+        class="btn btn-sm w-100 palette" data-palette="blue-gray">
+      </button><button type="button" id="palette-brown" aria-label="棕色"
+        class="btn btn-sm w-100 palette" data-palette="brown">
+      </button><button type="button" id="palette-cyan" aria-label="青色"
+        class="btn btn-sm w-100 palette" data-palette="cyan">
+      </button><button type="button" id="palette-green" aria-label="绿色"
+        class="btn btn-sm w-100 palette" data-palette="green">
+      </button><button type="button" id="palette-indigo" aria-label="靛青色"
+        class="btn btn-sm w-100 palette" data-palette="indigo">
+      </button><button type="button" id="palette-orange" aria-label="橙色"
+        class="btn btn-sm w-100 palette" data-palette="orange">
+      </button><button type="button" id="palette-pink" aria-label="粉色"
+        class="btn btn-sm w-100 palette" data-palette="pink">
+      </button><button type="button" id="palette-purple" aria-label="紫色"
+        class="btn btn-sm w-100 palette" data-palette="purple">
+      </button><button type="button" id="palette-red" aria-label="红色"
+        class="btn btn-sm w-100 palette" data-palette="red">
+      </button><button type="button" id="palette-teal" aria-label="蓝绿色"
+        class="btn btn-sm w-100 palette" data-palette="teal">
+      </button><button type="button" id="palette-yellow" aria-label="黄色"
+        class="btn btn-sm w-100 palette" data-palette="yellow">
+      </button></div>
+</section>
+<section class="setting actions d-flex justify-content-around mt-auto overflow-auto">
+  <a role="button" class="action action-go-back" href="javascript: window.history.back();">
+    <span class="action-icon"><i class="fas fa-2x fa-arrow-left"></i></span> 返回
+  </a>
+  <a role="button" class="action action-reload-page">
+    <span class="action-icon"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+  </a>
+  <a role="button" class="action action-copy-url">
+    <span class="action-icon"><i class="fas fa-2x fa-link"></i></span> 复制链接
+  </a><a class="action action-social-share" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSocialShare"
+    aria-controls="offcanvasSocialShare" aria-label="Toggle social share">
+    <span class="action-icon"><i class="fas fa-2x fa-share-alt"></i></span> 分享
+  </a></section>
+
+</div>
+</div>
+
+    <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
+      <form class="search-bar my-1" action="https://wangtingkui.com/search">
+  <div class="input-group input-group-sm">
+    <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+    <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
+  </div>
+</form>
+      <ul class="navbar-nav ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.com/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.com/posts/">文章</a></li><li class="breadcrumb-item active">Gorm源码阅读 - 3.读写分离</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper">
+  <div class="d-flex flex-column component rounded post-panel">
+    
+    <a class="action action-panel-toggler" role="button" title="Panel toggler">
+      <i class="fas fa-fw fa-chevron-circle-down"></i>
+    </a>
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    <a class="action" href="#post-copyright" role="button" aria-label="Copyright" title="Copyright">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a class="action" href="#post-comments" role="button" aria-label="Comments" title="Comments">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    <a class="action" href="#postTOC" aria-controls="Table of contents" role="button" title="Table of contents">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+  </div>
+</div>
+<article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title">Gorm源码阅读 - 3.读写分离
+</h1>
+  </div>
+  <div class="card-body"><div class="post-meta">
+  <span class="post-date" title="创建于 2022-02-02 22:05:41 &#43;0800 CST。">
+    2022-02-02
+  </span><span class="post-reading-time">
+    4 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge post-taxonomy">gorm 源码阅读</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-content mb-3"><h1 id="前言">前言<a class="anchor ms-1" href="#前言"><i class="fas fa-link"></i></a></h1>
+<p>数据库读写分离是企业级项目的基本能力，成熟的数据库类库基本都内置支持了读写分离的能力，在 gorm 中，读写分离是通过插件的方式实现的</p>
+<h1 id="gorm-的插件能力">gorm 的插件能力<a class="anchor ms-1" href="#gorm-的插件能力"><i class="fas fa-link"></i></a></h1>
+<p>插件相关的简介可以参考<a href="https://gorm.io/zh_CN/docs/write_plugins.html" target="_blank" rel="noopener noreferrer">官方文档</a>
+</p>
+<h1 id="dbresolver">dbresolver<a class="anchor ms-1" href="#dbresolver"><i class="fas fa-link"></i></a></h1>
+<p>gorm 实现了读写分离能力的插件叫做 <a href="https://github.com/go-gorm/dbresolver" target="_blank" rel="noopener noreferrer">dbresolver</a>
+，他提供了多数据库的支持，其中就包括读写分离</p>
+<h2 id="源码分析">源码分析<a class="anchor ms-1" href="#源码分析"><i class="fas fa-link"></i></a></h2>
+<h3 id="注册插件">注册插件<a class="anchor ms-1" href="#注册插件"><i class="fas fa-link"></i></a></h3>
+<p>下面这段代码是粘贴自 resolver 项目 readme</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">import</span> <span class="p">(</span>
+<span class="ln"> 2</span>  <span class="s">&#34;gorm.io/gorm&#34;</span>
+<span class="ln"> 3</span>  <span class="s">&#34;gorm.io/plugin/dbresolver&#34;</span>
+<span class="ln"> 4</span>  <span class="s">&#34;gorm.io/driver/mysql&#34;</span>
+<span class="ln"> 5</span><span class="p">)</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span><span class="nx">DB</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">gorm</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nx">mysql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;db1_dsn&#34;</span><span class="p">),</span> <span class="o">&amp;</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Config</span><span class="p">{})</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span><span class="nx">DB</span><span class="p">.</span><span class="nf">Use</span><span class="p">(</span><span class="nx">dbresolver</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">dbresolver</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+<span class="ln">10</span>  <span class="c1">// use `db2` as sources, `db3`, `db4` as replicas
+</span><span class="ln">11</span><span class="c1"></span>  <span class="nx">Sources</span><span class="p">:</span>  <span class="p">[]</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Dialector</span><span class="p">{</span><span class="nx">mysql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;db2_dsn&#34;</span><span class="p">)},</span>
+<span class="ln">12</span>  <span class="nx">Replicas</span><span class="p">:</span> <span class="p">[]</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Dialector</span><span class="p">{</span><span class="nx">mysql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;db3_dsn&#34;</span><span class="p">),</span> <span class="nx">mysql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;db4_dsn&#34;</span><span class="p">)},</span>
+<span class="ln">13</span>  <span class="c1">// sources/replicas load balancing policy
+</span><span class="ln">14</span><span class="c1"></span>  <span class="nx">Policy</span><span class="p">:</span> <span class="nx">dbresolver</span><span class="p">.</span><span class="nx">RandomPolicy</span><span class="p">{},</span>
+<span class="ln">15</span><span class="p">}).</span><span class="nf">Register</span><span class="p">(</span><span class="nx">dbresolver</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+<span class="ln">16</span>  <span class="c1">// use `db1` as sources (DB&#39;s default connection), `db5` as replicas for `User`, `Address`
+</span><span class="ln">17</span><span class="c1"></span>  <span class="nx">Replicas</span><span class="p">:</span> <span class="p">[]</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Dialector</span><span class="p">{</span><span class="nx">mysql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;db5_dsn&#34;</span><span class="p">)},</span>
+<span class="ln">18</span><span class="p">},</span> <span class="o">&amp;</span><span class="nx">User</span><span class="p">{},</span> <span class="o">&amp;</span><span class="nx">Address</span><span class="p">{}).</span><span class="nf">Register</span><span class="p">(</span><span class="nx">dbresolver</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+<span class="ln">19</span>  <span class="c1">// use `db6`, `db7` as sources, `db8` as replicas for `orders`, `Product`
+</span><span class="ln">20</span><span class="c1"></span>  <span class="nx">Sources</span><span class="p">:</span>  <span class="p">[]</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Dialector</span><span class="p">{</span><span class="nx">mysql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;db6_dsn&#34;</span><span class="p">),</span> <span class="nx">mysql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;db7_dsn&#34;</span><span class="p">)},</span>
+<span class="ln">21</span>  <span class="nx">Replicas</span><span class="p">:</span> <span class="p">[]</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Dialector</span><span class="p">{</span><span class="nx">mysql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;db8_dsn&#34;</span><span class="p">)},</span>
+<span class="ln">22</span><span class="p">},</span> <span class="s">&#34;orders&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">Product</span><span class="p">{},</span> <span class="s">&#34;secondary&#34;</span><span class="p">))</span>
+</code></pre></div><p>首先，我们来看下涉及的几个核心类型：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// 核心类，用来处理多数据库的切换功能
+</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">type</span> <span class="nx">DBResolver</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 3</span>	<span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span>
+<span class="ln"> 4</span>	<span class="nx">configs</span>          <span class="p">[]</span><span class="nx">Config</span>
+<span class="ln"> 5</span>	<span class="nx">resolvers</span>        <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">resolver</span>
+<span class="ln"> 6</span>	<span class="nx">global</span>           <span class="o">*</span><span class="nx">resolver</span>
+<span class="ln"> 7</span>	<span class="nx">prepareStmtStore</span> <span class="kd">map</span><span class="p">[</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">]</span><span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">PreparedStmtDB</span>
+<span class="ln"> 8</span>	<span class="nx">compileCallbacks</span> <span class="p">[]</span><span class="kd">func</span><span class="p">(</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">)</span> <span class="kt">error</span>
+<span class="ln"> 9</span><span class="p">}</span>
+<span class="ln">10</span>
+<span class="ln">11</span><span class="c1">// DBResolver 的配置类
+</span><span class="ln">12</span><span class="c1">// Sources 就是支持写的数据源
+</span><span class="ln">13</span><span class="c1">// Replicas 是副本，也就是支持读的数据源
+</span><span class="ln">14</span><span class="c1">// 从结构的定义上可以看到，读写都是支持多个的，所以需要有一定的负载均衡策略，也就是 Policy
+</span><span class="ln">15</span><span class="c1">// datas 用来指定哪些表走这个数据源，如果不指定，默认这个配置对应就是全局的
+</span><span class="ln">16</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Config</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln">17</span>	<span class="nx">Sources</span>  <span class="p">[]</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Dialector</span>
+<span class="ln">18</span>	<span class="nx">Replicas</span> <span class="p">[]</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Dialector</span>
+<span class="ln">19</span>	<span class="nx">Policy</span>   <span class="nx">Policy</span>
+<span class="ln">20</span>	<span class="nx">datas</span>    <span class="p">[]</span><span class="kd">interface</span><span class="p">{}</span>
+<span class="ln">21</span><span class="p">}</span>
+</code></pre></div><p>了解了核心的类型之后，我们看下功能是怎么运转的，先看下<code>dbresolver.Register</code>方法</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">// 本质上就是个快捷方法，为我们节省手动创建DBResolver对象的过程而已
+</span><span class="ln">2</span><span class="c1">// 核心还是走的 DBResolver 实例的 Register
+</span><span class="ln">3</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Register</span><span class="p">(</span><span class="nx">config</span> <span class="nx">Config</span><span class="p">,</span> <span class="nx">datas</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="o">*</span><span class="nx">DBResolver</span> <span class="p">{</span>
+<span class="ln">4</span>	<span class="k">return</span> <span class="p">(</span><span class="o">&amp;</span><span class="nx">DBResolver</span><span class="p">{}).</span><span class="nf">Register</span><span class="p">(</span><span class="nx">config</span><span class="p">,</span> <span class="nx">datas</span><span class="o">...</span><span class="p">)</span>
+<span class="ln">5</span><span class="p">}</span>
+</code></pre></div><p>看 <code>DBResolver.Register</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">dr</span> <span class="o">*</span><span class="nx">DBResolver</span><span class="p">)</span> <span class="nf">Register</span><span class="p">(</span><span class="nx">config</span> <span class="nx">Config</span><span class="p">,</span> <span class="nx">datas</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="o">*</span><span class="nx">DBResolver</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="c1">// 初始化 prepareStmtStore
+</span><span class="ln"> 3</span><span class="c1"></span>  <span class="k">if</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">prepareStmtStore</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 4</span>		<span class="nx">dr</span><span class="p">.</span><span class="nx">prepareStmtStore</span> <span class="p">=</span> <span class="kd">map</span><span class="p">[</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">]</span><span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">PreparedStmtDB</span><span class="p">{}</span>
+<span class="ln"> 5</span>	<span class="p">}</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span>  <span class="c1">// 初始化 resolvers
+</span><span class="ln"> 8</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">resolvers</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 9</span>		<span class="nx">dr</span><span class="p">.</span><span class="nx">resolvers</span> <span class="p">=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">resolver</span><span class="p">{}</span>
+<span class="ln">10</span>	<span class="p">}</span>
+<span class="ln">11</span>
+<span class="ln">12</span>  <span class="c1">// 初始化负载均衡策略
+</span><span class="ln">13</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">Policy</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">14</span>		<span class="nx">config</span><span class="p">.</span><span class="nx">Policy</span> <span class="p">=</span> <span class="nx">RandomPolicy</span><span class="p">{}</span>
+<span class="ln">15</span>	<span class="p">}</span>
+<span class="ln">16</span>
+<span class="ln">17</span>	<span class="nx">config</span><span class="p">.</span><span class="nx">datas</span> <span class="p">=</span> <span class="nx">datas</span>
+<span class="ln">18</span>  <span class="c1">// 将指定配置追加到 dr.configs 中
+</span><span class="ln">19</span><span class="c1"></span>	<span class="nx">dr</span><span class="p">.</span><span class="nx">configs</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">dr</span><span class="p">.</span><span class="nx">configs</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span>
+<span class="ln">20</span>	<span class="k">if</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">DB</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">21</span>    <span class="c1">// 编译配置，本质上就是根据配置和*DB的信息生成一个 resolver 存到 dr 中
+</span><span class="ln">22</span><span class="c1"></span>		<span class="nx">dr</span><span class="p">.</span><span class="nf">compileConfig</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+<span class="ln">23</span>	<span class="p">}</span>
+<span class="ln">24</span>	<span class="k">return</span> <span class="nx">dr</span>
+<span class="ln">25</span><span class="p">}</span>
+<span class="ln">26</span>
+<span class="ln">27</span><span class="kd">func</span> <span class="p">(</span><span class="nx">dr</span> <span class="o">*</span><span class="nx">DBResolver</span><span class="p">)</span> <span class="nf">compileConfig</span><span class="p">(</span><span class="nx">config</span> <span class="nx">Config</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">28</span>	<span class="kd">var</span> <span class="p">(</span>
+<span class="ln">29</span>    <span class="c1">// 默认的链接
+</span><span class="ln">30</span><span class="c1"></span>		<span class="nx">connPool</span> <span class="p">=</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nx">Config</span><span class="p">.</span><span class="nx">ConnPool</span>
+<span class="ln">31</span>		<span class="nx">r</span>        <span class="p">=</span> <span class="nx">resolver</span><span class="p">{</span>
+<span class="ln">32</span>			<span class="nx">dbResolver</span><span class="p">:</span> <span class="nx">dr</span><span class="p">,</span>
+<span class="ln">33</span>			<span class="nx">policy</span><span class="p">:</span>     <span class="nx">config</span><span class="p">.</span><span class="nx">Policy</span><span class="p">,</span>
+<span class="ln">34</span>		<span class="p">}</span>
+<span class="ln">35</span>	<span class="p">)</span>
+<span class="ln">36</span>
+<span class="ln">37</span>	<span class="k">if</span> <span class="nx">preparedStmtDB</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">connPool</span><span class="p">.(</span><span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">PreparedStmtDB</span><span class="p">);</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln">38</span>		<span class="nx">connPool</span> <span class="p">=</span> <span class="nx">preparedStmtDB</span><span class="p">.</span><span class="nx">ConnPool</span>
+<span class="ln">39</span>	<span class="p">}</span>
+<span class="ln">40</span>
+<span class="ln">41</span>  <span class="c1">// 如果没有配置 Sources，就让默认的 connPool 成为 Source
+</span><span class="ln">42</span><span class="c1"></span>  <span class="c1">// 否则根据指定的 Sources 生成对应的 connPool
+</span><span class="ln">43</span><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">Sources</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">44</span>		<span class="nx">r</span><span class="p">.</span><span class="nx">sources</span> <span class="p">=</span> <span class="p">[]</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">{</span><span class="nx">connPool</span><span class="p">}</span>
+<span class="ln">45</span>	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">r</span><span class="p">.</span><span class="nx">sources</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">dr</span><span class="p">.</span><span class="nf">convertToConnPool</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">Sources</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">46</span>		<span class="k">return</span> <span class="nx">err</span>
+<span class="ln">47</span>	<span class="p">}</span>
+<span class="ln">48</span>
+<span class="ln">49</span>  <span class="c1">// 和 Sources 道理一样，只不过处理的是读的数据源
+</span><span class="ln">50</span><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">Replicas</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">51</span>		<span class="nx">r</span><span class="p">.</span><span class="nx">replicas</span> <span class="p">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">sources</span>
+<span class="ln">52</span>	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">r</span><span class="p">.</span><span class="nx">replicas</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">dr</span><span class="p">.</span><span class="nf">convertToConnPool</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">Replicas</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">53</span>		<span class="k">return</span> <span class="nx">err</span>
+<span class="ln">54</span>	<span class="p">}</span>
+<span class="ln">55</span>
+<span class="ln">56</span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">datas</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">57</span>		<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">data</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">config</span><span class="p">.</span><span class="nx">datas</span> <span class="p">{</span>
+<span class="ln">58</span>      <span class="c1">// 如果传了字符串的附属信息，则用这个字符串当做当前这个配置生成的resolver的名字
+</span><span class="ln">59</span><span class="c1"></span>			<span class="k">if</span> <span class="nx">t</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">data</span><span class="p">.(</span><span class="kt">string</span><span class="p">);</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln">60</span>				<span class="nx">dr</span><span class="p">.</span><span class="nx">resolvers</span><span class="p">[</span><span class="nx">t</span><span class="p">]</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">r</span>
+<span class="ln">61</span>			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="ln">62</span>        <span class="c1">// 否则从模型中去解析表名当做resolver的名字
+</span><span class="ln">63</span><span class="c1"></span>        <span class="c1">// 这也是可以指定某些表走某些数据源的实现原理
+</span><span class="ln">64</span><span class="c1"></span>				<span class="nx">stmt</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Statement</span><span class="p">{</span><span class="nx">DB</span><span class="p">:</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">DB</span><span class="p">}</span>
+<span class="ln">65</span>				<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">66</span>					<span class="nx">dr</span><span class="p">.</span><span class="nx">resolvers</span><span class="p">[</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Table</span><span class="p">]</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">r</span>
+<span class="ln">67</span>				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="ln">68</span>					<span class="k">return</span> <span class="nx">err</span>
+<span class="ln">69</span>				<span class="p">}</span>
+<span class="ln">70</span>			<span class="p">}</span>
+<span class="ln">71</span>		<span class="p">}</span>
+<span class="ln">72</span>	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">global</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">73</span>    <span class="c1">// 如果没有指定应用到哪个表，则把这个 resolver 当做全局的
+</span><span class="ln">74</span><span class="c1"></span>		<span class="nx">dr</span><span class="p">.</span><span class="nx">global</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">r</span>
+<span class="ln">75</span>	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="ln">76</span>    <span class="c1">// 从这里可以看到，全局的resolver只支持一个（也就是不带datas参数的config只支持传入一个）
+</span><span class="ln">77</span><span class="c1"></span>		<span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;conflicted global resolver&#34;</span><span class="p">)</span>
+<span class="ln">78</span>	<span class="p">}</span>
+<span class="ln">79</span>
+<span class="ln">80</span>  <span class="c1">// 如果有回调的话，执行下回调函数
+</span><span class="ln">81</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">fc</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">compileCallbacks</span> <span class="p">{</span>
+<span class="ln">82</span>		<span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="nx">fc</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">83</span>			<span class="k">return</span> <span class="nx">err</span>
+<span class="ln">84</span>		<span class="p">}</span>
+<span class="ln">85</span>	<span class="p">}</span>
+<span class="ln">86</span>
+<span class="ln">87</span>	<span class="k">return</span> <span class="kc">nil</span>
+<span class="ln">88</span><span class="p">}</span>
+</code></pre></div><h3 id="插件初始化">插件初始化<a class="anchor ms-1" href="#插件初始化"><i class="fas fa-link"></i></a></h3>
+<p>上面分析的是实例化插件并注册的过程，gorm 的插件机制，当注册后会调用插件的 <code>Initialize</code> 方法进行初始化，dbresolver 的功能就是在这里以 callbacks 的方式和 gorm 结合起来的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">dr</span> <span class="o">*</span><span class="nx">DBResolver</span><span class="p">)</span> <span class="nf">Initialize</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="nx">dr</span><span class="p">.</span><span class="nx">DB</span> <span class="p">=</span> <span class="nx">db</span>
+<span class="ln"> 3</span>	<span class="nx">dr</span><span class="p">.</span><span class="nf">registerCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+<span class="ln"> 4</span>	<span class="k">return</span> <span class="nx">dr</span><span class="p">.</span><span class="nf">compile</span><span class="p">()</span>
+<span class="ln"> 5</span><span class="p">}</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span><span class="c1">// 我们只关注 query 行为的 callback
+</span><span class="ln"> 8</span><span class="c1">// 将 switchReplica 这个方法注册到了所有 callback 的最前面
+</span><span class="ln"> 9</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">dr</span> <span class="o">*</span><span class="nx">DBResolver</span><span class="p">)</span> <span class="nf">registerCallbacks</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">10</span>	<span class="o">...</span>
+<span class="ln">11</span>	<span class="nx">dr</span><span class="p">.</span><span class="nf">Callback</span><span class="p">().</span><span class="nf">Query</span><span class="p">().</span><span class="nf">Before</span><span class="p">(</span><span class="s">&#34;*&#34;</span><span class="p">).</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:db_resolver&#34;</span><span class="p">,</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">switchReplica</span><span class="p">)</span>
+<span class="ln">12</span>	<span class="o">...</span>
+<span class="ln">13</span><span class="p">}</span>
+<span class="ln">14</span>
+<span class="ln">15</span><span class="kd">func</span> <span class="p">(</span><span class="nx">dr</span> <span class="o">*</span><span class="nx">DBResolver</span><span class="p">)</span> <span class="nf">switchReplica</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">16</span>  <span class="c1">// 当前不在事务中才能进行切换
+</span><span class="ln">17</span><span class="c1"></span>	<span class="k">if</span> <span class="p">!</span><span class="nf">isTransaction</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">18</span>		<span class="k">if</span> <span class="nx">rawSQL</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">String</span><span class="p">();</span> <span class="nb">len</span><span class="p">(</span><span class="nx">rawSQL</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">19</span>      <span class="c1">// 通过 sql 来确定要切换到哪个副本
+</span><span class="ln">20</span><span class="c1"></span>			<span class="nx">dr</span><span class="p">.</span><span class="nf">switchGuess</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+<span class="ln">21</span>		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="ln">22</span>      <span class="c1">// 如果指定了 WRITE/FOR 的 Clause，切换到写的数据源上
+</span><span class="ln">23</span><span class="c1"></span>			<span class="nx">_</span><span class="p">,</span> <span class="nx">locking</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Clauses</span><span class="p">[</span><span class="s">&#34;FOR&#34;</span><span class="p">]</span>
+<span class="ln">24</span>			<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Clauses</span><span class="p">[</span><span class="nx">writeName</span><span class="p">];</span> <span class="nx">ok</span> <span class="o">||</span> <span class="nx">locking</span> <span class="p">{</span>
+<span class="ln">25</span>				<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">dr</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">,</span> <span class="nx">Write</span><span class="p">)</span>
+<span class="ln">26</span>			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="ln">27</span>        <span class="c1">// 否则切换到读的数据源
+</span><span class="ln">28</span><span class="c1"></span>				<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">dr</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">,</span> <span class="nx">Read</span><span class="p">)</span>
+<span class="ln">29</span>			<span class="p">}</span>
+<span class="ln">30</span>		<span class="p">}</span>
+<span class="ln">31</span>	<span class="p">}</span>
+<span class="ln">32</span><span class="p">}</span>
+<span class="ln">33</span>
+<span class="ln">34</span><span class="kd">func</span> <span class="p">(</span><span class="nx">dr</span> <span class="o">*</span><span class="nx">DBResolver</span><span class="p">)</span> <span class="nf">switchGuess</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">35</span>	<span class="k">if</span> <span class="p">!</span><span class="nf">isTransaction</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">36</span>    <span class="c1">// 如果指定了 WRITE 的 Clause ，走写
+</span><span class="ln">37</span><span class="c1"></span>    <span class="c1">// 如果原始 sql 包含 select 但是不包含 for， 走读
+</span><span class="ln">38</span><span class="c1"></span>    <span class="c1">// 其他情况走写
+</span><span class="ln">39</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Clauses</span><span class="p">[</span><span class="nx">writeName</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln">40</span>			<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">dr</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">,</span> <span class="nx">Write</span><span class="p">)</span>
+<span class="ln">41</span>		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">rawSQL</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">TrimSpace</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">String</span><span class="p">());</span> <span class="nb">len</span><span class="p">(</span><span class="nx">rawSQL</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">EqualFold</span><span class="p">(</span><span class="nx">rawSQL</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span> <span class="s">&#34;select&#34;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">!</span><span class="nx">strings</span><span class="p">.</span><span class="nf">EqualFold</span><span class="p">(</span><span class="nx">rawSQL</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">rawSQL</span><span class="p">)</span><span class="o">-</span><span class="mi">10</span><span class="p">:],</span> <span class="s">&#34;for update&#34;</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">42</span>			<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">dr</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">,</span> <span class="nx">Read</span><span class="p">)</span>
+<span class="ln">43</span>		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="ln">44</span>			<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">dr</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">,</span> <span class="nx">Write</span><span class="p">)</span>
+<span class="ln">45</span>		<span class="p">}</span>
+<span class="ln">46</span>	<span class="p">}</span>
+<span class="ln">47</span><span class="p">}</span>
+<span class="ln">48</span>
+<span class="ln">49</span><span class="kd">func</span> <span class="p">(</span><span class="nx">dr</span> <span class="o">*</span><span class="nx">DBResolver</span><span class="p">)</span> <span class="nf">resolve</span><span class="p">(</span><span class="nx">stmt</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Statement</span><span class="p">,</span> <span class="nx">op</span> <span class="nx">Operation</span><span class="p">)</span> <span class="nx">gorm</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">{</span>
+<span class="ln">50</span>  <span class="c1">// 配置了针对指定表的 resolver 的情况
+</span><span class="ln">51</span><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">dr</span><span class="p">.</span><span class="nx">resolvers</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">52</span>    <span class="c1">// 使用了指定名字的 Clause，直接使用对应名字的解析
+</span><span class="ln">53</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">u</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Clauses</span><span class="p">[</span><span class="nx">usingName</span><span class="p">].</span><span class="nx">Expression</span><span class="p">.(</span><span class="nx">using</span><span class="p">);</span> <span class="nx">ok</span> <span class="o">&amp;&amp;</span> <span class="nx">u</span><span class="p">.</span><span class="nx">Use</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+<span class="ln">54</span>			<span class="k">if</span> <span class="nx">r</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">resolvers</span><span class="p">[</span><span class="nx">u</span><span class="p">.</span><span class="nx">Use</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln">55</span>				<span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">stmt</span><span class="p">,</span> <span class="nx">op</span><span class="p">)</span>
+<span class="ln">56</span>			<span class="p">}</span>
+<span class="ln">57</span>		<span class="p">}</span>
+<span class="ln">58</span>
+<span class="ln">59</span>    <span class="c1">// 使用表名
+</span><span class="ln">60</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Table</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+<span class="ln">61</span>			<span class="k">if</span> <span class="nx">r</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">resolvers</span><span class="p">[</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Table</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln">62</span>				<span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">stmt</span><span class="p">,</span> <span class="nx">op</span><span class="p">)</span>
+<span class="ln">63</span>			<span class="p">}</span>
+<span class="ln">64</span>		<span class="p">}</span>
+<span class="ln">65</span>
+<span class="ln">66</span>		<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Schema</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">67</span>			<span class="k">if</span> <span class="nx">r</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">resolvers</span><span class="p">[</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Schema</span><span class="p">.</span><span class="nx">Table</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln">68</span>				<span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">stmt</span><span class="p">,</span> <span class="nx">op</span><span class="p">)</span>
+<span class="ln">69</span>			<span class="p">}</span>
+<span class="ln">70</span>		<span class="p">}</span>
+<span class="ln">71</span>
+<span class="ln">72</span>    <span class="c1">// 从原始 sql 解析表名
+</span><span class="ln">73</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">rawSQL</span> <span class="o">:=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">String</span><span class="p">();</span> <span class="nx">rawSQL</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+<span class="ln">74</span>			<span class="k">if</span> <span class="nx">r</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">resolvers</span><span class="p">[</span><span class="nf">getTableFromRawSQL</span><span class="p">(</span><span class="nx">rawSQL</span><span class="p">)];</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln">75</span>				<span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">stmt</span><span class="p">,</span> <span class="nx">op</span><span class="p">)</span>
+<span class="ln">76</span>			<span class="p">}</span>
+<span class="ln">77</span>		<span class="p">}</span>
+<span class="ln">78</span>	<span class="p">}</span>
+<span class="ln">79</span>
+<span class="ln">80</span>  <span class="c1">// 全局的不为空，返回全局的
+</span><span class="ln">81</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">global</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln">82</span>		<span class="k">return</span> <span class="nx">dr</span><span class="p">.</span><span class="nx">global</span><span class="p">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nx">stmt</span><span class="p">,</span> <span class="nx">op</span><span class="p">)</span>
+<span class="ln">83</span>	<span class="p">}</span>
+<span class="ln">84</span>
+<span class="ln">85</span>  <span class="c1">// 兜底返回*DB中的
+</span><span class="ln">86</span><span class="c1"></span>	<span class="k">return</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ConnPool</span>
+<span class="ln">87</span><span class="p">}</span>
+</code></pre></div><h1 id="结尾">结尾<a class="anchor ms-1" href="#结尾"><i class="fas fa-link"></i></a></h1>
+<p>从上面的代码分析我们可以看出，gorm 的 callbacks 机制还是很强大的，我们可以基于这个机制灵活的定制我们想要的功能</p>
+</div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-coffee"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary" aria-label="Close"><i class="fas fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/alipay.jpeg" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/wechat.jpeg" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+  <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="https://wangtingkui.com/posts/go/gorm-clause/">Gorm源码阅读 - 2.Clause
+</a>
+  </div></div></div>
+</article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+    <div class="card-header">
+      <h2 class="card-title">相关文章</h2>
+    </div>
+    <div class="card-body">
+      <ul class="post-list"><li>
+          <a href="https://wangtingkui.com/posts/go/gorm-clause/">Gorm源码阅读 - 2.Clause
+</a>
+          <span class="float-end post-date">2022-02-02
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/gorm-base/">Gorm源码阅读 - 1.基础流程
+</a>
+          <span class="float-end post-date">2022-02-01
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/sort/">Go 中 Sort 包的使用
+</a>
+          <span class="float-end post-date">2020-10-14
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/sync/">Go标准库（sync）- 使用
+</a>
+          <span class="float-end post-date">2020-06-19
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/context/">Go中Context的使用
+</a>
+          <span class="float-end post-date">2020-06-07
+</span>
+        </li></ul>
+    </div>
+  </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script></div>
+</div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
+    
+    <section class="card row text-center profile component">
+  <div class="card-body">
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.com/images/avatar.jpeg" loading="lazy"
+   width="959" height="959"
+   />
+</div>
+    <div class="col-12 profile-meta"><div class="profile-name">无敌小k</div><div class="profile-bio">Gopher, PHPer.</div><div class="profile-about"><i class="fas fa-fw fa-user"></i><a target="_blank" rel="noopener noreferrer" href="https://domain.tld">关于我</a></div><nav class="social-links nav justify-content-center"><a class="nav-link social-link" href="mailto:wangtingkui_coder@163.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a><a class="nav-link social-link" target="_blank" href="https://github.com/wangtingkui" title="GitHub" rel="noopener noreferrer">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a></nav>
+</div>
+  </div>
+</section>
+  <div class="post-toc row mb-4 card component" id="postTOC">
+  <div class="card-header">
+    <h2 class="card-title">目录</h2>
+  </div>
+  <div class="card-body">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#源码分析">源码分析</a>
+      <ul>
+        <li><a href="#注册插件">注册插件</a></li>
+        <li><a href="#插件初始化">插件初始化</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div><section class="series-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/series">专栏</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a></div>
+      </div>
+    </section><section class="categories-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/categories">分类</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
+            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
+            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.com/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+            性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section><section class="tags-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/tags">标签</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
+            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/oh-my-zsh/" class="badge rounded post-taxonomy" title="oh-my-zsh">
+            oh-my-zsh<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section>
+    
+  </div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"></nav>
+<div class="copyright mb-2">
+  Copyright © 2016-2022 Razon Yang. All Rights Reserved.
+</div>
+
+<a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
+    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
+</a>
+</footer>
+<script src="https://wangtingkui.com/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.com/js/icons.min.a35670f2f90c398e5ee5c8e509b428fae75aa2746854cee10b60794633076859.js" integrity="sha256-o1Zw8vkMOY5e5cjlCbQo&#43;udaonRoVM7hC2B5RjMHaFk=" crossorigin="anonymous" defer></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.com\/service-worker.js').then(function(reg) {
+      console.log('Successfully registered service worker', reg);
+    }).catch(function(err) {
+      console.warn('Error whilst registering service worker', err);
+    });
+  });
+}
+</script><script src="https://wangtingkui.com/js/viewer.min.4dba52a0a790f909408b7385316651299158381686401d50ff1f04dda6476473.js" integrity="sha256-TbpSoKeQ&#43;QlAi3OFMWZRKZFYOBaGQB1Q/x8E3aZHZHM=" crossorigin="anonymous" defer></script>
+</body>
+</html>
