@@ -1,0 +1,673 @@
+<!doctype html><html lang="zh-cn" data-palette="blue"
+  >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gorm源码阅读 - 2.Clause - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.com/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.com/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.com/manifest.json">
+<meta name="keywords" content="" />
+<meta name="description" content="" /><meta itemprop="name" content="Gorm源码阅读 - 2.Clause">
+<meta itemprop="description" content=""><meta itemprop="datePublished" content="2022-02-02T18:05:41+08:00" />
+<meta itemprop="dateModified" content="2022-02-02T18:05:41+08:00" />
+<meta itemprop="wordCount" content="2133">
+<meta itemprop="keywords" content="go," /><meta property="og:title" content="Gorm源码阅读 - 2.Clause" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.com/posts/go/gorm-clause/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-02-02T18:05:41+08:00" />
+<meta property="article:modified_time" content="2022-02-02T18:05:41+08:00" />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Gorm源码阅读 - 2.Clause"/>
+<meta name="twitter:description" content=""/>
+<link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.com">xiaok&#39;s blog
+    </a>
+    <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">Share</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body">
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
+      target="_blank" href="https://twitter.com/intent/tweet?title=Gorm%e6%ba%90%e7%a0%81%e9%98%85%e8%af%bb%20-%202.Clause&url=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fgorm-clause%2f">
+      <i class="fab fa-fw fa-twitter"></i> Twitter
+    </a>
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fgorm-clause%2f">
+      <i class="fab fa-fw fa-facebook-f"></i> Facebook
+    </a>
+  </div>
+</div>
+    <button class="navbar-settings" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
+  aria-controls="offcanvasSettings" aria-label="Toggle settings">
+  <i class="fas fa-ellipsis-v"></i>
+</button>
+
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettings">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">设置</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-language"></i> 语言</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="dropdown">
+        <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          简体中文
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.com/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/zh-tw/">繁體中文</a></li></ul>
+      </div>
+    </div>
+  </form>
+</section>
+
+
+<section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-adjust"></i> 模式</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="modeSwitcher">
+      </div>
+    </div>
+  </form>
+</section>
+
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> 字体大小</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> 配色</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <a id="btnPalette" class="btn btn-sm btn-outline-primary" role="button" aria-label="palettePicker">
+        <i class="fas fa-eye-dropper"></i>
+      </a>
+    </div>
+  </form>
+  <div class="mt-2 d-flex justify-content-between visually-hidden" id="palettePicker"><button type="button" id="palette-blue" aria-label="蓝色"
+        class="btn btn-sm w-100 palette" data-palette="blue">
+      </button><button type="button" id="palette-blue-gray" aria-label="蓝灰色"
+        class="btn btn-sm w-100 palette" data-palette="blue-gray">
+      </button><button type="button" id="palette-brown" aria-label="棕色"
+        class="btn btn-sm w-100 palette" data-palette="brown">
+      </button><button type="button" id="palette-cyan" aria-label="青色"
+        class="btn btn-sm w-100 palette" data-palette="cyan">
+      </button><button type="button" id="palette-green" aria-label="绿色"
+        class="btn btn-sm w-100 palette" data-palette="green">
+      </button><button type="button" id="palette-indigo" aria-label="靛青色"
+        class="btn btn-sm w-100 palette" data-palette="indigo">
+      </button><button type="button" id="palette-orange" aria-label="橙色"
+        class="btn btn-sm w-100 palette" data-palette="orange">
+      </button><button type="button" id="palette-pink" aria-label="粉色"
+        class="btn btn-sm w-100 palette" data-palette="pink">
+      </button><button type="button" id="palette-purple" aria-label="紫色"
+        class="btn btn-sm w-100 palette" data-palette="purple">
+      </button><button type="button" id="palette-red" aria-label="红色"
+        class="btn btn-sm w-100 palette" data-palette="red">
+      </button><button type="button" id="palette-teal" aria-label="蓝绿色"
+        class="btn btn-sm w-100 palette" data-palette="teal">
+      </button><button type="button" id="palette-yellow" aria-label="黄色"
+        class="btn btn-sm w-100 palette" data-palette="yellow">
+      </button></div>
+</section>
+<section class="setting actions d-flex justify-content-around mt-auto overflow-auto">
+  <a role="button" class="action action-go-back" href="javascript: window.history.back();">
+    <span class="action-icon"><i class="fas fa-2x fa-arrow-left"></i></span> 返回
+  </a>
+  <a role="button" class="action action-reload-page">
+    <span class="action-icon"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+  </a>
+  <a role="button" class="action action-copy-url">
+    <span class="action-icon"><i class="fas fa-2x fa-link"></i></span> 复制链接
+  </a><a class="action action-social-share" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSocialShare"
+    aria-controls="offcanvasSocialShare" aria-label="Toggle social share">
+    <span class="action-icon"><i class="fas fa-2x fa-share-alt"></i></span> 分享
+  </a></section>
+
+</div>
+</div>
+
+    <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
+      <form class="search-bar my-1" action="https://wangtingkui.com/search">
+  <div class="input-group input-group-sm">
+    <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+    <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
+  </div>
+</form>
+      <ul class="navbar-nav ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.com/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.com/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.com/posts/">文章</a></li><li class="breadcrumb-item active">Gorm源码阅读 - 2.Clause</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper">
+  <div class="d-flex flex-column component rounded post-panel">
+    
+    <a class="action action-panel-toggler" role="button" title="Panel toggler">
+      <i class="fas fa-fw fa-chevron-circle-down"></i>
+    </a>
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    <a class="action" href="#post-copyright" role="button" aria-label="Copyright" title="Copyright">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a class="action" href="#post-comments" role="button" aria-label="Comments" title="Comments">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    <a class="action" href="#postTOC" aria-controls="Table of contents" role="button" title="Table of contents">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+  </div>
+</div>
+<article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title">Gorm源码阅读 - 2.Clause
+</h1>
+  </div>
+  <div class="card-body"><div class="post-meta">
+  <span class="post-date" title="创建于 2022-02-02 18:05:41 &#43;0800 CST。">
+    2022-02-02
+  </span><span class="post-reading-time">
+    5 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge post-taxonomy">gorm 源码阅读</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-content mb-3"><h2 id="承上">承上<a class="anchor ms-1" href="#承上"><i class="fas fa-link"></i></a></h2>
+<p>在基础流程篇中我们层多次提到 <code>Clause</code> 的概念，本片就让我们详细分析下 <code>Clause</code> 究竟是什么</p>
+<p>从基础流程篇中我们可以知道 <code>Clause</code> 就是一个 sql 子句，我们调用 <code>gorm</code> 提供的链式api的过程，就是不断的添加子句，最后当调用 <code>Finisher</code> 方法的时候，将所有的子句构建成一个完整的 sql，然后执行。举个简单的例子，当我们调用<code>db.Where(&quot;a = ?&quot;, 1)</code>这个方法的时候，就是用这些参数去生成了一个<code>clause.Where</code>的<code>Clause</code>对象，不同的<code>Clause</code>对象（比如<code>Where</code>、<code>Limit</code>&hellip;）可能会有不同的参数，但他们都会实现<code>Build</code>方法。去根据自己需要的参数构建出真实的<code>sql</code>片段，比如上面的例子就会构建出<code>where a = 1</code>的<code>sql</code>
+片段。那我们其实就知道了，gorm生成sql的方式就是实现不同关键字对应的<code>Clause</code>，然后将这些sql片段拼接起来而已</p>
+<p>我们还是通过基础流程篇的代码来简单分析下这个流程，关注<code>Where</code>和<code>First</code>方法</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// 连接数据库
+</span><span class="ln"> 2</span><span class="c1"></span><span class="nx">db</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">gorm</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nx">sqlite</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.db&#34;</span><span class="p">),</span> <span class="o">&amp;</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Config</span><span class="p">{})</span>
+<span class="ln"> 3</span><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 4</span>  <span class="nb">panic</span><span class="p">(</span><span class="s">&#34;failed to connect database&#34;</span><span class="p">)</span>
+<span class="ln"> 5</span><span class="p">}</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span><span class="c1">// 自动创建表结构
+</span><span class="ln"> 8</span><span class="c1"></span><span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">AutoMigrate</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Test</span><span class="p">{});</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 9</span>  <span class="nb">panic</span><span class="p">(</span><span class="s">&#34;auto migrate err&#34;</span><span class="p">)</span>
+<span class="ln">10</span><span class="p">}</span>
+<span class="ln">11</span>
+<span class="ln">12</span><span class="c1">// 查询
+</span><span class="ln">13</span><span class="c1"></span><span class="kd">var</span> <span class="nx">v</span> <span class="nx">Test</span>
+<span class="ln">14</span><span class="nx">db</span><span class="p">.</span><span class="nf">Debug</span><span class="p">().</span><span class="nf">Model</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Test</span><span class="p">{}).</span><span class="nf">Where</span><span class="p">(</span><span class="s">&#34;b = ?&#34;</span><span class="p">,</span> <span class="s">&#34;test&#34;</span><span class="p">).</span><span class="nf">First</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">v</span><span class="p">)</span>
+</code></pre></div><p>在详细研究之前，我们先看下源码中都有哪些对<code>Clause</code>的相关定义</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// clause.go:4
+</span><span class="ln"> 2</span><span class="c1">// Interface clause interface
+</span><span class="ln"> 3</span><span class="c1">// clasue.Interface 就是对 Cluase 的抽象，Where、Limit等Cluase都是实现了这些方法的对象
+</span><span class="ln"> 4</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Interface</span> <span class="kd">interface</span> <span class="p">{</span>
+<span class="ln"> 5</span>	<span class="nf">Name</span><span class="p">()</span> <span class="kt">string</span>  <span class="c1">// Clause 的名字
+</span><span class="ln"> 6</span><span class="c1"></span>	<span class="nf">Build</span><span class="p">(</span><span class="nx">Builder</span><span class="p">)</span> <span class="c1">// 这个 Clause 怎么构造自己的 sql 片段
+</span><span class="ln"> 7</span><span class="c1"></span>	<span class="nf">MergeClause</span><span class="p">(</span><span class="o">*</span><span class="nx">Clause</span><span class="p">)</span> <span class="c1">// 多个同名的Clause被添加的时候应该怎么处理
+</span><span class="ln"> 8</span><span class="c1"></span><span class="p">}</span>
+<span class="ln"> 9</span>
+<span class="ln">10</span><span class="c1">// clause.go:26
+</span><span class="ln">11</span><span class="c1">// Clause
+</span><span class="ln">12</span><span class="c1">// 这个 Clause 是一个衔接方，他将Statement对象和具体的Clause实现串联起来（本人觉得这个名字起得不好，容易误导）
+</span><span class="ln">13</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Clause</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln">14</span>	<span class="nx">Name</span>                <span class="kt">string</span> <span class="c1">// WHERE
+</span><span class="ln">15</span><span class="c1"></span>	<span class="nx">BeforeExpression</span>    <span class="nx">Expression</span>
+<span class="ln">16</span>	<span class="nx">AfterNameExpression</span> <span class="nx">Expression</span>
+<span class="ln">17</span>	<span class="nx">AfterExpression</span>     <span class="nx">Expression</span>
+<span class="ln">18</span>	<span class="nx">Expression</span>          <span class="nx">Expression</span>
+<span class="ln">19</span>	<span class="nx">Builder</span>             <span class="nx">ClauseBuilder</span>
+<span class="ln">20</span><span class="p">}</span>
+</code></pre></div><h3 id="where代码分析">Where代码分析<a class="anchor ms-1" href="#where代码分析"><i class="fas fa-link"></i></a></h3>
+<p>那接下来看下<code>Where</code>的代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// Where add conditions
+</span><span class="ln"> 2</span><span class="c1">// tx.Statement.BuildCondition(query, args...) 先不用关注，我们只需要知道他是构建了一些子条件，这个不是当前分析的重点
+</span><span class="ln"> 3</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">Where</span><span class="p">(</span><span class="nx">query</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">args</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 4</span>  <span class="c1">// 获取 DB 实例
+</span><span class="ln"> 5</span><span class="c1"></span>	<span class="nx">tx</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">getInstance</span><span class="p">()</span>
+<span class="ln"> 6</span>	<span class="k">if</span> <span class="nx">conds</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">BuildCondition</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">args</span><span class="o">...</span><span class="p">);</span> <span class="nb">len</span><span class="p">(</span><span class="nx">conds</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln"> 7</span>    <span class="c1">// 将 Clause 添加到 Statement 中
+</span><span class="ln"> 8</span><span class="c1"></span>		<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">AddClause</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">Where</span><span class="p">{</span><span class="nx">Exprs</span><span class="p">:</span> <span class="nx">conds</span><span class="p">})</span>
+<span class="ln"> 9</span>	<span class="p">}</span>
+<span class="ln">10</span>	<span class="k">return</span>
+<span class="ln">11</span><span class="p">}</span>
+</code></pre></div><p>我们可以看到，<code>Where</code> 方法会生成一个 <code>clause.Where</code> 的对象追加到 <code>Statement</code> 对象中</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// AddClause add clause
+</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">stmt</span> <span class="o">*</span><span class="nx">Statement</span><span class="p">)</span> <span class="nf">AddClause</span><span class="p">(</span><span class="nx">v</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">Interface</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 3</span>  <span class="c1">// StatementModifier 扩展功能，先不用关注
+</span><span class="ln"> 4</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">optimizer</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">v</span><span class="p">.(</span><span class="nx">StatementModifier</span><span class="p">);</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln"> 5</span>		<span class="nx">optimizer</span><span class="p">.</span><span class="nf">ModifyStatement</span><span class="p">(</span><span class="nx">stmt</span><span class="p">)</span>
+<span class="ln"> 6</span>	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="ln"> 7</span>    <span class="c1">// Cluase 的名字，clause.Where 的名字就是 &#34;WHERE&#34;
+</span><span class="ln"> 8</span><span class="c1"></span>		<span class="nx">name</span> <span class="o">:=</span> <span class="nx">v</span><span class="p">.</span><span class="nf">Name</span><span class="p">()</span>
+<span class="ln"> 9</span>    <span class="c1">// 因为是用 map 存放的，所以同一个名字的 Clause 只能有一个，这也是为什么 clause.Interface 需要定一个 MergeClause 的方法
+</span><span class="ln">10</span><span class="c1"></span>    <span class="c1">// 不判断存在性，如果没有，那也能获取到对应的零值
+</span><span class="ln">11</span><span class="c1"></span>		<span class="nx">c</span> <span class="o">:=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Clauses</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span>
+<span class="ln">12</span>		<span class="nx">c</span><span class="p">.</span><span class="nx">Name</span> <span class="p">=</span> <span class="nx">name</span>
+<span class="ln">13</span>		<span class="nx">v</span><span class="p">.</span><span class="nf">MergeClause</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">c</span><span class="p">)</span>
+<span class="ln">14</span>    <span class="c1">// merge 之后再存放回去
+</span><span class="ln">15</span><span class="c1"></span>		<span class="nx">stmt</span><span class="p">.</span><span class="nx">Clauses</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="p">=</span> <span class="nx">c</span>
+<span class="ln">16</span>	<span class="p">}</span>
+<span class="ln">17</span><span class="p">}</span>
+</code></pre></div><p>那我们再看下<code>clause.Where</code> 的实现，这个其实没有什么好讲的，where条件本身被调用的频率极高，又可以有很多复杂的条件，所以构造 sql 的 Build 方法实现起来会比较复杂，如果有兴趣可以研究一下，其他的Clause就会简单许多</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// clause/where.go
+</span><span class="ln"> 2</span><span class="c1">// Where where clause
+</span><span class="ln"> 3</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Where</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 4</span>	<span class="nx">Exprs</span> <span class="p">[]</span><span class="nx">Expression</span>
+<span class="ln"> 5</span><span class="p">}</span>
+<span class="ln"> 6</span>
+<span class="ln"> 7</span><span class="c1">// Name where clause name
+</span><span class="ln"> 8</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">where</span> <span class="nx">Where</span><span class="p">)</span> <span class="nf">Name</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+<span class="ln"> 9</span>	<span class="k">return</span> <span class="s">&#34;WHERE&#34;</span>
+<span class="ln">10</span><span class="p">}</span>
+<span class="ln">11</span>
+<span class="ln">12</span><span class="c1">// Build build where clause
+</span><span class="ln">13</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">where</span> <span class="nx">Where</span><span class="p">)</span> <span class="nf">Build</span><span class="p">(</span><span class="nx">builder</span> <span class="nx">Builder</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">14</span>	<span class="c1">// Switch position if the first query expression is a single Or condition
+</span><span class="ln">15</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">expr</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">where</span><span class="p">.</span><span class="nx">Exprs</span> <span class="p">{</span>
+<span class="ln">16</span>		<span class="k">if</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">expr</span><span class="p">.(</span><span class="nx">OrConditions</span><span class="p">);</span> <span class="p">!</span><span class="nx">ok</span> <span class="o">||</span> <span class="nb">len</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">Exprs</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">1</span> <span class="p">{</span>
+<span class="ln">17</span>			<span class="k">if</span> <span class="nx">idx</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">18</span>				<span class="nx">where</span><span class="p">.</span><span class="nx">Exprs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">where</span><span class="p">.</span><span class="nx">Exprs</span><span class="p">[</span><span class="nx">idx</span><span class="p">]</span> <span class="p">=</span> <span class="nx">where</span><span class="p">.</span><span class="nx">Exprs</span><span class="p">[</span><span class="nx">idx</span><span class="p">],</span> <span class="nx">where</span><span class="p">.</span><span class="nx">Exprs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="ln">19</span>			<span class="p">}</span>
+<span class="ln">20</span>			<span class="k">break</span>
+<span class="ln">21</span>		<span class="p">}</span>
+<span class="ln">22</span>	<span class="p">}</span>
+<span class="ln">23</span>
+<span class="ln">24</span>	<span class="nf">buildExprs</span><span class="p">(</span><span class="nx">where</span><span class="p">.</span><span class="nx">Exprs</span><span class="p">,</span> <span class="nx">builder</span><span class="p">,</span> <span class="s">&#34; AND &#34;</span><span class="p">)</span>
+<span class="ln">25</span><span class="p">}</span>
+<span class="ln">26</span>
+<span class="ln">27</span><span class="c1">// MergeClause merge where clauses
+</span><span class="ln">28</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">where</span> <span class="nx">Where</span><span class="p">)</span> <span class="nf">MergeClause</span><span class="p">(</span><span class="nx">clause</span> <span class="o">*</span><span class="nx">Clause</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">29</span>	<span class="k">if</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.(</span><span class="nx">Where</span><span class="p">);</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln">30</span>		<span class="nx">exprs</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="nx">Expression</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">w</span><span class="p">.</span><span class="nx">Exprs</span><span class="p">)</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="nx">where</span><span class="p">.</span><span class="nx">Exprs</span><span class="p">))</span>
+<span class="ln">31</span>		<span class="nb">copy</span><span class="p">(</span><span class="nx">exprs</span><span class="p">,</span> <span class="nx">w</span><span class="p">.</span><span class="nx">Exprs</span><span class="p">)</span>
+<span class="ln">32</span>		<span class="nb">copy</span><span class="p">(</span><span class="nx">exprs</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">w</span><span class="p">.</span><span class="nx">Exprs</span><span class="p">):],</span> <span class="nx">where</span><span class="p">.</span><span class="nx">Exprs</span><span class="p">)</span>
+<span class="ln">33</span>		<span class="nx">where</span><span class="p">.</span><span class="nx">Exprs</span> <span class="p">=</span> <span class="nx">exprs</span>
+<span class="ln">34</span>	<span class="p">}</span>
+<span class="ln">35</span>
+<span class="ln">36</span>	<span class="nx">clause</span><span class="p">.</span><span class="nx">Expression</span> <span class="p">=</span> <span class="nx">where</span>
+<span class="ln">37</span><span class="p">}</span>
+</code></pre></div><p>顺便拿 Limit 的 Clause 实现对比一下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">clause</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span><span class="kn">import</span> <span class="s">&#34;strconv&#34;</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span><span class="c1">// Limit limit clause
+</span><span class="ln"> 6</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Limit</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="ln"> 7</span>	<span class="nx">Limit</span>  <span class="kt">int</span>
+<span class="ln"> 8</span>	<span class="nx">Offset</span> <span class="kt">int</span>
+<span class="ln"> 9</span><span class="p">}</span>
+<span class="ln">10</span>
+<span class="ln">11</span><span class="c1">// Name where clause name
+</span><span class="ln">12</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">limit</span> <span class="nx">Limit</span><span class="p">)</span> <span class="nf">Name</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+<span class="ln">13</span>	<span class="k">return</span> <span class="s">&#34;LIMIT&#34;</span>
+<span class="ln">14</span><span class="p">}</span>
+<span class="ln">15</span>
+<span class="ln">16</span><span class="c1">// Build build where clause
+</span><span class="ln">17</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">limit</span> <span class="nx">Limit</span><span class="p">)</span> <span class="nf">Build</span><span class="p">(</span><span class="nx">builder</span> <span class="nx">Builder</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">18</span>	<span class="k">if</span> <span class="nx">limit</span><span class="p">.</span><span class="nx">Limit</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">19</span>		<span class="nx">builder</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="s">&#34;LIMIT &#34;</span><span class="p">)</span>
+<span class="ln">20</span>		<span class="nx">builder</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="nx">strconv</span><span class="p">.</span><span class="nf">Itoa</span><span class="p">(</span><span class="nx">limit</span><span class="p">.</span><span class="nx">Limit</span><span class="p">))</span>
+<span class="ln">21</span>	<span class="p">}</span>
+<span class="ln">22</span>	<span class="k">if</span> <span class="nx">limit</span><span class="p">.</span><span class="nx">Offset</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">23</span>		<span class="k">if</span> <span class="nx">limit</span><span class="p">.</span><span class="nx">Limit</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">24</span>			<span class="nx">builder</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="s">&#34; &#34;</span><span class="p">)</span>
+<span class="ln">25</span>		<span class="p">}</span>
+<span class="ln">26</span>		<span class="nx">builder</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="s">&#34;OFFSET &#34;</span><span class="p">)</span>
+<span class="ln">27</span>		<span class="nx">builder</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="nx">strconv</span><span class="p">.</span><span class="nf">Itoa</span><span class="p">(</span><span class="nx">limit</span><span class="p">.</span><span class="nx">Offset</span><span class="p">))</span>
+<span class="ln">28</span>	<span class="p">}</span>
+<span class="ln">29</span><span class="p">}</span>
+<span class="ln">30</span>
+<span class="ln">31</span><span class="c1">// MergeClause merge order by clauses
+</span><span class="ln">32</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">limit</span> <span class="nx">Limit</span><span class="p">)</span> <span class="nf">MergeClause</span><span class="p">(</span><span class="nx">clause</span> <span class="o">*</span><span class="nx">Clause</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">33</span>	<span class="nx">clause</span><span class="p">.</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;&#34;</span>
+<span class="ln">34</span>
+<span class="ln">35</span>	<span class="k">if</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.(</span><span class="nx">Limit</span><span class="p">);</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln">36</span>		<span class="k">if</span> <span class="nx">limit</span><span class="p">.</span><span class="nx">Limit</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">Limit</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">37</span>			<span class="nx">limit</span><span class="p">.</span><span class="nx">Limit</span> <span class="p">=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">Limit</span>
+<span class="ln">38</span>		<span class="p">}</span>
+<span class="ln">39</span>
+<span class="ln">40</span>		<span class="k">if</span> <span class="nx">limit</span><span class="p">.</span><span class="nx">Offset</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">Offset</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">41</span>			<span class="nx">limit</span><span class="p">.</span><span class="nx">Offset</span> <span class="p">=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">Offset</span>
+<span class="ln">42</span>		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">limit</span><span class="p">.</span><span class="nx">Offset</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">43</span>			<span class="nx">limit</span><span class="p">.</span><span class="nx">Offset</span> <span class="p">=</span> <span class="mi">0</span>
+<span class="ln">44</span>		<span class="p">}</span>
+<span class="ln">45</span>	<span class="p">}</span>
+<span class="ln">46</span>
+<span class="ln">47</span>	<span class="nx">clause</span><span class="p">.</span><span class="nx">Expression</span> <span class="p">=</span> <span class="nx">limit</span>
+<span class="ln">48</span><span class="p">}</span>
+<span class="ln">49</span>
+</code></pre></div><h3 id="first-代码分析">First 代码分析<a class="anchor ms-1" href="#first-代码分析"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// First find first record that match given conditions, order by primary key
+</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">First</span><span class="p">(</span><span class="nx">dest</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">conds</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 3</span>  <span class="c1">// First 的语义是获取符合条件的第一条纪录，所以 gorm 会默认添加 `Limit` 的 `Clause`，排序默认使用的主键增序
+</span><span class="ln"> 4</span><span class="c1"></span>	<span class="nx">tx</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Limit</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nf">Order</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">OrderByColumn</span><span class="p">{</span>
+<span class="ln"> 5</span>		<span class="nx">Column</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">Column</span><span class="p">{</span><span class="nx">Table</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">CurrentTable</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">PrimaryKey</span><span class="p">},</span>
+<span class="ln"> 6</span>	<span class="p">})</span>
+<span class="ln"> 7</span>  <span class="c1">// First 同样支持调用的时候再构建条件，这段代码就是对这个功能的支持
+</span><span class="ln"> 8</span><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">conds</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln"> 9</span>		<span class="k">if</span> <span class="nx">exprs</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">BuildCondition</span><span class="p">(</span><span class="nx">conds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">conds</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">...</span><span class="p">);</span> <span class="nb">len</span><span class="p">(</span><span class="nx">exprs</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">10</span>			<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">AddClause</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">Where</span><span class="p">{</span><span class="nx">Exprs</span><span class="p">:</span> <span class="nx">exprs</span><span class="p">})</span>
+<span class="ln">11</span>		<span class="p">}</span>
+<span class="ln">12</span>	<span class="p">}</span>
+<span class="ln">13</span>  <span class="c1">// 没有记录的时候生成错误
+</span><span class="ln">14</span><span class="c1"></span>	<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">RaiseErrorOnNotFound</span> <span class="p">=</span> <span class="kc">true</span>
+<span class="ln">15</span>  <span class="c1">// 保存结果的地址
+</span><span class="ln">16</span><span class="c1"></span>	<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Dest</span> <span class="p">=</span> <span class="nx">dest</span>
+<span class="ln">17</span>  <span class="c1">// 执行
+</span><span class="ln">18</span><span class="c1"></span>	<span class="k">return</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">.</span><span class="nf">Query</span><span class="p">().</span><span class="nf">Execute</span><span class="p">(</span><span class="nx">tx</span><span class="p">)</span>
+<span class="ln">19</span><span class="p">}</span>
+</code></pre></div><p>callbacks 的流程我们在基础篇已经提到了，这里我们着重分析下 query callbacks 的具体实现</p>
+<p>首先看下具体给 query 行为注册了哪些 callbacks，以sqlite为例，相关代码是在 Initialize 的时候调用 callbacks.RegisterDefaultCallbacks 实现的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="o">...</span>
+<span class="ln">2</span><span class="nx">callbacks</span><span class="p">.</span><span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+<span class="ln">3</span>  <span class="nx">CreateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;INSERT&#34;</span><span class="p">,</span> <span class="s">&#34;VALUES&#34;</span><span class="p">,</span> <span class="s">&#34;ON CONFLICT&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+<span class="ln">4</span>  <span class="nx">UpdateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;UPDATE&#34;</span><span class="p">,</span> <span class="s">&#34;SET&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+<span class="ln">5</span>  <span class="nx">DeleteClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;DELETE&#34;</span><span class="p">,</span> <span class="s">&#34;FROM&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+<span class="ln">6</span>  <span class="nx">LastInsertIDReversed</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="ln">7</span><span class="p">})</span>
+<span class="ln">8</span><span class="o">...</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">// callbacks/callbacks.go:50
+</span><span class="ln">2</span><span class="c1"></span><span class="nx">queryCallback</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Callback</span><span class="p">().</span><span class="nf">Query</span><span class="p">()</span>
+<span class="ln">3</span><span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:query&#34;</span><span class="p">,</span> <span class="nx">Query</span><span class="p">)</span>
+<span class="ln">4</span><span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:preload&#34;</span><span class="p">,</span> <span class="nx">Preload</span><span class="p">)</span>
+<span class="ln">5</span><span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:after_query&#34;</span><span class="p">,</span> <span class="nx">AfterQuery</span><span class="p">)</span>
+<span class="ln">6</span><span class="nx">queryCallback</span><span class="p">.</span><span class="nx">Clauses</span> <span class="p">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">QueryClauses</span>
+</code></pre></div><p>这里我们重点看下 <code>Query</code> 回调</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">Query</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 2</span>	<span class="k">if</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Error</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 3</span>		<span class="nf">BuildQuerySQL</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span>		<span class="k">if</span> <span class="p">!</span><span class="nx">db</span><span class="p">.</span><span class="nx">DryRun</span> <span class="o">&amp;&amp;</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Error</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 6</span>			<span class="nx">rows</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">.</span><span class="nf">QueryContext</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">String</span><span class="p">(),</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Vars</span><span class="o">...</span><span class="p">)</span>
+<span class="ln"> 7</span>			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="ln"> 8</span>				<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="ln"> 9</span>				<span class="k">return</span>
+<span class="ln">10</span>			<span class="p">}</span>
+<span class="ln">11</span>			<span class="nx">gorm</span><span class="p">.</span><span class="nf">Scan</span><span class="p">(</span><span class="nx">rows</span><span class="p">,</span> <span class="nx">db</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="ln">12</span>			<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">rows</span><span class="p">.</span><span class="nf">Close</span><span class="p">())</span>
+<span class="ln">13</span>		<span class="p">}</span>
+<span class="ln">14</span>	<span class="p">}</span>
+<span class="ln">15</span><span class="p">}</span>
+<span class="ln">16</span>
+<span class="ln">17</span><span class="c1">// BuildQuerySQL 就是构建我们的sql，这个方法可以说是超级复杂，我们直接略过前面各种条件的补足（就是不断的补充Clause）
+</span><span class="ln">18</span><span class="c1">// 直接看调用什么方法构建的sql
+</span><span class="ln">19</span><span class="c1"></span><span class="kd">func</span> <span class="nf">BuildQuerySQL</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln">20</span>	<span class="k">if</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">Len</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+<span class="ln">21</span>		<span class="c1">// 超级省略
+</span><span class="ln">22</span><span class="c1"></span>        <span class="o">...</span>
+<span class="ln">23</span>		<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">Build</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">BuildClauses</span><span class="o">...</span><span class="p">)</span>
+<span class="ln">24</span>	<span class="p">}</span>
+<span class="ln">25</span><span class="p">}</span>
+</code></pre></div><p>现在压力来到了 <code>db.Statement.Build</code> 方法</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// Build build sql with clauses names
+</span><span class="ln"> 2</span><span class="c1">// 这里的 clauses 参数就是各个 dialector 初始化的时候调用 callbacks.RegisterDefaultCallbacks 传入的支持的 Clause
+</span><span class="ln"> 3</span><span class="c1">// 毕竟不是所有的数据库都支持所有的标准sql语法
+</span><span class="ln"> 4</span><span class="c1">// 同样的，不同 db 可能对同样的 Clause 有自己的语法解析，所以我们可以看到，源码中还支持给 DB 对象设置 ClauseBuilder，如果有的话，使用
+</span><span class="ln"> 5</span><span class="c1">// 设置的 ClauseBuilder 来构建 sql
+</span><span class="ln"> 6</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">stmt</span> <span class="o">*</span><span class="nx">Statement</span><span class="p">)</span> <span class="nf">Build</span><span class="p">(</span><span class="nx">clauses</span> <span class="o">...</span><span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+<span class="ln"> 7</span>	<span class="kd">var</span> <span class="nx">firstClauseWritten</span> <span class="kt">bool</span>
+<span class="ln"> 8</span>
+<span class="ln"> 9</span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">name</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">clauses</span> <span class="p">{</span>
+<span class="ln">10</span>		<span class="k">if</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Clauses</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln">11</span>			<span class="k">if</span> <span class="nx">firstClauseWritten</span> <span class="p">{</span>
+<span class="ln">12</span>				<span class="nx">stmt</span><span class="p">.</span><span class="nf">WriteByte</span><span class="p">(</span><span class="sc">&#39; &#39;</span><span class="p">)</span>
+<span class="ln">13</span>			<span class="p">}</span>
+<span class="ln">14</span>
+<span class="ln">15</span>			<span class="nx">firstClauseWritten</span> <span class="p">=</span> <span class="kc">true</span>
+<span class="ln">16</span>			<span class="k">if</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nx">ClauseBuilders</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
+<span class="ln">17</span>				<span class="nf">b</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">stmt</span><span class="p">)</span>
+<span class="ln">18</span>			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="ln">19</span>        <span class="c1">// 执行 Clause 的 Build 的方法构建 sql 片段，这里你可以再回头看下 Limit 的 Build 方法实现，相当简单
+</span><span class="ln">20</span><span class="c1"></span>				<span class="nx">c</span><span class="p">.</span><span class="nf">Build</span><span class="p">(</span><span class="nx">stmt</span><span class="p">)</span>
+<span class="ln">21</span>			<span class="p">}</span>
+<span class="ln">22</span>		<span class="p">}</span>
+<span class="ln">23</span>	<span class="p">}</span>
+<span class="ln">24</span><span class="p">}</span>
+</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-coffee"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary" aria-label="Close"><i class="fas fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/alipay.jpeg" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/wechat.jpeg" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+  <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="https://wangtingkui.com/posts/go/gorm-base/">Gorm源码阅读 - 1.基础流程
+</a>
+  </div></div></div>
+</article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+    <div class="card-header">
+      <h2 class="card-title">相关文章</h2>
+    </div>
+    <div class="card-body">
+      <ul class="post-list"><li>
+          <a href="https://wangtingkui.com/posts/go/gorm-base/">Gorm源码阅读 - 1.基础流程
+</a>
+          <span class="float-end post-date">2022-02-01
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/sort/">Go 中 Sort 包的使用
+</a>
+          <span class="float-end post-date">2020-10-14
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/sync/">Go标准库（sync）- 使用
+</a>
+          <span class="float-end post-date">2020-06-19
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/context/">Go中Context的使用
+</a>
+          <span class="float-end post-date">2020-06-07
+</span>
+        </li><li>
+          <a href="https://wangtingkui.com/posts/go/mail/">使用 Jordan-Wright/Email 处理邮件发送
+</a>
+          <span class="float-end post-date">2020-06-07
+</span>
+        </li></ul>
+    </div>
+  </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script></div>
+</div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
+    
+    <section class="card row text-center profile component">
+  <div class="card-body">
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.com/images/avatar.jpeg" loading="lazy"
+   width="959" height="959"
+   />
+</div>
+    <div class="col-12 profile-meta"><div class="profile-name">无敌小k</div><div class="profile-bio">Gopher, PHPer.</div><div class="profile-about"><i class="fas fa-fw fa-user"></i><a target="_blank" rel="noopener noreferrer" href="https://domain.tld">关于我</a></div><nav class="social-links nav justify-content-center"><a class="nav-link social-link" href="mailto:wangtingkui_coder@163.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a><a class="nav-link social-link" target="_blank" href="https://github.com/wangtingkui" title="GitHub" rel="noopener noreferrer">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a></nav>
+</div>
+  </div>
+</section>
+  <div class="post-toc row mb-4 card component" id="postTOC">
+  <div class="card-header">
+    <h2 class="card-title">目录</h2>
+  </div>
+  <div class="card-body">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#承上">承上</a>
+      <ul>
+        <li><a href="#where代码分析">Where代码分析</a></li>
+        <li><a href="#first-代码分析">First 代码分析</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div><section class="series-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/series">专栏</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">2</span></a></div>
+      </div>
+    </section><section class="categories-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/categories">分类</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
+            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
+            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.com/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+            性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section><section class="tags-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.com/tags">标签</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">27</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
+            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/oh-my-zsh/" class="badge rounded post-taxonomy" title="oh-my-zsh">
+            oh-my-zsh<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section>
+    
+  </div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"></nav>
+<div class="copyright mb-2">
+  Copyright © 2016-2022 Razon Yang. All Rights Reserved.
+</div>
+
+<a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
+    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
+</a>
+</footer>
+<script src="https://wangtingkui.com/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.com/js/icons.min.a35670f2f90c398e5ee5c8e509b428fae75aa2746854cee10b60794633076859.js" integrity="sha256-o1Zw8vkMOY5e5cjlCbQo&#43;udaonRoVM7hC2B5RjMHaFk=" crossorigin="anonymous" defer></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.com\/service-worker.js').then(function(reg) {
+      console.log('Successfully registered service worker', reg);
+    }).catch(function(err) {
+      console.warn('Error whilst registering service worker', err);
+    });
+  });
+}
+</script><script src="https://wangtingkui.com/js/viewer.min.4dba52a0a790f909408b7385316651299158381686401d50ff1f04dda6476473.js" integrity="sha256-TbpSoKeQ&#43;QlAi3OFMWZRKZFYOBaGQB1Q/x8E3aZHZHM=" crossorigin="anonymous" defer></script>
+</body>
+</html>

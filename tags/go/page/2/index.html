@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>go 第 2 页 - 标签 - Hugo Bootstrap</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
+    <title>go 第 2 页 - 标签 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
 <link rel="icon" href="https://wangtingkui.com/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="https://wangtingkui.com/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
 <link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
@@ -13,12 +13,12 @@
 <meta itemprop="description" content="一个快速、响应式和功能丰富的 Hugo 博客主题"><meta property="og:title" content="go" />
 <meta property="og:description" content="一个快速、响应式和功能丰富的 Hugo 博客主题" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://wangtingkui.com/tags/go/" /><meta property="og:site_name" content="Hugo Bootstrap" />
+<meta property="og:url" content="https://wangtingkui.com/tags/go/" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="go"/>
 <meta name="twitter:description" content="一个快速、响应式和功能丰富的 Hugo 博客主题"/>
-<link rel="alternate" type="application/rss+xml" href="https://wangtingkui.com/tags/go/index.xml" title="Hugo Bootstrap" /><link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+<link rel="alternate" type="application/rss+xml" href="https://wangtingkui.com/tags/go/index.xml" title="xiaok's blog" /><link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
   <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
   <div class="container">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -188,6 +188,27 @@
     <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.com/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.com/tags/">标签</a></li><li class="breadcrumb-item active">Go</li></ol>
   </div>
 </nav><div class="posts mb-4"><article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
+      <a href="https://wangtingkui.com/posts/go/time/">Go标准库（time）- 使用
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2020-04-12 23:31:09 &#43;0800 CST。">
+    2020-04-12
+  </span><span class="post-reading-time">
+    2 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面：
+ 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时器的操作  本文只是列举比较常用的场景，更多的细节还是要参考官方文档 时间点 在 go 中，时间点使用 time.Time 来表示，这是一个基于纳秒精度的时间表示，我们还是通过一些例子来来学习
+1package main 2 3import ( 4	&#34;fmt&#34; 5	&#34;time&#34; 6) 7 8func main() { 9	// 获取时间 10	now := time.Now() // 获取当前时间点对象 11	t :=...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.com/posts/go/time/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
       <a href="https://wangtingkui.com/posts/go/log/">Go标准库（log）- 使用
 </a>
@@ -387,28 +408,6 @@ gvm的信息可以参考：https://github.com/moovweb/gvm
     </div>
   </div>
 </article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.com/posts/tool/hugo-custom-your-domain/">使用hugo搭建个人网站（八）- 自定义你的站点域名
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-07 16:35:07 &#43;0800 CST。">
-    2019-12-07
-  </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge post-taxonomy">使用hugo搭建个人网站</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a><a href="https://wangtingkui.com/tags/github-pages/" class="badge post-taxonomy">github pages</a></span>
-</div>
-<div class="post-summary">
-      <p>github pages 为我们提供的站点域名是 &lt;username&gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到 github pages 上呢，当然是可以的
-github pages 支持多种域名类型，不同的域名类型配置有细微的区别
-配置二级域名 二级域名就是类似baidu.com这种，.com是顶级域,baidu是二级域
-首先进入到 github 仓库的设置，找到 GitHub Pages 项下的 Custom domain 配置项 输入你的二级域名，点击保存，这个操作会自动在你的仓库代码的根目录下添加一个CNAME文件 最后还需要在你的dns服务提供商那里配置一下域名解析，对于二级域名来...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.com/posts/tool/hugo-custom-your-domain/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
 </div><div class="row table-responsive mb-3">
     <ul class="pagination pagination-default">
       <li class="page-item">
@@ -463,7 +462,7 @@ github pages 支持多种域名类型，不同的域名类型配置有细微的�
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
             使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
-            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">2</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
@@ -488,7 +487,7 @@ github pages 支持多种域名类型，不同的域名类型配置有细微的�
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">26</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">27</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">

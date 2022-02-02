@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>oh-my-zsh on Hugo Bootstrap</title>
+    <title>oh-my-zsh on xiaok&#39;s blog</title>
     <link>https://wangtingkui.com/tags/oh-my-zsh/</link>
-    <description>Recent content in oh-my-zsh on Hugo Bootstrap</description>
+    <description>Recent content in oh-my-zsh on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Sun, 10 May 2020 11:02:41 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/oh-my-zsh/index.xml" rel="self" type="application/rss+xml" />

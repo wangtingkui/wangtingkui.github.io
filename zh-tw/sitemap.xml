@@ -24,28 +24,6 @@
                 href="https://wangtingkui.com/zh-tw/categories/"
                 />
   </url><url>
-    <loc>https://wangtingkui.com/zh-tw/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://wangtingkui.com/en/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://wangtingkui.com/fr/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://wangtingkui.com/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://wangtingkui.com/zh-tw/"
-                />
-  </url><url>
     <loc>https://wangtingkui.com/zh-tw/series/</loc>
     <xhtml:link
                 rel="alternate"
@@ -88,6 +66,28 @@
                 rel="alternate"
                 hreflang="zh-tw"
                 href="https://wangtingkui.com/zh-tw/tags/"
+                />
+  </url><url>
+    <loc>https://wangtingkui.com/zh-tw/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://wangtingkui.com/en/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://wangtingkui.com/fr/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://wangtingkui.com/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://wangtingkui.com/zh-tw/"
                 />
   </url>
 </urlset>

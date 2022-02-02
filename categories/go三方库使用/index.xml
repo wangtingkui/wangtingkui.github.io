@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>go三方库使用 on Hugo Bootstrap</title>
+    <title>go三方库使用 on xiaok&#39;s blog</title>
     <link>https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
-    <description>Recent content in go三方库使用 on Hugo Bootstrap</description>
+    <description>Recent content in go三方库使用 on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Sun, 07 Jun 2020 14:49:31 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
