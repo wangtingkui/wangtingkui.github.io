@@ -2,6 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://wangtingkui.com/tags/go/</loc>
+    <lastmod>2022-02-01T16:48:25+08:00</lastmod>
+  </url><url>
     <loc>https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</loc>
     <lastmod>2022-02-01T16:48:25+08:00</lastmod>
   </url><url>
@@ -57,11 +60,31 @@
     <loc>https://wangtingkui.com/posts/</loc>
     <lastmod>2022-02-01T16:48:25+08:00</lastmod>
   </url><url>
+    <loc>https://wangtingkui.com/tags/</loc>
+    <lastmod>2022-02-01T16:48:25+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://wangtingkui.com/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://wangtingkui.com/fr/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://wangtingkui.com/zh-tw/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://wangtingkui.com/tags/"
+                />
+  </url><url>
     <loc>https://wangtingkui.com/posts/go/net-http/</loc>
     <lastmod>2022-01-16T17:09:17+08:00</lastmod>
-  </url><url>
-    <loc>https://wangtingkui.com/tags/go/</loc>
-    <lastmod>2020-10-14T14:42:29+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.com/posts/go/sort/</loc>
     <lastmod>2020-10-14T14:42:29+08:00</lastmod>
@@ -90,29 +113,6 @@
                 rel="alternate"
                 hreflang="zh-cn"
                 href="https://wangtingkui.com/categories/"
-                />
-  </url><url>
-    <loc>https://wangtingkui.com/tags/</loc>
-    <lastmod>2020-10-14T14:42:29+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://wangtingkui.com/en/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://wangtingkui.com/fr/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://wangtingkui.com/zh-tw/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://wangtingkui.com/tags/"
                 />
   </url><url>
     <loc>https://wangtingkui.com/posts/performance/flame/</loc>
@@ -220,7 +220,7 @@
     <loc>https://wangtingkui.com/tags/hugo/</loc>
     <lastmod>2020-04-14T15:50:45+08:00</lastmod>
   </url><url>
-    <loc>https://wangtingkui.com/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</loc>
+    <loc>https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</loc>
     <lastmod>2020-04-14T15:50:45+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.com/posts/tool/shortcodes/</loc>
