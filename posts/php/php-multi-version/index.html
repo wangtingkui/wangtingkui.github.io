@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具
+ phpbrew github 地址  phpbrew安装过程 第一步 首先需要下载 phpbrew 的二进制文件
+# 下载执行文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar # 添加执行权限 chmod &#43;x phpbrew.phar # Move the file to some directory within your $PATH sudo mv phpbrew.phar /usr/local/bin/phpbrew 第二步 安装好二进制文件之后，phpbrew还需要一点简单的配置才能使用
+# 初始化phpbrew shell脚本 phpbrew init # 在shell配置文件（~/.bashrc 或者 ~/.zshrc）中添加 echo &amp;quot;[[ -e ~/.phpbrew/bashrc ]] &amp;amp;&amp;amp; source ~/.phpbrew/bashrc&amp;quot; &amp;gt;&amp;gt; ~/.zshrc # 重新加载shell配置文件 source ~/.zshrc 第三步 设置用于查找库文件的默认前缀，可选值有 macports，homebrew，debian，ubuntu 或是自定义路径。
+对于使用homebrew的用户，可以设置phpbrew lookup-prefix homebrew
+phpbrew命令简单使用 # 查看phpbrew版本 phpbrew --version # 查看可以安装的版本 phpbrew know # 列出本地已经安装的版本 phpbrew list # 临时切换版本 phpbrew use 7.'><title>php多版本管理</title>
+
+<link rel='canonical' href='https://wangtingkui.com/posts/php/php-multi-version/'>
+
+<link rel="stylesheet" href="/scss/style.min.8f4416a35036b6471a6978873128b5652464226c8db8a9620ed1b94bc11bd353.css"><meta property='og:title' content='php多版本管理'>
+<meta property='og:description' content='本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具
+ phpbrew github 地址  phpbrew安装过程 第一步 首先需要下载 phpbrew 的二进制文件
+# 下载执行文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar # 添加执行权限 chmod &#43;x phpbrew.phar # Move the file to some directory within your $PATH sudo mv phpbrew.phar /usr/local/bin/phpbrew 第二步 安装好二进制文件之后，phpbrew还需要一点简单的配置才能使用
+# 初始化phpbrew shell脚本 phpbrew init # 在shell配置文件（~/.bashrc 或者 ~/.zshrc）中添加 echo &amp;quot;[[ -e ~/.phpbrew/bashrc ]] &amp;amp;&amp;amp; source ~/.phpbrew/bashrc&amp;quot; &amp;gt;&amp;gt; ~/.zshrc # 重新加载shell配置文件 source ~/.zshrc 第三步 设置用于查找库文件的默认前缀，可选值有 macports，homebrew，debian，ubuntu 或是自定义路径。
+对于使用homebrew的用户，可以设置phpbrew lookup-prefix homebrew
+phpbrew命令简单使用 # 查看phpbrew版本 phpbrew --version # 查看可以安装的版本 phpbrew know # 列出本地已经安装的版本 phpbrew list # 临时切换版本 phpbrew use 7.'>
+<meta property='og:url' content='https://wangtingkui.com/posts/php/php-multi-version/'>
+<meta property='og:site_name' content='xiaok&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='php' /><meta property='article:published_time' content='2020-01-14T19:11:11&#43;08:00'/><meta property='article:modified_time' content='2020-01-14T19:11:11&#43;08:00'/>
+<meta name="twitter:title" content="php多版本管理">
+<meta name="twitter:description" content="本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具
+ phpbrew github 地址  phpbrew安装过程 第一步 首先需要下载 phpbrew 的二进制文件
+# 下载执行文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar # 添加执行权限 chmod &#43;x phpbrew.phar # Move the file to some directory within your $PATH sudo mv phpbrew.phar /usr/local/bin/phpbrew 第二步 安装好二进制文件之后，phpbrew还需要一点简单的配置才能使用
+# 初始化phpbrew shell脚本 phpbrew init # 在shell配置文件（~/.bashrc 或者 ~/.zshrc）中添加 echo &amp;quot;[[ -e ~/.phpbrew/bashrc ]] &amp;amp;&amp;amp; source ~/.phpbrew/bashrc&amp;quot; &amp;gt;&amp;gt; ~/.zshrc # 重新加载shell配置文件 source ~/.zshrc 第三步 设置用于查找库文件的默认前缀，可选值有 macports，homebrew，debian，ubuntu 或是自定义路径。
+对于使用homebrew的用户，可以设置phpbrew lookup-prefix homebrew
+phpbrew命令简单使用 # 查看phpbrew版本 phpbrew --version # 查看可以安装的版本 phpbrew know # 列出本地已经安装的版本 phpbrew list # 临时切换版本 phpbrew use 7.">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/php%E5%9F%BA%E7%A1%80/" >
+                php基础
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/posts/php/php-multi-version/">php多版本管理</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 14, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>本篇文章是写一下我怎么进行php的多版本管理，利用的是<code>phpbrew</code>这个工具</p>
+<ul>
+<li><a class="link" href="https://github.com/phpbrew/phpbrew/blob/master/README.cn.md"  target="_blank" rel="noopener"
+    >phpbrew github 地址</a></li>
+</ul>
+<h2 id="phpbrew安装过程">phpbrew安装过程</h2>
+<h3 id="第一步">第一步</h3>
+<p>首先需要下载 <code>phpbrew</code> 的二进制文件</p>
+<pre tabindex="0"><code># 下载执行文件
+curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar
+
+# 添加执行权限
+chmod +x phpbrew.phar
+
+# Move the file to some directory within your $PATH
+sudo mv phpbrew.phar /usr/local/bin/phpbrew
+</code></pre><h3 id="第二步">第二步</h3>
+<p>安装好二进制文件之后，phpbrew还需要一点简单的配置才能使用</p>
+<pre tabindex="0"><code># 初始化phpbrew shell脚本
+phpbrew init
+
+# 在shell配置文件（~/.bashrc 或者 ~/.zshrc）中添加
+echo &quot;[[ -e ~/.phpbrew/bashrc ]] &amp;&amp; source ~/.phpbrew/bashrc&quot; &gt;&gt; ~/.zshrc
+
+# 重新加载shell配置文件
+source ~/.zshrc
+</code></pre><h3 id="第三步">第三步</h3>
+<p>设置用于查找库文件的默认前缀，可选值有 macports，homebrew，debian，ubuntu 或是自定义路径。</p>
+<p>对于使用homebrew的用户，可以设置<code>phpbrew lookup-prefix homebrew</code></p>
+<h2 id="phpbrew命令简单使用">phpbrew命令简单使用</h2>
+<pre tabindex="0"><code># 查看phpbrew版本
+phpbrew --version
+
+# 查看可以安装的版本
+phpbrew know
+
+# 列出本地已经安装的版本
+phpbrew list
+
+# 临时切换版本
+phpbrew use 7.0.1
+
+# 设置默认php版本
+phpbrew switch 7.0.1
+
+# 关闭phpbrew
+phpbrew off
+
+# 编辑当前版本的php.ini文件
+phpbrew config
+
+# 编辑当前版本的fpm文件
+phpbrew fpm config
+
+# 测试当前版本fpm配置
+phpbrew fpm test
+
+# 进行当前版本的fpm操作
+phpbrew fpm [start|restart|stop]
+
+# 升级phpbrew
+phpbrew self-update
+</code></pre><h2 id="一个安装demo">一个安装demo</h2>
+<p>编译安装过php的同学都知道，php有很多复杂的编译选项，phpbrew提出了一个<code>Variants</code>的概念，将php编译的复杂的配置选项屏蔽起来</p>
+<p>你只需简单地指定某个 Variant 即可，phpbrew 会自动在配置过程中检测引用目录、编译选项等。</p>
+<p>PHPBrew 提供默认的 Variants ，以及一些虚拟 Variants。 「Default Variants」包含绝大多数公共 Variants； 「Virtual Variants」可包含多个 Variants，使用一个虚拟 Variants 即可一次性启用多个 Variants。</p>
+<p>可以使用<code>phpbrew variants</code>查看都有哪些<code>variants</code></p>
+<pre tabindex="0"><code>➜  ~ phpbrew variants
+Variants:
+  all, apxs2, bcmath, bz2, calendar, cgi, cli, ctype, curl, dba, debug, dom,
+  dtrace, editline, embed, exif, fileinfo, filter, fpm, ftp, gcov, gd,
+  gettext, gmp, hash, iconv, imap, inifile, inline, intl, ipc, ipv6, json,
+  kerberos, ldap, libgcc, mbregex, mbstring, mcrypt, mhash, mysql, opcache,
+  openssl, pcntl, pcre, pdo, pear, pgsql, phar, phpdbg, posix, readline,
+  session, soap, sockets, sodium, sqlite, static, tidy, tokenizer, wddx,
+  xml, xmlrpc, zip, zlib, zts
+
+
+Virtual variants:
+  dbs: sqlite, mysql, pgsql, pdo
+  mb: mbstring, mbregex
+  neutral:
+  small: bz2, cli, dom, filter, ipc, json, mbregex, mbstring, pcre, phar,
+  posix, readline, xml, curl, openssl
+  default: bcmath, bz2, calendar, cli, ctype, dom, fileinfo, filter, ipc,
+  json, mbregex, mbstring, mhash, pcntl, pcre, pdo, pear, phar, posix,
+  readline, sockets, tokenizer, xml, curl, openssl, zip
+  everything: dba, ipv6, dom, calendar, wddx, static, inifile, inline, cli,
+  ftp, filter, gcov, zts, json, hash, exif, mbstring, mbregex, libgcc,
+  pdo, posix, embed, sockets, debug, phpdbg, zip, bcmath, fileinfo, ctype,
+  cgi, soap, pcntl, phar, session, tokenizer, opcache, imap, ldap, tidy,
+  kerberos, xmlrpc, fpm, dtrace, pcre, mhash, mcrypt, zlib, curl, readline,
+  editline, gd, intl, sodium, openssl, mysql, sqlite, pgsql, xml, gettext,
+  iconv, bz2, ipc, gmp, pear
+
+
+Using variants to build PHP:
+
+  phpbrew install php-5.3.10 +default
+  phpbrew install php-5.3.10 +mysql +pdo
+  phpbrew install php-5.3.10 +mysql +pdo +apxs2
+  phpbrew install php-5.3.10 +mysql +pdo +apxs2=/usr/bin/apxs2
+</code></pre><p>在mac下安装，我们几乎必然会遇到某些依赖的头文件找不到的问题，遇到这种问题，我们可以先手动下载依赖库，然后在使用<code>Variants</code>的时候明确指定下依赖库的路径即可</p>
+<p>比如遇到下面的情况，明显是找不到openssl的依赖库，所以我们可以执行下面的操作</p>
+<pre tabindex="0"><code># 先手动安装openssl
+brew install openssl
+# 明确指定openssl的位置
+phpbrew install 7.0.13 +all +openssl=/usr/local/opt/openssl
+</code></pre><p>如果有些配置没有被包含到<code>variants</code>中，我们可以在安装命令的末尾添加原始的编译选项<code>-- 原始选项</code>，注意<code>--</code>是必不可少的，他是<code>variants</code>和原始编译选项的分隔符</p>
+<p>我安装的一个demo</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">phpbrew install 7.0.33 +default +mb +dbs +fpm -pgsql +zlib<span class="o">=</span>/usr/local/opt/zlib
+</code></pre></div><h2 id="常见问题">常见问题</h2>
+<h3 id="mac安装过程中经常会缺少的库报错集合">mac安装过程中经常会缺少的库报错集合</h3>
+<pre tabindex="0"><code># error
+configure: error: utf8_mime2text() has new signature, but U8T_CANONICAL is missing. This should not happen. Check config.log for additional information.
+
+#fix
+brew install imap-uw
+</code></pre><h3 id="安装指定版本-php提示解压错误">安装指定版本 php，提示解压错误</h3>
+<p><figure 
+	>
+	<a href="https://tva1.sinaimg.cn/large/007S8ZIlly1ggzk3au02hj30y309pq55.jpg" >
+		<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ggzk3au02hj30y309pq55.jpg"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>这种问题一般都是通过phpbrew下载php压缩包文件格式不对，可以自己先将指定版本的压缩包下载到 ~/.phpbrew/distfiles 目录，这要就可以跳过 phpbrew 自身的下载过程，然后再重新执行 <code>phpbrew install</code> 就好了</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/php/">php</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Phpunit解决测试依赖</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/php/closure/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">php 中的匿名函数和 Closure</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 xiaok&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.7.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#phpbrew安装过程">phpbrew安装过程</a>
+      <ol>
+        <li><a href="#第一步">第一步</a></li>
+        <li><a href="#第二步">第二步</a></li>
+        <li><a href="#第三步">第三步</a></li>
+      </ol>
+    </li>
+    <li><a href="#phpbrew命令简单使用">phpbrew命令简单使用</a></li>
+    <li><a href="#一个安装demo">一个安装demo</a></li>
+    <li><a href="#常见问题">常见问题</a>
+      <ol>
+        <li><a href="#mac安装过程中经常会缺少的库报错集合">mac安装过程中经常会缺少的库报错集合</a></li>
+        <li><a href="#安装指定版本-php提示解压错误">安装指定版本 php，提示解压错误</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

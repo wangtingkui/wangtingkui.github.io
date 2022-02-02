@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下使用gvm进行go的多版本管理
+gvm的信息可以参考：https://github.com/moovweb/gvm
+环境信息  macOS 10.15.2 brew 2.1.16  安装gvm bash &amp;lt; &amp;lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) 下载好之后，需要修改下个人配置文件，使gvm相关命令生效，如果用的是bash，则修改~/.bashrc，如果习惯用zsh，那就修改~/.zshrc，以此类推
+[[ -s &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; ]] &amp;amp;&amp;amp; source &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; 修改之后，重开一会会话或者直接source ~/.zshrc（我用的是zsh）让刚才的修改生效。执行一下看下效果
+╰─$ gvm version Go Version Manager v1.0.22 installed at /Users/wangtingkui/.gvm 可以看到，我装的是 1.0.22 的版本
+常用命令 # 查看gvm版本 gvm version # 查看所有可以安装的版本 gvm listall # 查看本地已经安装的版本 gvm list # 安装指定版本 gvm install go1.13.5 # 删除指定版本 gvm uninstall go1.13.5 # 临时切换版本 gvm use go1.13.5 # 切换版本并指定为默认版本 gvm use go1.'><title>go多版本管理</title>
+
+<link rel='canonical' href='https://wangtingkui.com/posts/go/go-multi-version-manage/'>
+
+<link rel="stylesheet" href="/scss/style.min.8f4416a35036b6471a6978873128b5652464226c8db8a9620ed1b94bc11bd353.css"><meta property='og:title' content='go多版本管理'>
+<meta property='og:description' content='之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下使用gvm进行go的多版本管理
+gvm的信息可以参考：https://github.com/moovweb/gvm
+环境信息  macOS 10.15.2 brew 2.1.16  安装gvm bash &amp;lt; &amp;lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) 下载好之后，需要修改下个人配置文件，使gvm相关命令生效，如果用的是bash，则修改~/.bashrc，如果习惯用zsh，那就修改~/.zshrc，以此类推
+[[ -s &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; ]] &amp;amp;&amp;amp; source &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; 修改之后，重开一会会话或者直接source ~/.zshrc（我用的是zsh）让刚才的修改生效。执行一下看下效果
+╰─$ gvm version Go Version Manager v1.0.22 installed at /Users/wangtingkui/.gvm 可以看到，我装的是 1.0.22 的版本
+常用命令 # 查看gvm版本 gvm version # 查看所有可以安装的版本 gvm listall # 查看本地已经安装的版本 gvm list # 安装指定版本 gvm install go1.13.5 # 删除指定版本 gvm uninstall go1.13.5 # 临时切换版本 gvm use go1.13.5 # 切换版本并指定为默认版本 gvm use go1.'>
+<meta property='og:url' content='https://wangtingkui.com/posts/go/go-multi-version-manage/'>
+<meta property='og:site_name' content='xiaok&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='go' /><meta property='article:published_time' content='2019-12-13T14:46:50&#43;08:00'/><meta property='article:modified_time' content='2019-12-13T14:46:50&#43;08:00'/>
+<meta name="twitter:title" content="go多版本管理">
+<meta name="twitter:description" content="之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下使用gvm进行go的多版本管理
+gvm的信息可以参考：https://github.com/moovweb/gvm
+环境信息  macOS 10.15.2 brew 2.1.16  安装gvm bash &amp;lt; &amp;lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) 下载好之后，需要修改下个人配置文件，使gvm相关命令生效，如果用的是bash，则修改~/.bashrc，如果习惯用zsh，那就修改~/.zshrc，以此类推
+[[ -s &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; ]] &amp;amp;&amp;amp; source &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; 修改之后，重开一会会话或者直接source ~/.zshrc（我用的是zsh）让刚才的修改生效。执行一下看下效果
+╰─$ gvm version Go Version Manager v1.0.22 installed at /Users/wangtingkui/.gvm 可以看到，我装的是 1.0.22 的版本
+常用命令 # 查看gvm版本 gvm version # 查看所有可以安装的版本 gvm listall # 查看本地已经安装的版本 gvm list # 安装指定版本 gvm install go1.13.5 # 删除指定版本 gvm uninstall go1.13.5 # 临时切换版本 gvm use go1.13.5 # 切换版本并指定为默认版本 gvm use go1.">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/go%E5%9F%BA%E7%A1%80/" >
+                go基础
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/posts/go/go-multi-version-manage/">go多版本管理</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 13, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>之前写php，使用<code>phpbrew</code>来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具<code>gvm</code>，这篇文章就记录下如何在<code>mac</code>下使用<code>gvm</code>进行go的多版本管理</p>
+<p>gvm的信息可以参考：https://github.com/moovweb/gvm</p>
+<h3 id="环境信息">环境信息</h3>
+<ul>
+<li>macOS 10.15.2</li>
+<li>brew 2.1.16</li>
+</ul>
+<h3 id="安装gvm">安装gvm</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh">bash &lt; &lt;<span class="o">(</span>curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer<span class="o">)</span>
+</code></pre></div><p>下载好之后，需要修改下个人配置文件，使<code>gvm</code>相关命令生效，如果用的是bash，则修改<code>~/.bashrc</code>，如果习惯用zsh，那就修改<code>~/.zshrc</code>，以此类推</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="o">[[</span> -s <span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.gvm/scripts/gvm&#34;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">source</span> <span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.gvm/scripts/gvm&#34;</span>
+</code></pre></div><p>修改之后，重开一会会话或者直接<code>source ~/.zshrc</code>（我用的是zsh）让刚才的修改生效。执行一下看下效果</p>
+<pre tabindex="0"><code>╰─$ gvm version
+Go Version Manager v1.0.22 installed at /Users/wangtingkui/.gvm
+</code></pre><p>可以看到，我装的是 1.0.22 的版本</p>
+<h3 id="常用命令">常用命令</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 查看gvm版本</span>
+gvm version
+
+<span class="c1"># 查看所有可以安装的版本</span>
+gvm listall
+
+<span class="c1"># 查看本地已经安装的版本</span>
+gvm list
+
+<span class="c1"># 安装指定版本</span>
+gvm install go1.13.5
+
+<span class="c1"># 删除指定版本</span>
+gvm uninstall go1.13.5
+
+<span class="c1"># 临时切换版本</span>
+gvm use go1.13.5
+
+<span class="c1"># 切换版本并指定为默认版本</span>
+gvm use go1.13.5 --default
+
+</code></pre></div><h3 id="使用">使用</h3>
+<p>由于go是使用自举的方式来编译，也就是用go来编译go，所有我们使用gvm来初始安装一个版本的时候，首先需要保证在自己的环境中有go，我是直接使用brew安装的，大家也可以使用其他方式下载安装</p>
+<blockquote>
+<p>下面是我的安装过程</p>
+</blockquote>
+<pre tabindex="0"><code>brew install go
+gvm listall # 看下有哪些版本
+gvm install go1.13.6 # 选择一个版本安装
+brew unlink go # 使用gvm安装完之后就可以不适用brew安装的go了，所以直接断开连接
+gvm use go1.13.6 --default # 选择刚才安装的版本并且设置为默认版本
+</code></pre><p>当我们使用<code>gvm use &lt;version&gt;</code>切换版本的时候，可以使用<code>go env GOPATH</code>看下，可以发现随着我们切换版本，GOPATH的路径也在变换，这样就不用害怕不同版本GOPATH下的内容冲突了</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/go/">go</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/posts/go/context/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">go中Context的使用</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/go/channel/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">go中channel的使用</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/go/unit-testing/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">在go中使用单元测试</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/go/go-file-operation/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Go进行文件操作</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 xiaok&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.7.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#环境信息">环境信息</a></li>
+        <li><a href="#安装gvm">安装gvm</a></li>
+        <li><a href="#常用命令">常用命令</a></li>
+        <li><a href="#使用">使用</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+        gorm源码阅读 - 1.基础流程 - xiaok&#39;s site
+      </title>
+        <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    
+    <meta name="theme-color" content="#000000" />
+    
+    <meta http-equiv="window-target" content="_top" />
+    
+    
+    <meta name="description" content="gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然 本篇文章主要是从宏观的角度看" />
+    <meta name="generator" content="Hugo 0.89.2 with theme pure" />
+    <title>gorm源码阅读 - 1.基础流程 - xiaok&#39;s site</title>
+    
+    
+    <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.min.c58e22f1aa6179cd5cb60b9e08421a2b9a9c9fe9352d095e051b51aae209e5c0.css">
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" async>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+    <meta property="og:title" content="gorm源码阅读 - 1.基础流程" />
+<meta property="og:description" content="gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然 本篇文章主要是从宏观的角度看" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/go/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/gorm-%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B/" /><meta property="article:section" content="go" />
+<meta property="article:published_time" content="2022-02-01T16:48:25+08:00" />
+<meta property="article:modified_time" content="2022-02-01T16:48:25+08:00" />
+
+
+<meta itemprop="name" content="gorm源码阅读 - 1.基础流程">
+<meta itemprop="description" content="gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然 本篇文章主要是从宏观的角度看"><meta itemprop="datePublished" content="2022-02-01T16:48:25+08:00" />
+<meta itemprop="dateModified" content="2022-02-01T16:48:25+08:00" />
+<meta itemprop="wordCount" content="3625">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="gorm源码阅读 - 1.基础流程"/>
+<meta name="twitter:description" content="gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然 本篇文章主要是从宏观的角度看"/>
+
+    <!--[if lte IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+      <![endif]-->
+
+    <!--[if lt IE 9]>
+        <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+      <![endif]-->
+  </head>
+
+  
+  
+
+  <body class="main-center theme-blue" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="" target="_blank">
+            <img class="img-circle img-rotate" src="https://wangtingkui.github.io/avatar.jpg" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">无敌小k</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Beijing, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>来者皆是客</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">4</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">5</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">8</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">3</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">9</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="category-list-link">性能调优</a><span class="category-list-count">1</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/alfred/" class="tag-list-link">alfred</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/atom/" class="tag-list-link">atom</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/cobra/" class="tag-list-link">cobra</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/editorconfig/" class="tag-list-link">editorconfig</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/github-pages/" class="tag-list-link">github-pages</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">25</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/nas/" class="tag-list-link">nas</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/oh-my-zsh/" class="tag-list-link">oh-my-zsh</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/utf-8/" class="tag-list-link">utf-8</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/vmware/" class="tag-list-link">vmware</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/vscode/" class="tag-list-link">vscode</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/zsh/" class="tag-list-link">zsh</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/" class="tag-list-link">字符编码</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="tag-list-link">源码分析</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E7%81%AB%E7%84%B0%E5%9B%BE/" class="tag-list-link">火焰图</a><span
+                    class="tag-list-count">1</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/go/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/gorm-%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B/"
+    >gorm源码阅读 - 1.基础流程</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://wangtingkui.github.io/go/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/gorm-%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B/" class="article-date">
+  <time datetime="2022-02-01 16:48:25 &#43;0800 CST" itemprop="datePublished">2022-02-01</time>
+</a>
+</span>
+
+
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 8minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <p>gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然</p>
+<p>本篇文章主要是从宏观的角度看下使用 gorm 执行一条 sql 的整体流程，了解这个类库大概是怎么使用的，里面涉及的一些核心的对象是什么，方便我们日后针对某一组件进行剖析打好基础</p>
+<h3 id="版本信息">版本信息</h3>
+<pre tabindex="0"><code># go 版本
+go version go1.16.10 darwin/amd64
+
+# 类库版本
+gorm.io/driver/mysql v1.2.3 // indirect
+gorm.io/driver/sqlite v1.2.6
+gorm.io/gorm v1.22.5
+</code></pre><h3 id="一个最简单的使用demo">一个最简单的使用demo</h3>
+<pre tabindex="0"><code>package main
+
+import (
+	&quot;gorm.io/driver/sqlite&quot;
+	&quot;gorm.io/gorm&quot;
+)
+
+// model 定义
+type Test struct {
+	ID uint `gorm:&quot;primarykey&quot;`
+	A  int32
+	B  string
+}
+
+func main() {
+	// 连接数据库
+	db, err := gorm.Open(sqlite.Open(&quot;test.db&quot;), &amp;gorm.Config{})
+	if err != nil {
+		panic(&quot;failed to connect database&quot;)
+	}
+
+	// 自动创建表结构
+	if err = db.AutoMigrate(&amp;Test{}); err != nil {
+		panic(&quot;auto migrate err&quot;)
+	}
+
+	// 查询
+	var v Test
+	db.Debug().Model(&amp;Test{}).Where(&quot;b = ?&quot;, &quot;test&quot;).First(&amp;v)
+}
+
+</code></pre><p>在这个demo中，我们首先使用<code>gorm.Open</code>获取一个<code>*gorm.DB</code>的实例，我们后续就是通过这里实例进行一系列操作的，<code>gorm.Open</code>方法需要传入两个参数，第一个是实现了<code>Dialector</code>接口的对象，这个就是对不同类型数据库的抽象，上面的代码使用的是<code>sqlite</code>的实现，当我们需要切换不同类型的数据库的时候，使用对应的驱动就可以实现轻松的替换；第二个参数是<code>gorm.Config</code>，是对gorm的一些配置项</p>
+<p>来简单的看下<code>gorm.Open</code>方法，注意源码中的注释</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Open initialize db session based on dialector
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Open</span>(<span style="color:#a6e22e">dialector</span> <span style="color:#a6e22e">Dialector</span>, <span style="color:#a6e22e">opts</span> <span style="color:#f92672">...</span><span style="color:#a6e22e">Option</span>) (<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">config</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Config</span>{}
+
+    <span style="color:#75715e">// 可以到，Open方法的第二个参数实际上是Option类型的变参
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 但我们实际上传入的是gorm.Config类型，这里看起来虽然有点别扭，但也正是ducktype的体现
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 下面的这个排序是确保如果传入的选项中有gorm.Config类型，确保这些类型的排在前面，防止覆盖掉
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 其他的选项
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">sort</span>.<span style="color:#a6e22e">Slice</span>(<span style="color:#a6e22e">opts</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">bool</span> {
+		<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">isConfig</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">opts</span>[<span style="color:#a6e22e">i</span>].(<span style="color:#f92672">*</span><span style="color:#a6e22e">Config</span>)
+		<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">isConfig2</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">opts</span>[<span style="color:#a6e22e">j</span>].(<span style="color:#f92672">*</span><span style="color:#a6e22e">Config</span>)
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">isConfig</span> <span style="color:#f92672">&amp;&amp;</span> !<span style="color:#a6e22e">isConfig2</span>
+	})
+
+    <span style="color:#75715e">// 应用 Option
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">opt</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">opts</span> {
+		<span style="color:#f92672">...</span>
+	}
+
+    <span style="color:#75715e">// 如果 dialector 实现了 Apply 方法，也执行一下
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">d</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dialector</span>.(<span style="color:#66d9ef">interface</span>{ <span style="color:#a6e22e">Apply</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">Config</span>) <span style="color:#66d9ef">error</span> }); <span style="color:#a6e22e">ok</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">d</span>.<span style="color:#a6e22e">Apply</span>(<span style="color:#a6e22e">config</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">return</span>
+		}
+	}
+
+    <span style="color:#75715e">// 一些普通的初始化操作
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">...</span>
+
+    <span style="color:#75715e">// 实例化一个 *DB 类型变量，这个函数返回的也是它
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">db</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">DB</span>{<span style="color:#a6e22e">Config</span>: <span style="color:#a6e22e">config</span>, <span style="color:#a6e22e">clone</span>: <span style="color:#ae81ff">1</span>}
+
+    <span style="color:#75715e">// 初始化 callbacks，gorm 所有行为都是基于 callback 来实现的，后续单独拿一篇文章出来讲解
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">callbacks</span> = <span style="color:#a6e22e">initializeCallbacks</span>(<span style="color:#a6e22e">db</span>)
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">ClauseBuilders</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">ClauseBuilders</span> = <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">clause</span>.<span style="color:#a6e22e">ClauseBuilder</span>{}
+	}
+
+    <span style="color:#75715e">// 执行 dialector 的初始化
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Dialector</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Dialector</span>.<span style="color:#a6e22e">Initialize</span>(<span style="color:#a6e22e">db</span>)
+	}
+
+    <span style="color:#75715e">// 设置 preparedStmt 对象（执行一些预编译的sql）
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">preparedStmt</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">PreparedStmtDB</span>{
+		<span style="color:#a6e22e">ConnPool</span>:    <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">ConnPool</span>,
+		<span style="color:#a6e22e">Stmts</span>:       <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">Stmt</span>{},
+		<span style="color:#a6e22e">Mux</span>:         <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">RWMutex</span>{},
+		<span style="color:#a6e22e">PreparedSQL</span>: make([]<span style="color:#66d9ef">string</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">100</span>),
+	}
+	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">cacheStore</span>.<span style="color:#a6e22e">Store</span>(<span style="color:#a6e22e">preparedStmtDBKey</span>, <span style="color:#a6e22e">preparedStmt</span>)
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">PrepareStmt</span> {
+		<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">ConnPool</span> = <span style="color:#a6e22e">preparedStmt</span>
+	}
+
+    <span style="color:#75715e">// 设置 Statement 对象，用来通过我们指定的各种条件生成最终sql，交给db执行
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Statement</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Statement</span>{
+		<span style="color:#a6e22e">DB</span>:       <span style="color:#a6e22e">db</span>,
+		<span style="color:#a6e22e">ConnPool</span>: <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">ConnPool</span>,
+		<span style="color:#a6e22e">Context</span>:  <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>(),
+		<span style="color:#a6e22e">Clauses</span>:  <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">clause</span>.<span style="color:#a6e22e">Clause</span>{},
+	}
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">&amp;&amp;</span> !<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">DisableAutomaticPing</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">pinger</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">ConnPool</span>.(<span style="color:#66d9ef">interface</span>{ <span style="color:#a6e22e">Ping</span>() <span style="color:#66d9ef">error</span> }); <span style="color:#a6e22e">ok</span> {
+			<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">pinger</span>.<span style="color:#a6e22e">Ping</span>()
+		}
+	}
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Logger</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>(), <span style="color:#e6db74">&#34;failed to initialize database, got error %v&#34;</span>, <span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#66d9ef">return</span>
+}
+</code></pre></div><p>上面的步骤中，值得在这个时间点去细看一下的就是 <code>config.Dialector.Initialize(db)</code> 这行，这句代码是执行我们传入的 dialector 的初始化方法。简单了解下对我们把我整理流程会有些好处</p>
+<p>我这里就用 sqlite 的 dialector 简单分析下，不同db的dialector实现可能会不同，但是所做的事大同小异</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">dialector</span> <span style="color:#a6e22e">Dialector</span>) <span style="color:#a6e22e">Initialize</span>(<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span>) (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+    <span style="color:#75715e">// 初始化 DriverName
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">dialector</span>.<span style="color:#a6e22e">DriverName</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
+		<span style="color:#a6e22e">dialector</span>.<span style="color:#a6e22e">DriverName</span> = <span style="color:#a6e22e">DriverName</span>
+	}
+
+    <span style="color:#75715e">// 设置连接池
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">dialector</span>.<span style="color:#a6e22e">Conn</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">ConnPool</span> = <span style="color:#a6e22e">dialector</span>.<span style="color:#a6e22e">Conn</span>
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#a6e22e">conn</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#a6e22e">dialector</span>.<span style="color:#a6e22e">DriverName</span>, <span style="color:#a6e22e">dialector</span>.<span style="color:#a6e22e">DSN</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+		}
+		<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">ConnPool</span> = <span style="color:#a6e22e">conn</span>
+	}
+
+    <span style="color:#75715e">// 查看 sqlite 版本
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">version</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">ConnPool</span>.<span style="color:#a6e22e">QueryRowContext</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>(), <span style="color:#e6db74">&#34;select sqlite_version()&#34;</span>).<span style="color:#a6e22e">Scan</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">version</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#75715e">// https://www.sqlite.org/releaselog/3_35_0.html
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 根据不同版本注册回调到 gorm.DB 实例
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">compareVersion</span>(<span style="color:#a6e22e">version</span>, <span style="color:#e6db74">&#34;3.35.0&#34;</span>) <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">callbacks</span>.<span style="color:#a6e22e">RegisterDefaultCallbacks</span>(<span style="color:#a6e22e">db</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">callbacks</span>.<span style="color:#a6e22e">Config</span>{
+			<span style="color:#a6e22e">CreateClauses</span>:        []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;INSERT&#34;</span>, <span style="color:#e6db74">&#34;VALUES&#34;</span>, <span style="color:#e6db74">&#34;ON CONFLICT&#34;</span>, <span style="color:#e6db74">&#34;RETURNING&#34;</span>},
+			<span style="color:#a6e22e">UpdateClauses</span>:        []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;UPDATE&#34;</span>, <span style="color:#e6db74">&#34;SET&#34;</span>, <span style="color:#e6db74">&#34;WHERE&#34;</span>, <span style="color:#e6db74">&#34;RETURNING&#34;</span>},
+			<span style="color:#a6e22e">DeleteClauses</span>:        []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;DELETE&#34;</span>, <span style="color:#e6db74">&#34;FROM&#34;</span>, <span style="color:#e6db74">&#34;WHERE&#34;</span>, <span style="color:#e6db74">&#34;RETURNING&#34;</span>},
+			<span style="color:#a6e22e">LastInsertIDReversed</span>: <span style="color:#66d9ef">true</span>,
+		})
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#a6e22e">callbacks</span>.<span style="color:#a6e22e">RegisterDefaultCallbacks</span>(<span style="color:#a6e22e">db</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">callbacks</span>.<span style="color:#a6e22e">Config</span>{
+			<span style="color:#a6e22e">LastInsertIDReversed</span>: <span style="color:#66d9ef">true</span>,
+		})
+	}
+
+    <span style="color:#75715e">// 获取 dialector 的 ClauseBuilders 注册到 gorm.DB 实例
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">dialector</span>.<span style="color:#a6e22e">ClauseBuilders</span>() {
+		<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">ClauseBuilders</span>[<span style="color:#a6e22e">k</span>] = <span style="color:#a6e22e">v</span>
+	}
+	<span style="color:#66d9ef">return</span>
+}
+</code></pre></div><h3 id="一些概念的补充">一些概念的补充</h3>
+<p>看了上面<code>Open</code>流程的代码，我相信你一定和我一样对其中出现的一些名词有些迷惑，不知道它代表的什么含义，我这里说一些我自己的理解</p>
+<blockquote>
+<p>callbacks</p>
+</blockquote>
+<p>在<code>gorm.Open</code>代码中，我们提到<code>gorm</code>是基于回调来编写的，这点<code>gorm</code>的文档中也有提到过</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gyy5q9tq5zj31ak0citae.jpg" alt=""></p>
+<p>那 <code>callbacks</code> 究竟是什么，我们还是回归源码看一下，在上面的代码中涉及 <code>callbacks</code> 一共有两处</p>
+<p>第一处是 <code>gorm.Open</code> 初始化过程中的 <code>db.callbacks = initializeCallbacks(db)</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">callbacks</span> = <span style="color:#a6e22e">initializeCallbacks</span>(<span style="color:#a6e22e">db</span>)
+
+<span style="color:#75715e">// 初始化 callbacks
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">initializeCallbacks</span>(<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">callbacks</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">callbacks</span>{
+		<span style="color:#a6e22e">processors</span>: <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">processor</span>{
+			<span style="color:#e6db74">&#34;create&#34;</span>: {<span style="color:#a6e22e">db</span>: <span style="color:#a6e22e">db</span>},
+			<span style="color:#e6db74">&#34;query&#34;</span>:  {<span style="color:#a6e22e">db</span>: <span style="color:#a6e22e">db</span>},
+			<span style="color:#e6db74">&#34;update&#34;</span>: {<span style="color:#a6e22e">db</span>: <span style="color:#a6e22e">db</span>},
+			<span style="color:#e6db74">&#34;delete&#34;</span>: {<span style="color:#a6e22e">db</span>: <span style="color:#a6e22e">db</span>},
+			<span style="color:#e6db74">&#34;row&#34;</span>:    {<span style="color:#a6e22e">db</span>: <span style="color:#a6e22e">db</span>},
+			<span style="color:#e6db74">&#34;raw&#34;</span>:    {<span style="color:#a6e22e">db</span>: <span style="color:#a6e22e">db</span>},
+		},
+	}
+}
+
+<span style="color:#75715e">// callbacks gorm callbacks manager
+</span><span style="color:#75715e">// callbacks 中只有一个对象: processors，是一组 processor 的结合
+</span><span style="color:#75715e">// 从 initalizeCallbacks 我们也能猜测到一个 processor 就是对应一个行为的处理逻辑，初始化的过程给
+</span><span style="color:#75715e">// create/query/update/delete/row/raw 这几个行为进行了初始化
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">callbacks</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">processors</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">processor</span>
+}
+
+<span style="color:#75715e">// 一个行为对应的处理，可以看到一个行为是可以对应多个处理方法（callback）的
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">processor</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">db</span>        <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>
+	<span style="color:#a6e22e">Clauses</span>   []<span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">fns</span>       []<span style="color:#66d9ef">func</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>)
+	<span style="color:#a6e22e">callbacks</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">callback</span>
+}
+
+<span style="color:#75715e">// 一个处理方法
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">callback</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">name</span>      <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">before</span>    <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">after</span>     <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">remove</span>    <span style="color:#66d9ef">bool</span>
+	<span style="color:#a6e22e">replace</span>   <span style="color:#66d9ef">bool</span>
+	<span style="color:#a6e22e">match</span>     <span style="color:#66d9ef">func</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) <span style="color:#66d9ef">bool</span>
+	<span style="color:#a6e22e">handler</span>   <span style="color:#66d9ef">func</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>)
+	<span style="color:#a6e22e">processor</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">processor</span>
+}
+</code></pre></div><p>第二处是在sqlite dialector 的初始化过程中调用了<code>callbacks.RegisterDefaultCallbacks</code>方法</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// sqlite.go:57
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">callbacks</span>.<span style="color:#a6e22e">RegisterDefaultCallbacks</span>(<span style="color:#a6e22e">db</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">callbacks</span>.<span style="color:#a6e22e">Config</span>{
+    <span style="color:#a6e22e">CreateClauses</span>:        []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;INSERT&#34;</span>, <span style="color:#e6db74">&#34;VALUES&#34;</span>, <span style="color:#e6db74">&#34;ON CONFLICT&#34;</span>, <span style="color:#e6db74">&#34;RETURNING&#34;</span>},
+    <span style="color:#a6e22e">UpdateClauses</span>:        []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;UPDATE&#34;</span>, <span style="color:#e6db74">&#34;SET&#34;</span>, <span style="color:#e6db74">&#34;WHERE&#34;</span>, <span style="color:#e6db74">&#34;RETURNING&#34;</span>},
+    <span style="color:#a6e22e">DeleteClauses</span>:        []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;DELETE&#34;</span>, <span style="color:#e6db74">&#34;FROM&#34;</span>, <span style="color:#e6db74">&#34;WHERE&#34;</span>, <span style="color:#e6db74">&#34;RETURNING&#34;</span>},
+    <span style="color:#a6e22e">LastInsertIDReversed</span>: <span style="color:#66d9ef">true</span>,
+})
+
+<span style="color:#75715e">// callbacks.go:22
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RegisterDefaultCallbacks</span>(<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span>, <span style="color:#a6e22e">config</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Config</span>) {
+	<span style="color:#a6e22e">enableTransaction</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span>) <span style="color:#66d9ef">bool</span> {
+		<span style="color:#66d9ef">return</span> !<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">SkipDefaultTransaction</span>
+	}
+
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">CreateClauses</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">CreateClauses</span> = <span style="color:#a6e22e">createClauses</span>
+	}
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">QueryClauses</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">QueryClauses</span> = <span style="color:#a6e22e">queryClauses</span>
+	}
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">DeleteClauses</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">DeleteClauses</span> = <span style="color:#a6e22e">deleteClauses</span>
+	}
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">UpdateClauses</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">UpdateClauses</span> = <span style="color:#a6e22e">updateClauses</span>
+	}
+
+    <span style="color:#75715e">// 获取到gorm.DB 中的 callbacks[&#34;create&#34;] 对象，也就是一个 processor
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">createCallback</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Callback</span>().<span style="color:#a6e22e">Create</span>()
+
+    <span style="color:#75715e">// 调用 processor.Match 方法生成一个 callback
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Match 接受一个`fc func(*DB) bool`的方法作为参数放到 callback 对象的 match 字段中
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 当事件发生的时候，只有这个函数返回 true 的时候，对应的 callback 才会执行
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Register 就是提供一个名字和回调函数，注册到 callback 中
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">createCallback</span>.<span style="color:#a6e22e">Match</span>(<span style="color:#a6e22e">enableTransaction</span>).<span style="color:#a6e22e">Register</span>(<span style="color:#e6db74">&#34;gorm:begin_transaction&#34;</span>, <span style="color:#a6e22e">BeginTransaction</span>)
+	<span style="color:#a6e22e">createCallback</span>.<span style="color:#a6e22e">Register</span>(<span style="color:#e6db74">&#34;gorm:before_create&#34;</span>, <span style="color:#a6e22e">BeforeCreate</span>)
+	<span style="color:#a6e22e">createCallback</span>.<span style="color:#a6e22e">Register</span>(<span style="color:#e6db74">&#34;gorm:save_before_associations&#34;</span>, <span style="color:#a6e22e">SaveBeforeAssociations</span>(<span style="color:#66d9ef">true</span>))
+	<span style="color:#a6e22e">createCallback</span>.<span style="color:#a6e22e">Register</span>(<span style="color:#e6db74">&#34;gorm:create&#34;</span>, <span style="color:#a6e22e">Create</span>(<span style="color:#a6e22e">config</span>))
+	<span style="color:#a6e22e">createCallback</span>.<span style="color:#a6e22e">Register</span>(<span style="color:#e6db74">&#34;gorm:save_after_associations&#34;</span>, <span style="color:#a6e22e">SaveAfterAssociations</span>(<span style="color:#66d9ef">true</span>))
+	<span style="color:#a6e22e">createCallback</span>.<span style="color:#a6e22e">Register</span>(<span style="color:#e6db74">&#34;gorm:after_create&#34;</span>, <span style="color:#a6e22e">AfterCreate</span>)
+	<span style="color:#a6e22e">createCallback</span>.<span style="color:#a6e22e">Match</span>(<span style="color:#a6e22e">enableTransaction</span>).<span style="color:#a6e22e">Register</span>(<span style="color:#e6db74">&#34;gorm:commit_or_rollback_transaction&#34;</span>, <span style="color:#a6e22e">CommitOrRollbackTransaction</span>)
+	<span style="color:#a6e22e">createCallback</span>.<span style="color:#a6e22e">Clauses</span> = <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">CreateClauses</span>
+
+    <span style="color:#75715e">// 以下就和上面的过程大同小异了，只不多针对的是不同的行为
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">...</span>
+}
+</code></pre></div><p>从上面的分析中我们可以得出，<code>callbacks</code>就是定义的一系列的处理流程，当某个行为发生之后，就会调用这个行为对应的 <code>callbacks</code>进行处理，这个当我们下面分析到一个简单的sql是如何执行的时候会有更深刻的理解</p>
+<h3 id="一条sql是怎么被组装和执行的">一条sql是怎么被组装和执行的</h3>
+<p>我们在从一条sql被拼凑而成然后执行的流程来看下上面分析的初始化过程生成的“乱七八糟”的对象都是干啥的</p>
+<p>也就是分析下下面这条源码就近干了点什么</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 查询
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">v</span> <span style="color:#a6e22e">Test</span>
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Debug</span>().<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Test</span>{}).<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;b = ?&#34;</span>, <span style="color:#e6db74">&#34;test&#34;</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">v</span>)
+</code></pre></div><p>在分析上面的代码之前，有一点小知识需要了解下，在使用<code>gorm</code>的过程中，我们几乎所有的交互都是通过<code>gorm.DB</code>这个 struct 来完成的，我们可以把他理解成一个“和数据库的会话”，这个会话有各种各样的属性，用来控制和数据库交互过程中的行为，我们也可以基于某个会话生成新的会话，在生成新会话的过程中指定数据，从而得到满足我们需求的会话</p>
+<p>有了这个知识点，我们继续进行分析，<code>Debug()</code>这个方法，就是基于当前的会话生成新的会话，设置了会话的<code>Logger</code>属性，从而能输出最终执行的sql，效果如下</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gyy6z75rfnj315a03iwer.jpg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Debug start debug mode
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) <span style="color:#a6e22e">Debug</span>() (<span style="color:#a6e22e">tx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Session</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Session</span>{
+		<span style="color:#a6e22e">Logger</span>: <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Logger</span>.<span style="color:#a6e22e">LogMode</span>(<span style="color:#a6e22e">logger</span>.<span style="color:#a6e22e">Info</span>),
+	})
+}
+</code></pre></div><p><code>Model</code>方法指定了 <code>Statement</code> 中 <code>Model</code> 的值，明确了我们要操作的是哪个数据表</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) <span style="color:#a6e22e">Model</span>(<span style="color:#a6e22e">value</span> <span style="color:#66d9ef">interface</span>{}) (<span style="color:#a6e22e">tx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) {
+	<span style="color:#a6e22e">tx</span> = <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">getInstance</span>()
+	<span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">Model</span> = <span style="color:#a6e22e">value</span>
+	<span style="color:#66d9ef">return</span>
+}
+</code></pre></div><p><code>Where</code> 和 <code>First</code> 方法是我们关注的重点，我们的sql就是通过这两个入口构造并执行的，这里还要补充一个知识点，<code>gorm</code>提供的是流式的api，这些api分几类，可以参考<a href="https://gorm.io/zh_CN/docs/method_chaining.html">文档</a>，其中最主要的是<code>链式方法</code>和<code>Finisher</code>方法。链式方法是将<code>Clauses</code>修改或添加到当前的<code>Statement</code>的方法，比如<code>Where</code>；<code>Finisher</code>方法是会立即执行注册回调的方法（没错，这个回调指的就是我们上面分析到的回调:-)），比如<code>First</code></p>
+<p>先来看下<code>Where</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Where add conditions
+</span><span style="color:#75715e">// 根据传入的参数生成表达式，然后作为一个子句(Clause)添加到 Statement 中
+</span><span style="color:#75715e">// 关于 Clause 和 Statement 更细化的分析，有空单写一篇文章
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) <span style="color:#a6e22e">Where</span>(<span style="color:#a6e22e">query</span> <span style="color:#66d9ef">interface</span>{}, <span style="color:#a6e22e">args</span> <span style="color:#f92672">...</span><span style="color:#66d9ef">interface</span>{}) (<span style="color:#a6e22e">tx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) {
+	<span style="color:#a6e22e">tx</span> = <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">getInstance</span>()
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">conds</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">BuildCondition</span>(<span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">args</span><span style="color:#f92672">...</span>); len(<span style="color:#a6e22e">conds</span>) &gt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">AddClause</span>(<span style="color:#a6e22e">clause</span>.<span style="color:#a6e22e">Where</span>{<span style="color:#a6e22e">Exprs</span>: <span style="color:#a6e22e">conds</span>})
+	}
+	<span style="color:#66d9ef">return</span>
+}
+</code></pre></div><p>再看下<code>First</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// First find first record that match given conditions, order by primary key
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) <span style="color:#a6e22e">First</span>(<span style="color:#a6e22e">dest</span> <span style="color:#66d9ef">interface</span>{}, <span style="color:#a6e22e">conds</span> <span style="color:#f92672">...</span><span style="color:#66d9ef">interface</span>{}) (<span style="color:#a6e22e">tx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) {
+    <span style="color:#75715e">// first的语义是查找满足条件的第一条纪录
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 所以这里默认添加了 limit 和 order 子句（Clause）
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">tx</span> = <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Limit</span>(<span style="color:#ae81ff">1</span>).<span style="color:#a6e22e">Order</span>(<span style="color:#a6e22e">clause</span>.<span style="color:#a6e22e">OrderByColumn</span>{
+		<span style="color:#a6e22e">Column</span>: <span style="color:#a6e22e">clause</span>.<span style="color:#a6e22e">Column</span>{<span style="color:#a6e22e">Table</span>: <span style="color:#a6e22e">clause</span>.<span style="color:#a6e22e">CurrentTable</span>, <span style="color:#a6e22e">Name</span>: <span style="color:#a6e22e">clause</span>.<span style="color:#a6e22e">PrimaryKey</span>},
+	})
+    <span style="color:#75715e">// conds 就是传一些其他的条件来进行过滤，同样也是个构造子句的过程
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">conds</span>) &gt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">exprs</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">BuildCondition</span>(<span style="color:#a6e22e">conds</span>[<span style="color:#ae81ff">0</span>], <span style="color:#a6e22e">conds</span>[<span style="color:#ae81ff">1</span>:]<span style="color:#f92672">...</span>); len(<span style="color:#a6e22e">exprs</span>) &gt; <span style="color:#ae81ff">0</span> {
+			<span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">AddClause</span>(<span style="color:#a6e22e">clause</span>.<span style="color:#a6e22e">Where</span>{<span style="color:#a6e22e">Exprs</span>: <span style="color:#a6e22e">exprs</span>})
+		}
+	}
+    <span style="color:#75715e">// 没有记录的时候生成error
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">RaiseErrorOnNotFound</span> = <span style="color:#66d9ef">true</span>
+    <span style="color:#75715e">// 指定纪录存放的变量
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">Dest</span> = <span style="color:#a6e22e">dest</span>
+    <span style="color:#75715e">// 触发 query 行为，指定 query 对应的回调
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">callbacks</span>.<span style="color:#a6e22e">Query</span>().<span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">tx</span>)
+}
+</code></pre></div><p>看了这么多，终于绕回来了，我们的查询行为最终回到了我们注册的回调上面，这也是为啥官网都说 gorm 是基于回调的原因</p>
+<p>我们直接来看这个处理过程：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">processor</span>) <span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span> {
+	<span style="color:#75715e">// call scopes
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// scope 先忽略，不是主流程
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> len(<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">scopes</span>) &gt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">scopes</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">scopes</span>
+		<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">scopes</span> = <span style="color:#66d9ef">nil</span>
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">scope</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">scopes</span> {
+			<span style="color:#a6e22e">db</span> = <span style="color:#a6e22e">scope</span>(<span style="color:#a6e22e">db</span>)
+		}
+	}
+
+	<span style="color:#66d9ef">var</span> (
+		<span style="color:#a6e22e">curTime</span>           = <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>()
+		<span style="color:#a6e22e">stmt</span>              = <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Statement</span>
+		<span style="color:#a6e22e">resetBuildClauses</span> <span style="color:#66d9ef">bool</span>
+	)
+
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">BuildClauses</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">BuildClauses</span> = <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">Clauses</span>
+		<span style="color:#a6e22e">resetBuildClauses</span> = <span style="color:#66d9ef">true</span>
+	}
+
+	<span style="color:#75715e">// assign model values
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 兼容处理下，如果没有手动调用过`Model`方法，就用传进来的对象类型作为要操作的表
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Model</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Model</span> = <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Dest</span>
+	} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Dest</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Dest</span> = <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Model</span>
+	}
+
+	<span style="color:#75715e">// parse model values
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 根据stmt.Model 解析库表
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Model</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Model</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">&amp;&amp;</span> (!<span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">Is</span>(<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">schema</span>.<span style="color:#a6e22e">ErrUnsupportedDataType</span>) <span style="color:#f92672">||</span> (<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Table</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">TableExpr</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">SQL</span>.<span style="color:#a6e22e">Len</span>() <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)) {
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">Is</span>(<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">schema</span>.<span style="color:#a6e22e">ErrUnsupportedDataType</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Table</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">TableExpr</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+				<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">AddError</span>(<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;%w: Table not set, please set it like: db.Model(&amp;user) or db.Table(\&#34;users\&#34;)&#34;</span>, <span style="color:#a6e22e">err</span>))
+			} <span style="color:#66d9ef">else</span> {
+				<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">AddError</span>(<span style="color:#a6e22e">err</span>)
+			}
+		}
+	}
+
+	<span style="color:#75715e">// assign stmt.ReflectValue
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 解析&amp;校验结果存放地址
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Dest</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">ReflectValue</span> = <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">ValueOf</span>(<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Dest</span>)
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">ReflectValue</span>.<span style="color:#a6e22e">Kind</span>() <span style="color:#f92672">==</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Ptr</span> {
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">ReflectValue</span>.<span style="color:#a6e22e">IsNil</span>() <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">ReflectValue</span>.<span style="color:#a6e22e">CanAddr</span>() {
+				<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">ReflectValue</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">ReflectValue</span>.<span style="color:#a6e22e">Type</span>().<span style="color:#a6e22e">Elem</span>()))
+			}
+
+			<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">ReflectValue</span> = <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">ReflectValue</span>.<span style="color:#a6e22e">Elem</span>()
+		}
+		<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">ReflectValue</span>.<span style="color:#a6e22e">IsValid</span>() {
+			<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">AddError</span>(<span style="color:#a6e22e">ErrInvalidValue</span>)
+		}
+	}
+
+    <span style="color:#75715e">// fns 就是经过处理和排序的 processor 下的 callbacks，可以额参考 processor.compile 方法
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 在每次注册callback后都会调用
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 很明显，构造query sql并执行等一系列流程都是在这些 callback中搞的
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">f</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">fns</span> {
+		<span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">db</span>)
+	}
+
+    <span style="color:#75715e">// 打一些追踪日志
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">SQL</span>.<span style="color:#a6e22e">Len</span>() &gt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Logger</span>.<span style="color:#a6e22e">Trace</span>(<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">curTime</span>, <span style="color:#66d9ef">func</span>() (<span style="color:#66d9ef">string</span>, <span style="color:#66d9ef">int64</span>) {
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Dialector</span>.<span style="color:#a6e22e">Explain</span>(<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">SQL</span>.<span style="color:#a6e22e">String</span>(), <span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Vars</span><span style="color:#f92672">...</span>), <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">RowsAffected</span>
+		}, <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Error</span>)
+	}
+
+	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">DB</span>.<span style="color:#a6e22e">DryRun</span> {
+		<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">SQL</span>.<span style="color:#a6e22e">Reset</span>()
+		<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">Vars</span> = <span style="color:#66d9ef">nil</span>
+	}
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">resetBuildClauses</span> {
+		<span style="color:#a6e22e">stmt</span>.<span style="color:#a6e22e">BuildClauses</span> = <span style="color:#66d9ef">nil</span>
+	}
+
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">db</span>
+}
+</code></pre></div><p>通过上面的分析，我们知道想要进一步了解，就要看query这个行为注册了哪些callback，可以再返回注册的时候的代码看看，是在<code>callbacks</code>包中</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// callbacks.go:22
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RegisterDefaultCallbacks</span>(<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span>, <span style="color:#a6e22e">config</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Config</span>) {
+    <span style="color:#f92672">...</span>
+    <span style="color:#75715e">// callbacks包为query行为注册了3个callback
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">queryCallback</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Callback</span>().<span style="color:#a6e22e">Query</span>()
+	<span style="color:#a6e22e">queryCallback</span>.<span style="color:#a6e22e">Register</span>(<span style="color:#e6db74">&#34;gorm:query&#34;</span>, <span style="color:#a6e22e">Query</span>)
+	<span style="color:#a6e22e">queryCallback</span>.<span style="color:#a6e22e">Register</span>(<span style="color:#e6db74">&#34;gorm:preload&#34;</span>, <span style="color:#a6e22e">Preload</span>)
+	<span style="color:#a6e22e">queryCallback</span>.<span style="color:#a6e22e">Register</span>(<span style="color:#e6db74">&#34;gorm:after_query&#34;</span>, <span style="color:#a6e22e">AfterQuery</span>)
+	<span style="color:#a6e22e">queryCallback</span>.<span style="color:#a6e22e">Clauses</span> = <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">QueryClauses</span>
+    <span style="color:#f92672">...</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Query</span>(<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span>) {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Error</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#75715e">// 构造sql
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">BuildQuerySQL</span>(<span style="color:#a6e22e">db</span>)
+
+		<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">DryRun</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Error</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#75715e">// 执行sql，这里就交给真正的db去执行了
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">ConnPool</span>.<span style="color:#a6e22e">QueryContext</span>(<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">SQL</span>.<span style="color:#a6e22e">String</span>(), <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Statement</span>.<span style="color:#a6e22e">Vars</span><span style="color:#f92672">...</span>)
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+				<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">AddError</span>(<span style="color:#a6e22e">err</span>)
+				<span style="color:#66d9ef">return</span>
+			}
+			<span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">Scan</span>(<span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">db</span>, <span style="color:#ae81ff">0</span>)
+			<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">AddError</span>(<span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Close</span>())
+		}
+	}
+}
+</code></pre></div><h3 id="总结">总结</h3>
+<p>到这里，我们完整的分析了 gorm 的初始化和一次query sql 的执行流程，相信有了这个宏观的地图，在我们之后对 gorm 中某个组件进行分析的时候会更加的方便</p>
+
+    </div>
+    <div class="article-footer">
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://wangtingkui.github.io/go/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/net-http/" title="源码阅读-go(net/http)"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        
+        <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal"
+            data-target="#donateModal"><span>$</span></button>
+        
+        <div class="bar-right">
+        </div>
+    </div>
+</nav>
+
+
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content donate">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <div class="modal-body">
+                <div class="donate-box">
+                    <div class="donate-head">
+                        <p>Maybe you could buy me a cup of coffee.</p>
+                    </div>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/alipay.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/wechat.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                    </div>
+                    <div class="donate-footer">
+                        <ul class="nav nav-tabs nav-justified" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay"
+                                    aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab"
+                                    aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i>
+                                    wechat payment</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/wangtingkui" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://wangtingkui.github.io/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://wangtingkui.github.io/js/application.min.a94ab19cb63a95c8d7fbd7b85cab3ddeea8c369bdf75b9cab6708787ead123af.js"></script>
+<script src="https://wangtingkui.github.io/js/plugin.min.19c5bcb2fb0789ab4f2b7834e5ceb5e92635645605bab902c1024b25f1502364.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/wangtingkui.github.io',
+            CONTENT_URL: 'https:\/\/wangtingkui.github.io\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/insight.min.4a2d52de4bfff73e0c688404fe3d17c9a3ae12d9888e1e1ac9c690e4890de2ded50fe55f2b819c2ba55435a76f396f3ea6805765f0b0af5635cdf74ea459eab0.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+  </body>
+</html>

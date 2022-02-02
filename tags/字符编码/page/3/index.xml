@@ -11,6 +11,24 @@
     
     
     <item>
+      <title>Go标准库（flag）- 源码分析</title>
+      <link>https://wangtingkui.github.io/2019/12/flag/</link>
+      <pubDate>Mon, 02 Dec 2019 14:07:56 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/flag/</guid>
+      <description>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（flag）- 使用</title>
+      <link>https://wangtingkui.github.io/2019/12/flag/</link>
+      <pubDate>Sun, 01 Dec 2019 17:28:45 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2019/12/flag/</guid>
+      <description>本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提</description>
+    </item>
+    
+    <item>
       <title>使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</title>
       <link>https://wangtingkui.github.io/2019/12/deploy-on-github-pages/</link>
       <pubDate>Sun, 01 Dec 2019 13:56:09 +0800</pubDate>

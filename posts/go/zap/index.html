@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap
+版本 本篇基于的 zap 版本是 v1.10.0
+使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概念，方便在我们阅读 demo 或者写代码的时候能大体的感知到我们在用什么，为什么这样用。为了不产生翻译上的歧义，书写过程中涉及到的概念会用 zap 源码中的命名
+ Logger
+ 这是 zap 暴露给我们类型，正常情况下，我们也是通过 Logger 这个结构体的方法来记录日志的
+ Config
+ 这个是 zap 提供给我们的 Logger 的配置，我们可以按需配置，然后通过 Build 方法来构造出我们想要的 Logger，是典型的的构造者模式
+ Field
+ 除了日志级别、日志时间、日志信息等这些基本的通用字段之外，我们在记录日志的时候通常会想记录一些额外的字段（用来记录打日志时的上下文），这些字段在 zap 中需要封装成 Field 类型
+ Core
+ Logger 是一个结构体，为我们暴露了使用日志的方法，而 Core 是一个接口，它被包含在 Logger 中，用来真正提供日志格式化和输出功能，这样的实现使日志记录器的使用和输出实现了高度解耦。我们可以实现自己的 Core 从而达到不同的输出的目的
+ Encoder
+ Encoder 同样是一个接口，刚才说到 Core 是实现具体输出行为的核心，而 Encoder 是 Core 中真正进行日志信息和字段格式化的编码器，它把我们输入的各种日志信息经过处理得到字节切片。从而可以记录在各种存储载体中。zap 对于 Encoder 自带了两个实现，jsonEncoder 和 consoleEncoder'><title>go日志库zap使用</title>
+
+<link rel='canonical' href='https://wangtingkui.com/posts/go/zap/'>
+
+<link rel="stylesheet" href="/scss/style.min.8f4416a35036b6471a6978873128b5652464226c8db8a9620ed1b94bc11bd353.css"><meta property='og:title' content='go日志库zap使用'>
+<meta property='og:description' content='zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap
+版本 本篇基于的 zap 版本是 v1.10.0
+使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概念，方便在我们阅读 demo 或者写代码的时候能大体的感知到我们在用什么，为什么这样用。为了不产生翻译上的歧义，书写过程中涉及到的概念会用 zap 源码中的命名
+ Logger
+ 这是 zap 暴露给我们类型，正常情况下，我们也是通过 Logger 这个结构体的方法来记录日志的
+ Config
+ 这个是 zap 提供给我们的 Logger 的配置，我们可以按需配置，然后通过 Build 方法来构造出我们想要的 Logger，是典型的的构造者模式
+ Field
+ 除了日志级别、日志时间、日志信息等这些基本的通用字段之外，我们在记录日志的时候通常会想记录一些额外的字段（用来记录打日志时的上下文），这些字段在 zap 中需要封装成 Field 类型
+ Core
+ Logger 是一个结构体，为我们暴露了使用日志的方法，而 Core 是一个接口，它被包含在 Logger 中，用来真正提供日志格式化和输出功能，这样的实现使日志记录器的使用和输出实现了高度解耦。我们可以实现自己的 Core 从而达到不同的输出的目的
+ Encoder
+ Encoder 同样是一个接口，刚才说到 Core 是实现具体输出行为的核心，而 Encoder 是 Core 中真正进行日志信息和字段格式化的编码器，它把我们输入的各种日志信息经过处理得到字节切片。从而可以记录在各种存储载体中。zap 对于 Encoder 自带了两个实现，jsonEncoder 和 consoleEncoder'>
+<meta property='og:url' content='https://wangtingkui.com/posts/go/zap/'>
+<meta property='og:site_name' content='xiaok&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='go' /><meta property='article:published_time' content='2019-12-16T22:45:34&#43;08:00'/><meta property='article:modified_time' content='2019-12-16T22:45:34&#43;08:00'/>
+<meta name="twitter:title" content="go日志库zap使用">
+<meta name="twitter:description" content="zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap
+版本 本篇基于的 zap 版本是 v1.10.0
+使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概念，方便在我们阅读 demo 或者写代码的时候能大体的感知到我们在用什么，为什么这样用。为了不产生翻译上的歧义，书写过程中涉及到的概念会用 zap 源码中的命名
+ Logger
+ 这是 zap 暴露给我们类型，正常情况下，我们也是通过 Logger 这个结构体的方法来记录日志的
+ Config
+ 这个是 zap 提供给我们的 Logger 的配置，我们可以按需配置，然后通过 Build 方法来构造出我们想要的 Logger，是典型的的构造者模式
+ Field
+ 除了日志级别、日志时间、日志信息等这些基本的通用字段之外，我们在记录日志的时候通常会想记录一些额外的字段（用来记录打日志时的上下文），这些字段在 zap 中需要封装成 Field 类型
+ Core
+ Logger 是一个结构体，为我们暴露了使用日志的方法，而 Core 是一个接口，它被包含在 Logger 中，用来真正提供日志格式化和输出功能，这样的实现使日志记录器的使用和输出实现了高度解耦。我们可以实现自己的 Core 从而达到不同的输出的目的
+ Encoder
+ Encoder 同样是一个接口，刚才说到 Core 是实现具体输出行为的核心，而 Encoder 是 Core 中真正进行日志信息和字段格式化的编码器，它把我们输入的各种日志信息经过处理得到字节切片。从而可以记录在各种存储载体中。zap 对于 Encoder 自带了两个实现，jsonEncoder 和 consoleEncoder">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" >
+                go三方库使用
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/posts/go/zap/">go日志库zap使用</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 16, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap</p>
+<h3 id="版本">版本</h3>
+<p>本篇基于的 zap 版本是 <code>v1.10.0</code></p>
+<h3 id="使用">使用</h3>
+<h4 id="基本概念">基本概念</h4>
+<p>在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概念，方便在我们阅读 demo 或者写代码的时候能大体的感知到我们在用什么，为什么这样用。为了不产生翻译上的歧义，书写过程中涉及到的概念会用 zap 源码中的命名</p>
+<blockquote>
+<p>Logger</p>
+</blockquote>
+<p>这是 zap 暴露给我们类型，正常情况下，我们也是通过 Logger 这个结构体的方法来记录日志的</p>
+<blockquote>
+<p>Config</p>
+</blockquote>
+<p>这个是 zap 提供给我们的 Logger 的配置，我们可以按需配置，然后通过 Build 方法来构造出我们想要的 Logger，是典型的的构造者模式</p>
+<blockquote>
+<p>Field</p>
+</blockquote>
+<p>除了日志级别、日志时间、日志信息等这些基本的通用字段之外，我们在记录日志的时候通常会想记录一些额外的字段（用来记录打日志时的上下文），这些字段在 zap 中需要封装成 Field 类型</p>
+<blockquote>
+<p>Core</p>
+</blockquote>
+<p>Logger 是一个结构体，为我们暴露了使用日志的方法，而 Core 是一个接口，它被包含在 Logger 中，用来真正提供日志格式化和输出功能，这样的实现使日志记录器的使用和输出实现了高度解耦。我们可以实现自己的 Core 从而达到不同的输出的目的</p>
+<blockquote>
+<p>Encoder</p>
+</blockquote>
+<p>Encoder 同样是一个接口，刚才说到 Core 是实现具体输出行为的核心，而 Encoder 是 Core 中真正进行日志信息和字段格式化的编码器，它把我们输入的各种日志信息经过处理得到字节切片。从而可以记录在各种存储载体中。zap 对于 Encoder 自带了两个实现，jsonEncoder 和 consoleEncoder</p>
+<blockquote>
+<p>EncoderConfig</p>
+</blockquote>
+<p>这个就很好理解了，就是我们 Encoder 的配置，由于不同的 Encoder 实现不一样，所以如果是我们自己实现的 Encoder，完全可以实现自己的 EncoderConfig，zap 中的 EncoderConfig 自然也是为了 jsonEncoder 和 consoleEncoder 服务的。</p>
+<h4 id="logger-快速入门">Logger 快速入门</h4>
+<p>了解了 zap 中的一些基础概念，让我们先来搞一个小 demo 感受一下</p>
+<p>代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// 实例化一个 EncoderConfig
+</span><span class="c1"></span>	<span class="nx">encoderCfg</span> <span class="o">:=</span> <span class="nx">zapcore</span><span class="p">.</span><span class="nx">EncoderConfig</span><span class="p">{</span>
+		<span class="nx">MessageKey</span><span class="p">:</span>     <span class="s">&#34;msg&#34;</span><span class="p">,</span> <span class="c1">// 序列化成json时在输出中的key
+</span><span class="c1"></span>		<span class="nx">LevelKey</span><span class="p">:</span>       <span class="s">&#34;level&#34;</span><span class="p">,</span>
+		<span class="nx">NameKey</span><span class="p">:</span>        <span class="s">&#34;logger&#34;</span><span class="p">,</span>
+		<span class="nx">EncodeLevel</span><span class="p">:</span>    <span class="nx">zapcore</span><span class="p">.</span><span class="nx">LowercaseLevelEncoder</span><span class="p">,</span> <span class="c1">// 日志级别字段的值序列化方式，这里使用了zap自带的小写格式编码
+</span><span class="c1"></span>		<span class="nx">EncodeTime</span><span class="p">:</span>     <span class="nx">zapcore</span><span class="p">.</span><span class="nx">ISO8601TimeEncoder</span><span class="p">,</span>    <span class="c1">// 时间字段的值序列化方式，这里使用了自带的ISO8601格式编码
+</span><span class="c1"></span>		<span class="nx">EncodeDuration</span><span class="p">:</span> <span class="nx">zapcore</span><span class="p">.</span><span class="nx">StringDurationEncoder</span><span class="p">,</span> <span class="c1">// 时间段类型的值序列化方式，这里使用自带的字符串格式
+</span><span class="c1"></span>	<span class="p">}</span>
+
+	<span class="c1">// 用刚才 EncoderConfig 实例化一个 jsonEncoder，也就是输出成json格式
+</span><span class="c1"></span>	<span class="nx">jsonEncoder</span> <span class="o">:=</span> <span class="nx">zapcore</span><span class="p">.</span><span class="nf">NewJSONEncoder</span><span class="p">(</span><span class="nx">encoderCfg</span><span class="p">)</span>
+
+	<span class="c1">// 实例化一个 Core，使用 jsonEncoder，将 InfoLevel 级别以上（包含 InfoLevel）的日志输出到标准输出中
+</span><span class="c1"></span>	<span class="nx">core</span> <span class="o">:=</span> <span class="nx">zapcore</span><span class="p">.</span><span class="nf">NewCore</span><span class="p">(</span><span class="nx">jsonEncoder</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Stdout</span><span class="p">,</span> <span class="nx">zapcore</span><span class="p">.</span><span class="nx">InfoLevel</span><span class="p">)</span>
+
+	<span class="c1">// 用 Core 实例化一个 Logger
+</span><span class="c1"></span>	<span class="nx">logger</span> <span class="o">:=</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="nx">core</span><span class="p">)</span>
+
+	<span class="nx">logger</span><span class="p">.</span><span class="nf">Debug</span><span class="p">(</span><span class="s">&#34;debug level log&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;k&#34;</span><span class="p">,</span> <span class="s">&#34;v&#34;</span><span class="p">))</span>
+	<span class="nx">logger</span><span class="p">.</span><span class="nf">Info</span><span class="p">(</span><span class="s">&#34;info level log&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">Bool</span><span class="p">(</span><span class="s">&#34;k&#34;</span><span class="p">,</span> <span class="kc">false</span><span class="p">))</span>
+	<span class="nx">logger</span><span class="p">.</span><span class="nf">Warn</span><span class="p">(</span><span class="s">&#34;warn level log&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">Time</span><span class="p">(</span><span class="s">&#34;t&#34;</span><span class="p">,</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()))</span>
+	<span class="nx">logger</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="s">&#34;error level log&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">Int</span><span class="p">(</span><span class="s">&#34;i&#34;</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="o">{</span><span class="s2">&#34;level&#34;</span>:<span class="s2">&#34;info&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;info level log&#34;</span>,<span class="s2">&#34;k&#34;</span>:false<span class="o">}</span>
+<span class="o">{</span><span class="s2">&#34;level&#34;</span>:<span class="s2">&#34;warn&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;warn level log&#34;</span>,<span class="s2">&#34;t&#34;</span>:<span class="s2">&#34;2019-12-16T23:58:53.324+0800&#34;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&#34;level&#34;</span>:<span class="s2">&#34;error&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;error level log&#34;</span>,<span class="s2">&#34;i&#34;</span>:9<span class="o">}</span>
+</code></pre></div><p>之所以少一条，是应为我们设置了 info 级别以上才输出。</p>
+<h4 id="使用构造方法获取预置-logger">使用构造方法获取预置 Logger</h4>
+<p>可以看到上面的整个使用过程，基本上都是围绕着我们最开始提到的基本概念展开的，同时也能明显的感受到，构造一个 Logger 的过程还是复杂的，所以同很多包一样，zap 也为我们提供了几个方便的构造函数，能让我们快速的获取 Logger，基本也能覆盖我们大多数简单的使用场景，分别是<code>zap.NewExample</code>，<code>zap.NewDevelopment</code>和<code>zap.NewProduction</code>，除了这3个，还有一个<code>zap.NewNop</code>，这个相当于一个空 Logger，不做任何操作，所以也不用着重介绍了。下面让我们依次看下前三个。</p>
+<blockquote>
+<p>zap.NewExample</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">logger</span> <span class="o">:=</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">NewExample</span><span class="p">()</span>
+	<span class="nx">logger</span><span class="p">.</span><span class="nf">Debug</span><span class="p">(</span><span class="s">&#34;我是debug信息&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;k&#34;</span><span class="p">,</span> <span class="s">&#34;v&#34;</span><span class="p">))</span>
+	<span class="nx">logger</span><span class="p">.</span><span class="nf">Info</span><span class="p">(</span><span class="s">&#34;我是info信息&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">Bool</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="kc">true</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="c1">// {&#34;level&#34;:&#34;debug&#34;,&#34;msg&#34;:&#34;我是debug信息&#34;,&#34;k&#34;:&#34;v&#34;}
+</span><span class="c1">// {&#34;level&#34;:&#34;info&#34;,&#34;msg&#34;:&#34;我是info信息&#34;,&#34;b&#34;:true}
+</span><span class="c1"></span>
+</code></pre></div><p>可以看到这样用起来就非常方便了，如果我们取看他的源码，会发现其实就是封装了我们上面创建一个 Logger 的过程</p>
+<blockquote>
+<p>zap.NewDevelopment</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">logger</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">NewDevelopment</span><span class="p">()</span>
+	<span class="nx">logger</span><span class="p">.</span><span class="nf">Debug</span><span class="p">(</span><span class="s">&#34;我是debug信息&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;k&#34;</span><span class="p">,</span> <span class="s">&#34;v&#34;</span><span class="p">))</span>
+	<span class="nx">logger</span><span class="p">.</span><span class="nf">Info</span><span class="p">(</span><span class="s">&#34;我是info信息&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">Bool</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="kc">true</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="c1">// 2019-12-17T11:40:33.606+0800    DEBUG   zap/main.go:9   我是debug信息   {&#34;k&#34;: &#34;v&#34;}
+</span><span class="c1">// 2019-12-17T11:40:33.606+0800    INFO    zap/main.go:10  我是info信息    {&#34;b&#34;: true}
+</span><span class="c1"></span>
+</code></pre></div><blockquote>
+<p>zap.NewProduction</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">logger</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">NewProduction</span><span class="p">()</span>
+	<span class="nx">logger</span><span class="p">.</span><span class="nf">Debug</span><span class="p">(</span><span class="s">&#34;我是debug信息&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;k&#34;</span><span class="p">,</span> <span class="s">&#34;v&#34;</span><span class="p">))</span>
+	<span class="nx">logger</span><span class="p">.</span><span class="nf">Info</span><span class="p">(</span><span class="s">&#34;我是info信息&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">Bool</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="kc">true</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="c1">// {&#34;level&#34;:&#34;info&#34;,&#34;ts&#34;:1576554152.8352141,&#34;caller&#34;:&#34;zap/main.go:10&#34;,&#34;msg&#34;:&#34;我是info信息&#34;,&#34;b&#34;:true}
+</span></code></pre></div><h4 id="通过配置构造-logger">通过配置构造 Logger</h4>
+<p>上面的几种用法都是我们手动的创建 Logger，我们还可以通过构造 Logger 的 Config，从而来构建 Logger，可以通过 zap.NewDevelopment 的源码学习</p>
+<p>这种方法也能给我们带来比较大的灵活性，能在 Logger 的配置上有更大的自由度</p>
+<p>如果想更加精细的配置 Logger，比如同时使用多个 Core 输出，可以参考本文的 zap 高级配置小节</p>
+<h4 id="使用-sugaredlogger-进行日志记录">使用 SugaredLogger 进行日志记录</h4>
+<p>即便是 zap 为我们提供了几个预置的 Logger，但是当我们想添加自己的附加字段的时候，需要对每个字段调用对应的封装函数将其包装为 zap.Field 类型，这样做的好处是效率非常高，但是当我们不在乎这一点性能的提升，愿意用一点点性能的损耗来换取编程的方便的时候，可以使用 zap 为我们提供的 SugaredLogger 这个类，名字也非常形象，语法糖，方便我们的编程过程</p>
+<p>SugaredLogger 是对 Logger 的封装，提供了更加方便的api供我们使用，其实就是不必去调用 zap 的一系列函数，将我们的额外字段封装成 Field 类型，在 SugaredLogger 底层会自动帮我们处理</p>
+<p>Logger 和 SugaredLogger 之间的转换也非常简单，我们完全可以在一个项目中根据需求混合使用两种日志记录方式</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">logger</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">NewDevelopment</span><span class="p">()</span>
+
+	<span class="c1">// 通过 Logger 转换成 SugaredLogger
+</span><span class="c1"></span>	<span class="nx">sugar</span> <span class="o">:=</span> <span class="nx">logger</span><span class="p">.</span><span class="nf">Sugar</span><span class="p">()</span>
+	<span class="nx">sugar</span><span class="p">.</span><span class="nf">Info</span><span class="p">(</span><span class="s">&#34;sugar info message&#34;</span><span class="p">)</span>
+	<span class="nx">sugar</span><span class="p">.</span><span class="nf">Infof</span><span class="p">(</span><span class="s">&#34;sugar info formatted message %s&#34;</span><span class="p">,</span> <span class="s">&#34;hehe&#34;</span><span class="p">)</span>
+	<span class="nx">sugar</span><span class="p">.</span><span class="nf">Infow</span><span class="p">(</span><span class="s">&#34;sugar info message with extra context&#34;</span><span class="p">,</span> <span class="s">&#34;key1&#34;</span><span class="p">,</span> <span class="s">&#34;val1&#34;</span><span class="p">,</span> <span class="s">&#34;ket2&#34;</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+
+	<span class="c1">// 通过 SugaredLogger 转换成 Logger
+</span><span class="c1"></span>	<span class="nx">lg</span> <span class="o">:=</span> <span class="nx">sugar</span><span class="p">.</span><span class="nf">Desugar</span><span class="p">()</span>
+	<span class="nx">lg</span><span class="p">.</span><span class="nf">Debug</span><span class="p">(</span><span class="s">&#34;我是debug信息&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;k&#34;</span><span class="p">,</span> <span class="s">&#34;v&#34;</span><span class="p">))</span>
+	<span class="nx">lg</span><span class="p">.</span><span class="nf">Info</span><span class="p">(</span><span class="s">&#34;我是info信息&#34;</span><span class="p">,</span> <span class="nx">zap</span><span class="p">.</span><span class="nf">Bool</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">,</span> <span class="kc">true</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="c1">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:12  sugar info message
+</span><span class="c1">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:13  sugar info formatted message hehe
+</span><span class="c1">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:14  sugar info message with extra context   {&#34;key1&#34;: &#34;val1&#34;, &#34;ket2&#34;: true}
+</span><span class="c1">//2019-12-17T12:08:14.535+0800    DEBUG   zap/main.go:18  我是debug信息   {&#34;k&#34;: &#34;v&#34;}
+</span><span class="c1">//2019-12-17T12:08:14.535+0800    INFO    zap/main.go:19  我是info信息    {&#34;b&#34;: true}
+</span><span class="c1"></span>
+</code></pre></div><h4 id="zap-高级配置">zap 高级配置</h4>
+<p>可以参考：https://godoc.org/go.uber.org/zap#pkg-examples</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/go/">go</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/posts/go/mail/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">使用 jordan-wright/email 处理邮件发送</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/go/viper/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">使用 viper 处理项目配置</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/go/errors/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">使用 pkg/errors 进行错误处理</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 xiaok&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.7.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#版本">版本</a></li>
+        <li><a href="#使用">使用</a>
+          <ol>
+            <li><a href="#基本概念">基本概念</a></li>
+            <li><a href="#logger-快速入门">Logger 快速入门</a></li>
+            <li><a href="#使用构造方法获取预置-logger">使用构造方法获取预置 Logger</a></li>
+            <li><a href="#通过配置构造-logger">通过配置构造 Logger</a></li>
+            <li><a href="#使用-sugaredlogger-进行日志记录">使用 SugaredLogger 进行日志记录</a></li>
+            <li><a href="#zap-高级配置">zap 高级配置</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

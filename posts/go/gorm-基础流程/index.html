@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然
+本篇文章主要是从宏观的角度看下使用 gorm 执行一条 sql 的整体流程，了解这个类库大概是怎么使用的，里面涉及的一些核心的对象是什么，方便我们日后针对某一组件进行剖析打好基础
+版本信息 # go 版本 go version go1.16.10 darwin/amd64 # 类库版本 gorm.io/driver/mysql v1.2.3 // indirect gorm.io/driver/sqlite v1.2.6 gorm.io/gorm v1.22.5 一个最简单的使用demo package main import ( &amp;quot;gorm.io/driver/sqlite&amp;quot; &amp;quot;gorm.io/gorm&amp;quot; ) // model 定义 type Test struct { ID uint `gorm:&amp;quot;primarykey&amp;quot;` A int32 B string } func main() { // 连接数据库 db, err := gorm.Open(sqlite.Open(&amp;quot;test.db&amp;quot;), &amp;amp;gorm.Config{}) if err != nil { panic(&amp;quot;failed to connect database&amp;quot;) } // 自动创建表结构 if err = db.'><title>gorm源码阅读 - 1.基础流程</title>
+
+<link rel='canonical' href='https://wangtingkui.com/posts/go/gorm-%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.8f4416a35036b6471a6978873128b5652464226c8db8a9620ed1b94bc11bd353.css"><meta property='og:title' content='gorm源码阅读 - 1.基础流程'>
+<meta property='og:description' content='gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然
+本篇文章主要是从宏观的角度看下使用 gorm 执行一条 sql 的整体流程，了解这个类库大概是怎么使用的，里面涉及的一些核心的对象是什么，方便我们日后针对某一组件进行剖析打好基础
+版本信息 # go 版本 go version go1.16.10 darwin/amd64 # 类库版本 gorm.io/driver/mysql v1.2.3 // indirect gorm.io/driver/sqlite v1.2.6 gorm.io/gorm v1.22.5 一个最简单的使用demo package main import ( &amp;quot;gorm.io/driver/sqlite&amp;quot; &amp;quot;gorm.io/gorm&amp;quot; ) // model 定义 type Test struct { ID uint `gorm:&amp;quot;primarykey&amp;quot;` A int32 B string } func main() { // 连接数据库 db, err := gorm.Open(sqlite.Open(&amp;quot;test.db&amp;quot;), &amp;amp;gorm.Config{}) if err != nil { panic(&amp;quot;failed to connect database&amp;quot;) } // 自动创建表结构 if err = db.'>
+<meta property='og:url' content='https://wangtingkui.com/posts/go/gorm-%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B/'>
+<meta property='og:site_name' content='xiaok&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2022-02-01T16:48:25&#43;08:00'/><meta property='article:modified_time' content='2022-02-01T16:48:25&#43;08:00'/>
+<meta name="twitter:title" content="gorm源码阅读 - 1.基础流程">
+<meta name="twitter:description" content="gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然
+本篇文章主要是从宏观的角度看下使用 gorm 执行一条 sql 的整体流程，了解这个类库大概是怎么使用的，里面涉及的一些核心的对象是什么，方便我们日后针对某一组件进行剖析打好基础
+版本信息 # go 版本 go version go1.16.10 darwin/amd64 # 类库版本 gorm.io/driver/mysql v1.2.3 // indirect gorm.io/driver/sqlite v1.2.6 gorm.io/gorm v1.22.5 一个最简单的使用demo package main import ( &amp;quot;gorm.io/driver/sqlite&amp;quot; &amp;quot;gorm.io/gorm&amp;quot; ) // model 定义 type Test struct { ID uint `gorm:&amp;quot;primarykey&amp;quot;` A int32 B string } func main() { // 连接数据库 db, err := gorm.Open(sqlite.Open(&amp;quot;test.db&amp;quot;), &amp;amp;gorm.Config{}) if err != nil { panic(&amp;quot;failed to connect database&amp;quot;) } // 自动创建表结构 if err = db.">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/posts/go/gorm-%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B/">gorm源码阅读 - 1.基础流程</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 01, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然</p>
+<p>本篇文章主要是从宏观的角度看下使用 gorm 执行一条 sql 的整体流程，了解这个类库大概是怎么使用的，里面涉及的一些核心的对象是什么，方便我们日后针对某一组件进行剖析打好基础</p>
+<h3 id="版本信息">版本信息</h3>
+<pre tabindex="0"><code># go 版本
+go version go1.16.10 darwin/amd64
+
+# 类库版本
+gorm.io/driver/mysql v1.2.3 // indirect
+gorm.io/driver/sqlite v1.2.6
+gorm.io/gorm v1.22.5
+</code></pre><h3 id="一个最简单的使用demo">一个最简单的使用demo</h3>
+<pre tabindex="0"><code>package main
+
+import (
+	&quot;gorm.io/driver/sqlite&quot;
+	&quot;gorm.io/gorm&quot;
+)
+
+// model 定义
+type Test struct {
+	ID uint `gorm:&quot;primarykey&quot;`
+	A  int32
+	B  string
+}
+
+func main() {
+	// 连接数据库
+	db, err := gorm.Open(sqlite.Open(&quot;test.db&quot;), &amp;gorm.Config{})
+	if err != nil {
+		panic(&quot;failed to connect database&quot;)
+	}
+
+	// 自动创建表结构
+	if err = db.AutoMigrate(&amp;Test{}); err != nil {
+		panic(&quot;auto migrate err&quot;)
+	}
+
+	// 查询
+	var v Test
+	db.Debug().Model(&amp;Test{}).Where(&quot;b = ?&quot;, &quot;test&quot;).First(&amp;v)
+}
+
+</code></pre><p>在这个demo中，我们首先使用<code>gorm.Open</code>获取一个<code>*gorm.DB</code>的实例，我们后续就是通过这里实例进行一系列操作的，<code>gorm.Open</code>方法需要传入两个参数，第一个是实现了<code>Dialector</code>接口的对象，这个就是对不同类型数据库的抽象，上面的代码使用的是<code>sqlite</code>的实现，当我们需要切换不同类型的数据库的时候，使用对应的驱动就可以实现轻松的替换；第二个参数是<code>gorm.Config</code>，是对gorm的一些配置项</p>
+<p>来简单的看下<code>gorm.Open</code>方法，注意源码中的注释</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Open initialize db session based on dialector
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Open</span><span class="p">(</span><span class="nx">dialector</span> <span class="nx">Dialector</span><span class="p">,</span> <span class="nx">opts</span> <span class="o">...</span><span class="nx">Option</span><span class="p">)</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">config</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Config</span><span class="p">{}</span>
+
+    <span class="c1">// 可以到，Open方法的第二个参数实际上是Option类型的变参
+</span><span class="c1"></span>    <span class="c1">// 但我们实际上传入的是gorm.Config类型，这里看起来虽然有点别扭，但也正是ducktype的体现
+</span><span class="c1"></span>    <span class="c1">// 下面的这个排序是确保如果传入的选项中有gorm.Config类型，确保这些类型的排在前面，防止覆盖掉
+</span><span class="c1"></span>    <span class="c1">// 其他的选项
+</span><span class="c1"></span>	<span class="nx">sort</span><span class="p">.</span><span class="nf">Slice</span><span class="p">(</span><span class="nx">opts</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+		<span class="nx">_</span><span class="p">,</span> <span class="nx">isConfig</span> <span class="o">:=</span> <span class="nx">opts</span><span class="p">[</span><span class="nx">i</span><span class="p">].(</span><span class="o">*</span><span class="nx">Config</span><span class="p">)</span>
+		<span class="nx">_</span><span class="p">,</span> <span class="nx">isConfig2</span> <span class="o">:=</span> <span class="nx">opts</span><span class="p">[</span><span class="nx">j</span><span class="p">].(</span><span class="o">*</span><span class="nx">Config</span><span class="p">)</span>
+		<span class="k">return</span> <span class="nx">isConfig</span> <span class="o">&amp;&amp;</span> <span class="p">!</span><span class="nx">isConfig2</span>
+	<span class="p">})</span>
+
+    <span class="c1">// 应用 Option
+</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">opt</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">opts</span> <span class="p">{</span>
+		<span class="o">...</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 如果 dialector 实现了 Apply 方法，也执行一下
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">d</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">dialector</span><span class="p">.(</span><span class="kd">interface</span><span class="p">{</span> <span class="nf">Apply</span><span class="p">(</span><span class="o">*</span><span class="nx">Config</span><span class="p">)</span> <span class="kt">error</span> <span class="p">});</span> <span class="nx">ok</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Apply</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">return</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 一些普通的初始化操作
+</span><span class="c1"></span>    <span class="o">...</span>
+
+    <span class="c1">// 实例化一个 *DB 类型变量，这个函数返回的也是它
+</span><span class="c1"></span>	<span class="nx">db</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">DB</span><span class="p">{</span><span class="nx">Config</span><span class="p">:</span> <span class="nx">config</span><span class="p">,</span> <span class="nx">clone</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+
+    <span class="c1">// 初始化 callbacks，gorm 所有行为都是基于 callback 来实现的，后续单独拿一篇文章出来讲解
+</span><span class="c1"></span>	<span class="nx">db</span><span class="p">.</span><span class="nx">callbacks</span> <span class="p">=</span> <span class="nf">initializeCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">ClauseBuilders</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">config</span><span class="p">.</span><span class="nx">ClauseBuilders</span> <span class="p">=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">clause</span><span class="p">.</span><span class="nx">ClauseBuilder</span><span class="p">{}</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 执行 dialector 的初始化
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">Dialector</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">err</span> <span class="p">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">Dialector</span><span class="p">.</span><span class="nf">Initialize</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 设置 preparedStmt 对象（执行一些预编译的sql）
+</span><span class="c1"></span>	<span class="nx">preparedStmt</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">PreparedStmtDB</span><span class="p">{</span>
+		<span class="nx">ConnPool</span><span class="p">:</span>    <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">,</span>
+		<span class="nx">Stmts</span><span class="p">:</span>       <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">Stmt</span><span class="p">{},</span>
+		<span class="nx">Mux</span><span class="p">:</span>         <span class="o">&amp;</span><span class="nx">sync</span><span class="p">.</span><span class="nx">RWMutex</span><span class="p">{},</span>
+		<span class="nx">PreparedSQL</span><span class="p">:</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+	<span class="p">}</span>
+	<span class="nx">db</span><span class="p">.</span><span class="nx">cacheStore</span><span class="p">.</span><span class="nf">Store</span><span class="p">(</span><span class="nx">preparedStmtDBKey</span><span class="p">,</span> <span class="nx">preparedStmt</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">PrepareStmt</span> <span class="p">{</span>
+		<span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">preparedStmt</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 设置 Statement 对象，用来通过我们指定的各种条件生成最终sql，交给db执行
+</span><span class="c1"></span>	<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">Statement</span><span class="p">{</span>
+		<span class="nx">DB</span><span class="p">:</span>       <span class="nx">db</span><span class="p">,</span>
+		<span class="nx">ConnPool</span><span class="p">:</span> <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">,</span>
+		<span class="nx">Context</span><span class="p">:</span>  <span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span>
+		<span class="nx">Clauses</span><span class="p">:</span>  <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">clause</span><span class="p">.</span><span class="nx">Clause</span><span class="p">{},</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="o">&amp;&amp;</span> <span class="p">!</span><span class="nx">config</span><span class="p">.</span><span class="nx">DisableAutomaticPing</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">pinger</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">.(</span><span class="kd">interface</span><span class="p">{</span> <span class="nf">Ping</span><span class="p">()</span> <span class="kt">error</span> <span class="p">});</span> <span class="nx">ok</span> <span class="p">{</span>
+			<span class="nx">err</span> <span class="p">=</span> <span class="nx">pinger</span><span class="p">.</span><span class="nf">Ping</span><span class="p">()</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">config</span><span class="p">.</span><span class="nx">Logger</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="s">&#34;failed to initialize database, got error %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span>
+<span class="p">}</span>
+</code></pre></div><p>上面的步骤中，值得在这个时间点去细看一下的就是 <code>config.Dialector.Initialize(db)</code> 这行，这句代码是执行我们传入的 dialector 的初始化方法。简单了解下对我们把我整理流程会有些好处</p>
+<p>我这里就用 sqlite 的 dialector 简单分析下，不同db的dialector实现可能会不同，但是所做的事大同小异</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">dialector</span> <span class="nx">Dialector</span><span class="p">)</span> <span class="nf">Initialize</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 初始化 DriverName
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">DriverName</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+		<span class="nx">dialector</span><span class="p">.</span><span class="nx">DriverName</span> <span class="p">=</span> <span class="nx">DriverName</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 设置连接池
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">Conn</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">Conn</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="nx">conn</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nx">dialector</span><span class="p">.</span><span class="nx">DriverName</span><span class="p">,</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">DSN</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="nx">err</span>
+		<span class="p">}</span>
+		<span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">conn</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 查看 sqlite 版本
+</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">version</span> <span class="kt">string</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">.</span><span class="nf">QueryRowContext</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="s">&#34;select sqlite_version()&#34;</span><span class="p">).</span><span class="nf">Scan</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">version</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">err</span>
+	<span class="p">}</span>
+	<span class="c1">// https://www.sqlite.org/releaselog/3_35_0.html
+</span><span class="c1"></span>    <span class="c1">// 根据不同版本注册回调到 gorm.DB 实例
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nf">compareVersion</span><span class="p">(</span><span class="nx">version</span><span class="p">,</span> <span class="s">&#34;3.35.0&#34;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">callbacks</span><span class="p">.</span><span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+			<span class="nx">CreateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;INSERT&#34;</span><span class="p">,</span> <span class="s">&#34;VALUES&#34;</span><span class="p">,</span> <span class="s">&#34;ON CONFLICT&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+			<span class="nx">UpdateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;UPDATE&#34;</span><span class="p">,</span> <span class="s">&#34;SET&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+			<span class="nx">DeleteClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;DELETE&#34;</span><span class="p">,</span> <span class="s">&#34;FROM&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+			<span class="nx">LastInsertIDReversed</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+		<span class="p">})</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="nx">callbacks</span><span class="p">.</span><span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+			<span class="nx">LastInsertIDReversed</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+		<span class="p">})</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 获取 dialector 的 ClauseBuilders 注册到 gorm.DB 实例
+</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">dialector</span><span class="p">.</span><span class="nf">ClauseBuilders</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">db</span><span class="p">.</span><span class="nx">ClauseBuilders</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="p">=</span> <span class="nx">v</span>
+	<span class="p">}</span>
+	<span class="k">return</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="一些概念的补充">一些概念的补充</h3>
+<p>看了上面<code>Open</code>流程的代码，我相信你一定和我一样对其中出现的一些名词有些迷惑，不知道它代表的什么含义，我这里说一些我自己的理解</p>
+<blockquote>
+<p>callbacks</p>
+</blockquote>
+<p>在<code>gorm.Open</code>代码中，我们提到<code>gorm</code>是基于回调来编写的，这点<code>gorm</code>的文档中也有提到过</p>
+<p><figure 
+	>
+	<a href="https://tva1.sinaimg.cn/large/008i3skNly1gyy5q9tq5zj31ak0citae.jpg" >
+		<img src="https://tva1.sinaimg.cn/large/008i3skNly1gyy5q9tq5zj31ak0citae.jpg"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<p>那 <code>callbacks</code> 究竟是什么，我们还是回归源码看一下，在上面的代码中涉及 <code>callbacks</code> 一共有两处</p>
+<p>第一处是 <code>gorm.Open</code> 初始化过程中的 <code>db.callbacks = initializeCallbacks(db)</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="nx">db</span><span class="p">.</span><span class="nx">callbacks</span> <span class="p">=</span> <span class="nf">initializeCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+
+<span class="c1">// 初始化 callbacks
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">initializeCallbacks</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="o">*</span><span class="nx">callbacks</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">{</span>
+		<span class="nx">processors</span><span class="p">:</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">processor</span><span class="p">{</span>
+			<span class="s">&#34;create&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+			<span class="s">&#34;query&#34;</span><span class="p">:</span>  <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+			<span class="s">&#34;update&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+			<span class="s">&#34;delete&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+			<span class="s">&#34;row&#34;</span><span class="p">:</span>    <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+			<span class="s">&#34;raw&#34;</span><span class="p">:</span>    <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+		<span class="p">},</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// callbacks gorm callbacks manager
+</span><span class="c1">// callbacks 中只有一个对象: processors，是一组 processor 的结合
+</span><span class="c1">// 从 initalizeCallbacks 我们也能猜测到一个 processor 就是对应一个行为的处理逻辑，初始化的过程给
+</span><span class="c1">// create/query/update/delete/row/raw 这几个行为进行了初始化
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">callbacks</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">processors</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">processor</span>
+<span class="p">}</span>
+
+<span class="c1">// 一个行为对应的处理，可以看到一个行为是可以对应多个处理方法（callback）的
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">processor</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">db</span>        <span class="o">*</span><span class="nx">DB</span>
+	<span class="nx">Clauses</span>   <span class="p">[]</span><span class="kt">string</span>
+	<span class="nx">fns</span>       <span class="p">[]</span><span class="kd">func</span><span class="p">(</span><span class="o">*</span><span class="nx">DB</span><span class="p">)</span>
+	<span class="nx">callbacks</span> <span class="p">[]</span><span class="o">*</span><span class="nx">callback</span>
+<span class="p">}</span>
+
+<span class="c1">// 一个处理方法
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">callback</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">name</span>      <span class="kt">string</span>
+	<span class="nx">before</span>    <span class="kt">string</span>
+	<span class="nx">after</span>     <span class="kt">string</span>
+	<span class="nx">remove</span>    <span class="kt">bool</span>
+	<span class="nx">replace</span>   <span class="kt">bool</span>
+	<span class="nx">match</span>     <span class="kd">func</span><span class="p">(</span><span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="kt">bool</span>
+	<span class="nx">handler</span>   <span class="kd">func</span><span class="p">(</span><span class="o">*</span><span class="nx">DB</span><span class="p">)</span>
+	<span class="nx">processor</span> <span class="o">*</span><span class="nx">processor</span>
+<span class="p">}</span>
+</code></pre></div><p>第二处是在sqlite dialector 的初始化过程中调用了<code>callbacks.RegisterDefaultCallbacks</code>方法</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="c1">// sqlite.go:57
+</span><span class="c1"></span><span class="nx">callbacks</span><span class="p">.</span><span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+    <span class="nx">CreateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;INSERT&#34;</span><span class="p">,</span> <span class="s">&#34;VALUES&#34;</span><span class="p">,</span> <span class="s">&#34;ON CONFLICT&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+    <span class="nx">UpdateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;UPDATE&#34;</span><span class="p">,</span> <span class="s">&#34;SET&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+    <span class="nx">DeleteClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;DELETE&#34;</span><span class="p">,</span> <span class="s">&#34;FROM&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+    <span class="nx">LastInsertIDReversed</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="c1">// callbacks.go:22
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">,</span> <span class="nx">config</span> <span class="o">*</span><span class="nx">Config</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">enableTransaction</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="p">!</span><span class="nx">db</span><span class="p">.</span><span class="nx">SkipDefaultTransaction</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">CreateClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">config</span><span class="p">.</span><span class="nx">CreateClauses</span> <span class="p">=</span> <span class="nx">createClauses</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">QueryClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">config</span><span class="p">.</span><span class="nx">QueryClauses</span> <span class="p">=</span> <span class="nx">queryClauses</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">DeleteClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">config</span><span class="p">.</span><span class="nx">DeleteClauses</span> <span class="p">=</span> <span class="nx">deleteClauses</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">UpdateClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">config</span><span class="p">.</span><span class="nx">UpdateClauses</span> <span class="p">=</span> <span class="nx">updateClauses</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 获取到gorm.DB 中的 callbacks[&#34;create&#34;] 对象，也就是一个 processor
+</span><span class="c1"></span>	<span class="nx">createCallback</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Callback</span><span class="p">().</span><span class="nf">Create</span><span class="p">()</span>
+
+    <span class="c1">// 调用 processor.Match 方法生成一个 callback
+</span><span class="c1"></span>    <span class="c1">// Match 接受一个`fc func(*DB) bool`的方法作为参数放到 callback 对象的 match 字段中
+</span><span class="c1"></span>    <span class="c1">// 当事件发生的时候，只有这个函数返回 true 的时候，对应的 callback 才会执行
+</span><span class="c1"></span>    <span class="c1">// Register 就是提供一个名字和回调函数，注册到 callback 中
+</span><span class="c1"></span>	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Match</span><span class="p">(</span><span class="nx">enableTransaction</span><span class="p">).</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:begin_transaction&#34;</span><span class="p">,</span> <span class="nx">BeginTransaction</span><span class="p">)</span>
+	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:before_create&#34;</span><span class="p">,</span> <span class="nx">BeforeCreate</span><span class="p">)</span>
+	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:save_before_associations&#34;</span><span class="p">,</span> <span class="nf">SaveBeforeAssociations</span><span class="p">(</span><span class="kc">true</span><span class="p">))</span>
+	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:create&#34;</span><span class="p">,</span> <span class="nf">Create</span><span class="p">(</span><span class="nx">config</span><span class="p">))</span>
+	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:save_after_associations&#34;</span><span class="p">,</span> <span class="nf">SaveAfterAssociations</span><span class="p">(</span><span class="kc">true</span><span class="p">))</span>
+	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:after_create&#34;</span><span class="p">,</span> <span class="nx">AfterCreate</span><span class="p">)</span>
+	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Match</span><span class="p">(</span><span class="nx">enableTransaction</span><span class="p">).</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:commit_or_rollback_transaction&#34;</span><span class="p">,</span> <span class="nx">CommitOrRollbackTransaction</span><span class="p">)</span>
+	<span class="nx">createCallback</span><span class="p">.</span><span class="nx">Clauses</span> <span class="p">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">CreateClauses</span>
+
+    <span class="c1">// 以下就和上面的过程大同小异了，只不多针对的是不同的行为
+</span><span class="c1"></span>    <span class="o">...</span>
+<span class="p">}</span>
+</code></pre></div><p>从上面的分析中我们可以得出，<code>callbacks</code>就是定义的一系列的处理流程，当某个行为发生之后，就会调用这个行为对应的 <code>callbacks</code>进行处理，这个当我们下面分析到一个简单的sql是如何执行的时候会有更深刻的理解</p>
+<h3 id="一条sql是怎么被组装和执行的">一条sql是怎么被组装和执行的</h3>
+<p>我们在从一条sql被拼凑而成然后执行的流程来看下上面分析的初始化过程生成的“乱七八糟”的对象都是干啥的</p>
+<p>也就是分析下下面这条源码就近干了点什么</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 查询
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">v</span> <span class="nx">Test</span>
+<span class="nx">db</span><span class="p">.</span><span class="nf">Debug</span><span class="p">().</span><span class="nf">Model</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Test</span><span class="p">{}).</span><span class="nf">Where</span><span class="p">(</span><span class="s">&#34;b = ?&#34;</span><span class="p">,</span> <span class="s">&#34;test&#34;</span><span class="p">).</span><span class="nf">First</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">v</span><span class="p">)</span>
+</code></pre></div><p>在分析上面的代码之前，有一点小知识需要了解下，在使用<code>gorm</code>的过程中，我们几乎所有的交互都是通过<code>gorm.DB</code>这个 struct 来完成的，我们可以把他理解成一个“和数据库的会话”，这个会话有各种各样的属性，用来控制和数据库交互过程中的行为，我们也可以基于某个会话生成新的会话，在生成新会话的过程中指定数据，从而得到满足我们需求的会话</p>
+<p>有了这个知识点，我们继续进行分析，<code>Debug()</code>这个方法，就是基于当前的会话生成新的会话，设置了会话的<code>Logger</code>属性，从而能输出最终执行的sql，效果如下</p>
+<p><figure 
+	>
+	<a href="https://tva1.sinaimg.cn/large/008i3skNly1gyy6z75rfnj315a03iwer.jpg" >
+		<img src="https://tva1.sinaimg.cn/large/008i3skNly1gyy6z75rfnj315a03iwer.jpg"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Debug start debug mode
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">Debug</span><span class="p">()</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Session</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Session</span><span class="p">{</span>
+		<span class="nx">Logger</span><span class="p">:</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Logger</span><span class="p">.</span><span class="nf">LogMode</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">Info</span><span class="p">),</span>
+	<span class="p">})</span>
+<span class="p">}</span>
+</code></pre></div><p><code>Model</code>方法指定了 <code>Statement</code> 中 <code>Model</code> 的值，明确了我们要操作的是哪个数据表</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">Model</span><span class="p">(</span><span class="nx">value</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">tx</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">getInstance</span><span class="p">()</span>
+	<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Model</span> <span class="p">=</span> <span class="nx">value</span>
+	<span class="k">return</span>
+<span class="p">}</span>
+</code></pre></div><p><code>Where</code> 和 <code>First</code> 方法是我们关注的重点，我们的sql就是通过这两个入口构造并执行的，这里还要补充一个知识点，<code>gorm</code>提供的是流式的api，这些api分几类，可以参考<a class="link" href="https://gorm.io/zh_CN/docs/method_chaining.html"  target="_blank" rel="noopener"
+    >文档</a>，其中最主要的是<code>链式方法</code>和<code>Finisher</code>方法。链式方法是将<code>Clauses</code>修改或添加到当前的<code>Statement</code>的方法，比如<code>Where</code>；<code>Finisher</code>方法是会立即执行注册回调的方法（没错，这个回调指的就是我们上面分析到的回调:-)），比如<code>First</code></p>
+<p>先来看下<code>Where</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Where add conditions
+</span><span class="c1">// 根据传入的参数生成表达式，然后作为一个子句(Clause)添加到 Statement 中
+</span><span class="c1">// 关于 Clause 和 Statement 更细化的分析，有空单写一篇文章
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">Where</span><span class="p">(</span><span class="nx">query</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">args</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">tx</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">getInstance</span><span class="p">()</span>
+	<span class="k">if</span> <span class="nx">conds</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">BuildCondition</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">args</span><span class="o">...</span><span class="p">);</span> <span class="nb">len</span><span class="p">(</span><span class="nx">conds</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">AddClause</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">Where</span><span class="p">{</span><span class="nx">Exprs</span><span class="p">:</span> <span class="nx">conds</span><span class="p">})</span>
+	<span class="p">}</span>
+	<span class="k">return</span>
+<span class="p">}</span>
+</code></pre></div><p>再看下<code>First</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="c1">// First find first record that match given conditions, order by primary key
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">First</span><span class="p">(</span><span class="nx">dest</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">conds</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// first的语义是查找满足条件的第一条纪录
+</span><span class="c1"></span>    <span class="c1">// 所以这里默认添加了 limit 和 order 子句（Clause）
+</span><span class="c1"></span>	<span class="nx">tx</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Limit</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nf">Order</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">OrderByColumn</span><span class="p">{</span>
+		<span class="nx">Column</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">Column</span><span class="p">{</span><span class="nx">Table</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">CurrentTable</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">PrimaryKey</span><span class="p">},</span>
+	<span class="p">})</span>
+    <span class="c1">// conds 就是传一些其他的条件来进行过滤，同样也是个构造子句的过程
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">conds</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">exprs</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">BuildCondition</span><span class="p">(</span><span class="nx">conds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">conds</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">...</span><span class="p">);</span> <span class="nb">len</span><span class="p">(</span><span class="nx">exprs</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+			<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">AddClause</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">Where</span><span class="p">{</span><span class="nx">Exprs</span><span class="p">:</span> <span class="nx">exprs</span><span class="p">})</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+    <span class="c1">// 没有记录的时候生成error
+</span><span class="c1"></span>	<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">RaiseErrorOnNotFound</span> <span class="p">=</span> <span class="kc">true</span>
+    <span class="c1">// 指定纪录存放的变量
+</span><span class="c1"></span>	<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Dest</span> <span class="p">=</span> <span class="nx">dest</span>
+    <span class="c1">// 触发 query 行为，指定 query 对应的回调
+</span><span class="c1"></span>	<span class="k">return</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">.</span><span class="nf">Query</span><span class="p">().</span><span class="nf">Execute</span><span class="p">(</span><span class="nx">tx</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><p>看了这么多，终于绕回来了，我们的查询行为最终回到了我们注册的回调上面，这也是为啥官网都说 gorm 是基于回调的原因</p>
+<p>我们直接来看这个处理过程：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">processor</span><span class="p">)</span> <span class="nf">Execute</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="o">*</span><span class="nx">DB</span> <span class="p">{</span>
+	<span class="c1">// call scopes
+</span><span class="c1"></span>    <span class="c1">// scope 先忽略，不是主流程
+</span><span class="c1"></span>	<span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">scopes</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">scopes</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">scopes</span>
+		<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">scopes</span> <span class="p">=</span> <span class="kc">nil</span>
+		<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">scope</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">scopes</span> <span class="p">{</span>
+			<span class="nx">db</span> <span class="p">=</span> <span class="nf">scope</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="kd">var</span> <span class="p">(</span>
+		<span class="nx">curTime</span>           <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
+		<span class="nx">stmt</span>              <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span>
+		<span class="nx">resetBuildClauses</span> <span class="kt">bool</span>
+	<span class="p">)</span>
+
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">BuildClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">stmt</span><span class="p">.</span><span class="nx">BuildClauses</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">Clauses</span>
+		<span class="nx">resetBuildClauses</span> <span class="p">=</span> <span class="kc">true</span>
+	<span class="p">}</span>
+
+	<span class="c1">// assign model values
+</span><span class="c1"></span>    <span class="c1">// 兼容处理下，如果没有手动调用过`Model`方法，就用传进来的对象类型作为要操作的表
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span> <span class="p">=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span> <span class="p">=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span>
+	<span class="p">}</span>
+
+	<span class="c1">// parse model values
+</span><span class="c1"></span>    <span class="c1">// 根据stmt.Model 解析库表
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="o">&amp;&amp;</span> <span class="p">(!</span><span class="nx">errors</span><span class="p">.</span><span class="nf">Is</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">schema</span><span class="p">.</span><span class="nx">ErrUnsupportedDataType</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Table</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">TableExpr</span> <span class="o">==</span> <span class="kc">nil</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">Len</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">Is</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">schema</span><span class="p">.</span><span class="nx">ErrUnsupportedDataType</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Table</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">TableExpr</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+				<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;%w: Table not set, please set it like: db.Model(&amp;user) or db.Table(\&#34;users\&#34;)&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">))</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="c1">// assign stmt.ReflectValue
+</span><span class="c1"></span>    <span class="c1">// 解析&amp;校验结果存放地址
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span> <span class="p">=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">ValueOf</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span><span class="p">)</span>
+		<span class="k">for</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Kind</span><span class="p">()</span> <span class="o">==</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">Ptr</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">IsNil</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">CanAddr</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Type</span><span class="p">().</span><span class="nf">Elem</span><span class="p">()))</span>
+			<span class="p">}</span>
+
+			<span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span> <span class="p">=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Elem</span><span class="p">()</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">!</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">IsValid</span><span class="p">()</span> <span class="p">{</span>
+			<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">ErrInvalidValue</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+    <span class="c1">// fns 就是经过处理和排序的 processor 下的 callbacks，可以额参考 processor.compile 方法
+</span><span class="c1"></span>    <span class="c1">// 在每次注册callback后都会调用
+</span><span class="c1"></span>    <span class="c1">// 很明显，构造query sql并执行等一系列流程都是在这些 callback中搞的
+</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">f</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">p</span><span class="p">.</span><span class="nx">fns</span> <span class="p">{</span>
+		<span class="nf">f</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+	<span class="p">}</span>
+
+    <span class="c1">// 打一些追踪日志
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">Len</span><span class="p">()</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">db</span><span class="p">.</span><span class="nx">Logger</span><span class="p">.</span><span class="nf">Trace</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">curTime</span><span class="p">,</span> <span class="kd">func</span><span class="p">()</span> <span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">int64</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Dialector</span><span class="p">.</span><span class="nf">Explain</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">String</span><span class="p">(),</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Vars</span><span class="o">...</span><span class="p">),</span> <span class="nx">db</span><span class="p">.</span><span class="nx">RowsAffected</span>
+		<span class="p">},</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Error</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">!</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nx">DryRun</span> <span class="p">{</span>
+		<span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">Reset</span><span class="p">()</span>
+		<span class="nx">stmt</span><span class="p">.</span><span class="nx">Vars</span> <span class="p">=</span> <span class="kc">nil</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="nx">resetBuildClauses</span> <span class="p">{</span>
+		<span class="nx">stmt</span><span class="p">.</span><span class="nx">BuildClauses</span> <span class="p">=</span> <span class="kc">nil</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="nx">db</span>
+<span class="p">}</span>
+</code></pre></div><p>通过上面的分析，我们知道想要进一步了解，就要看query这个行为注册了哪些callback，可以再返回注册的时候的代码看看，是在<code>callbacks</code>包中</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="c1">// callbacks.go:22
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">,</span> <span class="nx">config</span> <span class="o">*</span><span class="nx">Config</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="c1">// callbacks包为query行为注册了3个callback
+</span><span class="c1"></span>    <span class="nx">queryCallback</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Callback</span><span class="p">().</span><span class="nf">Query</span><span class="p">()</span>
+	<span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:query&#34;</span><span class="p">,</span> <span class="nx">Query</span><span class="p">)</span>
+	<span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:preload&#34;</span><span class="p">,</span> <span class="nx">Preload</span><span class="p">)</span>
+	<span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:after_query&#34;</span><span class="p">,</span> <span class="nx">AfterQuery</span><span class="p">)</span>
+	<span class="nx">queryCallback</span><span class="p">.</span><span class="nx">Clauses</span> <span class="p">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">QueryClauses</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">Query</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Error</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="c1">// 构造sql
+</span><span class="c1"></span>		<span class="nf">BuildQuerySQL</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="p">!</span><span class="nx">db</span><span class="p">.</span><span class="nx">DryRun</span> <span class="o">&amp;&amp;</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Error</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="c1">// 执行sql，这里就交给真正的db去执行了
+</span><span class="c1"></span>			<span class="nx">rows</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">.</span><span class="nf">QueryContext</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">String</span><span class="p">(),</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Vars</span><span class="o">...</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+				<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+				<span class="k">return</span>
+			<span class="p">}</span>
+			<span class="nx">gorm</span><span class="p">.</span><span class="nf">Scan</span><span class="p">(</span><span class="nx">rows</span><span class="p">,</span> <span class="nx">db</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">rows</span><span class="p">.</span><span class="nf">Close</span><span class="p">())</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="总结">总结</h3>
+<p>到这里，我们完整的分析了 gorm 的初始化和一次query sql 的执行流程，相信有了这个宏观的地图，在我们之后对 gorm 中某个组件进行分析的时候会更加的方便</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 xiaok&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.7.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#版本信息">版本信息</a></li>
+        <li><a href="#一个最简单的使用demo">一个最简单的使用demo</a></li>
+        <li><a href="#一些概念的补充">一些概念的补充</a></li>
+        <li><a href="#一条sql是怎么被组装和执行的">一条sql是怎么被组装和执行的</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

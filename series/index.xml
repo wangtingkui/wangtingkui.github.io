@@ -5,17 +5,36 @@
     <link>https://wangtingkui.github.io/series/</link>
     <description>Recent content in Series on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 01 Feb 2022 16:48:25 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/series/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Guzzle Promise 源码分析</title>
-      <link>https://wangtingkui.github.io/2020/09/guzzle-promise/</link>
-      <pubDate>Sat, 26 Sep 2020 17:15:06 +0800</pubDate>
+      <title>gorm源码阅读 - 1.基础流程</title>
+      <link>https://wangtingkui.github.io/go/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/gorm-%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B/</link>
+      <pubDate>Tue, 01 Feb 2022 16:48:25 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/09/guzzle-promise/</guid>
-      <description>简介 这篇文章着重讲解下 guzzle/promise 这个包，guzzle 中大量了使用了这个包来进行异步编程 首先让我们介绍下什么是 promise 以及是用来干什么的：简单来讲，prom</description>
+      <guid>https://wangtingkui.github.io/go/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/gorm-%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B/</guid>
+      <description>gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然 本篇文章主要是从宏观的角度看</description>
+    </item>
+    
+    <item>
+      <title>源码阅读-go(net/http)</title>
+      <link>https://wangtingkui.github.io/go/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/net-http/</link>
+      <pubDate>Sun, 16 Jan 2022 17:09:17 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/go/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/net-http/</guid>
+      <description>写在前面 我们知道，使用 go 构建一个 http 服务是一件非常简单的事情，比如使用下面区区几行代码，就可以运行起一个 http server package main import ( &amp;#34;log&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.HandleFunc(&amp;#34;/&amp;#34;, func(resp http.ResponseWriter, req *http.Request) { _,</description>
+    </item>
+    
+    <item>
+      <title>Go 中 sort 包的使用</title>
+      <link>https://wangtingkui.github.io/2020/10/sort/</link>
+      <pubDate>Wed, 14 Oct 2020 14:42:29 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/10/sort/</guid>
+      <description>排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序 Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实</description>
     </item>
     
     <item>
@@ -169,24 +188,6 @@
       
       <guid>https://wangtingkui.github.io/2020/05/plugin/</guid>
       <description>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.z</description>
-    </item>
-    
-    <item>
-      <title>使用 viper 处理项目配置</title>
-      <link>https://wangtingkui.github.io/2020/05/viper/</link>
-      <pubDate>Sun, 03 May 2020 12:05:47 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2020/05/viper/</guid>
-      <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置</description>
-    </item>
-    
-    <item>
-      <title>使用 pkg/errors 进行错误处理</title>
-      <link>https://wangtingkui.github.io/2020/04/errors/</link>
-      <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2020/04/errors/</guid>
-      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： if err != nil { return err } 然后层层传递，最终将错误传递到最上层，这里面存在着两个</description>
     </item>
     
   </channel>

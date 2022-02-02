@@ -5,10 +5,28 @@
     <link>https://wangtingkui.github.io/categories/</link>
     <description>Recent content in Categories on xiaok&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 26 Sep 2020 17:15:06 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 14 Oct 2020 14:42:29 +0800</lastBuildDate>
     
         <atom:link href="https://wangtingkui.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用 viper 处理项目配置</title>
+      <link>https://wangtingkui.github.io/2020/05/viper/</link>
+      <pubDate>Sun, 03 May 2020 12:05:47 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/05/viper/</guid>
+      <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置</description>
+    </item>
+    
+    <item>
+      <title>使用 pkg/errors 进行错误处理</title>
+      <link>https://wangtingkui.github.io/2020/04/errors/</link>
+      <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.github.io/2020/04/errors/</guid>
+      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： if err != nil { return err } 然后层层传递，最终将错误传递到最上层，这里面存在着两个</description>
+    </item>
     
     <item>
       <title>在hugo中使用shortcode</title>
@@ -43,7 +61,7 @@
       <pubDate>Tue, 14 Jan 2020 19:11:11 +0800</pubDate>
       
       <guid>https://wangtingkui.github.io/2020/01/php-multi-version/</guid>
-      <description>本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装过程 第一步 首先需要下载二进制文件 curl -L -O</description>
+      <description>本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装过程 第一步 首先需要下载 phpbrew 的二进制文件 #</description>
     </item>
     
     <item>
@@ -170,24 +188,6 @@
       
       <guid>https://wangtingkui.github.io/2019/12/ref-other-article/</guid>
       <description>我们可以在文章中引用自己的其他文章，hugo 帮我们实现了这种功能，只需要在文章中使用 {{&amp;lt; ref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}或者{{&amp;lt; relref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}即可，</description>
-    </item>
-    
-    <item>
-      <title>Go标准库（flag）- 源码分析</title>
-      <link>https://wangtingkui.github.io/2019/12/flag/</link>
-      <pubDate>Mon, 02 Dec 2019 14:07:56 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2019/12/flag/</guid>
-      <description>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用</description>
-    </item>
-    
-    <item>
-      <title>Go标准库（flag）- 使用</title>
-      <link>https://wangtingkui.github.io/2019/12/flag/</link>
-      <pubDate>Sun, 01 Dec 2019 17:28:45 +0800</pubDate>
-      
-      <guid>https://wangtingkui.github.io/2019/12/flag/</guid>
-      <description>本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提</description>
     </item>
     
   </channel>

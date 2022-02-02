@@ -1,193 +1,675 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on xiaok&#39;s site</title>
-    <link>https://wangtingkui.github.io/posts/</link>
-    <description>Recent content in Posts on xiaok&#39;s site</description>
+    <title>Posts on xiaok&#39;s blog</title>
+    <link>https://wangtingkui.com/posts/</link>
+    <description>Recent content in Posts on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 26 Sep 2020 17:15:06 +0800</lastBuildDate>
-    
-        <atom:link href="https://wangtingkui.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    
+    <language>en-us</language>
+    <lastBuildDate>Tue, 01 Feb 2022 16:48:25 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>gorm源码阅读 - 1.基础流程</title>
+      <link>https://wangtingkui.com/posts/go/gorm-%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B/</link>
+      <pubDate>Tue, 01 Feb 2022 16:48:25 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/gorm-%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B/</guid>
+      <description>gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然
+本篇文章主要是从宏观的角度看下使用 gorm 执行一条 sql 的整体流程，了解这个类库大概是怎么使用的，里面涉及的一些核心的对象是什么，方便我们日后针对某一组件进行剖析打好基础
+版本信息 # go 版本 go version go1.16.10 darwin/amd64 # 类库版本 gorm.io/driver/mysql v1.2.3 // indirect gorm.io/driver/sqlite v1.2.6 gorm.io/gorm v1.22.5 一个最简单的使用demo package main import ( &amp;quot;gorm.io/driver/sqlite&amp;quot; &amp;quot;gorm.io/gorm&amp;quot; ) // model 定义 type Test struct { ID uint `gorm:&amp;quot;primarykey&amp;quot;` A int32 B string } func main() { // 连接数据库 db, err := gorm.Open(sqlite.Open(&amp;quot;test.db&amp;quot;), &amp;amp;gorm.Config{}) if err != nil { panic(&amp;quot;failed to connect database&amp;quot;) } // 自动创建表结构 if err = db.</description>
+    </item>
     
     <item>
-      <title>Guzzle Promise 源码分析</title>
-      <link>https://wangtingkui.github.io/2020/09/guzzle-promise/</link>
-      <pubDate>Sat, 26 Sep 2020 17:15:06 +0800</pubDate>
+      <title>源码阅读-go(net/http)</title>
+      <link>https://wangtingkui.com/posts/go/net-http/</link>
+      <pubDate>Sun, 16 Jan 2022 17:09:17 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/09/guzzle-promise/</guid>
-      <description>简介 这篇文章着重讲解下 guzzle/promise 这个包，guzzle 中大量了使用了这个包来进行异步编程 首先让我们介绍下什么是 promise 以及是用来干什么的：简单来讲，prom</description>
+      <guid>https://wangtingkui.com/posts/go/net-http/</guid>
+      <description>写在前面 我们知道，使用 go 构建一个 http 服务是一件非常简单的事情，比如使用下面区区几行代码，就可以运行起一个 http server
+package main import ( &amp;#34;log&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.HandleFunc(&amp;#34;/&amp;#34;, func(resp http.ResponseWriter, req *http.Request) { _, err := resp.Write([]byte(&amp;#34;test http&amp;#34;)) if err != nil { log.Println(err) } }) if err := http.ListenAndServe(&amp;#34;:8080&amp;#34;, nil); err != nil { panic(err) } } 那 go 底层究竟是如何处理这一切呢，今天就来分析下 net/http 这个包的源码实现
+环境 ❯ go version go version go1.16.10 darwin/amd64 源码分析 那么就开始我们的源码分析，首先要说明，这里的分析不会面面俱到，会忽略一些细节，目的是为了让大家了解net/http包的核心流程和结构，有了这张“大的地图”，相信每个同学都能在此基础上完成源码阅读。
+我们知道，http 协议是一种请求/响应模式的协议，【客户端】发出一个【请求】，【服务】接受到【请求】，通过【路由】确定处理逻辑，处理完成后将【响应】返回给【客户端】
+从上面的描述我们可以很容易的抽象出在这个过程中涉及到的实体
+ 服务 路由 请求 响应  如果我们之前看过相关的源码，会发现 go 中相关的实现也是按照这些实体来实现的</description>
+    </item>
+    
+    <item>
+      <title>Go 中 sort 包的使用</title>
+      <link>https://wangtingkui.com/posts/go/sort/</link>
+      <pubDate>Wed, 14 Oct 2020 14:42:29 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/sort/</guid>
+      <description>排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序
+Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实现了 sort.Interface 接口，就可以调用 sort.Sort(data Interface) 进行排序操作了
+先来看下 sort.Interface 都定义了哪些方法：
+type Interface interface { // Len is the number of elements in the collection.  // Len 为集合内元素的总数  Len() int // Less reports whether the element with  // index i should sort before the element with index j.  //  // Less 返回索引为 i 的元素是否应排在索引为 j 的元素之前。  Less(i, j int) bool // Swap swaps the elements with indexes i and j.</description>
     </item>
     
     <item>
       <title>使用火焰图分析性能瓶颈</title>
-      <link>https://wangtingkui.github.io/2020/07/flame/</link>
+      <link>https://wangtingkui.com/posts/performance/flame/</link>
       <pubDate>Mon, 20 Jul 2020 15:45:48 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/07/flame/</guid>
-      <description>简介 火焰图是用来分析 CPU 瓶颈的利器，它利用可交互 svg 图片可视化的展示了 CPU 的占用情况，可以帮助我们快速的定位优化方向。因为生成的图片非常像一团熊熊</description>
+      <guid>https://wangtingkui.com/posts/performance/flame/</guid>
+      <description>简介 火焰图是用来分析 CPU 瓶颈的利器，它利用可交互 svg 图片可视化的展示了 CPU 的占用情况，可以帮助我们快速的定位优化方向。因为生成的图片非常像一团熊熊燃烧的火焰，所以起名为火焰图。
+使用火焰图的步骤 使用火焰图有两个步骤
+ 使用trace工具收集采样数据 使用火焰图生成工具将收集的采样数据生成火焰图  火焰图的类型 根据要分析的问题不同，火焰图有不同的类型，一般由以下五种，其中最常用的是 CPU（也就是常说的ON-CPU） 类型
+ CPU Memory Off-CPU Hot/Cold Differential  在 Linux 下使用火焰图进行 CPU 性能分析 收集采样信息 在 linux 下，一般使用操作系统自带的 perf 命令收集采样信息
+# 查找指定程序的pid ps -ef | grep &amp;lt;target_program_name&amp;gt; # 生成cpu采样文件 perf record -F 99 -p &amp;lt;target_program_pid&amp;gt; -g -o perf.data -- sleep 60 # -F 指定的是采样频率，每秒99次 # -p 指定要采样的程序pid # -g 纪录调用栈 # sleep 60 持续60秒 生成火焰图 一般使用FlameGraph来生成火焰图</description>
     </item>
     
     <item>
       <title>Editorconfig</title>
-      <link>https://wangtingkui.github.io/2020/07/editorconfig/</link>
+      <link>https://wangtingkui.com/posts/tool/editorconfig/</link>
       <pubDate>Mon, 20 Jul 2020 14:01:14 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/07/editorconfig/</guid>
-      <description>现如今，各种开发工具百花齐放，每个开发者都会有自己最中意的一款编辑器，但是各种编辑器的配置方式不同，当我们切换编辑器的时候，又需要针对新的编</description>
+      <guid>https://wangtingkui.com/posts/tool/editorconfig/</guid>
+      <description>现如今，各种开发工具百花齐放，每个开发者都会有自己最中意的一款编辑器，但是各种编辑器的配置方式不同，当我们切换编辑器的时候，又需要针对新的编辑器进行配置，以保证代码格式的相同。那么有没有什么方式可以让我们在不同的编辑器之间随意切换而不用考虑配置带来的成本呢？那就是 EditorConfig
+官方网站 https://editorconfig.org/
+原理 EditorConfig 的运作原理是设计了一套标准的配置文件，然后在各种编辑器中开发对应的插件，插件解析配置文件，从而保证不同编辑器的配置相同
+现在几乎大部分编辑器都内置了 EditorConfig 的支持，不需要额外的安装插件
+配置文件 EditorConfig 的配置文件是一个 ini 格式的文件，名字为 .editorconfig，项目中每个文件夹下都可以有自己的 .editorconfig 文件，就近原则生效
+配置文件格式 一个简单的配置文件demo:
+# EditorConfig is awesome: https://EditorConfig.org # top-most EditorConfig file root = true # Unix-style newlines with a newline ending every file [*] end_of_line = lf insert_final_newline = true # Matches multiple files with brace expansion notation # Set default charset [*.{js,py}] charset = utf-8 # 4 space indentation [*.py] indent_style = space indent_size = 4 # Tab indentation (no size specified) [Makefile] indent_style = tab # Indentation override for all JS under lib directory [lib/**.</description>
     </item>
     
     <item>
       <title>Phpunit解决测试依赖</title>
-      <link>https://wangtingkui.github.io/2020/07/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</link>
+      <link>https://wangtingkui.com/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</link>
       <pubDate>Sun, 19 Jul 2020 11:24:13 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/07/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</guid>
-      <description>介绍 在书写单测代码的过程中，我们要测试的代码段往往会依赖其他的模块，如果是简单的模块还好，但是如果遇到复杂的模块（比如依赖各种其他的组件，d</description>
+      <guid>https://wangtingkui.com/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</guid>
+      <description>介绍 在书写单测代码的过程中，我们要测试的代码段往往会依赖其他的模块，如果是简单的模块还好，但是如果遇到复杂的模块（比如依赖各种其他的组件，db、redis、api调用等等），被依赖模块的稳定程度会影响我们的单测。而且被依赖模块返回的不确定性也使得我们无法编写单测代码
+为了解决这类型问题，我们可以使用测试替身，本质其实就是对数据进行mock
+在 phpunit 中，使用测试替身有两种方式，一种是Stubs（桩件），另外一种是Mock Object（仿件对象）。这两个概念有啥区别呢？其实是测试重点不同：
+ 桩件注重的是可以对我们被依赖的模块进行返回值的设置，让单测可以按照我们期望的路径运行，往往还需要在我们的单测代码中书写各种断言 仿件对象注重的是被依赖模块的调用过程，比如被依赖对象中的A方法一定会被调用一次，使用仿件对象的单测，往往不需要在我们的单测代码中显示出现断言  使用 关于测试替身的详细使用，可以直接参考官方文档</description>
     </item>
     
     <item>
       <title>php 中的匿名函数和 Closure</title>
-      <link>https://wangtingkui.github.io/2020/06/closure/</link>
+      <link>https://wangtingkui.com/posts/php/closure/</link>
       <pubDate>Wed, 24 Jun 2020 11:53:13 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/06/closure/</guid>
-      <description>php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数 php 中的匿名函数是基于 Closure 这个类来实现的 基本使用 通常会将匿名函数用作</description>
+      <guid>https://wangtingkui.com/posts/php/closure/</guid>
+      <description>php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数
+php 中的匿名函数是基于 Closure 这个类来实现的
+基本使用 通常会将匿名函数用作回调函数
+array_filter([1,2,3], function ($item) { return $item % 2 == 0; }); // 也可以赋值给变量，供后续使用 $func = function () { echo &amp;#34;called&amp;#34; . PHP_EOL; } $func(); 使用父作用域变量 接触过其他有闭包特性语言的同学，一定会知道闭包的一大特点是可以使用父作用域的变量，php中的必报同样可以，但是使用上稍微有些区别
+php 中使用父作用域的变量，需要使用 use 关键字传递
+$a = 1; $func = function () use ($a) { echo $a; }; $func(); // 1 $a = 2; $func(); // 1 可能有的同学会感到奇怪，为什么上面两次调用输出的都是1，这是因为在 php 中，传值方式默认使用的都是值传递，如果需要在匿名函数中保有对父作用域变量的引用，需要使用引用传值的方式
+$a = 1; $func = function () use (&amp;amp;$a) { echo $a; }; $func(); // 1 $a = 2; $func(); // 2 特别需要注意的是</description>
     </item>
     
     <item>
       <title>Go标准库（sync）- 使用</title>
-      <link>https://wangtingkui.github.io/2020/06/sync/</link>
+      <link>https://wangtingkui.com/posts/go/sync/</link>
       <pubDate>Fri, 19 Jun 2020 15:32:25 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/06/sync/</guid>
-      <description>Go 的一大特点就是在语言级别实现了并发，一旦涉及并发，那么不可避免的就需要同步，来确保多个 goroutine 在访问共享资源的时候不会出现混乱的状况 Go 中的 sync 包提</description>
+      <guid>https://wangtingkui.com/posts/go/sync/</guid>
+      <description>Go 的一大特点就是在语言级别实现了并发，一旦涉及并发，那么不可避免的就需要同步，来确保多个 goroutine 在访问共享资源的时候不会出现混乱的状况
+Go 中的 sync 包提供了常见的并发编程同步原语，我们接下来就看下各种同步的方式如何使用，以及不同的同步方式都适用于什么样的场景，从而能让我们在日常使用中可以有针对性的挑选
+sync.Mutex sync.Mutex 是使用最广泛的一种原语，它保证同一时刻，只有一个 goroutine 可以访问临界资源，也就是我们常说的互斥锁
+m := &amp;amp;sync.Mutex{} m.Lock() // 临界区 m.Unlock() sync.RWMutex sync.RWMutex 是一个读写锁，它有两种锁的方式，读锁和写锁，当一个 goroutine 成功获取读锁的时候，其他 goroutine 也可以成功获取读锁，但是无法获取写锁。如果一个 goroutine 成功获取了写锁的时候，其他 goroutine 读锁和写锁都无法获得
+sync.RWMutex是基于sync.Mutex实现的，具体原理在这里就不多说了，可以看下另外一篇文章
+m := sync.RWMutex{} m.Lock() // 执行一些写操作 m.Unlock() m.RLock() // 执行一些可以并发的读操作 m.RUnlock() sync.RWMutex常用于读写场景都有，但是读场景远远多于写场景的情况
+sync.WaitGroup sync.WaitGroup 常常用来等待一组 goroutine 执行完成
+wg := &amp;amp;sync.WaitGroup{} wg.Add(2) go func() { wg.Done() }() go func() { wg.Done() }() wg.Wait() sync.Map Go 中的 map 类型本身是非并发安全的，如果在并发场景下，必须加锁来保证数据安全，sync.Map是一个并发版本的map，可以直接在并发场景下使用
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;sync&amp;#34; ) func main() { m := sync.</description>
     </item>
     
     <item>
       <title>go中Context的使用</title>
-      <link>https://wangtingkui.github.io/2020/06/context/</link>
+      <link>https://wangtingkui.com/posts/go/context/</link>
       <pubDate>Sun, 07 Jun 2020 15:33:50 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/06/context/</guid>
-      <description>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使</description>
+      <guid>https://wangtingkui.com/posts/go/context/</guid>
+      <description>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使用比较少
+使用 Context 本身是 context 包对外暴露的一个接口
+type Context interface { Deadline() (deadline time.Time, ok bool) // 返回当前 Context 的截止日期  Done() &amp;lt;-chan struct{} // 返回一个 channel，这个channel会在 Context 截止日期到了或者被取消之后关闭，多次调用Done会返回同一个channel  Err() error // 表明 Done 的原因，如果是超时，为DeadlineExceeded错误。如果是被取消，则是Canceled错误  Value(key interface{}) interface{} // 返回Context中key对应的value } 当前 go 中为我们提供了多个方法来创建 Context：
+ context.TODO 和 context.Background，这两个方法都是返回一个预先实例化好的空 context 对象，如果没有特殊需求，所有的 context 应该都基于 context.Background来创建 context.WithCancel，创建可取消的上下文 context.WithDeadline，创建有超时时间的上下文 context.WithTimeout，对 context.WithDeadline的封装，更容易使用 context.WithValue，创建有键值对的上下文  一个简单的使用 demo：</description>
     </item>
     
     <item>
       <title>使用 jordan-wright/email 处理邮件发送</title>
-      <link>https://wangtingkui.github.io/2020/06/mail/</link>
+      <link>https://wangtingkui.com/posts/go/mail/</link>
       <pubDate>Sun, 07 Jun 2020 14:49:31 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/06/mail/</guid>
-      <description>在 go 官方的标准库中，提供了 net/smtp 库可以让我们使用 smtp 协议来发送邮件，但是这个库使用起来不是很方便，而且官方也不再维护这个库，推荐我们使用功能更丰富</description>
+      <guid>https://wangtingkui.com/posts/go/mail/</guid>
+      <description>在 go 官方的标准库中，提供了 net/smtp 库可以让我们使用 smtp 协议来发送邮件，但是这个库使用起来不是很方便，而且官方也不再维护这个库，推荐我们使用功能更丰富的第三方库来处理邮件发送
+jordan-wright/email就是一个使用的比较多的用来处理邮件发送的类库，它底层还是基于net/smtp实现的，但是提供了方便的调用方式供使用者使用
+安装 go get github.com/jordan-wright/email
+使用demo e := email.NewEmail() e.From = &amp;#34;Jordan Wright &amp;lt;test@gmail.com&amp;gt;&amp;#34; e.To = []string{&amp;#34;test@example.com&amp;#34;} e.Bcc = []string{&amp;#34;test_bcc@example.com&amp;#34;} e.Cc = []string{&amp;#34;test_cc@example.com&amp;#34;} e.Subject = &amp;#34;Awesome Subject&amp;#34; e.Text = []byte(&amp;#34;Text Body is, of course, supported!&amp;#34;) e.HTML = []byte(&amp;#34;&amp;lt;h1&amp;gt;Fancy HTML is supported, too!&amp;lt;/h1&amp;gt;&amp;#34;) e.Send(&amp;#34;smtp.gmail.com:587&amp;#34;, smtp.PlainAuth(&amp;#34;&amp;#34;, &amp;#34;test@gmail.com&amp;#34;, &amp;#34;password123&amp;#34;, &amp;#34;smtp.gmail.com&amp;#34;)) 可以看到这个类库调用起来还是非常的语义化的
+更多的使用可以参考官方文档</description>
     </item>
     
     <item>
       <title>go中channel的使用</title>
-      <link>https://wangtingkui.github.io/2020/06/channel/</link>
+      <link>https://wangtingkui.com/posts/go/channel/</link>
       <pubDate>Mon, 01 Jun 2020 18:46:47 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/06/channel/</guid>
-      <description>channel 类型 go 中 channel 类型分为两类： 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int) 不带缓冲区的 c</description>
+      <guid>https://wangtingkui.com/posts/go/channel/</guid>
+      <description>channel 类型 go 中 channel 类型分为两类：
+ 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int)  不带缓冲区的 channel，写入和读取都会阻塞，在使用的时候必须有对应的写入 goroutine 和读取 goroutine，否则会造成死锁；带缓冲区的 channel，在缓冲区没满的时候会先将数据发到缓冲区，然后立即返回，如果缓冲区满了，会阻塞 goroutine
+为了操作上的安全和可读性，我们还可以限制 channel 的读写属性，默认 channel 都是可读可写的，可以使用 &amp;lt;-chan 来限定只读 channel， 使用chan&amp;lt;-来限定只写 channel，需要注意的是，只读的channel是不能关闭的
+func main() { ch := make(chan int, 10) go func(ch chan&amp;lt;- int) { for i := 0; i &amp;lt; 10; i++ { ch &amp;lt;- 1 // 这里如果使用 &amp;lt;- ch，编译是不通过的 	} close(ch) }(ch) for i := 0; i &amp;lt; 10; i++ { fmt.</description>
     </item>
     
     <item>
       <title>VMware funsion 安装 centos7 后配置 NAT 网络</title>
-      <link>https://wangtingkui.github.io/2020/05/net-fix-on-centos-7/</link>
+      <link>https://wangtingkui.com/posts/tool/net-fix-on-centos-7/</link>
       <pubDate>Sun, 31 May 2020 08:40:51 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/05/net-fix-on-centos-7/</guid>
-      <description>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络 一、确定</description>
+      <guid>https://wangtingkui.com/posts/tool/net-fix-on-centos-7/</guid>
+      <description>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络
+一、确定网络信息 vmnet8是安装 vmware funsion 之后自动生成的一张虚拟网卡，NAT 模式使用的就是这张网卡
+进入vmnet8网卡配置目录 &amp;gt; cd /Library/Preferences/VMware Fusion/vmnet8 查看nat信息，记住nat网关信息，也就是ip和netmask字段 &amp;gt; cat nat.conf nat.conf 文件内容：
+... # 省略文件其他部分 [host] # NAT gateway address ip = 172.16.5.2 netmask = 255.255.255.0 ... # 省略文件其他部分 查看dhcp信息，记住range范围，这里指的就是可用ip范围 &amp;gt; cat dhcpd.conf dhcpd.conf 文件信息：
+... # 省略文件其他部分 subnet 172.16.5.0 netmask 255.255.255.0 { range 172.16.5.128 172.16.5.254; option broadcast-address 172.16.5.255; option domain-name-servers 172.16.5.2; option domain-name localdomain; default-lease-time 1800; # default is 30 minutes max-lease-time 7200; # default is 2 hours option netbios-name-servers 172.</description>
     </item>
     
     <item>
       <title>群辉nas使用plex套件</title>
-      <link>https://wangtingkui.github.io/2020/05/plex/</link>
+      <link>https://wangtingkui.com/posts/tool/plex/</link>
       <pubDate>Sun, 24 May 2020 10:48:57 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/05/plex/</guid>
-      <description>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、</description>
+      <guid>https://wangtingkui.com/posts/tool/plex/</guid>
+      <description>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、演员等），易用程度和美观程度都非常高
+本片文章主要写一下 plex 在群辉nas上的基本使用
+第一步 安装 Plex Media Server 套件
+ 
+第二步 根据步骤注册 plex 账号
+第三步 点击头像旁边的+号，添加资料库
+ 
+选择要添加的资料库类型，官网强烈建议不同的媒体类型分类存储，比如电影和电视剧最好分开，否则可能会造成元信息搜索不到或者不准确
+ 
+这里假设我们要创建电影类型的资料库
+ 
+ 
+选择文件夹的时候要注意，plex只能展示第一层文件夹，比如我们的电影存储路径在/a/b/c，plex只能展示/a/b，所以这里我们最好是直接手动输入电影路径
+ 
+点击添加就好了
+第四步 通常在完成上面的操作后还是扫描不到文件夹里面的电影，这是因为 plex 没有对电影所在文件夹的操作权限，所以需要我们手动添加一下
+打开file station选中我们电影存储的文件夹，右键选择属性，点击权限，新增，给plex账户添加读写权限即可</description>
     </item>
     
     <item>
       <title>vscode推荐扩展</title>
-      <link>https://wangtingkui.github.io/2020/05/extension/</link>
+      <link>https://wangtingkui.com/posts/tool/extension/</link>
       <pubDate>Sat, 23 May 2020 23:04:47 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/05/extension/</guid>
-      <description>vscode 扩展推荐 实用 扩展名 用途 推荐主题 主题名 备注 vscode-icons 可以替换vscode的默认图标 Atom One Dark Theme Monokai Pro</description>
+      <guid>https://wangtingkui.com/posts/tool/extension/</guid>
+      <description>vscode 扩展推荐
+实用    扩展名 用途    推荐主题    主题名 备注     vscode-icons 可以替换vscode的默认图标   Atom One Dark Theme    Monokai Pro     </description>
     </item>
     
     <item>
       <title>alfred配置同步</title>
-      <link>https://wangtingkui.github.io/2020/05/sync-setting/</link>
+      <link>https://wangtingkui.com/posts/tool/sync-setting/</link>
       <pubDate>Sat, 23 May 2020 20:16:08 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/05/sync-setting/</guid>
-      <description>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用 alfred 的同步功能本质上是将配置打包成一个文件，然后借助第</description>
+      <guid>https://wangtingkui.com/posts/tool/sync-setting/</guid>
+      <description>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用
+alfred 的同步功能本质上是将配置打包成一个文件，然后借助第三方云同步功能同步这个文件，所以首先我们需要有个可用的云同步的文件夹，alfred 官方推荐的是 dropbox，但是由于一些不可描述的原因在国内使用起来不是很方便，所以这里我推荐另外一个软件，坚果云
+具体坚果云的配置非常简单，这里就不赘述了，下面说一下怎么开启 alfred 的同步功能
+配置  打开偏好设置 找到Advanced配置项 右下角一个 Syncing 的配置 点击 Set preferences folder.. 按钮，选择我们的云同步文件夹就好了  </description>
     </item>
     
     <item>
       <title>在go中使用单元测试</title>
-      <link>https://wangtingkui.github.io/2020/05/unit-testing/</link>
+      <link>https://wangtingkui.com/posts/go/unit-testing/</link>
       <pubDate>Sun, 17 May 2020 11:22:21 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/05/unit-testing/</guid>
-      <description>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持 单测基本规则 单元测试文件必须以_test.go结尾 单元测</description>
+      <guid>https://wangtingkui.com/posts/go/unit-testing/</guid>
+      <description>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持
+单测基本规则  单元测试文件必须以_test.go结尾 单元测试文件名前面的部分最好和要被测试的方法所在的文件名保持一致 单元测试函数名称必须要以TestXxxx的格式书写，函数必须要接受一个testing.T类型的指针，不能有返回值 单元测试函数名最好能和被测试的函数保持对应，比如要测试的方法是Add，那么单测函数的名字最好是TestAdd，如果被测试的方法在同一个包下的多个结构体中都有，那么单测函数的名字可以是Test结构体名字_方法名，比如TestMyStruct_Add  一个demo 包文件结构
+❯ tree . ├── main.go └── main_test.go 0 directories, 2 files main.go文件内容
+package main func Add(x, y int) int { return x + y } func main() { } main_test.go内容
+package main import ( &amp;quot;testing&amp;quot; ) func TestAdd(t *testing.T) { if Add(1, 2) != 3 { t.Errorf(&amp;quot;test add func err&amp;quot;) } } 执行结果
+❯ go test PASS ok test-go/unit-testing	0.006s 使用testing.</description>
     </item>
     
     <item>
       <title>推荐的atom插件</title>
-      <link>https://wangtingkui.github.io/2020/05/pakage/</link>
+      <link>https://wangtingkui.com/posts/tool/pakage/</link>
       <pubDate>Sat, 16 May 2020 10:33:59 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/05/pakage/</guid>
-      <description>atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件 project-manager（atom项目</description>
+      <guid>https://wangtingkui.com/posts/tool/pakage/</guid>
+      <description>atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件
+project-manager（atom项目管理） 可以将文件保存为项目，方便管理。我一般会配合 alfred workflow 方便的打开自己想要的项目
+sync-settings（atom配置同步） 如果使用多台电脑，必不能少的插件，将atom配置同步到 github gist 来达到同步目的
+pretty-json（json格式化） 开发中经常用的，可以对json字符串进行格式化
+ide-yaml（yaml格式化和校验） yaml格式化和校验
+pp-markdown（markdown预览） markdown预览
+atom-beautify（代码格式化） 代码格式化
+css-snippets（css代码提示） 支持css、scss、sass、less</description>
     </item>
     
     <item>
       <title>使用zsh主题</title>
-      <link>https://wangtingkui.github.io/2020/05/theme/</link>
+      <link>https://wangtingkui.com/posts/tool/theme/</link>
       <pubDate>Tue, 12 May 2020 23:21:29 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/05/theme/</guid>
-      <description>和插件一样，zsh 为我们提供了丰富的主题和自定义主题的能力，主题也分为两大类，一类是内置主题，另一类是自定义的扩展主题 内置主题 这个其实没啥好</description>
+      <guid>https://wangtingkui.com/posts/tool/theme/</guid>
+      <description>和插件一样，zsh 为我们提供了丰富的主题和自定义主题的能力，主题也分为两大类，一类是内置主题，另一类是自定义的扩展主题
+内置主题 这个其实没啥好说的，在官网浏览下，挑选自己喜欢的，然后再~/.zshrc中配置对应的主题名称就行
+以官网中下图这个主题为例，主题名字叫robbyrussell
+ 
+在配置文件中修改ZSH_THEME变量的值即可
+# Set name of the theme to load --- if set to &amp;#34;random&amp;#34;, it will # load a random theme each time oh-my-zsh is loaded, in which case, # to know which specific one was loaded, run: echo $RANDOM_THEME # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes ZSH_THEME=&amp;#34;robbyrussell&amp;#34; 自定义主题（也称为外部主题） 这种主题类似插件，需要下载到${ZSH_CUSTOM}/themes这个目录下，然后再去配置文件中配置即可
+下面以一个超推荐的外部主题powerlevel10k/powerlevel10k为例，超级强大和漂亮（已经超越了主题的范畴）
+ step1
+ 先下载主题：git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
+ step2
+ 修改主题
+# Set name of the theme to load --- if set to &amp;#34;random&amp;#34;, it will # load a random theme each time oh-my-zsh is loaded, in which case, # to know which specific one was loaded, run: echo $RANDOM_THEME # See https://github.</description>
     </item>
     
     <item>
       <title>alfred workflow 推荐</title>
-      <link>https://wangtingkui.github.io/2020/05/plugin-recommend/</link>
+      <link>https://wangtingkui.com/posts/tool/plugin-recommend/</link>
       <pubDate>Sun, 10 May 2020 11:44:38 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/05/plugin-recommend/</guid>
-      <description>这篇文站整理下自己经常使用的 alfred workflow TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录 alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目</description>
+      <guid>https://wangtingkui.com/posts/tool/plugin-recommend/</guid>
+      <description>这篇文站整理下自己经常使用的 alfred workflow
+TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录
+alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目
+YoudaoTranslate 有道词典翻译</description>
     </item>
     
     <item>
       <title>使用zsh插件</title>
-      <link>https://wangtingkui.github.io/2020/05/plugin/</link>
+      <link>https://wangtingkui.com/posts/tool/plugin/</link>
       <pubDate>Sun, 10 May 2020 11:02:41 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/05/plugin/</guid>
-      <description>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.z</description>
+      <guid>https://wangtingkui.com/posts/tool/plugin/</guid>
+      <description>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.zshrc配置文件中开启即可使用，另外一类是自定义插件，我们需要将这类插件下载到~/.oh-my-zsh/custom/plugins目录中，然后再配置使用
+我们使用插件的时候要按需启用，启用过多的插件会导致shell的启动很慢
+内建插件 内建插件的使用很简单，只需要在~/.zshrc中开启即可
+# .zshrc 文件 # Which plugins would you like to load? # Standard plugins can be found in ~/.oh-my-zsh/plugins/* # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/ # Example format: plugins=(rails git textmate ruby lighthouse) # Add wisely, as too many plugins slow down shell startup. plugins=(git ruby) 这里就列出一些自己常用的插件
+   插件名 描述 截图     git 显示git分支，改动状态等，还自带了很多git命令的缩写     urltools 提供urlencode 和 urldecode功能      自定义插件 自定义插件需要你手动将插件下载到~/.</description>
     </item>
     
     <item>
       <title>使用 viper 处理项目配置</title>
-      <link>https://wangtingkui.github.io/2020/05/viper/</link>
+      <link>https://wangtingkui.com/posts/go/viper/</link>
       <pubDate>Sun, 03 May 2020 12:05:47 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/05/viper/</guid>
-      <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置</description>
+      <guid>https://wangtingkui.com/posts/go/viper/</guid>
+      <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置。
+配置优先级 viper 可以从环境变量，配置文件等地方读取配置，甚至可以手动的在运行时设置值，那么 viper 读取配置的优先级是什么呢？根据官网，viper 读取的值得优先级如下
+ 通过 Set 设置的值 从命令行选项读取的值 环境变量的值 配置文件的值 key/value store 默认值  快速上手 一个使用 viper 的基本示例如下，基本上完成一个应用也就使用这些功能
+# myconfig.yamlname:xiaokage:28sex:malebook:- php- java- cother:other_valuepackage main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.com/spf13/viper&amp;#34; ) func main() { viper.AddConfigPath(&amp;#34;.&amp;#34;) // viper 不会帮我们设置任何默认路径，我们需要至少添加一个寻找配置文件的路径 	viper.SetConfigName(&amp;#34;myconfig&amp;#34;) // 设置配置文件名称 	viper.SetConfigType(&amp;#34;yaml&amp;#34;) // 如果配置文件没有后缀的话，这个值必须设置  err := viper.ReadInConfig() if err != nil { panic(fmt.Sprintf(&amp;#34;Read config file err: %v&amp;#34;, err)) } // 读取 	name := viper.</description>
     </item>
     
     <item>
       <title>使用 pkg/errors 进行错误处理</title>
-      <link>https://wangtingkui.github.io/2020/04/errors/</link>
+      <link>https://wangtingkui.com/posts/go/errors/</link>
       <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
       
-      <guid>https://wangtingkui.github.io/2020/04/errors/</guid>
-      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： if err != nil { return err } 然后层层传递，最终将错误传递到最上层，这里面存在着两个</description>
+      <guid>https://wangtingkui.com/posts/go/errors/</guid>
+      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下：
+if err != nil { return err } 然后层层传递，最终将错误传递到最上层，这里面存在着两个问题：
+ 没有错误发生时的上下文信息（或者叫堆栈信息） 在层层的错误传递过程中，有可能已经将原始错误转化，丢失了最原始的 error  当前，比较优雅的方式是使用 github.com/pkg/errors 这个包来进行错误处理，官方文档
+QUICK START 一个基本的使用如下：
+package main import ( e &amp;#34;errors&amp;#34; &amp;#34;fmt&amp;#34; &amp;#34;github.com/pkg/errors&amp;#34; ) func main() { oldErr := e.New(&amp;#34;我是底层error&amp;#34;) // 添加错误信息和堆栈信息，生成一个新的 error 	wrappedErr := errors.Wrap(oldErr, &amp;#34;我是封装error&amp;#34;) // 输出错误信息 	fmt.Printf(&amp;#34;%v\n&amp;#34;, wrappedErr) fmt.Println(&amp;#34;===============================&amp;#34;) // 输出错误信息和堆栈信息 	fmt.Printf(&amp;#34;%+v\n&amp;#34;, wrappedErr) fmt.Println(&amp;#34;===============================&amp;#34;) // 获取底层错误 	err := errors.Cause(wrappedErr) fmt.Println(err) } 我们也可以使用errors.WithMessage和errors.WithStack单独添加错误信息和堆栈信息
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.</description>
+    </item>
+    
+    <item>
+      <title>在hugo中使用shortcode</title>
+      <link>https://wangtingkui.com/posts/tool/shortcodes/</link>
+      <pubDate>Tue, 14 Apr 2020 15:50:45 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/tool/shortcodes/</guid>
+      <description>markdown 因为简洁的语法非常受到写文章的人的喜爱，但是某些情况下 markdown 也有不足，比如我们想展示一些特殊的样式或者格式的时候，往往需要直接书写 html 代码，这就和 markdown 简洁的初衷相违背了，hugo 提供了shortcode的功能来弥补了 markdown 的这个不足。shortcode 本质上是一些模板，我们可以使用定义好的指令来引用这些模板，相当于书写了一段html在文章中，更多的说明可以查看官网，接下来我们来看看怎么使用 shortcode
+简单使用 使用 shortcode 的语法是 {{% shortcodename parameters %}}，其中：
+ shortcodename 是 shortcode 的名字 parameters 是参数列表，如果有多个参数，使用空格分隔，如果某个参数中有空格，需要用双引号把这个参数包起来 % 是定界符，也有使用&amp;lt;和&amp;gt;做定界符的，{{&amp;lt; shortcodename parameters &amp;gt;}}  参数有两种传递方式，基于名字的({{% shortcodename name1=value1 name2=value2 %}}))和基于位置的({{% shortcodename value1 value2 %}})，使用哪种方式取决于 shortcode 自己模板的定义。
+有的 shortcode 使用的时候要求闭合，类似 html 标签，比如 {{&amp;lt; highlight go &amp;gt;}} A bunch of code here {{&amp;lt; /highlight &amp;gt;}}
+常用的内置 shortcode
+   shortcodename 说明 usage     ref 使用绝对路径引用博客内其他文章 {{% ref &amp;quot;blog/other_article.</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（time）- 使用</title>
+      <link>https://wangtingkui.com/posts/go/time/</link>
+      <pubDate>Sun, 12 Apr 2020 23:31:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/time/</guid>
+      <description>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面：
+ 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时器的操作  本文只是列举比较常用的场景，更多的细节还是要参考官方文档
+时间点 在 go 中，时间点使用 time.Time 来表示，这是一个基于纳秒精度的时间表示，我们还是通过一些例子来来学习
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; ) func main() { // 获取时间 	now := time.Now() // 获取当前时间点对象 	t := time.Unix(1586708379, 0) // 从指定时间戳实例化Time对象，第二个参数可以指定纳秒的精度  s, _ := time.Parse(&amp;#34;2006-01-02 03:04:05&amp;#34;, time.Now().Format(&amp;#34;2006-01-02 03:04:05&amp;#34;)) // 从时间字符串解析 	fmt.Println(now, t, s) // 分解时间中的时间元素 	year := t.Year() // 获取年 	month := t.</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（log）- 使用</title>
+      <link>https://wangtingkui.com/posts/go/log/</link>
+      <pubDate>Sun, 29 Mar 2020 17:51:54 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/log/</guid>
+      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用
+实例化 logger 进行日志记录 首先看一个最简单的 demo：
+package main import ( &amp;#34;log&amp;#34; &amp;#34;os&amp;#34; ) func main() { logger := log.New(os.Stdout, &amp;#34;我是自定义日志前缀：&amp;#34;, log.LstdFlags) logger.Println(&amp;#34;I&amp;#39;m print call&amp;#34;) } // 我是自定义日志前缀：2020/03/29 20:45:43 I&amp;#39;m print call  log 包最终输出到哪里和包本身无关，取决于 io.Writer（第一个参数） 对应的实际对象底层传递的是什么。
+log 可以支持我们指定每条日志的前缀（第二个参数）和一些固定的标记（第三个参数）
+logger 有Print、Fatal、Panic三个系列的方法，区别如下
+ Print只记录日志 Fatal记录日志后会调用os.Exit(1)推出应用 Panic记录日志后会调用Panic  每个系列也都提供了三种调用方式，比如Print系列有以下三种方式：
+ Print输出给定的信息 Println输出给定的信息并且在后面追加一个换行 Printf支持使用格式化参数  使用辅助方法进行日志记录 log 包还提供了一些快捷方法，可以直接通过包的方法调用，比如
+package main import ( &amp;#34;log&amp;#34; ) func main() { log.Println(&amp;#34;hahahha&amp;#34;) } // 2020/03/29 20:47:42 hahahha  它其实是在包内生成了一个输出到 stdout 的 logger，方便我们使用而已</description>
+    </item>
+    
+    <item>
+      <title>php多版本管理</title>
+      <link>https://wangtingkui.com/posts/php/php-multi-version/</link>
+      <pubDate>Tue, 14 Jan 2020 19:11:11 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/php/php-multi-version/</guid>
+      <description>本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具
+ phpbrew github 地址  phpbrew安装过程 第一步 首先需要下载 phpbrew 的二进制文件
+# 下载执行文件 curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar # 添加执行权限 chmod +x phpbrew.phar # Move the file to some directory within your $PATH sudo mv phpbrew.phar /usr/local/bin/phpbrew 第二步 安装好二进制文件之后，phpbrew还需要一点简单的配置才能使用
+# 初始化phpbrew shell脚本 phpbrew init # 在shell配置文件（~/.bashrc 或者 ~/.zshrc）中添加 echo &amp;quot;[[ -e ~/.phpbrew/bashrc ]] &amp;amp;&amp;amp; source ~/.phpbrew/bashrc&amp;quot; &amp;gt;&amp;gt; ~/.zshrc # 重新加载shell配置文件 source ~/.zshrc 第三步 设置用于查找库文件的默认前缀，可选值有 macports，homebrew，debian，ubuntu 或是自定义路径。
+对于使用homebrew的用户，可以设置phpbrew lookup-prefix homebrew
+phpbrew命令简单使用 # 查看phpbrew版本 phpbrew --version # 查看可以安装的版本 phpbrew know # 列出本地已经安装的版本 phpbrew list # 临时切换版本 phpbrew use 7.</description>
+    </item>
+    
+    <item>
+      <title>Go进行文件操作</title>
+      <link>https://wangtingkui.com/posts/go/go-file-operation/</link>
+      <pubDate>Sun, 05 Jan 2020 15:33:50 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/go-file-operation/</guid>
+      <description>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供了一些常用的方法供开发者使用
+本文只列出了一些常用的方法，更多的操作可以参考：https://colobu.com/2016/10/12/go-file-operations
+使用 os 包进行文件操作  打开文件
+ package main import ( &amp;#34;os&amp;#34; ) func main() { var ( file *os.File err error ) // 以只读方式打开一个文件 	file, err = os.Open(&amp;#34;a.txt&amp;#34;) if err != nil { panic(err) } _ = file.Close() // 以指定的模式打开文件，这个方法更具有通用性 	// 一般情况下我们应该尽量使用 os.Open 和 os.Create 方法而不是这个方法 	file, err = os.OpenFile(&amp;#34;a.txt&amp;#34;, os.O_APPEND, 0666) if err != nil { panic(err) } _ = file.</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（net/http）- 使用</title>
+      <link>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8net-http/</link>
+      <pubDate>Sun, 22 Dec 2019 11:48:21 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8net-http/</guid>
+      <description>net/http 包为我们提供了对 http 协议的处理，包含了客户端和服务端两大部分的实现
+版本  go1.12  主要结构体 几乎任何语言中的http包都是围绕客户端，服务端，请求和响应这4个对象展开的，go 也不例外。本篇主要是讲解包的使用，所以还是通过例子来说明
+客户端 快速入门 http 客户端基本的使用流程：
+ 构造请求 构造客户端 使用客户端发送请求获取响应 使用响应  下面用一个最简单的例子来展示下上面的流程：
+func main() { // 创建一个请求 	req, err := http.NewRequest(&amp;#34;GET&amp;#34;, &amp;#34;http://www.baidu.com&amp;#34;, nil) if err != nil { panic(err) } // 创建一个客户端 	client := http.Client{} // 使用客户端发送请求 	resp, err := client.Do(req) if err != nil { panic(err) } // 使用响应 	defer resp.Body.Close() if ret, err := ioutil.</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（net/url）- 使用</title>
+      <link>https://wangtingkui.com/posts/go/net-url/</link>
+      <pubDate>Sat, 21 Dec 2019 22:21:40 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/net-url/</guid>
+      <description>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用
+url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：scheme://[userinfo@]host/path[?query][#fragment]，如果 scheme 之后不是以斜线开头的，那么结构被认为是 scheme:opaque[?query][#fragment]，也就是用户信息、域名和路径部分是不透明的，可以认为是被加密或者被编码过的
+环境  go1.12  包中的基本结构体 这个包中有3个比较基本的结构体：
+ URL：代表一个被解析的url UserInfo：代表 url 中的用户信息部分 Values：存放 query 参数或者 form 参数  type URL struct { Scheme string Opaque string // encoded opaque data 	User *Userinfo // username and password information 	Host string // host or host:port 	Path string // path (relative paths may omit leading slash) 	RawPath string // encoded path hint (see EscapedPath method) 	ForceQuery bool // append a query (&amp;#39;?</description>
+    </item>
+    
+    <item>
+      <title>go日志库zap使用</title>
+      <link>https://wangtingkui.com/posts/go/zap/</link>
+      <pubDate>Mon, 16 Dec 2019 22:45:34 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/zap/</guid>
+      <description>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap
+版本 本篇基于的 zap 版本是 v1.10.0
+使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概念，方便在我们阅读 demo 或者写代码的时候能大体的感知到我们在用什么，为什么这样用。为了不产生翻译上的歧义，书写过程中涉及到的概念会用 zap 源码中的命名
+ Logger
+ 这是 zap 暴露给我们类型，正常情况下，我们也是通过 Logger 这个结构体的方法来记录日志的
+ Config
+ 这个是 zap 提供给我们的 Logger 的配置，我们可以按需配置，然后通过 Build 方法来构造出我们想要的 Logger，是典型的的构造者模式
+ Field
+ 除了日志级别、日志时间、日志信息等这些基本的通用字段之外，我们在记录日志的时候通常会想记录一些额外的字段（用来记录打日志时的上下文），这些字段在 zap 中需要封装成 Field 类型
+ Core
+ Logger 是一个结构体，为我们暴露了使用日志的方法，而 Core 是一个接口，它被包含在 Logger 中，用来真正提供日志格式化和输出功能，这样的实现使日志记录器的使用和输出实现了高度解耦。我们可以实现自己的 Core 从而达到不同的输出的目的
+ Encoder
+ Encoder 同样是一个接口，刚才说到 Core 是实现具体输出行为的核心，而 Encoder 是 Core 中真正进行日志信息和字段格式化的编码器，它把我们输入的各种日志信息经过处理得到字节切片。从而可以记录在各种存储载体中。zap 对于 Encoder 自带了两个实现，jsonEncoder 和 consoleEncoder</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（path/filepath）- 使用</title>
+      <link>https://wangtingkui.com/posts/go/path-filepath/</link>
+      <pubDate>Sun, 15 Dec 2019 14:35:43 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/path-filepath/</guid>
+      <description>简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示
+而且要注意的是，path/filepath这个库并不会去判断你指定的路径存不存在，也不会去判断指定的路径是一个文件还是一个目录
+环境 ╰─$ go version go version go1.12.14 darwin/amd64 说明 获取指定路径的目录 filepath.Dir() 代码：
+func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, &amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, } for _, path := range examples { fmt.Println(filepath.Dir(path)) } } 输出：
+╰─$ go run main.go /etc /etc / etc . . 获取指定路径的文件名 filepath.Base() 代码：
+func main() { examples := []string{ &amp;#34;/etc/a.txt&amp;#34;, &amp;#34;/etc/&amp;#34;, // 在拆分之前会去除末尾的斜杠，相当于 /etc 	&amp;#34;/etc&amp;#34;, &amp;#34;etc/a.txt&amp;#34;, &amp;#34;etc&amp;#34;, &amp;#34;&amp;#34;, // 如果是空字符串，返回 .</description>
+    </item>
+    
+    <item>
+      <title>go多版本管理</title>
+      <link>https://wangtingkui.com/posts/go/go-multi-version-manage/</link>
+      <pubDate>Fri, 13 Dec 2019 14:46:50 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/go-multi-version-manage/</guid>
+      <description>之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下使用gvm进行go的多版本管理
+gvm的信息可以参考：https://github.com/moovweb/gvm
+环境信息  macOS 10.15.2 brew 2.1.16  安装gvm bash &amp;lt; &amp;lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) 下载好之后，需要修改下个人配置文件，使gvm相关命令生效，如果用的是bash，则修改~/.bashrc，如果习惯用zsh，那就修改~/.zshrc，以此类推
+[[ -s &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; ]] &amp;amp;&amp;amp; source &amp;#34;$HOME/.gvm/scripts/gvm&amp;#34; 修改之后，重开一会会话或者直接source ~/.zshrc（我用的是zsh）让刚才的修改生效。执行一下看下效果
+╰─$ gvm version Go Version Manager v1.0.22 installed at /Users/wangtingkui/.gvm 可以看到，我装的是 1.0.22 的版本
+常用命令 # 查看gvm版本 gvm version # 查看所有可以安装的版本 gvm listall # 查看本地已经安装的版本 gvm list # 安装指定版本 gvm install go1.13.5 # 删除指定版本 gvm uninstall go1.13.5 # 临时切换版本 gvm use go1.13.5 # 切换版本并指定为默认版本 gvm use go1.</description>
+    </item>
+    
+    <item>
+      <title>go cli 应用框架cobra（二）- 源码分析</title>
+      <link>https://wangtingkui.com/posts/go/cobra/</link>
+      <pubDate>Wed, 11 Dec 2019 14:57:37 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/cobra/</guid>
+      <description>上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5
+首先需要了解的是，在cobra中，所有的命令会组成一个树的结构，必然有一个根命令，我们应用的每次执行，都是从这个根命令开始的，官方文档也说过，基于cobra的应用的main包中的代码是很简单的，几乎没有额外的操作，仅有的操作其实就是执行我们的根命令。所以自然而然的，我们的代码分析之旅也是从根命令的执行开始的。
+为了有个直观的感受，我简单生成了一个基于cobra的应用。这个应用有一个根命令和一个test1的子命令，项目结构如下：
+╰─$ tree . . ├── LICENSE ├── cmd │ ├── root.go │ └── test1.go ├── go.mod ├── go.sum └── main.go 1 directory, 6 files 主线执行分析 所有的项目不可能都是简单的一条线到底，代码总会有很多分支，但我们阅读源码的时候精力和关注度总是有限的（不是有人说人在同一时间关注的点不能超过7个还是几个来着么），如果代码里面的每个分支都去看，每个函数的调用都进去瞅瞅，很快我们就会迷失在复杂的代码里面，忘了我们怎么看到的这行代码，所以本文去分析源码的时候，会优先挑一条主线，主要跟踪这条主线上的逻辑和调用，忽略其他支线。当然，也会有比较重要的其他支线，但是和当前的主线无关，会单开一个小节去阅读分析
+cobra主线自然是入口-找到目标命令-分析参数-执行这条路径啦~
+看下main.go文件中都有点啥
+package main import &amp;#34;learnCobra/cmd&amp;#34; func main() { cmd.Execute() } 简洁的一比，直接进入cmd.Execute
+func Execute() { if err := rootCmd.Execute(); err != nil { fmt.Println(err) os.Exit(1) } } 可以看到，其实就是执行了根命令的Execute方法，这个方法才是我们的重头戏。当然，所谓的根命令只是从命令的组织形态上来说的，所有的命令都是cobra.Command的这个结构体，后面绝大多数的代码也都是对这个结构体的成员和方法的分析
+func (c *Command) Execute() error { _, err := c.ExecuteC() return err } 毫无波澜，直接进c.</description>
+    </item>
+    
+    <item>
+      <title>hugo源码分析（一）- version</title>
+      <link>https://wangtingkui.com/posts/go/version/</link>
+      <pubDate>Tue, 10 Dec 2019 17:00:24 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/version/</guid>
+      <description>hugo 是一个静态网页生成器，关于它的使用就不再多说，可以参考之前写过的使用hugo搭建个人站点系列文章。本系列主要是分析下 hugo 的源码，看下其他人是如何实现一个大型的 cli 应用
+第一篇文章从 hugo version 命令出发，简单了解下 hugo 应用的整体流程和代码结构，为后续比较复杂的命令分析做准备
+本系列文章都是基于 hugo 0.57.2 版本叙述的
+命令简介 version 命令的作用数输出当前 hugo 的版本，基本上所有的 cli 应用都会有这样的命令
+一个 hugo version 的输出：
+╰─$ hugo version Hugo Static Site Generator v0.57.2-A849CB2D darwin/amd64 BuildDate: 2019-08-17T17:53:28Z 源码分析 hugo是基于 cobra 这个命令行应用框架做的，如果能了解下cobra的基本使用会对我们的源码分析过程有比较大的帮助，关于 cobra，可以参考之前的两篇文章
+ go cli 应用框架cobra（一）- 简介 go cli 应用框架cobra（二）- 源码分析  为了使我们的分析过程比较轻松，先来看下在 hugo version 这条主线中，会涉及到哪些比较主要的结构体
+ baseCmd
+ type baseCmd struct { cmd *cobra.Command } func (c *baseCmd) getCommand() *cobra.</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（七）- 给你的文章分类</title>
+      <link>https://wangtingkui.com/posts/tool/hugo-categorize-your-artical/</link>
+      <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/tool/hugo-categorize-your-artical/</guid>
+      <description>hugo 内置了强大且支持自定义的分类系统，比如标签、类别、系列等，可以通过配置开启这些分类系统
+在config.toml中配置：
+[taxonomies] tag = &amp;quot;tags&amp;quot; category = &amp;quot;categories&amp;quot; seris = &amp;quot;series&amp;quot; 开启之后，只需要在文章的Front Matter对应的属性中，添加想要划分到的分类即可
+--- title: &amp;quot;php入门&amp;quot; date: 2019-10-10 tags: [&amp;quot;php&amp;quot;] categories: [&amp;quot;php&amp;quot;] series: [&amp;quot;php入门系列&amp;quot;] </description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（八）- 自定义你的站点域名</title>
+      <link>https://wangtingkui.com/posts/tool/hugo-custom-your-domain/</link>
+      <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/tool/hugo-custom-your-domain/</guid>
+      <description>github pages 为我们提供的站点域名是 &amp;lt;username&amp;gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到 github pages 上呢，当然是可以的
+github pages 支持多种域名类型，不同的域名类型配置有细微的区别
+配置二级域名 二级域名就是类似baidu.com这种，.com是顶级域,baidu是二级域
+首先进入到 github 仓库的设置，找到 GitHub Pages 项下的 Custom domain 配置项  
+输入你的二级域名，点击保存，这个操作会自动在你的仓库代码的根目录下添加一个CNAME文件  
+最后还需要在你的dns服务提供商那里配置一下域名解析，对于二级域名来说，你可以配置ALIAS记录,ANAME记录或者是A记录
+如果配置的是ALIAS或者ANAME，需要把你二级域名指向默认的站点域名，也就是&amp;lt;username.github,io&amp;gt;
+如果配置的是A记录，把你的二级域名指向下面的ip，具体会不会变化可以参考官方文档
+185.199.108.153 185.199.109.153 185.199.110.153 185.199.111.153 配置子域名 可以参考官方文档
+参考  github pages 官方文档  </description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（六）- 定制你文章的url</title>
+      <link>https://wangtingkui.com/posts/tool/hugo-custom-your-url/</link>
+      <pubDate>Sat, 07 Dec 2019 16:01:41 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/tool/hugo-custom-your-url/</guid>
+      <description>默认情况下，站点文章的 url 和我们 content 目录下的文件结构是一一对应的，比如有 content/posts/test.md 这篇文章，当我们发布之后，在站点访问的 url 就是 &amp;lt;domian&amp;gt;/posts/test，如果我们不想要这种形式，可以通过配置来改变默认的行为
+在使用配置之前，先让我们了解下 hugo 生成的 url 规则
+ 
+知道了每个段的含义，我们就可以使用hugo提供给我们的配置项来进行url的自定义
+可以在config.toml文件中的[permalinks]配置指定url的格式，比如
+[permalinks] post = &amp;quot;/:year/:month/:title/&amp;quot; 所有可用的属性如下
+:month :monthname :day :weekday :weekdayname :yearday :section :title :slug :filename </description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（五）- 模板选择顺序</title>
+      <link>https://wangtingkui.com/posts/tool/hugo-template-order/</link>
+      <pubDate>Sat, 07 Dec 2019 15:55:24 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/tool/hugo-template-order/</guid>
+      <description>加入我们要寻找content/posts下文章的模板
+当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模板查找顺序是：
+&amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/UNSPECIFIED.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/UNSPECIFIED/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html 当指定了type和layout属性的时候，查找顺序是：
+&amp;lt;project_path&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/layouts/_default/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/reviewarticle.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/review/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/posts/single.html &amp;lt;project_path&amp;gt;/themes/&amp;lt;THEME&amp;gt;/layouts/_default/single.html </description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（四）- Front Matter 配置详解</title>
+      <link>https://wangtingkui.com/posts/tool/front-matter/</link>
+      <pubDate>Sat, 07 Dec 2019 15:31:44 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/tool/front-matter/</guid>
+      <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。
+Front Matter 支持4种配置语言 YAML,JSON,TOML,ORG，可以通过Front Matter的前导符（包裹Front Matter的定界符）来告诉hugo我们使用的是什么配置语言，各种配置语言的前导符如下：
+   格式 定界符     toml 开始和结束行使用+++   yaml 开始和结束行使用---   json 使用一个json对象，对象后需要跟一个空白行   org a group of Org mode keywords in the format ‘#+KEY: VALUE’. Any line that does not start with #+ ends the front matter section. Keyword values can be either strings (#+KEY: VALUE) or a whitespace separated list of strings (#+KEY[]: VALUE_1 VALUE_2).</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（三）- 引用其他文章</title>
+      <link>https://wangtingkui.com/posts/tool/ref-other-article/</link>
+      <pubDate>Mon, 02 Dec 2019 14:12:07 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/tool/ref-other-article/</guid>
+      <description>我们可以在文章中引用自己的其他文章，hugo 帮我们实现了这种功能，只需要在文章中使用 {{&amp;lt; ref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}或者{{&amp;lt; relref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}即可，前者是相对链接，后者是绝对链接
+这个功能其实是 hugo 提供的 Shortcodes功能
+一些例子：
+{{&amp;lt; ref &amp;quot;blog/post.md&amp;quot; &amp;gt;}} =&amp;gt; https://example.com/blog/post/ {{&amp;lt; ref &amp;quot;post.md#tldr&amp;quot; &amp;gt;}} =&amp;gt; https://example.com/blog/post/#tldr:caffebad {{&amp;lt; relref &amp;quot;post.md&amp;quot; &amp;gt;}} =&amp;gt; /blog/post/ {{&amp;lt; relref &amp;quot;blog/post.md#tldr&amp;quot; &amp;gt;}} =&amp;gt; /blog/post/#tldr:caffebad {{&amp;lt; ref &amp;quot;#tldr&amp;quot; &amp;gt;}} =&amp;gt; #tldr:badcaffe {{&amp;lt; relref &amp;quot;#tldr&amp;quot; &amp;gt;}} =&amp;gt; #tldr:badcaffe 如果是不是需要引用，而仅仅是需要展示{{&amp;lt; ref &amp;quot;blog/post.md&amp;quot; &amp;gt;}}这样的文本，需要在标签内加上/* */这样的注释，比如{{&amp;lt;/* ref &amp;quot;blog/post.md&amp;quot; */&amp;gt;}}</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（flag）- 源码分析</title>
+      <link>https://wangtingkui.com/posts/go/flag/</link>
+      <pubDate>Mon, 02 Dec 2019 14:07:56 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/flag/</guid>
+      <description>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用核心数据类型 首先还是来看下flag包中有哪些核心的类型，主要有两个接口和两个结构体
+interface:
+// 抽象类型， 我们后续也是通过这个接口来扩展我们flag包支持的数据类型的 type Value interface { String() string Set(string) error } type Getter interface { Value Get() interface{} } struct:
+// 代表一个命令行选项 type Flag struct { Name string // name as it appears on command line // 标签在命令行显示的名字  Usage string // help message // 帮助信息  Value Value // value as set // 标签的值  DefValue string // default value (as text); for usage message // 默认值（文本格式）；这也是一个用法的信息说明 } // 代表一个选项集合，其实可以认为就是在shell中敲入的命令被拆分解析之后就是FlagSet type FlagSet struct { // 当解析标签出现错误的时候，Usage就会被调用。这个字段是一个函数（不是一个方法），它可以指向  // 用户自己定义的错误处理函数。 	Usage func() name string // 名字，一般默认是os.</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（flag）- 使用</title>
+      <link>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8flag/</link>
+      <pubDate>Sun, 01 Dec 2019 17:28:45 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8flag/</guid>
+      <description>本文所讨论内容基于的go版本：go1.13
+在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提供了解析命令行参数的功能
+要使用flag包，主要有3个步骤：定义flag、解析flag、使用flag
+定义flag flag包为我们提供了两种定义flag的方式，flag.Xxx()方式和flag.XxxVar()方式,其中Xxx可以是Int,String等类型，其中第一种会返回对应类型的指针，第二种则是将flag绑定到一个变量上
+// 方式1 var config *string = flag.String(&amp;#34;config&amp;#34;. &amp;#34;path/to/config&amp;#34;, &amp;#34;配置文件路径&amp;#34;) // 方式2 var intval int flag.IntVal(&amp;amp;intval, &amp;#34;intval&amp;#34;, 1, &amp;#34;a intger value&amp;#34;) 除了标准库中提供的基础数据类型的解析，如果我们需要解析自定义的类型，可以使用flag.Val()方法，只要绑定的类型实现了flag.Value接口即可
+解析flag 当定义完了所有的flag之后，我们可以调用flag.Parse()方法解析命令行参数
+使用flag 当使用命令行传递flag的时候，有以下三种语法格式（虽说官方只写了一个-，但其实当flag是bool类型的时候--也是支持的，但最好还是按照官方的来）
+-flag // 只支持 bool 类型 -flag value // 只支持非 bool 类型，因为比如有`cmd -x false`这种格式，不能确定false到底是flag的值还是一个参数 -flag=value 在命令行传递参数时，如果是int类型，可以传递十进制、十六进制、八进制或者是负数；如果是bool类型，可以使用1,0,t,g,true,false,TRUE,FALSE,True,Flase；如果是duration，可以接受任何time.ParseDuration可以解析的类型
+non-flag 参数 在上面的说明中我们知道，传递参数的时候有固定格式，那不符合这些格式的参数就是non-flag参数
+在代码中，我们可以通过下面的这些方法来获取和使用non-flag参数
+flag.Arg(i int) // 获取第i个non-flag参数 flag.Args() // 获取所有的non-flag参数 flag.NArg() // 获取non-flag参数的个数 一个例子 package main import ( &amp;#34;flag&amp;#34; &amp;#34;fmt&amp;#34; ) func main() { var ( s = flag.</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</title>
+      <link>https://wangtingkui.com/posts/tool/deploy-on-github-pages/</link>
+      <pubDate>Sun, 01 Dec 2019 13:56:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/tool/deploy-on-github-pages/</guid>
+      <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点的生成，那么剩下的一个问题就是如何部署我们生成的站点，供其他人访问
+这篇文章帮助我们了解如何使用github pages的功能来部署我们的个人站点
+使用 github pages 的好处  完全免费 不需要自己购买服务器 不需要自己运行维护 可以方便的使用https  github pages 的限制 当然github pages本身还是有一些限制的
+ 网站大小不能超过1GB 网站不能发布的过于频繁（每小时不超过10个版本） 每个月流量上限为1000GB  但是作为个人博客来说，这些限制几乎对我们没什么影响
+如何使用 github pages github pages 官方文档
+ 申请一个github账号，每个github账号可以有一个个人站点和多个项目站点（这个以后有机会在单独写文章说一下） 创建一个&amp;lt;username&amp;gt;.github.io的仓库 当我们执行hugo命令去生成我们的静态站点的文件时，默认会放在当前目录的public目录（当然你也可以通过配置hugo从而指定目录），所以我们直接把创建好的仓库拉取到项目下的public目录即可git clone git@github.com:wangtingkui/wangtingkui.github.io.git ./public 指定hugo命令生成站点文件 进入public文件夹，将生成的文件提交到git，然后推送到远端即可  cd public git add . git commit -m &amp;#34;提交信息&amp;#34; git push -u origin master 推送之后，访问&amp;lt;username&amp;gt;.github.io你就会惊奇的发现你的个人站点已经可以访问了，如果访问的时候没有效果，也不要着急，那是github还在处理中，去休息一下，过段时间在访问就会生效啦~</description>
+    </item>
+    
+    <item>
+      <title>go cli 应用框架cobra（一）- 简介</title>
+      <link>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8cobra/</link>
+      <pubDate>Sun, 01 Dec 2019 10:17:30 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8cobra/</guid>
+      <description>简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架
+一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users will know how to use the application because they will natively understand how to use it.也就是我们的应用应该做到自解释，让使用者可以很容易的上手，使用的时候就像是说话一样的简单和自然
+一个遵循这个理念的命令行应用模式是 APPNAME VERB NOUN -ADJECTIVE 或者换种表达方式 APPNAME COMMADN ARG --FLAG
+ APPNAME是我们应用的名称 COMMAND是我们要执行的动作，一般是个动词 ARG是我们动作作用的对象，一般是个名词 --FLAG是用来调整我们动作的行为，一般是个形容词  一个例子：git clone URL --bare
+项目结构 我们可以按照自己的喜好去组织我们的项目代码，但是一般情况下，基于cobra的项目会有以下的项目结构
+╰─$ tree . ├── LICENSE ├── cmd │ └── root.go └── main.go 1 directory, 3 files 快速上手构建项目 上面也提到了，cobra 不仅仅是一个命令行框架，它也能辅助我们快速生成我们的项目文件，接下来就让我们使用 cobra 提供的脚手架帮助我们生成基于 cobra 框架的命令行应用（如果还没有安装cobra脚手架，可以进入github.</description>
+    </item>
+    
+    <item>
+      <title>详解字符编码</title>
+      <link>https://wangtingkui.com/posts/base/unicode/</link>
+      <pubDate>Sun, 22 Sep 2019 15:45:32 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/base/unicode/</guid>
+      <description>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型的例子就是当我们的代码遇到了乱码，这时候其他人总会告诉我们要使用utf-8编码就可以解决问题，但这背后蕴含的原理，却一直没有探索过，所以就查了一些资料，将查到的资料提炼汇总，有了这篇文章
+字符编码的发展历程 我们知道，所有的数据在计算机中都是用二进制串来表示的，那么人类世界的语言符号，想要在计算机中表示，就必须有对应的转换规则，这就是字符编码
+ASCII 时期 上世纪60年代，美国制定了一套字符编码，它使用一个字节来对英语字符和二进制串进行映射，这就是ASCII码。
+ASCII一共规定了128个字符，其中包含32个控制字符，由于ASCII只有128个字符，所以只占用了一个字节的7位，所以规定最前面的1位统一为0
+传统字符编码时期 由于不是所有国家的语言体系都是英文，比如中国使用的汉字，字符数量就远远超过了一个字符所能容纳的极限，所有随着计算机的普及，各个国家都提出了自己的字符编码方案，基本的策略就是使用更多的字节空间，兼容ASCII，然后用剩下的空间来编码其他的字符。比如中国的GB2312、BIG5等，但是这就导致了一个问题，各个国家都只是兼容了ASCII，然后编码了本国语言，对其他语言是不支持的，所以导致当时的计算机只能处理双语言环境，不支持多语言环境。
+假如遇到要在一个文本中同时出现中文、英文、阿拉伯文的时候，就无法进行编码处理了。
+unicode 时期 为了解决传统编码方式带来的问题，unicode出现了，下面就让我们详细看下unicode是如何解决上面的这些问题的
+现代编码模型 在探讨unicode是个什么东西之前，我们先来了解一下现代编码模型，因为要完美解决上面提到的编码问题，以及保证这套字符编码的可扩展性（因为到现在为止，还不断有更多的字符在加入到我们的语言体系之中），已经不能只是用简单规定几个字节，然后将字符和编码一一对应来处理了。
+现代编码模型将字符编码从底向上分为了几个层次：
+ 抽象字符表（Abstract Character Repertoire）   就是这个编码系统所包含的所有抽象字符的集合，比如ASCII编码里面就有128个抽象字符。抽象字符表可以是封闭的，比如ASCII，不允许添加新的字符，也可以是开放的，比如unicode，可以添加新的字符进去。要注意的是，抽象字符表是一个集合，集合有一个最大的特点就是无序的。
+  编码字符集（Coded Character Set）   抽象字符表是抽象字符的集合，集合是无序的。无序的抽象字符表其实没什么卵用，因为我们只能判断一个字符在不在这个抽象字符表中，却无法方便的引用这个字符。为了更好的描述和操作字符，我们为抽象字符表中的每个抽象字符关联一个数字编号，这个数字编号叫做Code Point（译为码位），编码字符集就是为所有的字符都分配了码位的字符集。
+  码位一般是非负整数，习惯上使用十六进制表示。码位的分配也不一定是连续的。
+  最常见的编码字符集就是UCS（Universal Character Set），这也是unicode标准下使用的编码字符集
+   - [0x0000,0xD7FF] 和 [0xE000,0x10FFFF] 这两个区间称为unicode标量值(unicode scala value) - [0xD800,0xDBFF] 称为 Hign-surrogate - [0xDC00,0xDFFF] 称为 Low-surrogate   字符编码表（Character Encoding Form）   当我们有了编码字符集之后，是不是所有的问题已经解决了呢，当然不是，上面提到过，字符集可以是开放的，所以理论上UCS需要的码位是无限的，但是就算是计算机中uint32，也只有4个字节，最多只能表示4294967295个码位，这样矛盾就出现了。解决这个矛盾的方案，就是字符编码表
+  字符编码表是一个将Unicode标量值(Unicode scalar value)一一映射为码元序列(Code Unit Sequences)的映射。 之所以必须是一一映射，那是因为我们不光要编码，也要解码。 在Unicode中，指定了三种标准的字符编码表，UTF-8,UTF-16,UTF-32。分别将Unicode标量值映射为比特数为8、16、32的码元的序列。 即，UTF-8的码元为uint8, UTF-16的码元为uint16, UTF-32的码元为uint32。 当然也有一些非标准的CEF，如UCS-2,UCS-4，在此不多介绍。</description>
+    </item>
+    
+    <item>
+      <title>使用hugo搭建个人网站（一）- hugo使用入门</title>
+      <link>https://wangtingkui.com/posts/tool/introduction/</link>
+      <pubDate>Sun, 22 Sep 2019 15:28:34 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/tool/introduction/</guid>
+      <description>以blog为例，看看hugo是如何使用的
+创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们的项目目录
+简单了解下目录的结构
+. ├── archetypes # 存储 .md 的模板文件 │ └── default.md ├── config.toml # 配置文件 ├── content # 存储网站所有的内容 ├── data # 存储数据文件供模板调用 ├── layouts # 存储 .html 模板 ├── static # 存储图片、css、js等静态文件，该目录下的文件会直接拷贝到 /public └── themes # 存储主题 6 directories, 2 files 快速体验 让我们快速体验下hugo的威力
+hugo创建出来的项目默认不带有任何主题，我们直接从github上随便搞一个，放到之前提到的themes文件夹下
+git clone https://github.com/budparr/gohugo-theme-ananke.git ./themes/ananke
+然后在配置文件中配置应用这个主题
+echo &#39;theme = &amp;quot;ananke&amp;quot;&#39; &amp;gt;&amp;gt; config.toml
+接下来该正常的用markdown写作我们的文章了，使用如下命令新建一个文章
+hugo new post/my-first-post.md
+可以看到在content文件夹下多出了一个post文件夹，里面有一个my-fisrt-post.md的markdown文件，我们看下创建出来的这个文件里面的内容都有什么
+ content/post/my-first-post.</description>
     </item>
     
   </channel>

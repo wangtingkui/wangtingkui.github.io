@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面：
+ 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时器的操作  本文只是列举比较常用的场景，更多的细节还是要参考官方文档
+时间点 在 go 中，时间点使用 time.Time 来表示，这是一个基于纳秒精度的时间表示，我们还是通过一些例子来来学习
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; ) func main() { // 获取时间 	now := time.Now() // 获取当前时间点对象 	t := time.Unix(1586708379, 0) // 从指定时间戳实例化Time对象，第二个参数可以指定纳秒的精度  s, _ := time.Parse(&amp;#34;2006-01-02 03:04:05&amp;#34;, time.Now().Format(&amp;#34;2006-01-02 03:04:05&amp;#34;)) // 从时间字符串解析 	fmt.Println(now, t, s) // 分解时间中的时间元素 	year := t.Year() // 获取年 	month := t.'><title>Go标准库（time）- 使用</title>
+
+<link rel='canonical' href='https://wangtingkui.com/posts/go/time/'>
+
+<link rel="stylesheet" href="/scss/style.min.8f4416a35036b6471a6978873128b5652464226c8db8a9620ed1b94bc11bd353.css"><meta property='og:title' content='Go标准库（time）- 使用'>
+<meta property='og:description' content='本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面：
+ 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时器的操作  本文只是列举比较常用的场景，更多的细节还是要参考官方文档
+时间点 在 go 中，时间点使用 time.Time 来表示，这是一个基于纳秒精度的时间表示，我们还是通过一些例子来来学习
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; ) func main() { // 获取时间 	now := time.Now() // 获取当前时间点对象 	t := time.Unix(1586708379, 0) // 从指定时间戳实例化Time对象，第二个参数可以指定纳秒的精度  s, _ := time.Parse(&amp;#34;2006-01-02 03:04:05&amp;#34;, time.Now().Format(&amp;#34;2006-01-02 03:04:05&amp;#34;)) // 从时间字符串解析 	fmt.Println(now, t, s) // 分解时间中的时间元素 	year := t.Year() // 获取年 	month := t.'>
+<meta property='og:url' content='https://wangtingkui.com/posts/go/time/'>
+<meta property='og:site_name' content='xiaok&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='go' /><meta property='article:published_time' content='2020-04-12T23:31:09&#43;08:00'/><meta property='article:modified_time' content='2020-04-12T23:31:09&#43;08:00'/>
+<meta name="twitter:title" content="Go标准库（time）- 使用">
+<meta name="twitter:description" content="本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面：
+ 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时器的操作  本文只是列举比较常用的场景，更多的细节还是要参考官方文档
+时间点 在 go 中，时间点使用 time.Time 来表示，这是一个基于纳秒精度的时间表示，我们还是通过一些例子来来学习
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; ) func main() { // 获取时间 	now := time.Now() // 获取当前时间点对象 	t := time.Unix(1586708379, 0) // 从指定时间戳实例化Time对象，第二个参数可以指定纳秒的精度  s, _ := time.Parse(&amp;#34;2006-01-02 03:04:05&amp;#34;, time.Now().Format(&amp;#34;2006-01-02 03:04:05&amp;#34;)) // 从时间字符串解析 	fmt.Println(now, t, s) // 分解时间中的时间元素 	year := t.Year() // 获取年 	month := t.">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" >
+                Go标准库使用
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/posts/go/time/">Go标准库（time）- 使用</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 12, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面：</p>
+<ul>
+<li>时间点的表示及其操作，以及时间点的格式化展示</li>
+<li>时间段的表示及其操作</li>
+<li>定时器的操作</li>
+</ul>
+<p>本文只是列举比较常用的场景，更多的细节还是要参考<a class="link" href="https://golang.org/pkg/time/"  target="_blank" rel="noopener"
+    >官方文档</a></p>
+<h3 id="时间点">时间点</h3>
+<p>在 go 中，时间点使用 <code>time.Time</code> 来表示，这是一个基于纳秒精度的时间表示，我们还是通过一些例子来来学习</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;fmt&#34;</span>
+	<span class="s">&#34;time&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// 获取时间
+</span><span class="c1"></span>	<span class="nx">now</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>             <span class="c1">// 获取当前时间点对象
+</span><span class="c1"></span>	<span class="nx">t</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Unix</span><span class="p">(</span><span class="mi">1586708379</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// 从指定时间戳实例化Time对象，第二个参数可以指定纳秒的精度
+</span><span class="c1"></span>  <span class="nx">s</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="s">&#34;2006-01-02 03:04:05&#34;</span><span class="p">,</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Format</span><span class="p">(</span><span class="s">&#34;2006-01-02 03:04:05&#34;</span><span class="p">))</span> <span class="c1">// 从时间字符串解析
+</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">now</span><span class="p">,</span> <span class="nx">t</span><span class="p">,</span> <span class="nx">s</span><span class="p">)</span>
+
+	<span class="c1">// 分解时间中的时间元素
+</span><span class="c1"></span>	<span class="nx">year</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Year</span><span class="p">()</span>     <span class="c1">// 获取年
+</span><span class="c1"></span>	<span class="nx">month</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Month</span><span class="p">()</span>   <span class="c1">// 获取月份
+</span><span class="c1"></span>	<span class="nx">day</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Day</span><span class="p">()</span>       <span class="c1">// 获取日
+</span><span class="c1"></span>	<span class="nx">hour</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Hour</span><span class="p">()</span>     <span class="c1">// 获取小时
+</span><span class="c1"></span>	<span class="nx">minute</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Minute</span><span class="p">()</span> <span class="c1">// 获取分钟
+</span><span class="c1"></span>	<span class="nx">second</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Second</span><span class="p">()</span> <span class="c1">// 获取秒数
+</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Unix</span><span class="p">()</span>             <span class="c1">// 转换成时间戳
+</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">UnixNano</span><span class="p">()</span>         <span class="c1">// 转换成纳秒时间戳
+</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">year</span><span class="p">,</span> <span class="nx">month</span><span class="p">,</span> <span class="nx">day</span><span class="p">,</span> <span class="nx">hour</span><span class="p">,</span> <span class="nx">minute</span><span class="p">,</span> <span class="nx">second</span><span class="p">)</span>
+
+	<span class="c1">// 时间操作
+</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">// 添加10s
+</span><span class="c1"></span>	<span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Sub</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>       <span class="c1">// 计算时间差值，结果是个时间段
+</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Equal</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">())</span>     <span class="c1">// 比较两个时间是否相等，而且支持跨时区比较
+</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Before</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">())</span>    <span class="c1">// 比较某个时间是否在另一个时间之前
+</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">After</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">())</span>     <span class="c1">// 比较某个时间是否在另一个时间之后
+</span><span class="c1"></span>
+	<span class="c1">// 格式化展示
+</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">&#34;2006-01-02 03:04:05&#34;</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="nx">在</span> <span class="k">go</span> <span class="nx">中</span><span class="err">，</span><span class="nx">时间的格式化非常特别</span><span class="err">，</span><span class="nx">是通过一些指定的数字来进行格式化的</span><span class="err">，</span><span class="nx">这些数字也非常有记忆点</span><span class="err">，</span><span class="nx">口诀是</span><span class="s">`2006 1 2 3 4 5`</span><span class="err">，</span><span class="nx">也就是2006年1月2日下午3点4分5秒</span><span class="err">，</span><span class="nx">不同的格式化就是通过摆弄这些数字来得到的</span>
+
+</code></pre></div><h3 id="时间段">时间段</h3>
+<p>在 go 中，时间段是使用 <code>time.Duration</code> 来表示的，也是纳秒精度的一个数值，同时 go 也定义了一系列常用的时间精度，比如秒，小时等，看 go 中的源码很简单就能看明白：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="c1">// go 源码
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Duration</span> <span class="kt">int64</span>
+
+<span class="kd">const</span> <span class="p">(</span>
+	<span class="nx">Nanosecond</span>  <span class="nx">Duration</span> <span class="p">=</span> <span class="mi">1</span>
+	<span class="nx">Microsecond</span>          <span class="p">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">Nanosecond</span>
+	<span class="nx">Millisecond</span>          <span class="p">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">Microsecond</span>
+	<span class="nx">Second</span>               <span class="p">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">Millisecond</span>
+	<span class="nx">Minute</span>               <span class="p">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="nx">Second</span>
+	<span class="nx">Hour</span>                 <span class="p">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="nx">Minute</span>
+<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;fmt&#34;</span>
+	<span class="s">&#34;time&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">d</span> <span class="o">:=</span> <span class="mi">10</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span>
+	<span class="nx">hour</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Hours</span><span class="p">()</span>       <span class="c1">// 转换成小时
+</span><span class="c1"></span>	<span class="nx">minite</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Minutes</span><span class="p">()</span>   <span class="c1">// 转换成分钟
+</span><span class="c1"></span>	<span class="nx">second</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Seconds</span><span class="p">()</span>   <span class="c1">// 转换成秒
+</span><span class="c1"></span>	<span class="nx">nano</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Nanoseconds</span><span class="p">()</span> <span class="c1">// 转换成纳秒
+</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">hour</span><span class="p">,</span> <span class="nx">minite</span><span class="p">,</span> <span class="nx">second</span><span class="p">,</span> <span class="nx">nano</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="定时器">定时器</h3>
+<p>定时器的本质是一个 Time 类型的 channel，会以我们指定的时间间隔在 channel 中产生值</p>
+<pre tabindex="0"><code>package main
+
+import (
+	&quot;fmt&quot;
+	&quot;time&quot;
+)
+
+func main() {
+	ticker := time.Tick(time.Second) // 定义一个1秒间隔的定时器
+	for i := range ticker {
+		fmt.Println(i) // 每秒都会执行的任务
+	}
+}
+
+</code></pre>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/go/">go</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/posts/go/sort/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Go 中 sort 包的使用</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/go/sync/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Go标准库（sync）- 使用</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/go/log/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Go标准库（log）- 使用</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/go/%E4%BD%BF%E7%94%A8net-http/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Go标准库（net/http）- 使用</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/go/net-url/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Go标准库（net/url）- 使用</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 xiaok&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.7.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#时间点">时间点</a></li>
+        <li><a href="#时间段">时间段</a></li>
+        <li><a href="#定时器">定时器</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

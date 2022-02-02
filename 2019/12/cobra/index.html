@@ -21,11 +21,11 @@
     
     
     <meta name="description" content="上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，" />
-    <meta name="generator" content="Hugo 0.65.3 with theme pure" />
+    <meta name="generator" content="Hugo 0.89.2 with theme pure" />
     <title>go cli 应用框架cobra（二）- 源码分析 - xiaok&#39;s site</title>
     
     
-    <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
+    <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.min.c58e22f1aa6179cd5cb60b9e08421a2b9a9c9fe9352d095e051b51aae209e5c0.css">
     
     <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" async>
@@ -33,17 +33,14 @@
     <meta property="og:title" content="go cli 应用框架cobra（二）- 源码分析" />
 <meta property="og:description" content="上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://wangtingkui.github.io/2019/12/cobra/" />
+<meta property="og:url" content="https://wangtingkui.github.io/2019/12/cobra/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-12-11T14:57:37+08:00" />
 <meta property="article:modified_time" content="2019-12-11T14:57:37+08:00" />
+
 <meta itemprop="name" content="go cli 应用框架cobra（二）- 源码分析">
-<meta itemprop="description" content="上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，">
-<meta itemprop="datePublished" content="2019-12-11T14:57:37&#43;08:00" />
-<meta itemprop="dateModified" content="2019-12-11T14:57:37&#43;08:00" />
+<meta itemprop="description" content="上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，"><meta itemprop="datePublished" content="2019-12-11T14:57:37+08:00" />
+<meta itemprop="dateModified" content="2019-12-11T14:57:37+08:00" />
 <meta itemprop="wordCount" content="2586">
-
-
-
 <meta itemprop="keywords" content="go,cobra,源码分析," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="go cli 应用框架cobra（二）- 源码分析"/>
 <meta name="twitter:description" content="上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，"/>
@@ -153,8 +150,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">4</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">5</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">7</span></li>
-            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/guzzle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="category-list-link">guzzle源码分析</a><span class="category-list-count">1</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">3</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
             <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">9</span></li>
@@ -189,11 +185,7 @@
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">24</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/guzzle/" class="tag-list-link">guzzle</a><span
-                    class="tag-list-count">1</span></li>
+                    class="tag-list-count">25</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
@@ -210,14 +202,6 @@
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
                     class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="tag-list-link">php源码分析</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/promise/" class="tag-list-link">promise</a><span
-                    class="tag-list-count">1</span></li>
             
             
             <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
@@ -304,7 +288,7 @@
       <p>上一篇文章中简单介绍了如何使用<code>cobra</code>框架，这篇文章让我们来看下<code>cobra</code>的源码，本文基于的<code>cobra</code>版本是<code>v0.0.5</code></p>
 <p>首先需要了解的是，在<code>cobra</code>中，所有的命令会组成一个树的结构，必然有一个根命令，我们应用的每次执行，都是从这个根命令开始的，官方文档也说过，基于<code>cobra</code>的应用的<code>main</code>包中的代码是很简单的，几乎没有额外的操作，仅有的操作其实就是执行我们的根命令。所以自然而然的，我们的代码分析之旅也是从根命令的执行开始的。</p>
 <p>为了有个直观的感受，我简单生成了一个基于<code>cobra</code>的应用。这个应用有一个根命令和一个<code>test1</code>的子命令，项目结构如下：</p>
-<pre><code>╰─$ tree .
+<pre tabindex="0"><code>╰─$ tree .
 .
 ├── LICENSE
 ├── cmd
@@ -319,7 +303,7 @@
 <p>所有的项目不可能都是简单的一条线到底，代码总会有很多分支，但我们阅读源码的时候精力和关注度总是有限的（不是有人说人在同一时间关注的点不能超过7个还是几个来着么），如果代码里面的每个分支都去看，每个函数的调用都进去瞅瞅，很快我们就会迷失在复杂的代码里面，忘了我们怎么看到的这行代码，所以本文去分析源码的时候，会优先挑一条主线，主要跟踪这条主线上的逻辑和调用，忽略其他支线。当然，也会有比较重要的其他支线，但是和当前的主线无关，会单开一个小节去阅读分析</p>
 <p><code>cobra</code>主线自然是<code>入口-找到目标命令-分析参数-执行</code>这条路径啦~</p>
 <p>看下<code>main.go</code>文件中都有点啥</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
 <span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;learnCobra/cmd&#34;</span>
 
@@ -327,19 +311,19 @@
   <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Execute</span>()
 }
 </code></pre></div><p>简洁的一比，直接进入<code>cmd.Execute</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Execute</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Execute</span>() {
   <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rootCmd</span>.<span style="color:#a6e22e">Execute</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
     <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">err</span>)
     <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Exit</span>(<span style="color:#ae81ff">1</span>)
   }
 }
 </code></pre></div><p>可以看到，其实就是执行了根命令的<code>Execute</code>方法，这个方法才是我们的重头戏。当然，所谓的<em><strong>根命令</strong></em>只是从命令的组织形态上来说的，所有的命令都是<code>cobra.Command</code>的这个结构体，后面绝大多数的代码也都是对这个结构体的成员和方法的分析</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">Execute</span>() <span style="color:#66d9ef">error</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">Execute</span>() <span style="color:#66d9ef">error</span> {
 	<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ExecuteC</span>()
 	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
 }
 </code></pre></div><p>毫无波澜，直接进<code>c.ExecuteC()</code>，这里开始我会在源码里面写点注释了</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">ExecuteC</span>() (<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">ExecuteC</span>() (<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
 	<span style="color:#75715e">// Regardless of what command execute is called on, run on Root only
 </span><span style="color:#75715e"></span>	<span style="color:#75715e">// 前面说过，我们所有的命令构成了一棵树，每次执行都是从根命令开始执行的
 </span><span style="color:#75715e"></span>	<span style="color:#75715e">// 如果我们手残在代码的某处直接执行了一个子命令，这个方法也会向上遍历到根，然后执行根命令的
@@ -424,7 +408,7 @@
 	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cmd</span>, <span style="color:#a6e22e">err</span>
 }
 </code></pre></div><p>这里就有两个比较重要的方法了，<code>c.Find</code>和<code>cmd.execute</code>，我们先来看下怎么找到的目的命令</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">args</span> []<span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, []<span style="color:#66d9ef">string</span>, <span style="color:#66d9ef">error</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">Find</span>(<span style="color:#a6e22e">args</span> []<span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, []<span style="color:#66d9ef">string</span>, <span style="color:#66d9ef">error</span>) {
 	<span style="color:#75715e">// 声明了一个函数类型的变量
 </span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">innerfind</span> <span style="color:#66d9ef">func</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, []<span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>, []<span style="color:#66d9ef">string</span>)
 
@@ -456,7 +440,7 @@
 	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">commandFound</span>, <span style="color:#a6e22e">a</span>, <span style="color:#66d9ef">nil</span>
 }
 </code></pre></div><p>然后我们再来看看<code>cmd.execute</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">execute</span>(<span style="color:#a6e22e">a</span> []<span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Command</span>) <span style="color:#a6e22e">execute</span>(<span style="color:#a6e22e">a</span> []<span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
 	<span style="color:#75715e">// 如果命令是个nil，那还执行个蛋
 </span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
 		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;Called Execute() on a nil Command&#34;</span>)
@@ -715,8 +699,8 @@
     })
     hljs.initHighlightingOnLoad();
 </script>
-<script src="https://wangtingkui.github.io/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
-<script src="https://wangtingkui.github.io/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
+<script src="https://wangtingkui.github.io/js/application.min.a94ab19cb63a95c8d7fbd7b85cab3ddeea8c369bdf75b9cab6708787ead123af.js"></script>
+<script src="https://wangtingkui.github.io/js/plugin.min.19c5bcb2fb0789ab4f2b7834e5ceb5e92635645605bab902c1024b25f1502364.js"></script>
 
 <script>
     (function (window) {
@@ -734,7 +718,7 @@
         window.INSIGHT_CONFIG = INSIGHT_CONFIG;
     })(window);
 </script>
-<script type="text/javascript" src="https://wangtingkui.github.io/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/insight.min.4a2d52de4bfff73e0c688404fe3d17c9a3ae12d9888e1e1ac9c690e4890de2ded50fe55f2b819c2ba55435a76f396f3ea6805765f0b0af5635cdf74ea459eab0.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
 <script>
     tocbot.init({

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+        Go 中 sort 包的使用 - xiaok&#39;s site
+      </title>
+        <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    
+    <meta name="theme-color" content="#000000" />
+    
+    <meta http-equiv="window-target" content="_top" />
+    
+    
+    <meta name="description" content="排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序 Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实" />
+    <meta name="generator" content="Hugo 0.89.2 with theme pure" />
+    <title>Go 中 sort 包的使用 - xiaok&#39;s site</title>
+    
+    
+    <link rel="stylesheet" href="https://wangtingkui.github.io/css/style.min.c58e22f1aa6179cd5cb60b9e08421a2b9a9c9fe9352d095e051b51aae209e5c0.css">
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" async>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+    <meta property="og:title" content="Go 中 sort 包的使用" />
+<meta property="og:description" content="排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序 Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.github.io/2020/10/sort/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-10-14T14:42:29+08:00" />
+<meta property="article:modified_time" content="2020-10-14T14:42:29+08:00" />
+
+<meta itemprop="name" content="Go 中 sort 包的使用">
+<meta itemprop="description" content="排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序 Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实"><meta itemprop="datePublished" content="2020-10-14T14:42:29+08:00" />
+<meta itemprop="dateModified" content="2020-10-14T14:42:29+08:00" />
+<meta itemprop="wordCount" content="932">
+<meta itemprop="keywords" content="go," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 中 sort 包的使用"/>
+<meta name="twitter:description" content="排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序 Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实"/>
+
+    <!--[if lte IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+      <![endif]-->
+
+    <!--[if lt IE 9]>
+        <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+      <![endif]-->
+  </head>
+
+  
+  
+
+  <body class="main-center theme-blue" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="" target="_blank">
+            <img class="img-circle img-rotate" src="https://wangtingkui.github.io/avatar.jpg" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">无敌小k</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Beijing, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>来者皆是客</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go三方库使用</a><span class="category-list-count">4</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E5%9F%BA%E7%A1%80/" class="category-list-link">go基础</a><span class="category-list-count">5</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="category-list-link">go标准库使用</a><span class="category-list-count">8</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/php%E5%9F%BA%E7%A1%80/" class="category-list-link">php基础</a><span class="category-list-count">3</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="category-list-link">使用hugo搭建个人网站</a><span class="category-list-count">9</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">9</span></li>
+            <li class="category-list-item"><a href="https://wangtingkui.github.io/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="category-list-link">性能调优</a><span class="category-list-count">1</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/alfred/" class="tag-list-link">alfred</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/atom/" class="tag-list-link">atom</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/cobra/" class="tag-list-link">cobra</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/editorconfig/" class="tag-list-link">editorconfig</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/github-pages/" class="tag-list-link">github-pages</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">25</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/hugo/" class="tag-list-link">hugo</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/nas/" class="tag-list-link">nas</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/oh-my-zsh/" class="tag-list-link">oh-my-zsh</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/php/" class="tag-list-link">php</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/unicode/" class="tag-list-link">unicode</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/utf-8/" class="tag-list-link">utf-8</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/vmware/" class="tag-list-link">vmware</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/vscode/" class="tag-list-link">vscode</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/zsh/" class="tag-list-link">zsh</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/" class="tag-list-link">字符编码</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="tag-list-link">源码分析</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://wangtingkui.github.io/tags/%E7%81%AB%E7%84%B0%E5%9B%BE/" class="tag-list-link">火焰图</a><span
+                    class="tag-list-count">1</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2020/10/sort/"
+    >Go 中 sort 包的使用</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://wangtingkui.github.io/2020/10/sort/" class="article-date">
+  <time datetime="2020-10-14 14:42:29 &#43;0800 CST" itemprop="datePublished">2020-10-14</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/"> Go标准库使用 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/go/"> go </a>
+  </span>
+
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 2minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <p>排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序</p>
+<p>Go 的标准库中提供了 <code>sort</code> 包来辅助我们进行排序工作，只要我们的数据实现了 <code>sort.Interface</code> 接口，就可以调用 <code>sort.Sort(data Interface)</code> 进行排序操作了</p>
+<p>先来看下 <code>sort.Interface</code> 都定义了哪些方法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Interface</span> <span style="color:#66d9ef">interface</span> {
+    <span style="color:#75715e">// Len is the number of elements in the collection.
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Len 为集合内元素的总数
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">Len</span>() <span style="color:#66d9ef">int</span>
+    <span style="color:#75715e">// Less reports whether the element with
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// index i should sort before the element with index j.
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Less 返回索引为 i 的元素是否应排在索引为 j 的元素之前。
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">Less</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">bool</span>
+    <span style="color:#75715e">// Swap swaps the elements with indexes i and j.
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Swap 交换索引为 i 和 j 的元素
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">Swap</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">int</span>)
+}
+</code></pre></div><p>还是比较简单的，只需要实现<code>获取长度</code>,<code>比较</code>,<code>交换</code>三个动作的方法就可以了</p>
+<h3 id="一个简单的例子">一个简单的例子</h3>
+<p>假设我们要对一个整型数组切片进行排序，那么我们要为 <code>[]int</code> 实现 <code>sort.Interface</code> 接口</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;sort&#34;</span>
+)
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">IntArr</span> []<span style="color:#66d9ef">int</span>
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">arr</span> <span style="color:#a6e22e">IntArr</span>) <span style="color:#a6e22e">Len</span>() <span style="color:#66d9ef">int</span> {
+	<span style="color:#66d9ef">return</span> len(<span style="color:#a6e22e">arr</span>)
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">arr</span> <span style="color:#a6e22e">IntArr</span>) <span style="color:#a6e22e">Less</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">bool</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>] &lt; <span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">j</span>]
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">arr</span> <span style="color:#a6e22e">IntArr</span>) <span style="color:#a6e22e">Swap</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">int</span>) {
+	<span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>], <span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">j</span>] = <span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">j</span>], <span style="color:#a6e22e">arr</span>[<span style="color:#a6e22e">i</span>]
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">a</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">IntArr</span>([]<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>})
+	<span style="color:#a6e22e">sort</span>.<span style="color:#a6e22e">Sort</span>(<span style="color:#a6e22e">a</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>)
+}
+</code></pre></div><p>可以看到，实现起来是相对比较简单的，其实对于这种常用简单数据类型，Go 的 <code>sort</code> 包早就为我们封装好了快捷方法，对于整型，直接调用 <code>sort.Ints([]int)</code> 方法就可以了，没有必要自己去实现，而且如果你去查看源码的话，会发现和我们上面实现的方法是一模一样的</p>
+<h3 id="排序自定义结构">排序自定义结构</h3>
+<p>多数情况下，我们要实现的是自定义结构数据的排序，比如有<code>Person</code>结构，按照 <code>Age</code> 字段进行排序。这种场景下就需要我们自己去为我们的数据实现接口了</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;sort&#34;</span>
+)
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Person</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Age</span>  <span style="color:#66d9ef">int</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PersonList</span> []<span style="color:#a6e22e">Person</span>
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#a6e22e">PersonList</span>) <span style="color:#a6e22e">Len</span>() <span style="color:#66d9ef">int</span> {
+	<span style="color:#66d9ef">return</span> len(<span style="color:#a6e22e">p</span>)
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#a6e22e">PersonList</span>) <span style="color:#a6e22e">Less</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">bool</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">p</span>[<span style="color:#a6e22e">i</span>].<span style="color:#a6e22e">Age</span> &lt; <span style="color:#a6e22e">p</span>[<span style="color:#a6e22e">j</span>].<span style="color:#a6e22e">Age</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#a6e22e">PersonList</span>) <span style="color:#a6e22e">Swap</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">int</span>) {
+	<span style="color:#a6e22e">p</span>[<span style="color:#a6e22e">i</span>], <span style="color:#a6e22e">p</span>[<span style="color:#a6e22e">j</span>] = <span style="color:#a6e22e">p</span>[<span style="color:#a6e22e">j</span>], <span style="color:#a6e22e">p</span>[<span style="color:#a6e22e">i</span>]
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">PersonList</span>{
+		{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;A&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">36</span>},
+		{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;B&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">45</span>},
+		{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;C&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">36</span>},
+		{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;D&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">12</span>},
+	}
+
+	<span style="color:#a6e22e">sort</span>.<span style="color:#a6e22e">Sort</span>(<span style="color:#a6e22e">p</span>)
+
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">person</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">p</span> {
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">person</span>.<span style="color:#a6e22e">Name</span>, <span style="color:#a6e22e">person</span>.<span style="color:#a6e22e">Age</span>)
+	}
+}
+</code></pre></div><h3 id="通过多个字段属性进行排序">通过多个字段属性进行排序</h3>
+<p>通过结构体的多字段进行排序，也是常见的需求，官网为我们提供了比较好的<a href="https://go-zh.org/pkg/sort/">例子</a>，参考其中的<code>SortMultiKeys</code>，本质上就是提供了一层 wrapper</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+	<span style="color:#e6db74">&#34;sort&#34;</span>
+)
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MyStruct</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">A</span>, <span style="color:#a6e22e">B</span>, <span style="color:#a6e22e">C</span> <span style="color:#66d9ef">int</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CompareFunc</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MyStruct</span>) <span style="color:#66d9ef">bool</span>
+
+<span style="color:#75715e">// 需要为 StructMultiSorter 实现 sort.Interface 接口
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">StructMultiSorter</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">structs</span>      []<span style="color:#a6e22e">MyStruct</span>
+	<span style="color:#a6e22e">compareFuncs</span> []<span style="color:#a6e22e">CompareFunc</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">ms</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StructMultiSorter</span>) <span style="color:#a6e22e">Less</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">bool</span> {
+	<span style="color:#75715e">// 原理就是依次调用 compareFunc 进行比较
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">lenOfCompareFuncs</span> <span style="color:#f92672">:=</span> len(<span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">compareFuncs</span>)
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">k</span> &lt; (<span style="color:#a6e22e">lenOfCompareFuncs</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>); <span style="color:#a6e22e">k</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">lessFunc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">compareFuncs</span>[<span style="color:#a6e22e">k</span>]
+		<span style="color:#66d9ef">switch</span> <span style="color:#66d9ef">true</span> {
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">lessFunc</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>[<span style="color:#a6e22e">i</span>], <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>[<span style="color:#a6e22e">j</span>]):
+			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">lessFunc</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>[<span style="color:#a6e22e">j</span>], <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>[<span style="color:#a6e22e">i</span>]):
+			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
+		}
+		<span style="color:#75715e">// 如果相等，就会到下一个比较函数
+</span><span style="color:#75715e"></span>	}
+	<span style="color:#75715e">// 如果前面的比较函数都相等，直接返回最后一个比较函数的结果
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">compareFuncs</span>[<span style="color:#a6e22e">lenOfCompareFuncs</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>](<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>[<span style="color:#a6e22e">i</span>], <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>[<span style="color:#a6e22e">j</span>])
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">ms</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StructMultiSorter</span>) <span style="color:#a6e22e">Swap</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">int</span>) {
+	<span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>[<span style="color:#a6e22e">i</span>], <span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>[<span style="color:#a6e22e">j</span>] = <span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>[<span style="color:#a6e22e">j</span>], <span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>[<span style="color:#a6e22e">i</span>]
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">ms</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StructMultiSorter</span>) <span style="color:#a6e22e">Len</span>() <span style="color:#66d9ef">int</span> {
+	<span style="color:#66d9ef">return</span> len(<span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">f1</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MyStruct</span>) <span style="color:#66d9ef">bool</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">A</span> &lt; <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">A</span>
+	}
+	<span style="color:#a6e22e">f2</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MyStruct</span>) <span style="color:#66d9ef">bool</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">B</span> &lt; <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">B</span>
+	}
+	<span style="color:#a6e22e">f3</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MyStruct</span>) <span style="color:#66d9ef">bool</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">C</span> &lt; <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">C</span>
+	}
+
+	<span style="color:#a6e22e">ms</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">StructMultiSorter</span>{
+		<span style="color:#a6e22e">structs</span>: []<span style="color:#a6e22e">MyStruct</span>{
+			{<span style="color:#a6e22e">A</span>: <span style="color:#ae81ff">3</span>, <span style="color:#a6e22e">B</span>: <span style="color:#ae81ff">25</span>, <span style="color:#a6e22e">C</span>: <span style="color:#ae81ff">28</span>},
+			{<span style="color:#a6e22e">A</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">B</span>: <span style="color:#ae81ff">24</span>, <span style="color:#a6e22e">C</span>: <span style="color:#ae81ff">28</span>},
+			{<span style="color:#a6e22e">A</span>: <span style="color:#ae81ff">2</span>, <span style="color:#a6e22e">B</span>: <span style="color:#ae81ff">25</span>, <span style="color:#a6e22e">C</span>: <span style="color:#ae81ff">2</span>},
+		},
+		<span style="color:#a6e22e">compareFuncs</span>: []<span style="color:#a6e22e">CompareFunc</span>{<span style="color:#a6e22e">f1</span>, <span style="color:#a6e22e">f2</span>, <span style="color:#a6e22e">f3</span>},
+	}
+
+	<span style="color:#a6e22e">sort</span>.<span style="color:#a6e22e">Sort</span>(<span style="color:#a6e22e">ms</span>)
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">ms</span>.<span style="color:#a6e22e">structs</span>)
+}
+</code></pre></div>
+    </div>
+    <div class="article-footer">
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://wangtingkui.github.io/2020/07/flame/" title="使用火焰图分析性能瓶颈"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://wangtingkui.github.io/go/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/net-http/"
+                    title="源码阅读-go(net/http)"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        
+        <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal"
+            data-target="#donateModal"><span>$</span></button>
+        
+        <div class="bar-right">
+        </div>
+    </div>
+</nav>
+
+
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content donate">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <div class="modal-body">
+                <div class="donate-box">
+                    <div class="donate-head">
+                        <p>Maybe you could buy me a cup of coffee.</p>
+                    </div>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/alipay.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+                            <div class="donate-payimg">
+                                <img src="https://wangtingkui.github.io/donate/wechat.JPG"
+                                    alt="Scan Qrcode" title="Scan" />
+                            </div>
+                            <p class="text-muted mv">Scan this qrcode</p>
+                            <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+                        </div>
+                    </div>
+                    <div class="donate-footer">
+                        <ul class="nav nav-tabs nav-justified" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay"
+                                    aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab"
+                                    aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i>
+                                    wechat payment</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/wangtingkui" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://wangtingkui.github.io/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://wangtingkui.github.io/js/application.min.a94ab19cb63a95c8d7fbd7b85cab3ddeea8c369bdf75b9cab6708787ead123af.js"></script>
+<script src="https://wangtingkui.github.io/js/plugin.min.19c5bcb2fb0789ab4f2b7834e5ceb5e92635645605bab902c1024b25f1502364.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/wangtingkui.github.io',
+            CONTENT_URL: 'https:\/\/wangtingkui.github.io\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://wangtingkui.github.io/js/insight.min.4a2d52de4bfff73e0c688404fe3d17c9a3ae12d9888e1e1ac9c690e4890de2ded50fe55f2b819c2ba55435a76f396f3ea6805765f0b0af5635cdf74ea459eab0.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '06d682e66c398e155140',
+        clientSecret: 'ca77301e0e249ace9839f5368fccba655fb35da6',
+        repo: 'blogComment',
+        owner: 'wangtingkui',
+        admin: ['wangtingkui'],
+        id: md5(location.pathname),
+        distractionFreeMode: true
+    });
+    gitalk.render('comments');
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架
+一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users will know how to use the application because they will natively understand how to use it.也就是我们的应用应该做到自解释，让使用者可以很容易的上手，使用的时候就像是说话一样的简单和自然
+一个遵循这个理念的命令行应用模式是 APPNAME VERB NOUN -ADJECTIVE 或者换种表达方式 APPNAME COMMADN ARG --FLAG
+ APPNAME是我们应用的名称 COMMAND是我们要执行的动作，一般是个动词 ARG是我们动作作用的对象，一般是个名词 --FLAG是用来调整我们动作的行为，一般是个形容词  一个例子：git clone URL --bare
+项目结构 我们可以按照自己的喜好去组织我们的项目代码，但是一般情况下，基于cobra的项目会有以下的项目结构
+╰─$ tree . ├── LICENSE ├── cmd │ └── root.go └── main.go 1 directory, 3 files 快速上手构建项目 上面也提到了，cobra 不仅仅是一个命令行框架，它也能辅助我们快速生成我们的项目文件，接下来就让我们使用 cobra 提供的脚手架帮助我们生成基于 cobra 框架的命令行应用（如果还没有安装cobra脚手架，可以进入github.'><title>go cli 应用框架cobra（一）- 简介</title>
+
+<link rel='canonical' href='https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8cobra/'>
+
+<link rel="stylesheet" href="/scss/style.min.8f4416a35036b6471a6978873128b5652464226c8db8a9620ed1b94bc11bd353.css"><meta property='og:title' content='go cli 应用框架cobra（一）- 简介'>
+<meta property='og:description' content='简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架
+一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users will know how to use the application because they will natively understand how to use it.也就是我们的应用应该做到自解释，让使用者可以很容易的上手，使用的时候就像是说话一样的简单和自然
+一个遵循这个理念的命令行应用模式是 APPNAME VERB NOUN -ADJECTIVE 或者换种表达方式 APPNAME COMMADN ARG --FLAG
+ APPNAME是我们应用的名称 COMMAND是我们要执行的动作，一般是个动词 ARG是我们动作作用的对象，一般是个名词 --FLAG是用来调整我们动作的行为，一般是个形容词  一个例子：git clone URL --bare
+项目结构 我们可以按照自己的喜好去组织我们的项目代码，但是一般情况下，基于cobra的项目会有以下的项目结构
+╰─$ tree . ├── LICENSE ├── cmd │ └── root.go └── main.go 1 directory, 3 files 快速上手构建项目 上面也提到了，cobra 不仅仅是一个命令行框架，它也能辅助我们快速生成我们的项目文件，接下来就让我们使用 cobra 提供的脚手架帮助我们生成基于 cobra 框架的命令行应用（如果还没有安装cobra脚手架，可以进入github.'>
+<meta property='og:url' content='https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8cobra/'>
+<meta property='og:site_name' content='xiaok&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2019-12-01T10:17:30&#43;08:00'/><meta property='article:modified_time' content='2019-12-01T10:17:30&#43;08:00'/>
+<meta name="twitter:title" content="go cli 应用框架cobra（一）- 简介">
+<meta name="twitter:description" content="简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架
+一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users will know how to use the application because they will natively understand how to use it.也就是我们的应用应该做到自解释，让使用者可以很容易的上手，使用的时候就像是说话一样的简单和自然
+一个遵循这个理念的命令行应用模式是 APPNAME VERB NOUN -ADJECTIVE 或者换种表达方式 APPNAME COMMADN ARG --FLAG
+ APPNAME是我们应用的名称 COMMAND是我们要执行的动作，一般是个动词 ARG是我们动作作用的对象，一般是个名词 --FLAG是用来调整我们动作的行为，一般是个形容词  一个例子：git clone URL --bare
+项目结构 我们可以按照自己的喜好去组织我们的项目代码，但是一般情况下，基于cobra的项目会有以下的项目结构
+╰─$ tree . ├── LICENSE ├── cmd │ └── root.go └── main.go 1 directory, 3 files 快速上手构建项目 上面也提到了，cobra 不仅仅是一个命令行框架，它也能辅助我们快速生成我们的项目文件，接下来就让我们使用 cobra 提供的脚手架帮助我们生成基于 cobra 框架的命令行应用（如果还没有安装cobra脚手架，可以进入github.">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/posts/go/%E4%BD%BF%E7%94%A8cobra/">go cli 应用框架cobra（一）- 简介</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 01, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h3 id="简介">简介</h3>
+<p><code>cobra</code>是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架</p>
+<h3 id="一些基础概念">一些基础概念</h3>
+<p><code>cobra</code>推崇的是<code>The best applications will read like sentences when used. Users will know how to use the application because they will natively understand how to use it.</code>也就是我们的应用应该做到自解释，让使用者可以很容易的上手，使用的时候就像是说话一样的简单和自然</p>
+<p>一个遵循这个理念的命令行应用模式是 <code>APPNAME VERB NOUN -ADJECTIVE</code> 或者换种表达方式 <code>APPNAME COMMADN ARG --FLAG</code></p>
+<ul>
+<li><code>APPNAME</code>是我们应用的名称</li>
+<li><code>COMMAND</code>是我们要执行的动作，一般是个动词</li>
+<li><code>ARG</code>是我们动作作用的对象，一般是个名词</li>
+<li><code>--FLAG</code>是用来调整我们动作的行为，一般是个形容词</li>
+</ul>
+<p>一个例子：<code>git clone URL --bare</code></p>
+<h3 id="项目结构">项目结构</h3>
+<p>我们可以按照自己的喜好去组织我们的项目代码，但是一般情况下，基于cobra的项目会有以下的项目结构</p>
+<pre tabindex="0"><code>╰─$ tree
+.
+├── LICENSE
+├── cmd
+│   └── root.go
+└── main.go
+
+1 directory, 3 files
+</code></pre><h3 id="快速上手构建项目">快速上手构建项目</h3>
+<p>上面也提到了，cobra 不仅仅是一个命令行框架，它也能辅助我们快速生成我们的项目文件，接下来就让我们使用 cobra 提供的脚手架帮助我们生成基于 cobra 框架的命令行应用（如果还没有安装cobra脚手架，可以进入<code>github.com/spf13/cobra/cobra</code>然后<code>go install</code>一下）</p>
+<pre tabindex="0"><code># 创建项目
+cobra init --pkg-name github.com/wangtingkui/testCobra ./testCobra # 创建完成之后，就可以看到我们上面那个默认的目录结构了
+
+# 给我们的应用添加命令
+cobra add serve # 添加 serve 命令
+cobra add config # 添加 config 命令
+cobra add create -p 'configCmd' # 给 config 命令添加 create 子命令，`-p`指定这个命令的父命令，这个没有什么逻辑校验，就是在新命令的文件中init方法里面添加`configCmd.AddCommand(createCmd)`这行代码而已
+</code></pre><p>创建完成之后，再来看下最终生成的目录结构</p>
+<pre tabindex="0"><code>╰─$ tree
+.
+├── LICENSE
+├── cmd
+│   ├── config.go
+│   ├── create.go
+│   ├── root.go
+│   └── serve.go
+└── main.go
+
+1 directory, 6 files
+</code></pre><p>测试下我们的项目</p>
+<p>主应用</p>
+<pre tabindex="0"><code>╰─$ ./testCobra
+A longer description that spans multiple lines and likely contains
+examples and usage of using your application. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.
+
+Usage:
+  testCobra [command]
+
+Available Commands:
+  config      A brief description of your command
+  help        Help about any command
+  serve       A brief description of your command
+
+Flags:
+      --config string   config file (default is $HOME/.testCobra.yaml)
+  -h, --help            help for testCobra
+  -t, --toggle          Help message for toggle
+
+Use &quot;testCobra [command] --help&quot; for more information about a command.
+</code></pre><p>serve 命令</p>
+<pre tabindex="0"><code>╰─$ ./testCobra serve
+serve called
+</code></pre>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 xiaok&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.7.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#简介">简介</a></li>
+        <li><a href="#一些基础概念">一些基础概念</a></li>
+        <li><a href="#项目结构">项目结构</a></li>
+        <li><a href="#快速上手构建项目">快速上手构建项目</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

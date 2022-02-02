@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络
+一、确定网络信息 vmnet8是安装 vmware funsion 之后自动生成的一张虚拟网卡，NAT 模式使用的就是这张网卡
+进入vmnet8网卡配置目录 &amp;gt; cd /Library/Preferences/VMware Fusion/vmnet8 查看nat信息，记住nat网关信息，也就是ip和netmask字段 &amp;gt; cat nat.conf nat.conf 文件内容：
+... # 省略文件其他部分 [host] # NAT gateway address ip = 172.16.5.2 netmask = 255.255.255.0 ... # 省略文件其他部分 查看dhcp信息，记住range范围，这里指的就是可用ip范围 &amp;gt; cat dhcpd.conf dhcpd.conf 文件信息：
+... # 省略文件其他部分 subnet 172.16.5.0 netmask 255.255.255.0 { range 172.16.5.128 172.16.5.254; option broadcast-address 172.16.5.255; option domain-name-servers 172.16.5.2; option domain-name localdomain; default-lease-time 1800; # default is 30 minutes max-lease-time 7200; # default is 2 hours option netbios-name-servers 172.'><title>VMware funsion 安装 centos7 后配置 NAT 网络</title>
+
+<link rel='canonical' href='https://wangtingkui.com/posts/tool/net-fix-on-centos-7/'>
+
+<link rel="stylesheet" href="/scss/style.min.8f4416a35036b6471a6978873128b5652464226c8db8a9620ed1b94bc11bd353.css"><meta property='og:title' content='VMware funsion 安装 centos7 后配置 NAT 网络'>
+<meta property='og:description' content='在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络
+一、确定网络信息 vmnet8是安装 vmware funsion 之后自动生成的一张虚拟网卡，NAT 模式使用的就是这张网卡
+进入vmnet8网卡配置目录 &amp;gt; cd /Library/Preferences/VMware Fusion/vmnet8 查看nat信息，记住nat网关信息，也就是ip和netmask字段 &amp;gt; cat nat.conf nat.conf 文件内容：
+... # 省略文件其他部分 [host] # NAT gateway address ip = 172.16.5.2 netmask = 255.255.255.0 ... # 省略文件其他部分 查看dhcp信息，记住range范围，这里指的就是可用ip范围 &amp;gt; cat dhcpd.conf dhcpd.conf 文件信息：
+... # 省略文件其他部分 subnet 172.16.5.0 netmask 255.255.255.0 { range 172.16.5.128 172.16.5.254; option broadcast-address 172.16.5.255; option domain-name-servers 172.16.5.2; option domain-name localdomain; default-lease-time 1800; # default is 30 minutes max-lease-time 7200; # default is 2 hours option netbios-name-servers 172.'>
+<meta property='og:url' content='https://wangtingkui.com/posts/tool/net-fix-on-centos-7/'>
+<meta property='og:site_name' content='xiaok&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='vmware' /><meta property='article:published_time' content='2020-05-31T08:40:51&#43;08:00'/><meta property='article:modified_time' content='2020-05-31T08:40:51&#43;08:00'/>
+<meta name="twitter:title" content="VMware funsion 安装 centos7 后配置 NAT 网络">
+<meta name="twitter:description" content="在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络
+一、确定网络信息 vmnet8是安装 vmware funsion 之后自动生成的一张虚拟网卡，NAT 模式使用的就是这张网卡
+进入vmnet8网卡配置目录 &amp;gt; cd /Library/Preferences/VMware Fusion/vmnet8 查看nat信息，记住nat网关信息，也就是ip和netmask字段 &amp;gt; cat nat.conf nat.conf 文件内容：
+... # 省略文件其他部分 [host] # NAT gateway address ip = 172.16.5.2 netmask = 255.255.255.0 ... # 省略文件其他部分 查看dhcp信息，记住range范围，这里指的就是可用ip范围 &amp;gt; cat dhcpd.conf dhcpd.conf 文件信息：
+... # 省略文件其他部分 subnet 172.16.5.0 netmask 255.255.255.0 { range 172.16.5.128 172.16.5.254; option broadcast-address 172.16.5.255; option domain-name-servers 172.16.5.2; option domain-name localdomain; default-lease-time 1800; # default is 30 minutes max-lease-time 7200; # default is 2 hours option netbios-name-servers 172.">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%B7%A5%E5%85%B7/" >
+                工具
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/posts/tool/net-fix-on-centos-7/">VMware funsion 安装 centos7 后配置 NAT 网络</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">May 31, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>在<code>vmware funsion</code>上安装完<code>centos7</code>后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 <code>centos7</code> 虚拟机配置 <code>NAT</code> 模式的网络</p>
+<h2 id="一确定网络信息">一、确定网络信息</h2>
+<p>vmnet8是安装 <code>vmware funsion</code> 之后自动生成的一张虚拟网卡，<code>NAT</code> 模式使用的就是这张网卡</p>
+<h3 id="进入vmnet8网卡配置目录">进入vmnet8网卡配置目录</h3>
+<pre tabindex="0"><code>&gt; cd /Library/Preferences/VMware Fusion/vmnet8
+</code></pre><h3 id="查看nat信息记住nat网关信息也就是ip和netmask字段">查看nat信息，记住nat网关信息，也就是ip和netmask字段</h3>
+<pre tabindex="0"><code>&gt; cat nat.conf
+</code></pre><p>nat.conf 文件内容：</p>
+<pre tabindex="0"><code>... # 省略文件其他部分
+[host]
+
+# NAT gateway address
+ip = 172.16.5.2
+netmask = 255.255.255.0
+... # 省略文件其他部分
+</code></pre><h3 id="查看dhcp信息记住range范围这里指的就是可用ip范围">查看dhcp信息，记住range范围，这里指的就是可用ip范围</h3>
+<pre tabindex="0"><code>&gt; cat dhcpd.conf
+</code></pre><p>dhcpd.conf 文件信息：</p>
+<pre tabindex="0"><code>... # 省略文件其他部分
+subnet 172.16.5.0 netmask 255.255.255.0 {
+	range 172.16.5.128 172.16.5.254;
+	option broadcast-address 172.16.5.255;
+	option domain-name-servers 172.16.5.2;
+	option domain-name localdomain;
+	default-lease-time 1800;                # default is 30 minutes
+	max-lease-time 7200;                    # default is 2 hours
+	option netbios-name-servers 172.16.5.2;
+	option routers 172.16.5.2;
+}
+... # 省略文件其他部分
+</code></pre><h3 id="确定dns">确定dns</h3>
+<p>在系统偏好设置中的网络查看当前主机的dns配置</p>
+<p><figure 
+	>
+	<a href="https://tva1.sinaimg.cn/large/007S8ZIlly1gfbcp4t6duj30jd0fcdh5.jpg" >
+		<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfbcp4t6duj30jd0fcdh5.jpg"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<h2 id="配置虚拟机网络设置">配置虚拟机网络设置</h2>
+<p>在设置中将网络模式设置为共享</p>
+<p><figure 
+	>
+	<a href="https://tva1.sinaimg.cn/large/007S8ZIlly1gfbcqabyeaj30kw0ewjuc.jpg" >
+		<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfbcqabyeaj30kw0ewjuc.jpg"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<h2 id="设置centos7网络">设置<code>centos7</code>网络</h2>
+<p>登录虚拟机，配置 <code>centos7</code> 的网卡</p>
+<pre tabindex="0"><code>&gt; vim /etc/sysconfig/network-scripts/ifcfg-ens33
+</code></pre><p>上面部分<code>ifcfg-ens33</code>是网卡名称，不同的虚拟机有可能会变，这个注意下</p>
+<p>按照下面红框部分进行设置</p>
+<p><figure 
+	>
+	<a href="https://tva1.sinaimg.cn/large/007S8ZIlly1gfbcuucnc4j30i60a2757.jpg" >
+		<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfbcuucnc4j30i60a2757.jpg"
+			
+			
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
+<ul>
+<li><code>BOOTPROTO=static</code>：设置为固定ip</li>
+<li><code>ONBOOT=yes</code>: 设置开启网卡</li>
+<li><code>IPADDR=172.16.5.200</code>: 使用哪个静态ip</li>
+<li><code>GATEWAY=172.16.5.2</code>: 刚才看的vmnet8的网关</li>
+<li><code>NETMAST=255.255.255.0</code>:  vmnet8的掩码</li>
+<li><code>DNS1=192.168.50.1</code>: DNS</li>
+</ul>
+<h2 id="重启网卡">重启网卡</h2>
+<pre tabindex="0"><code>&gt; service network restart
+</code></pre>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/vmware/">vmware</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/posts/tool/editorconfig/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Editorconfig</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/tool/plex/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">群辉nas使用plex套件</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/tool/extension/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">vscode推荐扩展</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/tool/sync-setting/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">alfred配置同步</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/posts/tool/pakage/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">推荐的atom插件</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 xiaok&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.7.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目录</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一确定网络信息">一、确定网络信息</a>
+      <ol>
+        <li><a href="#进入vmnet8网卡配置目录">进入vmnet8网卡配置目录</a></li>
+        <li><a href="#查看nat信息记住nat网关信息也就是ip和netmask字段">查看nat信息，记住nat网关信息，也就是ip和netmask字段</a></li>
+        <li><a href="#查看dhcp信息记住range范围这里指的就是可用ip范围">查看dhcp信息，记住range范围，这里指的就是可用ip范围</a></li>
+        <li><a href="#确定dns">确定dns</a></li>
+      </ol>
+    </li>
+    <li><a href="#配置虚拟机网络设置">配置虚拟机网络设置</a></li>
+    <li><a href="#设置centos7网络">设置<code>centos7</code>网络</a></li>
+    <li><a href="#重启网卡">重启网卡</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
