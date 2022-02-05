@@ -2,17 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://wangtingkui.com/tags/go/</loc>
-    <lastmod>2022-02-02T22:05:41+08:00</lastmod>
+    <loc>https://wangtingkui.com/posts/go/ants/</loc>
+    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
   </url><url>
-    <loc>https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</loc>
-    <lastmod>2022-02-02T22:05:41+08:00</lastmod>
-  </url><url>
-    <loc>https://wangtingkui.com/posts/go/gorm-read-write-split/</loc>
-    <lastmod>2022-02-02T22:05:41+08:00</lastmod>
+    <loc>https://wangtingkui.com/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</loc>
+    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.com/</loc>
-    <lastmod>2022-02-02T22:05:41+08:00</lastmod>
+    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -33,6 +30,41 @@
                 hreflang="zh-cn"
                 href="https://wangtingkui.com/"
                 />
+  </url><url>
+    <loc>https://wangtingkui.com/posts/</loc>
+    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
+  </url><url>
+    <loc>https://wangtingkui.com/tags/</loc>
+    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://wangtingkui.com/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://wangtingkui.com/fr/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://wangtingkui.com/zh-tw/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://wangtingkui.com/tags/"
+                />
+  </url><url>
+    <loc>https://wangtingkui.com/tags/go/</loc>
+    <lastmod>2022-02-02T22:05:41+08:00</lastmod>
+  </url><url>
+    <loc>https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</loc>
+    <lastmod>2022-02-02T22:05:41+08:00</lastmod>
+  </url><url>
+    <loc>https://wangtingkui.com/posts/go/gorm-read-write-split/</loc>
+    <lastmod>2022-02-02T22:05:41+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.com/series/</loc>
     <lastmod>2022-02-02T22:05:41+08:00</lastmod>
@@ -55,32 +87,6 @@
                 rel="alternate"
                 hreflang="zh-cn"
                 href="https://wangtingkui.com/series/"
-                />
-  </url><url>
-    <loc>https://wangtingkui.com/posts/</loc>
-    <lastmod>2022-02-02T22:05:41+08:00</lastmod>
-  </url><url>
-    <loc>https://wangtingkui.com/tags/</loc>
-    <lastmod>2022-02-02T22:05:41+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://wangtingkui.com/en/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://wangtingkui.com/fr/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://wangtingkui.com/zh-tw/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://wangtingkui.com/tags/"
                 />
   </url><url>
     <loc>https://wangtingkui.com/posts/go/gorm-clause/</loc>

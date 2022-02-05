@@ -189,6 +189,28 @@
   </div>
 </nav><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
+      <a href="https://wangtingkui.com/posts/go/sync/">Go标准库（sync）- 使用
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2020-06-19 15:32:25 &#43;0800 CST。">
+    2020-06-19
+  </span><span class="post-reading-time">
+    3 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>Go 的一大特点就是在语言级别实现了并发，一旦涉及并发，那么不可避免的就需要同步，来确保多个 goroutine 在访问共享资源的时候不会出现混乱的状况
+Go 中的 sync 包提供了常见的并发编程同步原语，我们接下来就看下各种同步的方式如何使用，以及不同的同步方式都适用于什么样的场景，从而能让我们在日常使用中可以有针对性的挑选
+sync.Mutex sync.Mutex 是使用最广泛的一种原语，它保证同一时刻，只有一个 goroutine 可以访问临界资源，也就是我们常说的互斥锁
+1m := &amp;sync.Mutex{} 2m.Lock() 3// 临界区 4m.Unlock() sync.RWMutex sync.RWMutex ...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.com/posts/go/sync/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
       <a href="https://wangtingkui.com/posts/go/context/">Go中Context的使用
 </a>
     </h2>
@@ -385,29 +407,6 @@ pp-markdown（markdown预览） markdown...</p><div><a class="btn btn-sm btn-pri
     </div>
   </div>
 </article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.com/posts/tool/theme/">使用zsh主题
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-05-12 23:21:29 &#43;0800 CST。">
-    2020-05-12
-  </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a></span>
-</div>
-<div class="post-summary">
-      <p>和插件一样，zsh 为我们提供了丰富的主题和自定义主题的能力，主题也分为两大类，一类是内置主题，另一类是自定义的扩展主题
-内置主题 这个其实没啥好说的，在官网 浏览下，挑选自己喜欢的，然后再~/.zshrc中配置对应的主题名称就行
-以官网中下图这个主题为例，主题名字叫robbyrussell
-在配置文件中修改ZSH_THEME变量的值即可
-1# Set name of the theme to load --- if set to &#34;random&#34;, it will 2# load a random theme each time oh-my-zsh is loaded, in which case, 3# to know...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.com/posts/tool/theme/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
 </div><div class="row table-responsive mb-3">
     <ul class="pagination pagination-default">
       <li class="page-item">
@@ -500,9 +499,9 @@ pp-markdown（markdown预览） markdown...</p><div><a class="btn btn-sm btn-pri
             atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
             cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
             EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
-            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
-            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/oh-my-zsh/" class="badge rounded post-taxonomy" title="oh-my-zsh">
-            oh-my-zsh<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
+            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section>
     

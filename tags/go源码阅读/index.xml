@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>go源码阅读 on xiaok&#39;s blog</title>
+    <link>https://wangtingkui.com/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</link>
+    <description>Recent content in go源码阅读 on xiaok&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
+    <lastBuildDate>Sat, 05 Feb 2022 16:22:13 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ants源码阅读</title>
+      <link>https://wangtingkui.com/posts/go/ants/</link>
+      <pubDate>Sat, 05 Feb 2022 16:22:13 +0800</pubDate>
+      
+      <guid>https://wangtingkui.com/posts/go/ants/</guid>
+      <description>前言 最近看到了一个 go 的 goroutine池的实现，想着来学习下 在go中有没有必要使用池化技术？ 只有一个东西是有用的时候我们才值得去学习，我们</description>
+    </item>
+    
+  </channel>
+</rss>
