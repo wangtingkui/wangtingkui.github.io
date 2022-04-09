@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>EditorConfig on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/tags/editorconfig/</link>
+    <link>https://wangtingkui.space/tags/editorconfig/</link>
     <description>Recent content in EditorConfig on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Mon, 20 Jul 2020 14:01:14 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/editorconfig/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Jul 2020 14:01:14 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/tags/editorconfig/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Editorconfig</title>
-      <link>https://wangtingkui.com/posts/tool/editorconfig/</link>
+      <link>https://wangtingkui.space/posts/tool/editorconfig/</link>
       <pubDate>Mon, 20 Jul 2020 14:01:14 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/editorconfig/</guid>
+      <guid>https://wangtingkui.space/posts/tool/editorconfig/</guid>
       <description>现如今，各种开发工具百花齐放，每个开发者都会有自己最中意的一款编辑器，但是各种编辑器的配置方式不同，当我们切换编辑器的时候，又需要针对新的编</description>
     </item>
     

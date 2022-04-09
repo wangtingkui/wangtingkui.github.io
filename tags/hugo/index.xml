@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>hugo on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/tags/hugo/</link>
+    <link>https://wangtingkui.space/tags/hugo/</link>
     <description>Recent content in hugo on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Tue, 14 Apr 2020 15:50:45 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 14 Apr 2020 15:50:45 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在hugo中使用shortcode</title>
-      <link>https://wangtingkui.com/posts/tool/shortcodes/</link>
+      <link>https://wangtingkui.space/posts/tool/shortcodes/</link>
       <pubDate>Tue, 14 Apr 2020 15:50:45 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/shortcodes/</guid>
+      <guid>https://wangtingkui.space/posts/tool/shortcodes/</guid>
       <description>markdown 因为简洁的语法非常受到写文章的人的喜爱，但是某些情况下 markdown 也有不足，比如我们想展示一些特殊的样式或者格式的时候，往往需要直接书写 html 代码，这就</description>
     </item>
     
     <item>
       <title>使用hugo搭建个人网站（三）- 引用其他文章</title>
-      <link>https://wangtingkui.com/posts/tool/ref-other-article/</link>
+      <link>https://wangtingkui.space/posts/tool/ref-other-article/</link>
       <pubDate>Mon, 02 Dec 2019 14:12:07 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/ref-other-article/</guid>
+      <guid>https://wangtingkui.space/posts/tool/ref-other-article/</guid>
       <description>我们可以在文章中引用自己的其他文章，hugo 帮我们实现了这种功能，只需要在文章中使用 {{&amp;lt; ref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}或者{{&amp;lt; relref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}即可，</description>
     </item>
     

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>github pages on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/tags/github-pages/</link>
+    <link>https://wangtingkui.space/tags/github-pages/</link>
     <description>Recent content in github pages on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sat, 07 Dec 2019 16:35:07 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/github-pages/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 07 Dec 2019 16:35:07 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/tags/github-pages/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用hugo搭建个人网站（八）- 自定义你的站点域名</title>
-      <link>https://wangtingkui.com/posts/tool/hugo-custom-your-domain/</link>
+      <link>https://wangtingkui.space/posts/tool/hugo-custom-your-domain/</link>
       <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/hugo-custom-your-domain/</guid>
+      <guid>https://wangtingkui.space/posts/tool/hugo-custom-your-domain/</guid>
       <description>github pages 为我们提供的站点域名是 &amp;lt;username&amp;gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到</description>
     </item>
     

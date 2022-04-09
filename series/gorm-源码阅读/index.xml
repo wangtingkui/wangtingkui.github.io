@@ -2,35 +2,35 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>gorm 源码阅读 on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</link>
+    <link>https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</link>
     <description>Recent content in gorm 源码阅读 on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Wed, 02 Feb 2022 22:05:41 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Feb 2022 22:05:41 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Gorm源码阅读 - 3.读写分离</title>
-      <link>https://wangtingkui.com/posts/go/gorm-read-write-split/</link>
+      <link>https://wangtingkui.space/posts/go/gorm-read-write-split/</link>
       <pubDate>Wed, 02 Feb 2022 22:05:41 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/gorm-read-write-split/</guid>
+      <guid>https://wangtingkui.space/posts/go/gorm-read-write-split/</guid>
       <description>前言 数据库读写分离是企业级项目的基本能力，成熟的数据库类库基本都内置支持了读写分离的能力，在 gorm 中，读写分离是通过插件的方式实现的 gorm 的插件能力</description>
     </item>
     
     <item>
       <title>Gorm源码阅读 - 2.Clause</title>
-      <link>https://wangtingkui.com/posts/go/gorm-clause/</link>
+      <link>https://wangtingkui.space/posts/go/gorm-clause/</link>
       <pubDate>Wed, 02 Feb 2022 18:05:41 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/gorm-clause/</guid>
+      <guid>https://wangtingkui.space/posts/go/gorm-clause/</guid>
       <description>承上 在基础流程篇中我们层多次提到 Clause 的概念，本片就让我们详细分析下 Clause 究竟是什么 从基础流程篇中我们可以知道 Clause 就是一个 sql 子句，我们调用 gorm 提供的链式</description>
     </item>
     
     <item>
       <title>gorm源码阅读 - 1.基础流程</title>
-      <link>https://wangtingkui.com/posts/go/gorm-base/</link>
+      <link>https://wangtingkui.space/posts/go/gorm-base/</link>
       <pubDate>Tue, 01 Feb 2022 16:48:25 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/gorm-base/</guid>
+      <guid>https://wangtingkui.space/posts/go/gorm-base/</guid>
       <description>gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然 本篇文章主要是从宏观的角度看</description>
     </item>
     

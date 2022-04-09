@@ -3,33 +3,33 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>go中channel的使用 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
-<link rel="icon" href="https://wangtingkui.com/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="https://wangtingkui.com/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
-<link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
-<link rel="manifest" href="https://wangtingkui.com/manifest.json">
+    <title>go中channel的使用 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.space/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.space/manifest.json">
 <meta name="keywords" content="" />
 <meta name="description" content="channel 类型 go 中 channel 类型分为两类： 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int) 不带缓冲区的 c" /><meta itemprop="name" content="go中channel的使用">
 <meta itemprop="description" content="channel 类型 go 中 channel 类型分为两类： 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int) 不带缓冲区的 c"><meta itemprop="datePublished" content="2020-06-01T18:46:47+08:00" />
 <meta itemprop="dateModified" content="2020-06-01T18:46:47+08:00" />
-<meta itemprop="wordCount" content="1014">
+<meta itemprop="wordCount" content="976">
 <meta itemprop="keywords" content="go," /><meta property="og:title" content="go中channel的使用" />
 <meta property="og:description" content="channel 类型 go 中 channel 类型分为两类： 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int) 不带缓冲区的 c" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://wangtingkui.com/posts/go/channel/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://wangtingkui.space/posts/go/channel/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-06-01T18:46:47+08:00" />
 <meta property="article:modified_time" content="2020-06-01T18:46:47+08:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="go中channel的使用"/>
 <meta name="twitter:description" content="channel 类型 go 中 channel 类型分为两类： 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int) 不带缓冲区的 c"/>
-<link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
-  <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+<link rel="stylesheet" href="https://wangtingkui.space/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.space/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=["mode","palette"];items.forEach(function(e){const t=localStorage.getItem("hbs-"+e);t&&document.body.parentElement.setAttribute("data-"+e,t)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
   <div class="container">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <i class="fas fa-bars"></i>
-    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.com">xiaok&#39;s blog
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.space">xiaok&#39;s blog
     </a>
     <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
   <div class="offcanvas-header">
@@ -40,11 +40,11 @@
   </div>
   <div class="offcanvas-body">
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
-      target="_blank" href="https://twitter.com/intent/tweet?title=go%e4%b8%adchannel%e7%9a%84%e4%bd%bf%e7%94%a8&url=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fchannel%2f">
+      target="_blank" href="https://twitter.com/intent/tweet?title=go%e4%b8%adchannel%e7%9a%84%e4%bd%bf%e7%94%a8&url=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fchannel%2f">
       <i class="fab fa-fw fa-twitter"></i> Twitter
     </a>
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
-      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fchannel%2f">
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fchannel%2f">
       <i class="fab fa-fw fa-facebook-f"></i> Facebook
     </a>
   </div>
@@ -71,7 +71,7 @@
         <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           简体中文
         </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.com/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/zh-tw/">繁體中文</a></li></ul>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.space/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/zh-tw/">繁體中文</a></li></ul>
       </div>
     </div>
   </form>
@@ -158,26 +158,26 @@
 </div>
 
     <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
-      <form class="search-bar my-1" action="https://wangtingkui.com/search">
+      <form class="search-bar my-1" action="https://wangtingkui.space/search">
   <div class="input-group input-group-sm">
     <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
     <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
   </div>
 </form>
       <ul class="navbar-nav ms-auto"><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/series/">
+          <a class="nav-link" href="https://wangtingkui.space/series/">
             <i class="fas fa-fw fa-columns"></i>专栏
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/archives/">
+          <a class="nav-link" href="https://wangtingkui.space/archives/">
             <i class="fas fa-fw fa-file-archive"></i>归档
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/categories/">
+          <a class="nav-link" href="https://wangtingkui.space/categories/">
             <i class="fas fa-fw fa-folder"></i>分类
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/tags/">
+          <a class="nav-link" href="https://wangtingkui.space/tags/">
             <i class="fas fa-fw fa-tags"></i>标签
           </a>
         </li></ul>
@@ -190,7 +190,7 @@
 <div class="col-lg-8">
   <div class="container"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body">
-    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.com/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.com/posts/">文章</a></li><li class="breadcrumb-item active">Go中channel的使用</li></ol>
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.space/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.space/posts/">文章</a></li><li class="breadcrumb-item active">Go中channel的使用</li></ol>
   </div>
 </nav><div class="post-panel-wrapper">
   <div class="d-flex flex-column component rounded post-panel">
@@ -228,8 +228,8 @@
   <span class="post-date" title="创建于 2020-06-01 18:46:47 &#43;0800 CST。">
     2020-06-01
   </span><span class="post-reading-time">
-    3 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+    2 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-content mb-3"><h2 id="channel-类型">channel 类型<a class="anchor ms-1" href="#channel-类型"><i class="fas fa-link"></i></a></h2>
 <p>go 中 channel 类型分为两类：</p>
@@ -239,65 +239,64 @@
 </ul>
 <p>不带缓冲区的 channel，写入和读取都会阻塞，在使用的时候必须有对应的写入 goroutine 和读取 goroutine，否则会造成死锁；带缓冲区的 channel，在缓冲区没满的时候会先将数据发到缓冲区，然后立即返回，如果缓冲区满了，会阻塞 goroutine</p>
 <p>为了操作上的安全和可读性，我们还可以限制 channel 的读写属性，默认 channel 都是可读可写的，可以使用 <code>&lt;-chan</code> 来限定只读 channel， 使用<code>chan&lt;-</code>来限定只写 channel，<em><strong>需要注意的是，只读的channel是不能关闭的</strong></em></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="ln"> 3</span>	<span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ch</span> <span class="kd">chan</span><span class="o">&lt;-</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 4</span>		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln"> 5</span>			<span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">1</span> <span class="c1">// 这里如果使用 &lt;- ch，编译是不通过的
-</span><span class="ln"> 6</span><span class="c1"></span>		<span class="p">}</span>
-<span class="ln"> 7</span>		<span class="nb">close</span><span class="p">(</span><span class="nx">ch</span><span class="p">)</span>
-<span class="ln"> 8</span>	<span class="p">}(</span><span class="nx">ch</span><span class="p">)</span>
-<span class="ln"> 9</span>
-<span class="ln">10</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln">11</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="o">&lt;-</span><span class="nx">ch</span><span class="p">)</span>
-<span class="ln">12</span>	<span class="p">}</span>
-<span class="ln">13</span><span class="p">}</span>
-</code></pre></div><p>最重要的一点：<em><strong>channel 必须初始化后才能使用</strong></em></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ch</span> <span class="kd">chan</span><span class="o">&lt;-</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">			<span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">1</span> <span class="c1">// 这里如果使用 &lt;- ch，编译是不通过的
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c1"></span>		<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="nb">close</span><span class="p">(</span><span class="nx">ch</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="p">}(</span><span class="nx">ch</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="o">&lt;-</span><span class="nx">ch</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>最重要的一点：<em><strong>channel 必须初始化后才能使用</strong></em></p>
 <h2 id="channel-操作">channel 操作<a class="anchor ms-1" href="#channel-操作"><i class="fas fa-link"></i></a></h2>
 <h3 id="创建">创建<a class="anchor ms-1" href="#创建"><i class="fas fa-link"></i></a></h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">// 不带缓冲区的 channel
-</span><span class="ln">2</span><span class="c1"></span><span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
-<span class="ln">3</span>
-<span class="ln">4</span><span class="c1">// 带10个缓冲区的 channel
-</span><span class="ln">5</span><span class="c1"></span><span class="nx">bufferedChannel</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-</code></pre></div><h3 id="关闭操作">关闭操作<a class="anchor ms-1" href="#关闭操作"><i class="fas fa-link"></i></a></h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="nb">close</span><span class="p">(</span><span class="nx">ch</span><span class="p">)</span>
-</code></pre></div><p>注意，不能在已经关闭的 channel 上调用 <code>close</code>，会panic：<code>panic: close of closed channel </code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// 不带缓冲区的 channel
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1">// 带10个缓冲区的 channel
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1"></span><span class="nx">bufferedChannel</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span></span></code></pre></div><h3 id="关闭操作">关闭操作<a class="anchor ms-1" href="#关闭操作"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">close</span><span class="p">(</span><span class="nx">ch</span><span class="p">)</span>
+</span></span></code></pre></div><p>注意，不能在已经关闭的 channel 上调用 <code>close</code>，会panic：<code>panic: close of closed channel </code></p>
 <h3 id="写操作">写操作<a class="anchor ms-1" href="#写操作"><i class="fas fa-link"></i></a></h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="ln">2</span><span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">1</span>
-</code></pre></div><p>注意，如果已经 close 的 channel 不能再写入，如果执行写入操作会 panic：<code>send on closed channel</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nx">ch</span> <span class="o">&lt;-</span> <span class="mi">1</span>
+</span></span></code></pre></div><p>注意，如果已经 close 的 channel 不能再写入，如果执行写入操作会 panic：<code>send on closed channel</code></p>
 <h3 id="读操作">读操作<a class="anchor ms-1" href="#读操作"><i class="fas fa-link"></i></a></h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="nx">value</span> <span class="o">:=</span> <span class="o">&lt;-</span> <span class="nx">ch</span>
-</code></pre></div><p>注意，被关闭的 channel 也能正常读取，但是读取到的永远是 channel 类型的零值，可以通过接受读取操作返回的第二个值确定读取的零值是不是因为 channel 关闭而读到的</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>func main() {
-<span class="ln"> 2</span>	ch := make(chan int, 1)
-<span class="ln"> 3</span>	ch &lt;- 1
-<span class="ln"> 4</span>	val, ok := &lt;-ch
-<span class="ln"> 5</span>	fmt.Println(val, ok) // 1 true
-<span class="ln"> 6</span>	close(ch)
-<span class="ln"> 7</span>	val, ok = &lt;-ch
-<span class="ln"> 8</span>	fmt.Println(val, ok) // 0 false
-<span class="ln"> 9</span>}
-<span class="ln">10</span>
-</code></pre></div><h3 id="range-操作">range 操作<a class="anchor ms-1" href="#range-操作"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">value</span> <span class="o">:=</span> <span class="o">&lt;-</span> <span class="nx">ch</span>
+</span></span></code></pre></div><p>注意，被关闭的 channel 也能正常读取，但是读取到的永远是 channel 类型的零值，可以通过接受读取操作返回的第二个值确定读取的零值是不是因为 channel 关闭而读到的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">func main() {
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	ch := make(chan int, 1)
+</span></span><span class="line"><span class="ln">3</span><span class="cl">	ch &lt;- 1
+</span></span><span class="line"><span class="ln">4</span><span class="cl">	val, ok := &lt;-ch
+</span></span><span class="line"><span class="ln">5</span><span class="cl">	fmt.Println(val, ok) // 1 true
+</span></span><span class="line"><span class="ln">6</span><span class="cl">	close(ch)
+</span></span><span class="line"><span class="ln">7</span><span class="cl">	val, ok = &lt;-ch
+</span></span><span class="line"><span class="ln">8</span><span class="cl">	fmt.Println(val, ok) // 0 false
+</span></span><span class="line"><span class="ln">9</span><span class="cl">}
+</span></span></code></pre></div><h3 id="range-操作">range 操作<a class="anchor ms-1" href="#range-操作"><i class="fas fa-link"></i></a></h3>
 <p>使用 range 关键字来操作 channel 其实也是读的一种，只不过处理起来更方便，也更易阅读</p>
 <p>range 可以持续的从一个 channel 读取数据，如果 channel 被关闭，读取完数据之后会自动退出循环</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span>
-<span class="ln"> 2</span><span class="kd">func</span> <span class="nf">makeSomeData</span><span class="p">(</span><span class="nx">ch</span> <span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">size</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 3</span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">size</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-<span class="ln"> 4</span>		<span class="nx">ch</span> <span class="o">&lt;-</span> <span class="nx">i</span>
-<span class="ln"> 5</span>	<span class="p">}</span>
-<span class="ln"> 6</span>	<span class="nb">close</span><span class="p">(</span><span class="nx">ch</span><span class="p">)</span>
-<span class="ln"> 7</span><span class="p">}</span>
-<span class="ln"> 8</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 9</span>	<span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="ln">10</span>	<span class="k">go</span> <span class="nf">makeSomeData</span><span class="p">(</span><span class="nx">ch</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="ln">11</span>	<span class="k">for</span> <span class="nx">num</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">ch</span> <span class="p">{</span>
-<span class="ln">12</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span>
-<span class="ln">13</span>	<span class="p">}</span>
-<span class="ln">14</span><span class="p">}</span>
-</code></pre></div><h3 id="select-操作">select 操作<a class="anchor ms-1" href="#select-操作"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="kd">func</span> <span class="nf">makeSomeData</span><span class="p">(</span><span class="nx">ch</span> <span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">size</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">size</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="nx">ch</span> <span class="o">&lt;-</span> <span class="nx">i</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="nb">close</span><span class="p">(</span><span class="nx">ch</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="k">go</span> <span class="nf">makeSomeData</span><span class="p">(</span><span class="nx">ch</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="k">for</span> <span class="nx">num</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">ch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">num</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="select-操作">select 操作<a class="anchor ms-1" href="#select-操作"><i class="fas fa-link"></i></a></h3>
 <p>当 chan 缓冲区满的时候，再往里面写入的时候会阻塞，或者 chan 里面没有数据，想从里面读数据的时候，也会阻塞，如果我们不想让 goroutine 阻塞，可以使用 select</p>
 <p>select的执行流程是这样的：</p>
 <ul>
@@ -307,17 +306,17 @@
 <li>如果所有的case代码块都没准备好，则阻塞等待</li>
 <li>如果所有的case代码块都没准备好，但是有default代码块，则执行default代码块</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span>	<span class="nx">c</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="ln"> 2</span>	<span class="k">for</span> <span class="p">{</span>
-<span class="ln"> 3</span>		<span class="k">select</span> <span class="p">{</span>
-<span class="ln"> 4</span>		<span class="k">case</span> <span class="nx">v</span> <span class="o">:=</span> <span class="o">&lt;-</span><span class="nx">c</span><span class="p">:</span>
-<span class="ln"> 5</span>			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
-<span class="ln"> 6</span>		<span class="k">default</span><span class="p">:</span>
-<span class="ln"> 7</span>			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;暂无数据&#34;</span><span class="p">)</span>
-<span class="ln"> 8</span>			<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
-<span class="ln"> 9</span>		<span class="p">}</span>
-<span class="ln">10</span>	<span class="p">}</span>
-</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl">	<span class="nx">c</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">		<span class="k">select</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="k">case</span> <span class="nx">v</span> <span class="o">:=</span> <span class="o">&lt;-</span><span class="nx">c</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="k">default</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;暂无数据&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">			<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="p">}</span>
+</span></span></code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content surface">
       <div class="modal-header">
@@ -335,9 +334,9 @@
             </a>
           </li></ul>
         <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/alipay.jpeg" loading="lazy" />
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/alipay.jpeg" loading="lazy" />
           </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/wechat.jpeg" loading="lazy" />
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/wechat.jpeg" loading="lazy" />
           </div></div>
       </div>
     </div>
@@ -345,10 +344,10 @@
 </div></div>
   <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
   <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
-    <a href="https://wangtingkui.com/posts/tool/net-fix-on-centos-7/">VMware Funsion 安装 Centos7 后配置 NAT 网络
+    <a href="https://wangtingkui.space/posts/tool/net-fix-on-centos-7/">VMware Funsion 安装 Centos7 后配置 NAT 网络
 </a>
   </div><div class="post-nav post-next">
-    <a href="https://wangtingkui.com/posts/go/mail/">使用 Jordan-Wright/Email 处理邮件发送
+    <a href="https://wangtingkui.space/posts/go/mail/">使用 Jordan-Wright/Email 处理邮件发送
 </a>
     <i class="fas fa-fw fa-chevron-right"></i>
   </div></div></div>
@@ -369,27 +368,27 @@
     </div>
     <div class="card-body">
       <ul class="post-list"><li>
-          <a href="https://wangtingkui.com/posts/go/unit-testing/">在go中使用单元测试
+          <a href="https://wangtingkui.space/posts/go/unit-testing/">在go中使用单元测试
 </a>
           <span class="float-end post-date">2020-05-17
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/viper/">使用 Viper 处理项目配置
+          <a href="https://wangtingkui.space/posts/go/viper/">使用 Viper 处理项目配置
 </a>
           <span class="float-end post-date">2020-05-03
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/errors/">使用 Pkg/Errors 进行错误处理
+          <a href="https://wangtingkui.space/posts/go/errors/">使用 Pkg/Errors 进行错误处理
 </a>
           <span class="float-end post-date">2020-04-28
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/time/">Go标准库（time）- 使用
+          <a href="https://wangtingkui.space/posts/go/time/">Go标准库（time）- 使用
 </a>
           <span class="float-end post-date">2020-04-12
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/log/">Go标准库（log）- 使用
+          <a href="https://wangtingkui.space/posts/go/log/">Go标准库（log）- 使用
 </a>
           <span class="float-end post-date">2020-03-29
 </span>
@@ -413,7 +412,7 @@
     
     <section class="card row text-center profile component">
   <div class="card-body">
-    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.com/images/avatar.jpeg" loading="lazy"
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.space/images/avatar.jpeg" loading="lazy"
    width="959" height="959"
    />
 </div>
@@ -449,46 +448,46 @@
 </div><section class="series-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/series">专栏</a>
+          <a href="https://wangtingkui.space/series">专栏</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
-            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
+        <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
             gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/categories">分类</a>
+          <a href="https://wangtingkui.space/categories">分类</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
-            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
-            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
-            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
-            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.com/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
-            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+        <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
+            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
+            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
             性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section><section class="tags-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/tags">标签</a>
+          <a href="https://wangtingkui.space/tags">标签</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
-            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
-            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
-            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">
-            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
-            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
-            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
-            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
-            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+        <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
+            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
+            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/nas/" class="badge rounded post-taxonomy" title="nas">
             nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section>
@@ -505,17 +504,17 @@
     <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
 </a>
 </footer>
-<script src="https://wangtingkui.com/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.com/js/icons.min.a35670f2f90c398e5ee5c8e509b428fae75aa2746854cee10b60794633076859.js" integrity="sha256-o1Zw8vkMOY5e5cjlCbQo&#43;udaonRoVM7hC2B5RjMHaFk=" crossorigin="anonymous" defer></script>
+<script src="https://wangtingkui.space/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.space/js/icons.min.b3391f89dcdef937e99a193c6de12584ac1d7613c16ae6ba852a096e1fd95108.js" integrity="sha256-szkfidze&#43;Tfpmhk8beElhKwddhPBaua6hSoJbh/ZUQg=" crossorigin="anonymous" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('https:\/\/wangtingkui.com\/service-worker.js').then(function(reg) {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.space\/service-worker.js').then(function(reg) {
       console.log('Successfully registered service worker', reg);
     }).catch(function(err) {
       console.warn('Error whilst registering service worker', err);
     });
   });
 }
-</script><script src="https://wangtingkui.com/js/viewer.min.4dba52a0a790f909408b7385316651299158381686401d50ff1f04dda6476473.js" integrity="sha256-TbpSoKeQ&#43;QlAi3OFMWZRKZFYOBaGQB1Q/x8E3aZHZHM=" crossorigin="anonymous" defer></script>
+</script><script src="https://wangtingkui.space/js/viewer.min.1721cbc2c5c34a150daae105f4ffed345a8bb269c6b63337f767c272fe6531f7.js" integrity="sha256-FyHLwsXDShUNquEF9P/tNFqLsmnGtjM392fCcv5lMfc=" crossorigin="anonymous" defer></script>
 </body>
 </html>

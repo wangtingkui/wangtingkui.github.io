@@ -3,33 +3,33 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Go标准库（flag）- 使用 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
-<link rel="icon" href="https://wangtingkui.com/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="https://wangtingkui.com/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
-<link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
-<link rel="manifest" href="https://wangtingkui.com/manifest.json">
+    <title>Go标准库（flag）- 使用 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.space/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.space/manifest.json">
 <meta name="keywords" content="" />
 <meta name="description" content="本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提" /><meta itemprop="name" content="Go标准库（flag）- 使用">
 <meta itemprop="description" content="本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提"><meta itemprop="datePublished" content="2019-12-01T17:28:45+08:00" />
 <meta itemprop="dateModified" content="2019-12-01T17:28:45+08:00" />
-<meta itemprop="wordCount" content="925">
+<meta itemprop="wordCount" content="908">
 <meta itemprop="keywords" content="go," /><meta property="og:title" content="Go标准库（flag）- 使用" />
 <meta property="og:description" content="本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8flag/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8flag/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-12-01T17:28:45+08:00" />
 <meta property="article:modified_time" content="2019-12-01T17:28:45+08:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Go标准库（flag）- 使用"/>
 <meta name="twitter:description" content="本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提"/>
-<link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
-  <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+<link rel="stylesheet" href="https://wangtingkui.space/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.space/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=["mode","palette"];items.forEach(function(e){const t=localStorage.getItem("hbs-"+e);t&&document.body.parentElement.setAttribute("data-"+e,t)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
   <div class="container">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <i class="fas fa-bars"></i>
-    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.com">xiaok&#39;s blog
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.space">xiaok&#39;s blog
     </a>
     <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
   <div class="offcanvas-header">
@@ -40,11 +40,11 @@
   </div>
   <div class="offcanvas-body">
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
-      target="_blank" href="https://twitter.com/intent/tweet?title=Go%e6%a0%87%e5%87%86%e5%ba%93%ef%bc%88flag%ef%bc%89-%20%e4%bd%bf%e7%94%a8&url=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2f%25E4%25BD%25BF%25E7%2594%25A8flag%2f">
+      target="_blank" href="https://twitter.com/intent/tweet?title=Go%e6%a0%87%e5%87%86%e5%ba%93%ef%bc%88flag%ef%bc%89-%20%e4%bd%bf%e7%94%a8&url=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2f%25E4%25BD%25BF%25E7%2594%25A8flag%2f">
       <i class="fab fa-fw fa-twitter"></i> Twitter
     </a>
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
-      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2f%25E4%25BD%25BF%25E7%2594%25A8flag%2f">
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2f%25E4%25BD%25BF%25E7%2594%25A8flag%2f">
       <i class="fab fa-fw fa-facebook-f"></i> Facebook
     </a>
   </div>
@@ -71,7 +71,7 @@
         <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           简体中文
         </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.com/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/zh-tw/">繁體中文</a></li></ul>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.space/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/zh-tw/">繁體中文</a></li></ul>
       </div>
     </div>
   </form>
@@ -158,26 +158,26 @@
 </div>
 
     <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
-      <form class="search-bar my-1" action="https://wangtingkui.com/search">
+      <form class="search-bar my-1" action="https://wangtingkui.space/search">
   <div class="input-group input-group-sm">
     <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
     <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
   </div>
 </form>
       <ul class="navbar-nav ms-auto"><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/series/">
+          <a class="nav-link" href="https://wangtingkui.space/series/">
             <i class="fas fa-fw fa-columns"></i>专栏
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/archives/">
+          <a class="nav-link" href="https://wangtingkui.space/archives/">
             <i class="fas fa-fw fa-file-archive"></i>归档
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/categories/">
+          <a class="nav-link" href="https://wangtingkui.space/categories/">
             <i class="fas fa-fw fa-folder"></i>分类
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/tags/">
+          <a class="nav-link" href="https://wangtingkui.space/tags/">
             <i class="fas fa-fw fa-tags"></i>标签
           </a>
         </li></ul>
@@ -190,7 +190,7 @@
 <div class="col-lg-8">
   <div class="container"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body">
-    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.com/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.com/posts/">文章</a></li><li class="breadcrumb-item active">Go标准库（flag）- 使用</li></ol>
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.space/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.space/posts/">文章</a></li><li class="breadcrumb-item active">Go标准库（flag）- 使用</li></ol>
   </div>
 </nav><div class="post-panel-wrapper">
   <div class="d-flex flex-column component rounded post-panel">
@@ -229,66 +229,64 @@
     2019-12-01
   </span><span class="post-reading-time">
     2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-content mb-3"><p>本文所讨论内容基于的go版本：go1.13</p>
 <p>在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的<code>flag</code>包为我们提供了解析命令行参数的功能</p>
 <p>要使用<code>flag</code>包，主要有3个步骤：定义flag、解析flag、使用flag</p>
 <h3 id="定义flag">定义flag<a class="anchor ms-1" href="#定义flag"><i class="fas fa-link"></i></a></h3>
 <p><code>flag</code>包为我们提供了两种定义flag的方式，<code>flag.Xxx()</code>方式和<code>flag.XxxVar()</code>方式,其中Xxx可以是<code>Int</code>,<code>String</code>等类型，其中第一种会返回对应类型的指针，第二种则是将flag绑定到一个变量上</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">// 方式1
-</span><span class="ln">2</span><span class="c1"></span><span class="kd">var</span> <span class="nx">config</span> <span class="o">*</span><span class="kt">string</span> <span class="p">=</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;config&#34;</span><span class="p">.</span> <span class="s">&#34;path/to/config&#34;</span><span class="p">,</span> <span class="s">&#34;配置文件路径&#34;</span><span class="p">)</span>
-<span class="ln">3</span>
-<span class="ln">4</span><span class="c1">// 方式2
-</span><span class="ln">5</span><span class="c1"></span><span class="kd">var</span> <span class="nx">intval</span> <span class="kt">int</span>
-<span class="ln">6</span><span class="nx">flag</span><span class="p">.</span><span class="nf">IntVal</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">intval</span><span class="p">,</span> <span class="s">&#34;intval&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#34;a intger value&#34;</span><span class="p">)</span>
-</code></pre></div><p>除了标准库中提供的基础数据类型的解析，如果我们需要解析自定义的类型，可以使用<code>flag.Val()</code>方法，只要绑定的类型实现了<code>flag.Value</code>接口即可</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// 方式1
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">config</span> <span class="o">*</span><span class="kt">string</span> <span class="p">=</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;config&#34;</span><span class="p">.</span> <span class="s">&#34;path/to/config&#34;</span><span class="p">,</span> <span class="s">&#34;配置文件路径&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1">// 方式2
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">intval</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="nx">flag</span><span class="p">.</span><span class="nf">IntVal</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">intval</span><span class="p">,</span> <span class="s">&#34;intval&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#34;a intger value&#34;</span><span class="p">)</span>
+</span></span></code></pre></div><p>除了标准库中提供的基础数据类型的解析，如果我们需要解析自定义的类型，可以使用<code>flag.Val()</code>方法，只要绑定的类型实现了<code>flag.Value</code>接口即可</p>
 <h3 id="解析flag">解析flag<a class="anchor ms-1" href="#解析flag"><i class="fas fa-link"></i></a></h3>
 <p>当定义完了所有的flag之后，我们可以调用<code>flag.Parse()</code>方法解析命令行参数</p>
 <h3 id="使用flag">使用flag<a class="anchor ms-1" href="#使用flag"><i class="fas fa-link"></i></a></h3>
 <p>当使用命令行传递flag的时候，有以下三种语法格式（虽说官方只写了一个<code>-</code>，但其实当flag是bool类型的时候<code>--</code>也是支持的，但最好还是按照官方的来）</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>-flag // 只支持 bool 类型
-<span class="ln">2</span>-flag value // 只支持非 bool 类型，因为比如有`cmd -x false`这种格式，不能确定false到底是flag的值还是一个参数
-<span class="ln">3</span>-flag=value
-</code></pre></div><p>在命令行传递参数时，如果是int类型，可以传递十进制、十六进制、八进制或者是负数；如果是bool类型，可以使用1,0,t,g,true,false,TRUE,FALSE,True,Flase；如果是duration，可以接受任何time.ParseDuration可以解析的类型</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">-flag // 只支持 bool 类型
+</span></span><span class="line"><span class="ln">2</span><span class="cl">-flag value // 只支持非 bool 类型，因为比如有`cmd -x false`这种格式，不能确定false到底是flag的值还是一个参数
+</span></span><span class="line"><span class="ln">3</span><span class="cl">-flag=value
+</span></span></code></pre></div><p>在命令行传递参数时，如果是int类型，可以传递十进制、十六进制、八进制或者是负数；如果是bool类型，可以使用1,0,t,g,true,false,TRUE,FALSE,True,Flase；如果是duration，可以接受任何time.ParseDuration可以解析的类型</p>
 <h3 id="non-flag-参数">non-flag 参数<a class="anchor ms-1" href="#non-flag-参数"><i class="fas fa-link"></i></a></h3>
 <p>在上面的说明中我们知道，传递参数的时候有固定格式，那不符合这些格式的参数就是<code>non-flag</code>参数</p>
 <p>在代码中，我们可以通过下面的这些方法来获取和使用<code>non-flag</code>参数</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="nx">flag</span><span class="p">.</span><span class="nf">Arg</span><span class="p">(</span><span class="nx">i</span> <span class="kt">int</span><span class="p">)</span> <span class="c1">// 获取第i个non-flag参数
-</span><span class="ln">2</span><span class="c1"></span><span class="nx">flag</span><span class="p">.</span><span class="nf">Args</span><span class="p">()</span> <span class="c1">// 获取所有的non-flag参数
-</span><span class="ln">3</span><span class="c1"></span><span class="nx">flag</span><span class="p">.</span><span class="nf">NArg</span><span class="p">()</span> <span class="c1">// 获取non-flag参数的个数
-</span></code></pre></div><h3 id="一个例子">一个例子<a class="anchor ms-1" href="#一个例子"><i class="fas fa-link"></i></a></h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
-<span class="ln"> 2</span>
-<span class="ln"> 3</span><span class="kn">import</span> <span class="p">(</span>
-<span class="ln"> 4</span>    <span class="s">&#34;flag&#34;</span>
-<span class="ln"> 5</span>    <span class="s">&#34;fmt&#34;</span>
-<span class="ln"> 6</span><span class="p">)</span>
-<span class="ln"> 7</span>
-<span class="ln"> 8</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 9</span>    <span class="kd">var</span> <span class="p">(</span>
-<span class="ln">10</span>        <span class="nx">s</span> <span class="p">=</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;defaut string value&#34;</span><span class="p">,</span> <span class="s">&#34;flag of type string&#34;</span><span class="p">)</span>
-<span class="ln">11</span>        <span class="nx">i</span> <span class="p">=</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">Int</span><span class="p">(</span><span class="s">&#34;i&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;flag of type int&#34;</span><span class="p">)</span>
-<span class="ln">12</span>    <span class="p">)</span>
-<span class="ln">13</span>
-<span class="ln">14</span>    <span class="nx">flag</span><span class="p">.</span><span class="nf">Parse</span><span class="p">()</span>
-<span class="ln">15</span>
-<span class="ln">16</span>    <span class="nx">output</span> <span class="o">:=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">`value of s flag:%s
-</span><span class="ln">17</span><span class="s">value of i flag:%d
-</span><span class="ln">18</span><span class="s">count of non-flag:%d
-</span><span class="ln">19</span><span class="s">item of non-flag:%v`</span><span class="p">,</span> <span class="o">*</span><span class="nx">s</span><span class="p">,</span> <span class="o">*</span><span class="nx">i</span><span class="p">,</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">NArg</span><span class="p">(),</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">Args</span><span class="p">())</span>
-<span class="ln">20</span>
-<span class="ln">21</span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
-<span class="ln">22</span><span class="p">}</span>
-<span class="ln">23</span>
-</code></pre></div><p>查看下输出：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>╰─$ ./flag -i 10 -s abc haha hehe
-<span class="ln">2</span>value of s flag:abc
-<span class="ln">3</span>value of i flag:10
-<span class="ln">4</span>count of non-flag:2
-<span class="ln">5</span>item of non-flag:[haha hehe]
-<span class="ln">6</span>
-</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">flag</span><span class="p">.</span><span class="nf">Arg</span><span class="p">(</span><span class="nx">i</span> <span class="kt">int</span><span class="p">)</span> <span class="c1">// 获取第i个non-flag参数
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="nx">flag</span><span class="p">.</span><span class="nf">Args</span><span class="p">()</span> <span class="c1">// 获取所有的non-flag参数
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span><span class="nx">flag</span><span class="p">.</span><span class="nf">NArg</span><span class="p">()</span> <span class="c1">// 获取non-flag参数的个数
+</span></span></span></code></pre></div><h3 id="一个例子">一个例子<a class="anchor ms-1" href="#一个例子"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="s">&#34;flag&#34;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="kd">var</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        <span class="nx">s</span> <span class="p">=</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;s&#34;</span><span class="p">,</span> <span class="s">&#34;defaut string value&#34;</span><span class="p">,</span> <span class="s">&#34;flag of type string&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        <span class="nx">i</span> <span class="p">=</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">Int</span><span class="p">(</span><span class="s">&#34;i&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;flag of type int&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="nx">flag</span><span class="p">.</span><span class="nf">Parse</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    <span class="nx">output</span> <span class="o">:=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">`value of s flag:%s
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="s">value of i flag:%d
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="s">count of non-flag:%d
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="s">item of non-flag:%v`</span><span class="p">,</span> <span class="o">*</span><span class="nx">s</span><span class="p">,</span> <span class="o">*</span><span class="nx">i</span><span class="p">,</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">NArg</span><span class="p">(),</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">Args</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">
+</span></span><span class="line"><span class="ln">21</span><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>查看下输出：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">╰─$ ./flag -i 10 -s abc haha hehe
+</span></span><span class="line"><span class="ln">2</span><span class="cl">value of s flag:abc
+</span></span><span class="line"><span class="ln">3</span><span class="cl">value of i flag:10
+</span></span><span class="line"><span class="ln">4</span><span class="cl">count of non-flag:2
+</span></span><span class="line"><span class="ln">5</span><span class="cl">item of non-flag:[haha hehe]
+</span></span></code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content surface">
       <div class="modal-header">
@@ -306,9 +304,9 @@
             </a>
           </li></ul>
         <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/alipay.jpeg" loading="lazy" />
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/alipay.jpeg" loading="lazy" />
           </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/wechat.jpeg" loading="lazy" />
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/wechat.jpeg" loading="lazy" />
           </div></div>
       </div>
     </div>
@@ -316,10 +314,10 @@
 </div></div>
   <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
   <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
-    <a href="https://wangtingkui.com/posts/tool/deploy-on-github-pages/">使用hugo搭建个人网站（二）- 使用 Github Pages 部署 Hugo 生成的静态站点
+    <a href="https://wangtingkui.space/posts/tool/deploy-on-github-pages/">使用hugo搭建个人网站（二）- 使用 Github Pages 部署 Hugo 生成的静态站点
 </a>
   </div><div class="post-nav post-next">
-    <a href="https://wangtingkui.com/posts/go/flag/">Go标准库（flag）- 源码分析
+    <a href="https://wangtingkui.space/posts/go/flag/">Go标准库（flag）- 源码分析
 </a>
     <i class="fas fa-fw fa-chevron-right"></i>
   </div></div></div>
@@ -340,27 +338,27 @@
     </div>
     <div class="card-body">
       <ul class="post-list"><li>
-          <a href="https://wangtingkui.com/posts/tool/deploy-on-github-pages/">使用hugo搭建个人网站（二）- 使用 Github Pages 部署 Hugo 生成的静态站点
+          <a href="https://wangtingkui.space/posts/tool/deploy-on-github-pages/">使用hugo搭建个人网站（二）- 使用 Github Pages 部署 Hugo 生成的静态站点
 </a>
           <span class="float-end post-date">2019-12-01
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/tool/introduction/">使用hugo搭建个人网站（一）- Hugo使用入门
+          <a href="https://wangtingkui.space/posts/tool/introduction/">使用hugo搭建个人网站（一）- Hugo使用入门
 </a>
           <span class="float-end post-date">2019-09-22
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8cobra/">Go Cli 应用框架cobra（一）- 简介
+          <a href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8cobra/">Go Cli 应用框架cobra（一）- 简介
 </a>
           <span class="float-end post-date">2019-12-01
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/base/unicode/">详解字符编码
+          <a href="https://wangtingkui.space/posts/base/unicode/">详解字符编码
 </a>
           <span class="float-end post-date">2019-09-22
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/about/">About
+          <a href="https://wangtingkui.space/about/">About
 </a>
           <span class="float-end post-date">2019-02-28
 </span>
@@ -384,7 +382,7 @@
     
     <section class="card row text-center profile component">
   <div class="card-body">
-    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.com/images/avatar.jpeg" loading="lazy"
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.space/images/avatar.jpeg" loading="lazy"
    width="959" height="959"
    />
 </div>
@@ -418,46 +416,46 @@
 </div><section class="series-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/series">专栏</a>
+          <a href="https://wangtingkui.space/series">专栏</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
-            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
+        <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
             gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/categories">分类</a>
+          <a href="https://wangtingkui.space/categories">分类</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
-            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
-            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
-            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
-            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.com/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
-            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+        <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
+            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
+            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
             性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section><section class="tags-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/tags">标签</a>
+          <a href="https://wangtingkui.space/tags">标签</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
-            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
-            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
-            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">
-            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
-            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
-            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
-            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
-            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+        <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
+            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
+            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/nas/" class="badge rounded post-taxonomy" title="nas">
             nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section>
@@ -474,17 +472,17 @@
     <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
 </a>
 </footer>
-<script src="https://wangtingkui.com/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.com/js/icons.min.a35670f2f90c398e5ee5c8e509b428fae75aa2746854cee10b60794633076859.js" integrity="sha256-o1Zw8vkMOY5e5cjlCbQo&#43;udaonRoVM7hC2B5RjMHaFk=" crossorigin="anonymous" defer></script>
+<script src="https://wangtingkui.space/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.space/js/icons.min.b3391f89dcdef937e99a193c6de12584ac1d7613c16ae6ba852a096e1fd95108.js" integrity="sha256-szkfidze&#43;Tfpmhk8beElhKwddhPBaua6hSoJbh/ZUQg=" crossorigin="anonymous" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('https:\/\/wangtingkui.com\/service-worker.js').then(function(reg) {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.space\/service-worker.js').then(function(reg) {
       console.log('Successfully registered service worker', reg);
     }).catch(function(err) {
       console.warn('Error whilst registering service worker', err);
     });
   });
 }
-</script><script src="https://wangtingkui.com/js/viewer.min.4dba52a0a790f909408b7385316651299158381686401d50ff1f04dda6476473.js" integrity="sha256-TbpSoKeQ&#43;QlAi3OFMWZRKZFYOBaGQB1Q/x8E3aZHZHM=" crossorigin="anonymous" defer></script>
+</script><script src="https://wangtingkui.space/js/viewer.min.1721cbc2c5c34a150daae105f4ffed345a8bb269c6b63337f767c272fe6531f7.js" integrity="sha256-FyHLwsXDShUNquEF9P/tNFqLsmnGtjM392fCcv5lMfc=" crossorigin="anonymous" defer></script>
 </body>
 </html>

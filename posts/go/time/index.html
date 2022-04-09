@@ -3,33 +3,33 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Go标准库（time）- 使用 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
-<link rel="icon" href="https://wangtingkui.com/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="https://wangtingkui.com/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
-<link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
-<link rel="manifest" href="https://wangtingkui.com/manifest.json">
+    <title>Go标准库（time）- 使用 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.space/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.space/manifest.json">
 <meta name="keywords" content="" />
 <meta name="description" content="本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时" /><meta itemprop="name" content="Go标准库（time）- 使用">
 <meta itemprop="description" content="本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时"><meta itemprop="datePublished" content="2020-04-12T23:31:09+08:00" />
 <meta itemprop="dateModified" content="2020-04-12T23:31:09+08:00" />
-<meta itemprop="wordCount" content="822">
+<meta itemprop="wordCount" content="792">
 <meta itemprop="keywords" content="go," /><meta property="og:title" content="Go标准库（time）- 使用" />
 <meta property="og:description" content="本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://wangtingkui.com/posts/go/time/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://wangtingkui.space/posts/go/time/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-04-12T23:31:09+08:00" />
 <meta property="article:modified_time" content="2020-04-12T23:31:09+08:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Go标准库（time）- 使用"/>
 <meta name="twitter:description" content="本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时"/>
-<link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
-  <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+<link rel="stylesheet" href="https://wangtingkui.space/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.space/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=["mode","palette"];items.forEach(function(e){const t=localStorage.getItem("hbs-"+e);t&&document.body.parentElement.setAttribute("data-"+e,t)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
   <div class="container">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <i class="fas fa-bars"></i>
-    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.com">xiaok&#39;s blog
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.space">xiaok&#39;s blog
     </a>
     <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
   <div class="offcanvas-header">
@@ -40,11 +40,11 @@
   </div>
   <div class="offcanvas-body">
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
-      target="_blank" href="https://twitter.com/intent/tweet?title=Go%e6%a0%87%e5%87%86%e5%ba%93%ef%bc%88time%ef%bc%89-%20%e4%bd%bf%e7%94%a8&url=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2ftime%2f">
+      target="_blank" href="https://twitter.com/intent/tweet?title=Go%e6%a0%87%e5%87%86%e5%ba%93%ef%bc%88time%ef%bc%89-%20%e4%bd%bf%e7%94%a8&url=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2ftime%2f">
       <i class="fab fa-fw fa-twitter"></i> Twitter
     </a>
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
-      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2ftime%2f">
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2ftime%2f">
       <i class="fab fa-fw fa-facebook-f"></i> Facebook
     </a>
   </div>
@@ -71,7 +71,7 @@
         <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           简体中文
         </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.com/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/zh-tw/">繁體中文</a></li></ul>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.space/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/zh-tw/">繁體中文</a></li></ul>
       </div>
     </div>
   </form>
@@ -158,26 +158,26 @@
 </div>
 
     <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
-      <form class="search-bar my-1" action="https://wangtingkui.com/search">
+      <form class="search-bar my-1" action="https://wangtingkui.space/search">
   <div class="input-group input-group-sm">
     <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
     <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
   </div>
 </form>
       <ul class="navbar-nav ms-auto"><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/series/">
+          <a class="nav-link" href="https://wangtingkui.space/series/">
             <i class="fas fa-fw fa-columns"></i>专栏
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/archives/">
+          <a class="nav-link" href="https://wangtingkui.space/archives/">
             <i class="fas fa-fw fa-file-archive"></i>归档
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/categories/">
+          <a class="nav-link" href="https://wangtingkui.space/categories/">
             <i class="fas fa-fw fa-folder"></i>分类
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/tags/">
+          <a class="nav-link" href="https://wangtingkui.space/tags/">
             <i class="fas fa-fw fa-tags"></i>标签
           </a>
         </li></ul>
@@ -190,7 +190,7 @@
 <div class="col-lg-8">
   <div class="container"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body">
-    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.com/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.com/posts/">文章</a></li><li class="breadcrumb-item active">Go标准库（time）- 使用</li></ol>
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.space/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.space/posts/">文章</a></li><li class="breadcrumb-item active">Go标准库（time）- 使用</li></ol>
   </div>
 </nav><div class="post-panel-wrapper">
   <div class="d-flex flex-column component rounded post-panel">
@@ -229,7 +229,7 @@
     2020-04-12
   </span><span class="post-reading-time">
     2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-content mb-3"><p>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面：</p>
 <ul>
@@ -241,89 +241,87 @@
 </p>
 <h3 id="时间点">时间点<a class="anchor ms-1" href="#时间点"><i class="fas fa-link"></i></a></h3>
 <p>在 go 中，时间点使用 <code>time.Time</code> 来表示，这是一个基于纳秒精度的时间表示，我们还是通过一些例子来来学习</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
-<span class="ln"> 2</span>
-<span class="ln"> 3</span><span class="kn">import</span> <span class="p">(</span>
-<span class="ln"> 4</span>	<span class="s">&#34;fmt&#34;</span>
-<span class="ln"> 5</span>	<span class="s">&#34;time&#34;</span>
-<span class="ln"> 6</span><span class="p">)</span>
-<span class="ln"> 7</span>
-<span class="ln"> 8</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 9</span>	<span class="c1">// 获取时间
-</span><span class="ln">10</span><span class="c1"></span>	<span class="nx">now</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>             <span class="c1">// 获取当前时间点对象
-</span><span class="ln">11</span><span class="c1"></span>	<span class="nx">t</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Unix</span><span class="p">(</span><span class="mi">1586708379</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// 从指定时间戳实例化Time对象，第二个参数可以指定纳秒的精度
-</span><span class="ln">12</span><span class="c1"></span>  <span class="nx">s</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="s">&#34;2006-01-02 03:04:05&#34;</span><span class="p">,</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Format</span><span class="p">(</span><span class="s">&#34;2006-01-02 03:04:05&#34;</span><span class="p">))</span> <span class="c1">// 从时间字符串解析
-</span><span class="ln">13</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">now</span><span class="p">,</span> <span class="nx">t</span><span class="p">,</span> <span class="nx">s</span><span class="p">)</span>
-<span class="ln">14</span>
-<span class="ln">15</span>	<span class="c1">// 分解时间中的时间元素
-</span><span class="ln">16</span><span class="c1"></span>	<span class="nx">year</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Year</span><span class="p">()</span>     <span class="c1">// 获取年
-</span><span class="ln">17</span><span class="c1"></span>	<span class="nx">month</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Month</span><span class="p">()</span>   <span class="c1">// 获取月份
-</span><span class="ln">18</span><span class="c1"></span>	<span class="nx">day</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Day</span><span class="p">()</span>       <span class="c1">// 获取日
-</span><span class="ln">19</span><span class="c1"></span>	<span class="nx">hour</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Hour</span><span class="p">()</span>     <span class="c1">// 获取小时
-</span><span class="ln">20</span><span class="c1"></span>	<span class="nx">minute</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Minute</span><span class="p">()</span> <span class="c1">// 获取分钟
-</span><span class="ln">21</span><span class="c1"></span>	<span class="nx">second</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Second</span><span class="p">()</span> <span class="c1">// 获取秒数
-</span><span class="ln">22</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Unix</span><span class="p">()</span>             <span class="c1">// 转换成时间戳
-</span><span class="ln">23</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">UnixNano</span><span class="p">()</span>         <span class="c1">// 转换成纳秒时间戳
-</span><span class="ln">24</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">year</span><span class="p">,</span> <span class="nx">month</span><span class="p">,</span> <span class="nx">day</span><span class="p">,</span> <span class="nx">hour</span><span class="p">,</span> <span class="nx">minute</span><span class="p">,</span> <span class="nx">second</span><span class="p">)</span>
-<span class="ln">25</span>
-<span class="ln">26</span>	<span class="c1">// 时间操作
-</span><span class="ln">27</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">// 添加10s
-</span><span class="ln">28</span><span class="c1"></span>	<span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Sub</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>       <span class="c1">// 计算时间差值，结果是个时间段
-</span><span class="ln">29</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Equal</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">())</span>     <span class="c1">// 比较两个时间是否相等，而且支持跨时区比较
-</span><span class="ln">30</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Before</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">())</span>    <span class="c1">// 比较某个时间是否在另一个时间之前
-</span><span class="ln">31</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">After</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">())</span>     <span class="c1">// 比较某个时间是否在另一个时间之后
-</span><span class="ln">32</span><span class="c1"></span>
-<span class="ln">33</span>	<span class="c1">// 格式化展示
-</span><span class="ln">34</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">&#34;2006-01-02 03:04:05&#34;</span><span class="p">))</span>
-<span class="ln">35</span><span class="p">}</span>
-<span class="ln">36</span>
-<span class="ln">37</span><span class="nx">在</span> <span class="k">go</span> <span class="nx">中</span><span class="err">，</span><span class="nx">时间的格式化非常特别</span><span class="err">，</span><span class="nx">是通过一些指定的数字来进行格式化的</span><span class="err">，</span><span class="nx">这些数字也非常有记忆点</span><span class="err">，</span><span class="nx">口诀是</span><span class="s">`2006 1 2 3 4 5`</span><span class="err">，</span><span class="nx">也就是2006年1月2日下午3点4分5秒</span><span class="err">，</span><span class="nx">不同的格式化就是通过摆弄这些数字来得到的</span>
-<span class="ln">38</span>
-</code></pre></div><h3 id="时间段">时间段<a class="anchor ms-1" href="#时间段"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="s">&#34;time&#34;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="c1">// 获取时间
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span>	<span class="nx">now</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>             <span class="c1">// 获取当前时间点对象
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1"></span>	<span class="nx">t</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Unix</span><span class="p">(</span><span class="mi">1586708379</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// 从指定时间戳实例化Time对象，第二个参数可以指定纳秒的精度
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c1"></span>  <span class="nx">s</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="s">&#34;2006-01-02 03:04:05&#34;</span><span class="p">,</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Format</span><span class="p">(</span><span class="s">&#34;2006-01-02 03:04:05&#34;</span><span class="p">))</span> <span class="c1">// 从时间字符串解析
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">now</span><span class="p">,</span> <span class="nx">t</span><span class="p">,</span> <span class="nx">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">	<span class="c1">// 分解时间中的时间元素
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="c1"></span>	<span class="nx">year</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Year</span><span class="p">()</span>     <span class="c1">// 获取年
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"></span>	<span class="nx">month</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Month</span><span class="p">()</span>   <span class="c1">// 获取月份
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="c1"></span>	<span class="nx">day</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Day</span><span class="p">()</span>       <span class="c1">// 获取日
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="c1"></span>	<span class="nx">hour</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Hour</span><span class="p">()</span>     <span class="c1">// 获取小时
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="c1"></span>	<span class="nx">minute</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Minute</span><span class="p">()</span> <span class="c1">// 获取分钟
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="c1"></span>	<span class="nx">second</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">Second</span><span class="p">()</span> <span class="c1">// 获取秒数
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Unix</span><span class="p">()</span>             <span class="c1">// 转换成时间戳
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">UnixNano</span><span class="p">()</span>         <span class="c1">// 转换成纳秒时间戳
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">year</span><span class="p">,</span> <span class="nx">month</span><span class="p">,</span> <span class="nx">day</span><span class="p">,</span> <span class="nx">hour</span><span class="p">,</span> <span class="nx">minute</span><span class="p">,</span> <span class="nx">second</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">
+</span></span><span class="line"><span class="ln">26</span><span class="cl">	<span class="c1">// 时间操作
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">// 添加10s
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="c1"></span>	<span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Sub</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>       <span class="c1">// 计算时间差值，结果是个时间段
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Equal</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">())</span>     <span class="c1">// 比较两个时间是否相等，而且支持跨时区比较
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Before</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">())</span>    <span class="c1">// 比较某个时间是否在另一个时间之前
+</span></span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">After</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">())</span>     <span class="c1">// 比较某个时间是否在另一个时间之后
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl">	<span class="c1">// 格式化展示
+</span></span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">&#34;2006-01-02 03:04:05&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">
+</span></span><span class="line"><span class="ln">37</span><span class="cl"><span class="nx">在</span> <span class="k">go</span> <span class="nx">中</span><span class="err">，</span><span class="nx">时间的格式化非常特别</span><span class="err">，</span><span class="nx">是通过一些指定的数字来进行格式化的</span><span class="err">，</span><span class="nx">这些数字也非常有记忆点</span><span class="err">，</span><span class="nx">口诀是</span><span class="s">`2006 1 2 3 4 5`</span><span class="err">，</span><span class="nx">也就是2006年1月2日下午3点4分5秒</span><span class="err">，</span><span class="nx">不同的格式化就是通过摆弄这些数字来得到的</span>
+</span></span></code></pre></div><h3 id="时间段">时间段<a class="anchor ms-1" href="#时间段"><i class="fas fa-link"></i></a></h3>
 <p>在 go 中，时间段是使用 <code>time.Duration</code> 来表示的，也是纳秒精度的一个数值，同时 go 也定义了一系列常用的时间精度，比如秒，小时等，看 go 中的源码很简单就能看明白：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// go 源码
-</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Duration</span> <span class="kt">int64</span>
-<span class="ln"> 3</span>
-<span class="ln"> 4</span><span class="kd">const</span> <span class="p">(</span>
-<span class="ln"> 5</span>	<span class="nx">Nanosecond</span>  <span class="nx">Duration</span> <span class="p">=</span> <span class="mi">1</span>
-<span class="ln"> 6</span>	<span class="nx">Microsecond</span>          <span class="p">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">Nanosecond</span>
-<span class="ln"> 7</span>	<span class="nx">Millisecond</span>          <span class="p">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">Microsecond</span>
-<span class="ln"> 8</span>	<span class="nx">Second</span>               <span class="p">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">Millisecond</span>
-<span class="ln"> 9</span>	<span class="nx">Minute</span>               <span class="p">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="nx">Second</span>
-<span class="ln">10</span>	<span class="nx">Hour</span>                 <span class="p">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="nx">Minute</span>
-<span class="ln">11</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
-<span class="ln"> 2</span>
-<span class="ln"> 3</span><span class="kn">import</span> <span class="p">(</span>
-<span class="ln"> 4</span>	<span class="s">&#34;fmt&#34;</span>
-<span class="ln"> 5</span>	<span class="s">&#34;time&#34;</span>
-<span class="ln"> 6</span><span class="p">)</span>
-<span class="ln"> 7</span>
-<span class="ln"> 8</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 9</span>	<span class="nx">d</span> <span class="o">:=</span> <span class="mi">10</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span>
-<span class="ln">10</span>	<span class="nx">hour</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Hours</span><span class="p">()</span>       <span class="c1">// 转换成小时
-</span><span class="ln">11</span><span class="c1"></span>	<span class="nx">minite</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Minutes</span><span class="p">()</span>   <span class="c1">// 转换成分钟
-</span><span class="ln">12</span><span class="c1"></span>	<span class="nx">second</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Seconds</span><span class="p">()</span>   <span class="c1">// 转换成秒
-</span><span class="ln">13</span><span class="c1"></span>	<span class="nx">nano</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Nanoseconds</span><span class="p">()</span> <span class="c1">// 转换成纳秒
-</span><span class="ln">14</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">hour</span><span class="p">,</span> <span class="nx">minite</span><span class="p">,</span> <span class="nx">second</span><span class="p">,</span> <span class="nx">nano</span><span class="p">)</span>
-<span class="ln">15</span><span class="p">}</span>
-</code></pre></div><h3 id="定时器">定时器<a class="anchor ms-1" href="#定时器"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// go 源码
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Duration</span> <span class="kt">int64</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="kd">const</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="nx">Nanosecond</span>  <span class="nx">Duration</span> <span class="p">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="nx">Microsecond</span>          <span class="p">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">Nanosecond</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="nx">Millisecond</span>          <span class="p">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">Microsecond</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="nx">Second</span>               <span class="p">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="nx">Millisecond</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="nx">Minute</span>               <span class="p">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="nx">Second</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="nx">Hour</span>                 <span class="p">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="nx">Minute</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="s">&#34;time&#34;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="nx">d</span> <span class="o">:=</span> <span class="mi">10</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="nx">hour</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Hours</span><span class="p">()</span>       <span class="c1">// 转换成小时
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1"></span>	<span class="nx">minite</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Minutes</span><span class="p">()</span>   <span class="c1">// 转换成分钟
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c1"></span>	<span class="nx">second</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Seconds</span><span class="p">()</span>   <span class="c1">// 转换成秒
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"></span>	<span class="nx">nano</span> <span class="o">:=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Nanoseconds</span><span class="p">()</span> <span class="c1">// 转换成纳秒
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">hour</span><span class="p">,</span> <span class="nx">minite</span><span class="p">,</span> <span class="nx">second</span><span class="p">,</span> <span class="nx">nano</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="定时器">定时器<a class="anchor ms-1" href="#定时器"><i class="fas fa-link"></i></a></h3>
 <p>定时器的本质是一个 Time 类型的 channel，会以我们指定的时间间隔在 channel 中产生值</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
-<span class="ln"> 2</span>
-<span class="ln"> 3</span><span class="kn">import</span> <span class="p">(</span>
-<span class="ln"> 4</span>	<span class="s">&#34;fmt&#34;</span>
-<span class="ln"> 5</span>	<span class="s">&#34;time&#34;</span>
-<span class="ln"> 6</span><span class="p">)</span>
-<span class="ln"> 7</span>
-<span class="ln"> 8</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln"> 9</span>	<span class="nx">ticker</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Tick</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span> <span class="c1">// 定义一个1秒间隔的定时器
-</span><span class="ln">10</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">ticker</span> <span class="p">{</span>
-<span class="ln">11</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="c1">// 每秒都会执行的任务
-</span><span class="ln">12</span><span class="c1"></span>	<span class="p">}</span>
-<span class="ln">13</span><span class="p">}</span>
-<span class="ln">14</span>
-</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="s">&#34;time&#34;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="nx">ticker</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Tick</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span> <span class="c1">// 定义一个1秒间隔的定时器
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">ticker</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="c1">// 每秒都会执行的任务
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c1"></span>	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content surface">
       <div class="modal-header">
@@ -341,9 +339,9 @@
             </a>
           </li></ul>
         <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/alipay.jpeg" loading="lazy" />
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/alipay.jpeg" loading="lazy" />
           </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/wechat.jpeg" loading="lazy" />
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/wechat.jpeg" loading="lazy" />
           </div></div>
       </div>
     </div>
@@ -351,10 +349,10 @@
 </div></div>
   <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
   <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
-    <a href="https://wangtingkui.com/posts/go/log/">Go标准库（log）- 使用
+    <a href="https://wangtingkui.space/posts/go/log/">Go标准库（log）- 使用
 </a>
   </div><div class="post-nav post-next">
-    <a href="https://wangtingkui.com/posts/tool/shortcodes/">在hugo中使用shortcode
+    <a href="https://wangtingkui.space/posts/tool/shortcodes/">在hugo中使用shortcode
 </a>
     <i class="fas fa-fw fa-chevron-right"></i>
   </div></div></div>
@@ -375,27 +373,27 @@
     </div>
     <div class="card-body">
       <ul class="post-list"><li>
-          <a href="https://wangtingkui.com/posts/go/log/">Go标准库（log）- 使用
+          <a href="https://wangtingkui.space/posts/go/log/">Go标准库（log）- 使用
 </a>
           <span class="float-end post-date">2020-03-29
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/go-file-operation/">Go进行文件操作
+          <a href="https://wangtingkui.space/posts/go/go-file-operation/">Go进行文件操作
 </a>
           <span class="float-end post-date">2020-01-05
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8net-http/">Go标准库（net/Http）- 使用
+          <a href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8net-http/">Go标准库（net/Http）- 使用
 </a>
           <span class="float-end post-date">2019-12-22
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/net-url/">Go标准库（net/Url）- 使用
+          <a href="https://wangtingkui.space/posts/go/net-url/">Go标准库（net/Url）- 使用
 </a>
           <span class="float-end post-date">2019-12-21
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/zap/">Go日志库zap使用
+          <a href="https://wangtingkui.space/posts/go/zap/">Go日志库zap使用
 </a>
           <span class="float-end post-date">2019-12-16
 </span>
@@ -419,7 +417,7 @@
     
     <section class="card row text-center profile component">
   <div class="card-body">
-    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.com/images/avatar.jpeg" loading="lazy"
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.space/images/avatar.jpeg" loading="lazy"
    width="959" height="959"
    />
 </div>
@@ -451,46 +449,46 @@
 </div><section class="series-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/series">专栏</a>
+          <a href="https://wangtingkui.space/series">专栏</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
-            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
+        <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
             gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/categories">分类</a>
+          <a href="https://wangtingkui.space/categories">分类</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
-            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
-            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
-            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
-            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.com/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
-            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+        <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
+            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
+            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
             性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section><section class="tags-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/tags">标签</a>
+          <a href="https://wangtingkui.space/tags">标签</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
-            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
-            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
-            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">
-            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
-            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
-            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
-            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
-            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+        <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
+            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
+            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/nas/" class="badge rounded post-taxonomy" title="nas">
             nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section>
@@ -507,17 +505,17 @@
     <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
 </a>
 </footer>
-<script src="https://wangtingkui.com/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.com/js/icons.min.a35670f2f90c398e5ee5c8e509b428fae75aa2746854cee10b60794633076859.js" integrity="sha256-o1Zw8vkMOY5e5cjlCbQo&#43;udaonRoVM7hC2B5RjMHaFk=" crossorigin="anonymous" defer></script>
+<script src="https://wangtingkui.space/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.space/js/icons.min.b3391f89dcdef937e99a193c6de12584ac1d7613c16ae6ba852a096e1fd95108.js" integrity="sha256-szkfidze&#43;Tfpmhk8beElhKwddhPBaua6hSoJbh/ZUQg=" crossorigin="anonymous" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('https:\/\/wangtingkui.com\/service-worker.js').then(function(reg) {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.space\/service-worker.js').then(function(reg) {
       console.log('Successfully registered service worker', reg);
     }).catch(function(err) {
       console.warn('Error whilst registering service worker', err);
     });
   });
 }
-</script><script src="https://wangtingkui.com/js/viewer.min.4dba52a0a790f909408b7385316651299158381686401d50ff1f04dda6476473.js" integrity="sha256-TbpSoKeQ&#43;QlAi3OFMWZRKZFYOBaGQB1Q/x8E3aZHZHM=" crossorigin="anonymous" defer></script>
+</script><script src="https://wangtingkui.space/js/viewer.min.1721cbc2c5c34a150daae105f4ffed345a8bb269c6b63337f767c272fe6531f7.js" integrity="sha256-FyHLwsXDShUNquEF9P/tNFqLsmnGtjM392fCcv5lMfc=" crossorigin="anonymous" defer></script>
 </body>
 </html>

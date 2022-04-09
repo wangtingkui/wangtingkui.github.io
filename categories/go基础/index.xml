@@ -2,53 +2,53 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>go基础 on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/</link>
+    <link>https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/</link>
     <description>Recent content in go基础 on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 07 Jun 2020 15:33:50 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 Jun 2020 15:33:50 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>go中Context的使用</title>
-      <link>https://wangtingkui.com/posts/go/context/</link>
+      <link>https://wangtingkui.space/posts/go/context/</link>
       <pubDate>Sun, 07 Jun 2020 15:33:50 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/context/</guid>
+      <guid>https://wangtingkui.space/posts/go/context/</guid>
       <description>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使</description>
     </item>
     
     <item>
       <title>go中channel的使用</title>
-      <link>https://wangtingkui.com/posts/go/channel/</link>
+      <link>https://wangtingkui.space/posts/go/channel/</link>
       <pubDate>Mon, 01 Jun 2020 18:46:47 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/channel/</guid>
+      <guid>https://wangtingkui.space/posts/go/channel/</guid>
       <description>channel 类型 go 中 channel 类型分为两类： 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int) 不带缓冲区的 c</description>
     </item>
     
     <item>
       <title>在go中使用单元测试</title>
-      <link>https://wangtingkui.com/posts/go/unit-testing/</link>
+      <link>https://wangtingkui.space/posts/go/unit-testing/</link>
       <pubDate>Sun, 17 May 2020 11:22:21 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/unit-testing/</guid>
+      <guid>https://wangtingkui.space/posts/go/unit-testing/</guid>
       <description>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持 单测基本规则 单元测试文件必须以_test.go结尾 单元测</description>
     </item>
     
     <item>
       <title>Go进行文件操作</title>
-      <link>https://wangtingkui.com/posts/go/go-file-operation/</link>
+      <link>https://wangtingkui.space/posts/go/go-file-operation/</link>
       <pubDate>Sun, 05 Jan 2020 15:33:50 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/go-file-operation/</guid>
+      <guid>https://wangtingkui.space/posts/go/go-file-operation/</guid>
       <description>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供</description>
     </item>
     
     <item>
       <title>go多版本管理</title>
-      <link>https://wangtingkui.com/posts/go/go-multi-version-manage/</link>
+      <link>https://wangtingkui.space/posts/go/go-multi-version-manage/</link>
       <pubDate>Fri, 13 Dec 2019 14:46:50 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/go-multi-version-manage/</guid>
+      <guid>https://wangtingkui.space/posts/go/go-multi-version-manage/</guid>
       <description>之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下</description>
     </item>
     

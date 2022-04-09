@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>vmware on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/tags/vmware/</link>
+    <link>https://wangtingkui.space/tags/vmware/</link>
     <description>Recent content in vmware on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 31 May 2020 08:40:51 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/vmware/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 31 May 2020 08:40:51 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/tags/vmware/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>VMware funsion 安装 centos7 后配置 NAT 网络</title>
-      <link>https://wangtingkui.com/posts/tool/net-fix-on-centos-7/</link>
+      <link>https://wangtingkui.space/posts/tool/net-fix-on-centos-7/</link>
       <pubDate>Sun, 31 May 2020 08:40:51 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/net-fix-on-centos-7/</guid>
+      <guid>https://wangtingkui.space/posts/tool/net-fix-on-centos-7/</guid>
       <description>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络 一、确定</description>
     </item>
     

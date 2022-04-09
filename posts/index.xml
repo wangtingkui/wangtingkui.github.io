@@ -2,449 +2,449 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>文章 on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/posts/</link>
+    <link>https://wangtingkui.space/posts/</link>
     <description>Recent content in 文章 on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sat, 05 Feb 2022 16:22:13 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Feb 2022 16:22:13 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Ants源码阅读</title>
-      <link>https://wangtingkui.com/posts/go/ants/</link>
+      <link>https://wangtingkui.space/posts/go/ants/</link>
       <pubDate>Sat, 05 Feb 2022 16:22:13 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/ants/</guid>
+      <guid>https://wangtingkui.space/posts/go/ants/</guid>
       <description>前言 最近看到了一个 go 的 goroutine池的实现，想着来学习下 在go中有没有必要使用池化技术？ 只有一个东西是有用的时候我们才值得去学习，我们</description>
     </item>
     
     <item>
       <title>Gorm源码阅读 - 3.读写分离</title>
-      <link>https://wangtingkui.com/posts/go/gorm-read-write-split/</link>
+      <link>https://wangtingkui.space/posts/go/gorm-read-write-split/</link>
       <pubDate>Wed, 02 Feb 2022 22:05:41 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/gorm-read-write-split/</guid>
+      <guid>https://wangtingkui.space/posts/go/gorm-read-write-split/</guid>
       <description>前言 数据库读写分离是企业级项目的基本能力，成熟的数据库类库基本都内置支持了读写分离的能力，在 gorm 中，读写分离是通过插件的方式实现的 gorm 的插件能力</description>
     </item>
     
     <item>
       <title>Gorm源码阅读 - 2.Clause</title>
-      <link>https://wangtingkui.com/posts/go/gorm-clause/</link>
+      <link>https://wangtingkui.space/posts/go/gorm-clause/</link>
       <pubDate>Wed, 02 Feb 2022 18:05:41 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/gorm-clause/</guid>
+      <guid>https://wangtingkui.space/posts/go/gorm-clause/</guid>
       <description>承上 在基础流程篇中我们层多次提到 Clause 的概念，本片就让我们详细分析下 Clause 究竟是什么 从基础流程篇中我们可以知道 Clause 就是一个 sql 子句，我们调用 gorm 提供的链式</description>
     </item>
     
     <item>
       <title>gorm源码阅读 - 1.基础流程</title>
-      <link>https://wangtingkui.com/posts/go/gorm-base/</link>
+      <link>https://wangtingkui.space/posts/go/gorm-base/</link>
       <pubDate>Tue, 01 Feb 2022 16:48:25 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/gorm-base/</guid>
+      <guid>https://wangtingkui.space/posts/go/gorm-base/</guid>
       <description>gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然 本篇文章主要是从宏观的角度看</description>
     </item>
     
     <item>
       <title>源码阅读-go(net/http)</title>
-      <link>https://wangtingkui.com/posts/go/net-http/</link>
+      <link>https://wangtingkui.space/posts/go/net-http/</link>
       <pubDate>Sun, 16 Jan 2022 17:09:17 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/net-http/</guid>
-      <description>写在前面 我们知道，使用 go 构建一个 http 服务是一件非常简单的事情，比如使用下面区区几行代码，就可以运行起一个 http server 1package main 2 3import ( 4 &amp;#34;log&amp;#34; 5 &amp;#34;net/http&amp;#34; 6) 7 8func main() { 9 http.HandleFunc(&amp;#34;/&amp;#34;, func(resp</description>
+      <guid>https://wangtingkui.space/posts/go/net-http/</guid>
+      <description>写在前面 我们知道，使用 go 构建一个 http 服务是一件非常简单的事情，比如使用下面区区几行代码，就可以运行起一个 http server 1package main 23import ( 4&amp;#34;log&amp;#34; 5&amp;#34;net/http&amp;#34; 6) 78func main() { 9http.HandleFunc(&amp;#34;/&amp;#34;, func(resp http.ResponseWriter, req *http.Request) { 10_,</description>
     </item>
     
     <item>
       <title>Go 中 sort 包的使用</title>
-      <link>https://wangtingkui.com/posts/go/sort/</link>
+      <link>https://wangtingkui.space/posts/go/sort/</link>
       <pubDate>Wed, 14 Oct 2020 14:42:29 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/sort/</guid>
+      <guid>https://wangtingkui.space/posts/go/sort/</guid>
       <description>排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序 Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实</description>
     </item>
     
     <item>
       <title>使用火焰图分析性能瓶颈</title>
-      <link>https://wangtingkui.com/posts/performance/flame/</link>
+      <link>https://wangtingkui.space/posts/performance/flame/</link>
       <pubDate>Mon, 20 Jul 2020 15:45:48 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/performance/flame/</guid>
+      <guid>https://wangtingkui.space/posts/performance/flame/</guid>
       <description>简介 火焰图 是用来分析 CPU 瓶颈的利器，它利用可交互 svg 图片可视化的展示了 CPU 的占用情况，可以帮助我们快速的定位优化方向。因为生成的图片非常像一团熊熊</description>
     </item>
     
     <item>
       <title>Editorconfig</title>
-      <link>https://wangtingkui.com/posts/tool/editorconfig/</link>
+      <link>https://wangtingkui.space/posts/tool/editorconfig/</link>
       <pubDate>Mon, 20 Jul 2020 14:01:14 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/editorconfig/</guid>
+      <guid>https://wangtingkui.space/posts/tool/editorconfig/</guid>
       <description>现如今，各种开发工具百花齐放，每个开发者都会有自己最中意的一款编辑器，但是各种编辑器的配置方式不同，当我们切换编辑器的时候，又需要针对新的编</description>
     </item>
     
     <item>
       <title>Phpunit解决测试依赖</title>
-      <link>https://wangtingkui.com/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</link>
+      <link>https://wangtingkui.space/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</link>
       <pubDate>Sun, 19 Jul 2020 11:24:13 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</guid>
+      <guid>https://wangtingkui.space/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</guid>
       <description>介绍 在书写单测代码的过程中，我们要测试的代码段往往会依赖其他的模块，如果是简单的模块还好，但是如果遇到复杂的模块（比如依赖各种其他的组件，d</description>
     </item>
     
     <item>
       <title>php 中的匿名函数和 Closure</title>
-      <link>https://wangtingkui.com/posts/php/closure/</link>
+      <link>https://wangtingkui.space/posts/php/closure/</link>
       <pubDate>Wed, 24 Jun 2020 11:53:13 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/php/closure/</guid>
+      <guid>https://wangtingkui.space/posts/php/closure/</guid>
       <description>php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数 php 中的匿名函数是基于 Closure 这个类来实现的 基本使用 通常会将匿名函数用作</description>
     </item>
     
     <item>
       <title>Go标准库（sync）- 使用</title>
-      <link>https://wangtingkui.com/posts/go/sync/</link>
+      <link>https://wangtingkui.space/posts/go/sync/</link>
       <pubDate>Fri, 19 Jun 2020 15:32:25 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/sync/</guid>
+      <guid>https://wangtingkui.space/posts/go/sync/</guid>
       <description>Go 的一大特点就是在语言级别实现了并发，一旦涉及并发，那么不可避免的就需要同步，来确保多个 goroutine 在访问共享资源的时候不会出现混乱的状况 Go 中的 sync 包提</description>
     </item>
     
     <item>
       <title>go中Context的使用</title>
-      <link>https://wangtingkui.com/posts/go/context/</link>
+      <link>https://wangtingkui.space/posts/go/context/</link>
       <pubDate>Sun, 07 Jun 2020 15:33:50 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/context/</guid>
+      <guid>https://wangtingkui.space/posts/go/context/</guid>
       <description>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使</description>
     </item>
     
     <item>
       <title>使用 jordan-wright/email 处理邮件发送</title>
-      <link>https://wangtingkui.com/posts/go/mail/</link>
+      <link>https://wangtingkui.space/posts/go/mail/</link>
       <pubDate>Sun, 07 Jun 2020 14:49:31 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/mail/</guid>
+      <guid>https://wangtingkui.space/posts/go/mail/</guid>
       <description>在 go 官方的标准库中，提供了 net/smtp 库可以让我们使用 smtp 协议来发送邮件，但是这个库使用起来不是很方便，而且官方也不再维护这个库，推荐我们使用功能更丰富</description>
     </item>
     
     <item>
       <title>go中channel的使用</title>
-      <link>https://wangtingkui.com/posts/go/channel/</link>
+      <link>https://wangtingkui.space/posts/go/channel/</link>
       <pubDate>Mon, 01 Jun 2020 18:46:47 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/channel/</guid>
+      <guid>https://wangtingkui.space/posts/go/channel/</guid>
       <description>channel 类型 go 中 channel 类型分为两类： 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int) 不带缓冲区的 c</description>
     </item>
     
     <item>
       <title>VMware funsion 安装 centos7 后配置 NAT 网络</title>
-      <link>https://wangtingkui.com/posts/tool/net-fix-on-centos-7/</link>
+      <link>https://wangtingkui.space/posts/tool/net-fix-on-centos-7/</link>
       <pubDate>Sun, 31 May 2020 08:40:51 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/net-fix-on-centos-7/</guid>
+      <guid>https://wangtingkui.space/posts/tool/net-fix-on-centos-7/</guid>
       <description>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络 一、确定</description>
     </item>
     
     <item>
       <title>群辉nas使用plex套件</title>
-      <link>https://wangtingkui.com/posts/tool/plex/</link>
+      <link>https://wangtingkui.space/posts/tool/plex/</link>
       <pubDate>Sun, 24 May 2020 10:48:57 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/plex/</guid>
+      <guid>https://wangtingkui.space/posts/tool/plex/</guid>
       <description>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、</description>
     </item>
     
     <item>
       <title>vscode推荐扩展</title>
-      <link>https://wangtingkui.com/posts/tool/extension/</link>
+      <link>https://wangtingkui.space/posts/tool/extension/</link>
       <pubDate>Sat, 23 May 2020 23:04:47 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/extension/</guid>
+      <guid>https://wangtingkui.space/posts/tool/extension/</guid>
       <description>vscode 扩展推荐 实用 扩展名 用途 推荐主题 主题名 备注 vscode-icons 可以替换vscode的默认图标 Atom One Dark Theme Monokai Pro</description>
     </item>
     
     <item>
       <title>alfred配置同步</title>
-      <link>https://wangtingkui.com/posts/tool/sync-setting/</link>
+      <link>https://wangtingkui.space/posts/tool/sync-setting/</link>
       <pubDate>Sat, 23 May 2020 20:16:08 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/sync-setting/</guid>
+      <guid>https://wangtingkui.space/posts/tool/sync-setting/</guid>
       <description>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用 alfred 的同步功能本质上是将配置打包成一个文件，然后借助第</description>
     </item>
     
     <item>
       <title>在go中使用单元测试</title>
-      <link>https://wangtingkui.com/posts/go/unit-testing/</link>
+      <link>https://wangtingkui.space/posts/go/unit-testing/</link>
       <pubDate>Sun, 17 May 2020 11:22:21 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/unit-testing/</guid>
+      <guid>https://wangtingkui.space/posts/go/unit-testing/</guid>
       <description>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持 单测基本规则 单元测试文件必须以_test.go结尾 单元测</description>
     </item>
     
     <item>
       <title>推荐的atom插件</title>
-      <link>https://wangtingkui.com/posts/tool/pakage/</link>
+      <link>https://wangtingkui.space/posts/tool/pakage/</link>
       <pubDate>Sat, 16 May 2020 10:33:59 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/pakage/</guid>
+      <guid>https://wangtingkui.space/posts/tool/pakage/</guid>
       <description>atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件 project-manager（atom项目</description>
     </item>
     
     <item>
       <title>使用zsh主题</title>
-      <link>https://wangtingkui.com/posts/tool/theme/</link>
+      <link>https://wangtingkui.space/posts/tool/theme/</link>
       <pubDate>Tue, 12 May 2020 23:21:29 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/theme/</guid>
+      <guid>https://wangtingkui.space/posts/tool/theme/</guid>
       <description>和插件一样，zsh 为我们提供了丰富的主题和自定义主题的能力，主题也分为两大类，一类是内置主题，另一类是自定义的扩展主题 内置主题 这个其实没啥好</description>
     </item>
     
     <item>
       <title>alfred workflow 推荐</title>
-      <link>https://wangtingkui.com/posts/tool/plugin-recommend/</link>
+      <link>https://wangtingkui.space/posts/tool/plugin-recommend/</link>
       <pubDate>Sun, 10 May 2020 11:44:38 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/plugin-recommend/</guid>
+      <guid>https://wangtingkui.space/posts/tool/plugin-recommend/</guid>
       <description>这篇文站整理下自己经常使用的 alfred workflow TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录 alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目</description>
     </item>
     
     <item>
       <title>使用zsh插件</title>
-      <link>https://wangtingkui.com/posts/tool/plugin/</link>
+      <link>https://wangtingkui.space/posts/tool/plugin/</link>
       <pubDate>Sun, 10 May 2020 11:02:41 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/plugin/</guid>
+      <guid>https://wangtingkui.space/posts/tool/plugin/</guid>
       <description>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.z</description>
     </item>
     
     <item>
       <title>使用 viper 处理项目配置</title>
-      <link>https://wangtingkui.com/posts/go/viper/</link>
+      <link>https://wangtingkui.space/posts/go/viper/</link>
       <pubDate>Sun, 03 May 2020 12:05:47 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/viper/</guid>
+      <guid>https://wangtingkui.space/posts/go/viper/</guid>
       <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置</description>
     </item>
     
     <item>
       <title>使用 pkg/errors 进行错误处理</title>
-      <link>https://wangtingkui.com/posts/go/errors/</link>
+      <link>https://wangtingkui.space/posts/go/errors/</link>
       <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/errors/</guid>
-      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2 return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两</description>
+      <guid>https://wangtingkui.space/posts/go/errors/</guid>
+      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两个</description>
     </item>
     
     <item>
       <title>在hugo中使用shortcode</title>
-      <link>https://wangtingkui.com/posts/tool/shortcodes/</link>
+      <link>https://wangtingkui.space/posts/tool/shortcodes/</link>
       <pubDate>Tue, 14 Apr 2020 15:50:45 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/shortcodes/</guid>
+      <guid>https://wangtingkui.space/posts/tool/shortcodes/</guid>
       <description>markdown 因为简洁的语法非常受到写文章的人的喜爱，但是某些情况下 markdown 也有不足，比如我们想展示一些特殊的样式或者格式的时候，往往需要直接书写 html 代码，这就</description>
     </item>
     
     <item>
       <title>Go标准库（time）- 使用</title>
-      <link>https://wangtingkui.com/posts/go/time/</link>
+      <link>https://wangtingkui.space/posts/go/time/</link>
       <pubDate>Sun, 12 Apr 2020 23:31:09 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/time/</guid>
+      <guid>https://wangtingkui.space/posts/go/time/</guid>
       <description>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时</description>
     </item>
     
     <item>
       <title>Go标准库（log）- 使用</title>
-      <link>https://wangtingkui.com/posts/go/log/</link>
+      <link>https://wangtingkui.space/posts/go/log/</link>
       <pubDate>Sun, 29 Mar 2020 17:51:54 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/log/</guid>
-      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用 实例化 logger 进行日志记录 首先看一个最简单的 demo： 1package main 2 3import ( 4 &amp;#34;log&amp;#34; 5 &amp;#34;os&amp;#34; 6) 7 8func</description>
+      <guid>https://wangtingkui.space/posts/go/log/</guid>
+      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用 实例化 logger 进行日志记录 首先看一个最简单的 demo： 1package main 23import ( 4&amp;#34;log&amp;#34; 5&amp;#34;os&amp;#34; 6) 78func main() { 9logger :=</description>
     </item>
     
     <item>
       <title>php多版本管理</title>
-      <link>https://wangtingkui.com/posts/php/php-multi-version/</link>
+      <link>https://wangtingkui.space/posts/php/php-multi-version/</link>
       <pubDate>Tue, 14 Jan 2020 19:11:11 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/php/php-multi-version/</guid>
+      <guid>https://wangtingkui.space/posts/php/php-multi-version/</guid>
       <description>本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装过程 第一步 首先需要下载 phpbrew 的二进制文件 1#</description>
     </item>
     
     <item>
       <title>Go进行文件操作</title>
-      <link>https://wangtingkui.com/posts/go/go-file-operation/</link>
+      <link>https://wangtingkui.space/posts/go/go-file-operation/</link>
       <pubDate>Sun, 05 Jan 2020 15:33:50 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/go-file-operation/</guid>
+      <guid>https://wangtingkui.space/posts/go/go-file-operation/</guid>
       <description>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供</description>
     </item>
     
     <item>
       <title>Go标准库（net/http）- 使用</title>
-      <link>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8net-http/</link>
+      <link>https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8net-http/</link>
       <pubDate>Sun, 22 Dec 2019 11:48:21 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8net-http/</guid>
+      <guid>https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8net-http/</guid>
       <description>net/http 包为我们提供了对 http 协议的处理，包含了客户端和服务端两大部分的实现 版本 go1.12 主要结构体 几乎任何语言中的http包都是围绕客户端，服务端，请求和响</description>
     </item>
     
     <item>
       <title>Go标准库（net/url）- 使用</title>
-      <link>https://wangtingkui.com/posts/go/net-url/</link>
+      <link>https://wangtingkui.space/posts/go/net-url/</link>
       <pubDate>Sat, 21 Dec 2019 22:21:40 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/net-url/</guid>
+      <guid>https://wangtingkui.space/posts/go/net-url/</guid>
       <description>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s</description>
     </item>
     
     <item>
       <title>go日志库zap使用</title>
-      <link>https://wangtingkui.com/posts/go/zap/</link>
+      <link>https://wangtingkui.space/posts/go/zap/</link>
       <pubDate>Mon, 16 Dec 2019 22:45:34 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/zap/</guid>
+      <guid>https://wangtingkui.space/posts/go/zap/</guid>
       <description>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概</description>
     </item>
     
     <item>
       <title>Go标准库（path/filepath）- 使用</title>
-      <link>https://wangtingkui.com/posts/go/path-filepath/</link>
+      <link>https://wangtingkui.space/posts/go/path-filepath/</link>
       <pubDate>Sun, 15 Dec 2019 14:35:43 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/path-filepath/</guid>
+      <guid>https://wangtingkui.space/posts/go/path-filepath/</guid>
       <description>简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示 而且要注意</description>
     </item>
     
     <item>
       <title>go多版本管理</title>
-      <link>https://wangtingkui.com/posts/go/go-multi-version-manage/</link>
+      <link>https://wangtingkui.space/posts/go/go-multi-version-manage/</link>
       <pubDate>Fri, 13 Dec 2019 14:46:50 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/go-multi-version-manage/</guid>
+      <guid>https://wangtingkui.space/posts/go/go-multi-version-manage/</guid>
       <description>之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下</description>
     </item>
     
     <item>
       <title>go cli 应用框架cobra（二）- 源码分析</title>
-      <link>https://wangtingkui.com/posts/go/cobra/</link>
+      <link>https://wangtingkui.space/posts/go/cobra/</link>
       <pubDate>Wed, 11 Dec 2019 14:57:37 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/cobra/</guid>
+      <guid>https://wangtingkui.space/posts/go/cobra/</guid>
       <description>上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5 首先需要了解的是，</description>
     </item>
     
     <item>
       <title>hugo源码分析（一）- version</title>
-      <link>https://wangtingkui.com/posts/go/version/</link>
+      <link>https://wangtingkui.space/posts/go/version/</link>
       <pubDate>Tue, 10 Dec 2019 17:00:24 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/version/</guid>
+      <guid>https://wangtingkui.space/posts/go/version/</guid>
       <description>hugo 是一个静态网页生成器，关于它的使用就不再多说，可以参考之前写过的使用hugo搭建个人站点系列文章。本系列主要是分析下 hugo 的源码，看下其他人是</description>
     </item>
     
     <item>
       <title>使用hugo搭建个人网站（七）- 给你的文章分类</title>
-      <link>https://wangtingkui.com/posts/tool/hugo-categorize-your-artical/</link>
+      <link>https://wangtingkui.space/posts/tool/hugo-categorize-your-artical/</link>
       <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/hugo-categorize-your-artical/</guid>
+      <guid>https://wangtingkui.space/posts/tool/hugo-categorize-your-artical/</guid>
       <description>hugo 内置了强大且支持自定义的分类系统，比如标签、类别、系列等，可以通过配置开启这些分类系统 在config.toml中配置： 1[taxonomies] 2tag = &amp;#34;tags&amp;#34; 3category = &amp;#34;categories&amp;#34; 4seris = &amp;#34;series&amp;#34;</description>
     </item>
     
     <item>
       <title>使用hugo搭建个人网站（八）- 自定义你的站点域名</title>
-      <link>https://wangtingkui.com/posts/tool/hugo-custom-your-domain/</link>
+      <link>https://wangtingkui.space/posts/tool/hugo-custom-your-domain/</link>
       <pubDate>Sat, 07 Dec 2019 16:35:07 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/hugo-custom-your-domain/</guid>
+      <guid>https://wangtingkui.space/posts/tool/hugo-custom-your-domain/</guid>
       <description>github pages 为我们提供的站点域名是 &amp;lt;username&amp;gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到</description>
     </item>
     
     <item>
       <title>使用hugo搭建个人网站（六）- 定制你文章的url</title>
-      <link>https://wangtingkui.com/posts/tool/hugo-custom-your-url/</link>
+      <link>https://wangtingkui.space/posts/tool/hugo-custom-your-url/</link>
       <pubDate>Sat, 07 Dec 2019 16:01:41 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/hugo-custom-your-url/</guid>
+      <guid>https://wangtingkui.space/posts/tool/hugo-custom-your-url/</guid>
       <description>默认情况下，站点文章的 url 和我们 content 目录下的文件结构是一一对应的，比如有 content/posts/test.md 这篇文章，当我们发布之后，在站点访问的 url 就是 &amp;lt;domian&amp;gt</description>
     </item>
     
     <item>
       <title>使用hugo搭建个人网站（五）- 模板选择顺序</title>
-      <link>https://wangtingkui.com/posts/tool/hugo-template-order/</link>
+      <link>https://wangtingkui.space/posts/tool/hugo-template-order/</link>
       <pubDate>Sat, 07 Dec 2019 15:55:24 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/hugo-template-order/</guid>
+      <guid>https://wangtingkui.space/posts/tool/hugo-template-order/</guid>
       <description>加入我们要寻找content/posts下文章的模板 当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模</description>
     </item>
     
     <item>
       <title>使用hugo搭建个人网站（四）- Front Matter 配置详解</title>
-      <link>https://wangtingkui.com/posts/tool/front-matter/</link>
+      <link>https://wangtingkui.space/posts/tool/front-matter/</link>
       <pubDate>Sat, 07 Dec 2019 15:31:44 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/front-matter/</guid>
+      <guid>https://wangtingkui.space/posts/tool/front-matter/</guid>
       <description>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。 Front Matter 支持</description>
     </item>
     
     <item>
       <title>使用hugo搭建个人网站（三）- 引用其他文章</title>
-      <link>https://wangtingkui.com/posts/tool/ref-other-article/</link>
+      <link>https://wangtingkui.space/posts/tool/ref-other-article/</link>
       <pubDate>Mon, 02 Dec 2019 14:12:07 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/ref-other-article/</guid>
+      <guid>https://wangtingkui.space/posts/tool/ref-other-article/</guid>
       <description>我们可以在文章中引用自己的其他文章，hugo 帮我们实现了这种功能，只需要在文章中使用 {{&amp;lt; ref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}或者{{&amp;lt; relref &amp;quot;posts/my_post.md&amp;quot; &amp;gt;}}即可，</description>
     </item>
     
     <item>
       <title>Go标准库（flag）- 源码分析</title>
-      <link>https://wangtingkui.com/posts/go/flag/</link>
+      <link>https://wangtingkui.space/posts/go/flag/</link>
       <pubDate>Mon, 02 Dec 2019 14:07:56 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/flag/</guid>
+      <guid>https://wangtingkui.space/posts/go/flag/</guid>
       <description>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用</description>
     </item>
     
     <item>
       <title>Go标准库（flag）- 使用</title>
-      <link>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8flag/</link>
+      <link>https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8flag/</link>
       <pubDate>Sun, 01 Dec 2019 17:28:45 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8flag/</guid>
+      <guid>https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8flag/</guid>
       <description>本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提</description>
     </item>
     
     <item>
       <title>使用hugo搭建个人网站（二）- 使用 github pages 部署 hugo 生成的静态站点</title>
-      <link>https://wangtingkui.com/posts/tool/deploy-on-github-pages/</link>
+      <link>https://wangtingkui.space/posts/tool/deploy-on-github-pages/</link>
       <pubDate>Sun, 01 Dec 2019 13:56:09 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/deploy-on-github-pages/</guid>
+      <guid>https://wangtingkui.space/posts/tool/deploy-on-github-pages/</guid>
       <description>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点</description>
     </item>
     
     <item>
       <title>go cli 应用框架cobra（一）- 简介</title>
-      <link>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8cobra/</link>
+      <link>https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8cobra/</link>
       <pubDate>Sun, 01 Dec 2019 10:17:30 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8cobra/</guid>
+      <guid>https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8cobra/</guid>
       <description>简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架 一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users</description>
     </item>
     
     <item>
       <title>详解字符编码</title>
-      <link>https://wangtingkui.com/posts/base/unicode/</link>
+      <link>https://wangtingkui.space/posts/base/unicode/</link>
       <pubDate>Sun, 22 Sep 2019 15:45:32 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/base/unicode/</guid>
+      <guid>https://wangtingkui.space/posts/base/unicode/</guid>
       <description>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型</description>
     </item>
     
     <item>
       <title>使用hugo搭建个人网站（一）- hugo使用入门</title>
-      <link>https://wangtingkui.com/posts/tool/introduction/</link>
+      <link>https://wangtingkui.space/posts/tool/introduction/</link>
       <pubDate>Sun, 22 Sep 2019 15:28:34 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/introduction/</guid>
+      <guid>https://wangtingkui.space/posts/tool/introduction/</guid>
       <description>以blog为例，看看hugo是如何使用的 创建一个网站项目 hugo new site blog， 执行这个命令后，会在当前目录下创建一个blog目录 ，这个目录就是我们</description>
     </item>
     

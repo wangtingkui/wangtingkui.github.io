@@ -2,35 +2,35 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>php on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/tags/php/</link>
+    <link>https://wangtingkui.space/tags/php/</link>
     <description>Recent content in php on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 19 Jul 2020 11:24:13 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 19 Jul 2020 11:24:13 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/tags/php/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Phpunit解决测试依赖</title>
-      <link>https://wangtingkui.com/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</link>
+      <link>https://wangtingkui.space/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</link>
       <pubDate>Sun, 19 Jul 2020 11:24:13 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</guid>
+      <guid>https://wangtingkui.space/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/</guid>
       <description>介绍 在书写单测代码的过程中，我们要测试的代码段往往会依赖其他的模块，如果是简单的模块还好，但是如果遇到复杂的模块（比如依赖各种其他的组件，d</description>
     </item>
     
     <item>
       <title>php 中的匿名函数和 Closure</title>
-      <link>https://wangtingkui.com/posts/php/closure/</link>
+      <link>https://wangtingkui.space/posts/php/closure/</link>
       <pubDate>Wed, 24 Jun 2020 11:53:13 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/php/closure/</guid>
+      <guid>https://wangtingkui.space/posts/php/closure/</guid>
       <description>php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数 php 中的匿名函数是基于 Closure 这个类来实现的 基本使用 通常会将匿名函数用作</description>
     </item>
     
     <item>
       <title>php多版本管理</title>
-      <link>https://wangtingkui.com/posts/php/php-multi-version/</link>
+      <link>https://wangtingkui.space/posts/php/php-multi-version/</link>
       <pubDate>Tue, 14 Jan 2020 19:11:11 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/php/php-multi-version/</guid>
+      <guid>https://wangtingkui.space/posts/php/php-multi-version/</guid>
       <description>本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具 phpbrew github 地址 phpbrew安装过程 第一步 首先需要下载 phpbrew 的二进制文件 1#</description>
     </item>
     

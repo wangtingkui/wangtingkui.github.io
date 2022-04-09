@@ -2,44 +2,44 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>go三方库使用 on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
+    <link>https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/</link>
     <description>Recent content in go三方库使用 on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 07 Jun 2020 14:49:31 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 Jun 2020 14:49:31 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 jordan-wright/email 处理邮件发送</title>
-      <link>https://wangtingkui.com/posts/go/mail/</link>
+      <link>https://wangtingkui.space/posts/go/mail/</link>
       <pubDate>Sun, 07 Jun 2020 14:49:31 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/mail/</guid>
+      <guid>https://wangtingkui.space/posts/go/mail/</guid>
       <description>在 go 官方的标准库中，提供了 net/smtp 库可以让我们使用 smtp 协议来发送邮件，但是这个库使用起来不是很方便，而且官方也不再维护这个库，推荐我们使用功能更丰富</description>
     </item>
     
     <item>
       <title>使用 viper 处理项目配置</title>
-      <link>https://wangtingkui.com/posts/go/viper/</link>
+      <link>https://wangtingkui.space/posts/go/viper/</link>
       <pubDate>Sun, 03 May 2020 12:05:47 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/viper/</guid>
+      <guid>https://wangtingkui.space/posts/go/viper/</guid>
       <description>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置</description>
     </item>
     
     <item>
       <title>使用 pkg/errors 进行错误处理</title>
-      <link>https://wangtingkui.com/posts/go/errors/</link>
+      <link>https://wangtingkui.space/posts/go/errors/</link>
       <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/errors/</guid>
-      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2 return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两</description>
+      <guid>https://wangtingkui.space/posts/go/errors/</guid>
+      <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两个</description>
     </item>
     
     <item>
       <title>go日志库zap使用</title>
-      <link>https://wangtingkui.com/posts/go/zap/</link>
+      <link>https://wangtingkui.space/posts/go/zap/</link>
       <pubDate>Mon, 16 Dec 2019 22:45:34 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/go/zap/</guid>
+      <guid>https://wangtingkui.space/posts/go/zap/</guid>
       <description>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap 版本 本篇基于的 zap 版本是 v1.10.0 使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概</description>
     </item>
     

@@ -3,20 +3,20 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>gorm源码阅读 - 1.基础流程 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
-<link rel="icon" href="https://wangtingkui.com/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="https://wangtingkui.com/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
-<link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
-<link rel="manifest" href="https://wangtingkui.com/manifest.json">
+    <title>gorm源码阅读 - 1.基础流程 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.space/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.space/manifest.json">
 <meta name="keywords" content="" />
 <meta name="description" content="gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然 本篇文章主要是从宏观的角度看" /><meta itemprop="name" content="gorm源码阅读 - 1.基础流程">
 <meta itemprop="description" content="gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然 本篇文章主要是从宏观的角度看"><meta itemprop="datePublished" content="2022-02-01T16:48:25+08:00" />
 <meta itemprop="dateModified" content="2022-02-01T16:48:25+08:00" />
-<meta itemprop="wordCount" content="3964">
+<meta itemprop="wordCount" content="3673">
 <meta itemprop="keywords" content="go," /><meta property="og:title" content="gorm源码阅读 - 1.基础流程" />
 <meta property="og:description" content="gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然 本篇文章主要是从宏观的角度看" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://wangtingkui.com/posts/go/gorm-base/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://wangtingkui.space/posts/go/gorm-base/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-02-01T16:48:25+08:00" />
 <meta property="article:modified_time" content="2022-02-01T16:48:25+08:00" />
 
@@ -24,13 +24,13 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="gorm源码阅读 - 1.基础流程"/>
 <meta name="twitter:description" content="gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然 本篇文章主要是从宏观的角度看"/>
-<link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
-  <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+<link rel="stylesheet" href="https://wangtingkui.space/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.space/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=["mode","palette"];items.forEach(function(e){const t=localStorage.getItem("hbs-"+e);t&&document.body.parentElement.setAttribute("data-"+e,t)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
   <div class="container">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <i class="fas fa-bars"></i>
-    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.com">xiaok&#39;s blog
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.space">xiaok&#39;s blog
     </a>
     <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
   <div class="offcanvas-header">
@@ -41,11 +41,11 @@
   </div>
   <div class="offcanvas-body">
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
-      target="_blank" href="https://twitter.com/intent/tweet?title=gorm%e6%ba%90%e7%a0%81%e9%98%85%e8%af%bb%20-%201.%e5%9f%ba%e7%a1%80%e6%b5%81%e7%a8%8b&url=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fgorm-base%2f">
+      target="_blank" href="https://twitter.com/intent/tweet?title=gorm%e6%ba%90%e7%a0%81%e9%98%85%e8%af%bb%20-%201.%e5%9f%ba%e7%a1%80%e6%b5%81%e7%a8%8b&url=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fgorm-base%2f">
       <i class="fab fa-fw fa-twitter"></i> Twitter
     </a>
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
-      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fgorm-base%2f">
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fgorm-base%2f">
       <i class="fab fa-fw fa-facebook-f"></i> Facebook
     </a>
   </div>
@@ -72,7 +72,7 @@
         <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           简体中文
         </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.com/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/zh-tw/">繁體中文</a></li></ul>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.space/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/zh-tw/">繁體中文</a></li></ul>
       </div>
     </div>
   </form>
@@ -159,26 +159,26 @@
 </div>
 
     <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
-      <form class="search-bar my-1" action="https://wangtingkui.com/search">
+      <form class="search-bar my-1" action="https://wangtingkui.space/search">
   <div class="input-group input-group-sm">
     <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
     <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
   </div>
 </form>
       <ul class="navbar-nav ms-auto"><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/series/">
+          <a class="nav-link" href="https://wangtingkui.space/series/">
             <i class="fas fa-fw fa-columns"></i>专栏
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/archives/">
+          <a class="nav-link" href="https://wangtingkui.space/archives/">
             <i class="fas fa-fw fa-file-archive"></i>归档
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/categories/">
+          <a class="nav-link" href="https://wangtingkui.space/categories/">
             <i class="fas fa-fw fa-folder"></i>分类
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/tags/">
+          <a class="nav-link" href="https://wangtingkui.space/tags/">
             <i class="fas fa-fw fa-tags"></i>标签
           </a>
         </li></ul>
@@ -191,7 +191,7 @@
 <div class="col-lg-8">
   <div class="container"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body">
-    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.com/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.com/posts/">文章</a></li><li class="breadcrumb-item active">Gorm源码阅读 - 1.基础流程</li></ol>
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.space/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.space/posts/">文章</a></li><li class="breadcrumb-item active">Gorm源码阅读 - 1.基础流程</li></ol>
   </div>
 </nav><div class="post-panel-wrapper">
   <div class="d-flex flex-column component rounded post-panel">
@@ -230,175 +230,174 @@
     2022-02-01
   </span><span class="post-reading-time">
     8 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge post-taxonomy">gorm 源码阅读</a><a href="https://wangtingkui.com/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge post-taxonomy">gorm 源码阅读</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-content mb-3"><p>gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然</p>
 <p>本篇文章主要是从宏观的角度看下使用 gorm 执行一条 sql 的整体流程，了解这个类库大概是怎么使用的，里面涉及的一些核心的对象是什么，方便我们日后针对某一组件进行剖析打好基础</p>
 <h3 id="版本信息">版本信息<a class="anchor ms-1" href="#版本信息"><i class="fas fa-link"></i></a></h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># go 版本
-<span class="ln">2</span>go version go1.16.10 darwin/amd64
-<span class="ln">3</span>
-<span class="ln">4</span># 类库版本
-<span class="ln">5</span>gorm.io/driver/mysql v1.2.3 // indirect
-<span class="ln">6</span>gorm.io/driver/sqlite v1.2.6
-<span class="ln">7</span>gorm.io/gorm v1.22.5
-</code></pre></div><h3 id="一个最简单的使用demo">一个最简单的使用demo<a class="anchor ms-1" href="#一个最简单的使用demo"><i class="fas fa-link"></i></a></h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kn">package</span> <span class="nx">main</span>
-<span class="ln"> 2</span>
-<span class="ln"> 3</span><span class="kn">import</span> <span class="p">(</span>
-<span class="ln"> 4</span>	<span class="s">&#34;gorm.io/driver/sqlite&#34;</span>
-<span class="ln"> 5</span>	<span class="s">&#34;gorm.io/gorm&#34;</span>
-<span class="ln"> 6</span><span class="p">)</span>
-<span class="ln"> 7</span>
-<span class="ln"> 8</span><span class="c1">// model 定义
-</span><span class="ln"> 9</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Test</span> <span class="kd">struct</span> <span class="p">{</span>
-<span class="ln">10</span>	<span class="nx">ID</span> <span class="kt">uint</span> <span class="s">`gorm:&#34;primarykey&#34;`</span>
-<span class="ln">11</span>	<span class="nx">A</span>  <span class="kt">int32</span>
-<span class="ln">12</span>	<span class="nx">B</span>  <span class="kt">string</span>
-<span class="ln">13</span><span class="p">}</span>
-<span class="ln">14</span>
-<span class="ln">15</span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">16</span>	<span class="c1">// 连接数据库
-</span><span class="ln">17</span><span class="c1"></span>	<span class="nx">db</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">gorm</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nx">sqlite</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.db&#34;</span><span class="p">),</span> <span class="o">&amp;</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Config</span><span class="p">{})</span>
-<span class="ln">18</span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">19</span>		<span class="nb">panic</span><span class="p">(</span><span class="s">&#34;failed to connect database&#34;</span><span class="p">)</span>
-<span class="ln">20</span>	<span class="p">}</span>
-<span class="ln">21</span>
-<span class="ln">22</span>	<span class="c1">// 自动创建表结构
-</span><span class="ln">23</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">AutoMigrate</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Test</span><span class="p">{});</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">24</span>		<span class="nb">panic</span><span class="p">(</span><span class="s">&#34;auto migrate err&#34;</span><span class="p">)</span>
-<span class="ln">25</span>	<span class="p">}</span>
-<span class="ln">26</span>
-<span class="ln">27</span>	<span class="c1">// 查询
-</span><span class="ln">28</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">v</span> <span class="nx">Test</span>
-<span class="ln">29</span>	<span class="nx">db</span><span class="p">.</span><span class="nf">Debug</span><span class="p">().</span><span class="nf">Model</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Test</span><span class="p">{}).</span><span class="nf">Where</span><span class="p">(</span><span class="s">&#34;b = ?&#34;</span><span class="p">,</span> <span class="s">&#34;test&#34;</span><span class="p">).</span><span class="nf">First</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">v</span><span class="p">)</span>
-<span class="ln">30</span><span class="p">}</span>
-<span class="ln">31</span>
-</code></pre></div><p>在这个demo中，我们首先使用<code>gorm.Open</code>获取一个<code>*gorm.DB</code>的实例，我们后续就是通过这里实例进行一系列操作的，<code>gorm.Open</code>方法需要传入两个参数，第一个是实现了<code>Dialector</code>接口的对象，这个就是对不同类型数据库的抽象，上面的代码使用的是<code>sqlite</code>的实现，当我们需要切换不同类型的数据库的时候，使用对应的驱动就可以实现轻松的替换；第二个参数是<code>gorm.Config</code>，是对gorm的一些配置项</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># go 版本
+</span></span><span class="line"><span class="ln">2</span><span class="cl">go version go1.16.10 darwin/amd64
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl"># 类库版本
+</span></span><span class="line"><span class="ln">5</span><span class="cl">gorm.io/driver/mysql v1.2.3 // indirect
+</span></span><span class="line"><span class="ln">6</span><span class="cl">gorm.io/driver/sqlite v1.2.6
+</span></span><span class="line"><span class="ln">7</span><span class="cl">gorm.io/gorm v1.22.5
+</span></span></code></pre></div><h3 id="一个最简单的使用demo">一个最简单的使用demo<a class="anchor ms-1" href="#一个最简单的使用demo"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="s">&#34;gorm.io/driver/sqlite&#34;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="s">&#34;gorm.io/gorm&#34;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="c1">// model 定义
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Test</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="nx">ID</span> <span class="kt">uint</span> <span class="s">`gorm:&#34;primarykey&#34;`</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nx">A</span>  <span class="kt">int32</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="nx">B</span>  <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="c1">// 连接数据库
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"></span>	<span class="nx">db</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">gorm</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nx">sqlite</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.db&#34;</span><span class="p">),</span> <span class="o">&amp;</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">Config</span><span class="p">{})</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">		<span class="nb">panic</span><span class="p">(</span><span class="s">&#34;failed to connect database&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">
+</span></span><span class="line"><span class="ln">22</span><span class="cl">	<span class="c1">// 自动创建表结构
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">AutoMigrate</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Test</span><span class="p">{});</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">		<span class="nb">panic</span><span class="p">(</span><span class="s">&#34;auto migrate err&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">
+</span></span><span class="line"><span class="ln">27</span><span class="cl">	<span class="c1">// 查询
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="c1"></span>	<span class="kd">var</span> <span class="nx">v</span> <span class="nx">Test</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">	<span class="nx">db</span><span class="p">.</span><span class="nf">Debug</span><span class="p">().</span><span class="nf">Model</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Test</span><span class="p">{}).</span><span class="nf">Where</span><span class="p">(</span><span class="s">&#34;b = ?&#34;</span><span class="p">,</span> <span class="s">&#34;test&#34;</span><span class="p">).</span><span class="nf">First</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">v</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>在这个demo中，我们首先使用<code>gorm.Open</code>获取一个<code>*gorm.DB</code>的实例，我们后续就是通过这里实例进行一系列操作的，<code>gorm.Open</code>方法需要传入两个参数，第一个是实现了<code>Dialector</code>接口的对象，这个就是对不同类型数据库的抽象，上面的代码使用的是<code>sqlite</code>的实现，当我们需要切换不同类型的数据库的时候，使用对应的驱动就可以实现轻松的替换；第二个参数是<code>gorm.Config</code>，是对gorm的一些配置项</p>
 <p>来简单的看下<code>gorm.Open</code>方法，注意源码中的注释</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// Open initialize db session based on dialector
-</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Open</span><span class="p">(</span><span class="nx">dialector</span> <span class="nx">Dialector</span><span class="p">,</span> <span class="nx">opts</span> <span class="o">...</span><span class="nx">Option</span><span class="p">)</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 3</span>	<span class="nx">config</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Config</span><span class="p">{}</span>
-<span class="ln"> 4</span>
-<span class="ln"> 5</span>    <span class="c1">// 可以到，Open方法的第二个参数实际上是Option类型的变参
-</span><span class="ln"> 6</span><span class="c1"></span>    <span class="c1">// 但我们实际上传入的是gorm.Config类型，这里看起来虽然有点别扭，但也正是ducktype的体现
-</span><span class="ln"> 7</span><span class="c1"></span>    <span class="c1">// 下面的这个排序是确保如果传入的选项中有gorm.Config类型，确保这些类型的排在前面，防止覆盖掉
-</span><span class="ln"> 8</span><span class="c1"></span>    <span class="c1">// 其他的选项
-</span><span class="ln"> 9</span><span class="c1"></span>	<span class="nx">sort</span><span class="p">.</span><span class="nf">Slice</span><span class="p">(</span><span class="nx">opts</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-<span class="ln">10</span>		<span class="nx">_</span><span class="p">,</span> <span class="nx">isConfig</span> <span class="o">:=</span> <span class="nx">opts</span><span class="p">[</span><span class="nx">i</span><span class="p">].(</span><span class="o">*</span><span class="nx">Config</span><span class="p">)</span>
-<span class="ln">11</span>		<span class="nx">_</span><span class="p">,</span> <span class="nx">isConfig2</span> <span class="o">:=</span> <span class="nx">opts</span><span class="p">[</span><span class="nx">j</span><span class="p">].(</span><span class="o">*</span><span class="nx">Config</span><span class="p">)</span>
-<span class="ln">12</span>		<span class="k">return</span> <span class="nx">isConfig</span> <span class="o">&amp;&amp;</span> <span class="p">!</span><span class="nx">isConfig2</span>
-<span class="ln">13</span>	<span class="p">})</span>
-<span class="ln">14</span>
-<span class="ln">15</span>    <span class="c1">// 应用 Option
-</span><span class="ln">16</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">opt</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">opts</span> <span class="p">{</span>
-<span class="ln">17</span>		<span class="o">...</span>
-<span class="ln">18</span>	<span class="p">}</span>
-<span class="ln">19</span>
-<span class="ln">20</span>    <span class="c1">// 如果 dialector 实现了 Apply 方法，也执行一下
-</span><span class="ln">21</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">d</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">dialector</span><span class="p">.(</span><span class="kd">interface</span><span class="p">{</span> <span class="nf">Apply</span><span class="p">(</span><span class="o">*</span><span class="nx">Config</span><span class="p">)</span> <span class="kt">error</span> <span class="p">});</span> <span class="nx">ok</span> <span class="p">{</span>
-<span class="ln">22</span>		<span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Apply</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">23</span>			<span class="k">return</span>
-<span class="ln">24</span>		<span class="p">}</span>
-<span class="ln">25</span>	<span class="p">}</span>
-<span class="ln">26</span>
-<span class="ln">27</span>    <span class="c1">// 一些普通的初始化操作
-</span><span class="ln">28</span><span class="c1"></span>    <span class="o">...</span>
-<span class="ln">29</span>
-<span class="ln">30</span>    <span class="c1">// 实例化一个 *DB 类型变量，这个函数返回的也是它
-</span><span class="ln">31</span><span class="c1"></span>	<span class="nx">db</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">DB</span><span class="p">{</span><span class="nx">Config</span><span class="p">:</span> <span class="nx">config</span><span class="p">,</span> <span class="nx">clone</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
-<span class="ln">32</span>
-<span class="ln">33</span>    <span class="c1">// 初始化 callbacks，gorm 所有行为都是基于 callback 来实现的，后续单独拿一篇文章出来讲解
-</span><span class="ln">34</span><span class="c1"></span>	<span class="nx">db</span><span class="p">.</span><span class="nx">callbacks</span> <span class="p">=</span> <span class="nf">initializeCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
-<span class="ln">35</span>
-<span class="ln">36</span>	<span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">ClauseBuilders</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">37</span>		<span class="nx">config</span><span class="p">.</span><span class="nx">ClauseBuilders</span> <span class="p">=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">clause</span><span class="p">.</span><span class="nx">ClauseBuilder</span><span class="p">{}</span>
-<span class="ln">38</span>	<span class="p">}</span>
-<span class="ln">39</span>
-<span class="ln">40</span>    <span class="c1">// 执行 dialector 的初始化
-</span><span class="ln">41</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">Dialector</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">42</span>		<span class="nx">err</span> <span class="p">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">Dialector</span><span class="p">.</span><span class="nf">Initialize</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
-<span class="ln">43</span>	<span class="p">}</span>
-<span class="ln">44</span>
-<span class="ln">45</span>    <span class="c1">// 设置 preparedStmt 对象（执行一些预编译的sql）
-</span><span class="ln">46</span><span class="c1"></span>	<span class="nx">preparedStmt</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">PreparedStmtDB</span><span class="p">{</span>
-<span class="ln">47</span>		<span class="nx">ConnPool</span><span class="p">:</span>    <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">,</span>
-<span class="ln">48</span>		<span class="nx">Stmts</span><span class="p">:</span>       <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">Stmt</span><span class="p">{},</span>
-<span class="ln">49</span>		<span class="nx">Mux</span><span class="p">:</span>         <span class="o">&amp;</span><span class="nx">sync</span><span class="p">.</span><span class="nx">RWMutex</span><span class="p">{},</span>
-<span class="ln">50</span>		<span class="nx">PreparedSQL</span><span class="p">:</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
-<span class="ln">51</span>	<span class="p">}</span>
-<span class="ln">52</span>	<span class="nx">db</span><span class="p">.</span><span class="nx">cacheStore</span><span class="p">.</span><span class="nf">Store</span><span class="p">(</span><span class="nx">preparedStmtDBKey</span><span class="p">,</span> <span class="nx">preparedStmt</span><span class="p">)</span>
-<span class="ln">53</span>
-<span class="ln">54</span>	<span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">PrepareStmt</span> <span class="p">{</span>
-<span class="ln">55</span>		<span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">preparedStmt</span>
-<span class="ln">56</span>	<span class="p">}</span>
-<span class="ln">57</span>
-<span class="ln">58</span>    <span class="c1">// 设置 Statement 对象，用来通过我们指定的各种条件生成最终sql，交给db执行
-</span><span class="ln">59</span><span class="c1"></span>	<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">Statement</span><span class="p">{</span>
-<span class="ln">60</span>		<span class="nx">DB</span><span class="p">:</span>       <span class="nx">db</span><span class="p">,</span>
-<span class="ln">61</span>		<span class="nx">ConnPool</span><span class="p">:</span> <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">,</span>
-<span class="ln">62</span>		<span class="nx">Context</span><span class="p">:</span>  <span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span>
-<span class="ln">63</span>		<span class="nx">Clauses</span><span class="p">:</span>  <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">clause</span><span class="p">.</span><span class="nx">Clause</span><span class="p">{},</span>
-<span class="ln">64</span>	<span class="p">}</span>
-<span class="ln">65</span>
-<span class="ln">66</span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="o">&amp;&amp;</span> <span class="p">!</span><span class="nx">config</span><span class="p">.</span><span class="nx">DisableAutomaticPing</span> <span class="p">{</span>
-<span class="ln">67</span>		<span class="k">if</span> <span class="nx">pinger</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">.(</span><span class="kd">interface</span><span class="p">{</span> <span class="nf">Ping</span><span class="p">()</span> <span class="kt">error</span> <span class="p">});</span> <span class="nx">ok</span> <span class="p">{</span>
-<span class="ln">68</span>			<span class="nx">err</span> <span class="p">=</span> <span class="nx">pinger</span><span class="p">.</span><span class="nf">Ping</span><span class="p">()</span>
-<span class="ln">69</span>		<span class="p">}</span>
-<span class="ln">70</span>	<span class="p">}</span>
-<span class="ln">71</span>
-<span class="ln">72</span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">73</span>		<span class="nx">config</span><span class="p">.</span><span class="nx">Logger</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="s">&#34;failed to initialize database, got error %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-<span class="ln">74</span>	<span class="p">}</span>
-<span class="ln">75</span>
-<span class="ln">76</span>	<span class="k">return</span>
-<span class="ln">77</span><span class="p">}</span>
-</code></pre></div><p>上面的步骤中，值得在这个时间点去细看一下的就是 <code>config.Dialector.Initialize(db)</code> 这行，这句代码是执行我们传入的 dialector 的初始化方法。简单了解下对我们把我整理流程会有些好处</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// Open initialize db session based on dialector
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">Open</span><span class="p">(</span><span class="nx">dialector</span> <span class="nx">Dialector</span><span class="p">,</span> <span class="nx">opts</span> <span class="o">...</span><span class="nx">Option</span><span class="p">)</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="nx">config</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Config</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="c1">// 可以到，Open方法的第二个参数实际上是Option类型的变参
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c1"></span>    <span class="c1">// 但我们实际上传入的是gorm.Config类型，这里看起来虽然有点别扭，但也正是ducktype的体现
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"></span>    <span class="c1">// 下面的这个排序是确保如果传入的选项中有gorm.Config类型，确保这些类型的排在前面，防止覆盖掉
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="c1"></span>    <span class="c1">// 其他的选项
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1"></span>	<span class="nx">sort</span><span class="p">.</span><span class="nf">Slice</span><span class="p">(</span><span class="nx">opts</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">		<span class="nx">_</span><span class="p">,</span> <span class="nx">isConfig</span> <span class="o">:=</span> <span class="nx">opts</span><span class="p">[</span><span class="nx">i</span><span class="p">].(</span><span class="o">*</span><span class="nx">Config</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">		<span class="nx">_</span><span class="p">,</span> <span class="nx">isConfig2</span> <span class="o">:=</span> <span class="nx">opts</span><span class="p">[</span><span class="nx">j</span><span class="p">].(</span><span class="o">*</span><span class="nx">Config</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="k">return</span> <span class="nx">isConfig</span> <span class="o">&amp;&amp;</span> <span class="p">!</span><span class="nx">isConfig2</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="c1">// 应用 Option
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">opt</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">opts</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">		<span class="o">...</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="c1">// 如果 dialector 实现了 Apply 方法，也执行一下
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">d</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">dialector</span><span class="p">.(</span><span class="kd">interface</span><span class="p">{</span> <span class="nf">Apply</span><span class="p">(</span><span class="o">*</span><span class="nx">Config</span><span class="p">)</span> <span class="kt">error</span> <span class="p">});</span> <span class="nx">ok</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">d</span><span class="p">.</span><span class="nf">Apply</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">			<span class="k">return</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">
+</span></span><span class="line"><span class="ln">27</span><span class="cl">    <span class="c1">// 一些普通的初始化操作
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="c1"></span>    <span class="o">...</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">
+</span></span><span class="line"><span class="ln">30</span><span class="cl">    <span class="c1">// 实例化一个 *DB 类型变量，这个函数返回的也是它
+</span></span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="c1"></span>	<span class="nx">db</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">DB</span><span class="p">{</span><span class="nx">Config</span><span class="p">:</span> <span class="nx">config</span><span class="p">,</span> <span class="nx">clone</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">
+</span></span><span class="line"><span class="ln">33</span><span class="cl">    <span class="c1">// 初始化 callbacks，gorm 所有行为都是基于 callback 来实现的，后续单独拿一篇文章出来讲解
+</span></span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="c1"></span>	<span class="nx">db</span><span class="p">.</span><span class="nx">callbacks</span> <span class="p">=</span> <span class="nf">initializeCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">
+</span></span><span class="line"><span class="ln">36</span><span class="cl">	<span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">ClauseBuilders</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">		<span class="nx">config</span><span class="p">.</span><span class="nx">ClauseBuilders</span> <span class="p">=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">clause</span><span class="p">.</span><span class="nx">ClauseBuilder</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">
+</span></span><span class="line"><span class="ln">40</span><span class="cl">    <span class="c1">// 执行 dialector 的初始化
+</span></span></span><span class="line"><span class="ln">41</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">Dialector</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl">		<span class="nx">err</span> <span class="p">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">Dialector</span><span class="p">.</span><span class="nf">Initialize</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">44</span><span class="cl">
+</span></span><span class="line"><span class="ln">45</span><span class="cl">    <span class="c1">// 设置 preparedStmt 对象（执行一些预编译的sql）
+</span></span></span><span class="line"><span class="ln">46</span><span class="cl"><span class="c1"></span>	<span class="nx">preparedStmt</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">PreparedStmtDB</span><span class="p">{</span>
+</span></span><span class="line"><span class="ln">47</span><span class="cl">		<span class="nx">ConnPool</span><span class="p">:</span>    <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">48</span><span class="cl">		<span class="nx">Stmts</span><span class="p">:</span>       <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">Stmt</span><span class="p">{},</span>
+</span></span><span class="line"><span class="ln">49</span><span class="cl">		<span class="nx">Mux</span><span class="p">:</span>         <span class="o">&amp;</span><span class="nx">sync</span><span class="p">.</span><span class="nx">RWMutex</span><span class="p">{},</span>
+</span></span><span class="line"><span class="ln">50</span><span class="cl">		<span class="nx">PreparedSQL</span><span class="p">:</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+</span></span><span class="line"><span class="ln">51</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">52</span><span class="cl">	<span class="nx">db</span><span class="p">.</span><span class="nx">cacheStore</span><span class="p">.</span><span class="nf">Store</span><span class="p">(</span><span class="nx">preparedStmtDBKey</span><span class="p">,</span> <span class="nx">preparedStmt</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">53</span><span class="cl">
+</span></span><span class="line"><span class="ln">54</span><span class="cl">	<span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">PrepareStmt</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">55</span><span class="cl">		<span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">preparedStmt</span>
+</span></span><span class="line"><span class="ln">56</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">57</span><span class="cl">
+</span></span><span class="line"><span class="ln">58</span><span class="cl">    <span class="c1">// 设置 Statement 对象，用来通过我们指定的各种条件生成最终sql，交给db执行
+</span></span></span><span class="line"><span class="ln">59</span><span class="cl"><span class="c1"></span>	<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">Statement</span><span class="p">{</span>
+</span></span><span class="line"><span class="ln">60</span><span class="cl">		<span class="nx">DB</span><span class="p">:</span>       <span class="nx">db</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">61</span><span class="cl">		<span class="nx">ConnPool</span><span class="p">:</span> <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">62</span><span class="cl">		<span class="nx">Context</span><span class="p">:</span>  <span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span>
+</span></span><span class="line"><span class="ln">63</span><span class="cl">		<span class="nx">Clauses</span><span class="p">:</span>  <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">clause</span><span class="p">.</span><span class="nx">Clause</span><span class="p">{},</span>
+</span></span><span class="line"><span class="ln">64</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">65</span><span class="cl">
+</span></span><span class="line"><span class="ln">66</span><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="o">&amp;&amp;</span> <span class="p">!</span><span class="nx">config</span><span class="p">.</span><span class="nx">DisableAutomaticPing</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">67</span><span class="cl">		<span class="k">if</span> <span class="nx">pinger</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">.(</span><span class="kd">interface</span><span class="p">{</span> <span class="nf">Ping</span><span class="p">()</span> <span class="kt">error</span> <span class="p">});</span> <span class="nx">ok</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">68</span><span class="cl">			<span class="nx">err</span> <span class="p">=</span> <span class="nx">pinger</span><span class="p">.</span><span class="nf">Ping</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">69</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">70</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">71</span><span class="cl">
+</span></span><span class="line"><span class="ln">72</span><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">73</span><span class="cl">		<span class="nx">config</span><span class="p">.</span><span class="nx">Logger</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="s">&#34;failed to initialize database, got error %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">74</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">75</span><span class="cl">
+</span></span><span class="line"><span class="ln">76</span><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="ln">77</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>上面的步骤中，值得在这个时间点去细看一下的就是 <code>config.Dialector.Initialize(db)</code> 这行，这句代码是执行我们传入的 dialector 的初始化方法。简单了解下对我们把我整理流程会有些好处</p>
 <p>我这里就用 sqlite 的 dialector 简单分析下，不同db的dialector实现可能会不同，但是所做的事大同小异</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">dialector</span> <span class="nx">Dialector</span><span class="p">)</span> <span class="nf">Initialize</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 2</span>    <span class="c1">// 初始化 DriverName
-</span><span class="ln"> 3</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">DriverName</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
-<span class="ln"> 4</span>		<span class="nx">dialector</span><span class="p">.</span><span class="nx">DriverName</span> <span class="p">=</span> <span class="nx">DriverName</span>
-<span class="ln"> 5</span>	<span class="p">}</span>
-<span class="ln"> 6</span>
-<span class="ln"> 7</span>    <span class="c1">// 设置连接池
-</span><span class="ln"> 8</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">Conn</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln"> 9</span>		<span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">Conn</span>
-<span class="ln">10</span>	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-<span class="ln">11</span>		<span class="nx">conn</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nx">dialector</span><span class="p">.</span><span class="nx">DriverName</span><span class="p">,</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">DSN</span><span class="p">)</span>
-<span class="ln">12</span>		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">13</span>			<span class="k">return</span> <span class="nx">err</span>
-<span class="ln">14</span>		<span class="p">}</span>
-<span class="ln">15</span>		<span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">conn</span>
-<span class="ln">16</span>	<span class="p">}</span>
-<span class="ln">17</span>
-<span class="ln">18</span>    <span class="c1">// 查看 sqlite 版本
-</span><span class="ln">19</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">version</span> <span class="kt">string</span>
-<span class="ln">20</span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">.</span><span class="nf">QueryRowContext</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="s">&#34;select sqlite_version()&#34;</span><span class="p">).</span><span class="nf">Scan</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">version</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">21</span>		<span class="k">return</span> <span class="nx">err</span>
-<span class="ln">22</span>	<span class="p">}</span>
-<span class="ln">23</span>	<span class="c1">// https://www.sqlite.org/releaselog/3_35_0.html
-</span><span class="ln">24</span><span class="c1"></span>    <span class="c1">// 根据不同版本注册回调到 gorm.DB 实例
-</span><span class="ln">25</span><span class="c1"></span>	<span class="k">if</span> <span class="nf">compareVersion</span><span class="p">(</span><span class="nx">version</span><span class="p">,</span> <span class="s">&#34;3.35.0&#34;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">26</span>		<span class="nx">callbacks</span><span class="p">.</span><span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
-<span class="ln">27</span>			<span class="nx">CreateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;INSERT&#34;</span><span class="p">,</span> <span class="s">&#34;VALUES&#34;</span><span class="p">,</span> <span class="s">&#34;ON CONFLICT&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
-<span class="ln">28</span>			<span class="nx">UpdateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;UPDATE&#34;</span><span class="p">,</span> <span class="s">&#34;SET&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
-<span class="ln">29</span>			<span class="nx">DeleteClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;DELETE&#34;</span><span class="p">,</span> <span class="s">&#34;FROM&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
-<span class="ln">30</span>			<span class="nx">LastInsertIDReversed</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-<span class="ln">31</span>		<span class="p">})</span>
-<span class="ln">32</span>	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-<span class="ln">33</span>		<span class="nx">callbacks</span><span class="p">.</span><span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
-<span class="ln">34</span>			<span class="nx">LastInsertIDReversed</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-<span class="ln">35</span>		<span class="p">})</span>
-<span class="ln">36</span>	<span class="p">}</span>
-<span class="ln">37</span>
-<span class="ln">38</span>    <span class="c1">// 获取 dialector 的 ClauseBuilders 注册到 gorm.DB 实例
-</span><span class="ln">39</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">dialector</span><span class="p">.</span><span class="nf">ClauseBuilders</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">40</span>		<span class="nx">db</span><span class="p">.</span><span class="nx">ClauseBuilders</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="p">=</span> <span class="nx">v</span>
-<span class="ln">41</span>	<span class="p">}</span>
-<span class="ln">42</span>	<span class="k">return</span>
-<span class="ln">43</span><span class="p">}</span>
-</code></pre></div><h3 id="一些概念的补充">一些概念的补充<a class="anchor ms-1" href="#一些概念的补充"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">dialector</span> <span class="nx">Dialector</span><span class="p">)</span> <span class="nf">Initialize</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="c1">// 初始化 DriverName
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">DriverName</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="nx">dialector</span><span class="p">.</span><span class="nx">DriverName</span> <span class="p">=</span> <span class="nx">DriverName</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="c1">// 设置连接池
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">Conn</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">Conn</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">		<span class="nx">conn</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nx">dialector</span><span class="p">.</span><span class="nx">DriverName</span><span class="p">,</span> <span class="nx">dialector</span><span class="p">.</span><span class="nx">DSN</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">			<span class="k">return</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">		<span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span> <span class="p">=</span> <span class="nx">conn</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="c1">// 查看 sqlite 版本
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="c1"></span>	<span class="kd">var</span> <span class="nx">version</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">.</span><span class="nf">QueryRowContext</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="s">&#34;select sqlite_version()&#34;</span><span class="p">).</span><span class="nf">Scan</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">version</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">		<span class="k">return</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">	<span class="c1">// https://www.sqlite.org/releaselog/3_35_0.html
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="c1"></span>    <span class="c1">// 根据不同版本注册回调到 gorm.DB 实例
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nf">compareVersion</span><span class="p">(</span><span class="nx">version</span><span class="p">,</span> <span class="s">&#34;3.35.0&#34;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">		<span class="nx">callbacks</span><span class="p">.</span><span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">			<span class="nx">CreateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;INSERT&#34;</span><span class="p">,</span> <span class="s">&#34;VALUES&#34;</span><span class="p">,</span> <span class="s">&#34;ON CONFLICT&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">			<span class="nx">UpdateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;UPDATE&#34;</span><span class="p">,</span> <span class="s">&#34;SET&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">			<span class="nx">DeleteClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;DELETE&#34;</span><span class="p">,</span> <span class="s">&#34;FROM&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">			<span class="nx">LastInsertIDReversed</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">		<span class="p">})</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl">		<span class="nx">callbacks</span><span class="p">.</span><span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">			<span class="nx">LastInsertIDReversed</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">		<span class="p">})</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">
+</span></span><span class="line"><span class="ln">38</span><span class="cl">    <span class="c1">// 获取 dialector 的 ClauseBuilders 注册到 gorm.DB 实例
+</span></span></span><span class="line"><span class="ln">39</span><span class="cl"><span class="c1"></span>	<span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">dialector</span><span class="p">.</span><span class="nf">ClauseBuilders</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl">		<span class="nx">db</span><span class="p">.</span><span class="nx">ClauseBuilders</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="p">=</span> <span class="nx">v</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="一些概念的补充">一些概念的补充<a class="anchor ms-1" href="#一些概念的补充"><i class="fas fa-link"></i></a></h3>
 <p>看了上面<code>Open</code>流程的代码，我相信你一定和我一样对其中出现的一些名词有些迷惑，不知道它代表的什么含义，我这里说一些我自己的理解</p>
 <blockquote>
 <p>callbacks</p>
@@ -411,272 +410,272 @@
 </p>
 <p>那 <code>callbacks</code> 究竟是什么，我们还是回归源码看一下，在上面的代码中涉及 <code>callbacks</code> 一共有两处</p>
 <p>第一处是 <code>gorm.Open</code> 初始化过程中的 <code>db.callbacks = initializeCallbacks(db)</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="nx">db</span><span class="p">.</span><span class="nx">callbacks</span> <span class="p">=</span> <span class="nf">initializeCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
-<span class="ln"> 2</span>
-<span class="ln"> 3</span><span class="c1">// 初始化 callbacks
-</span><span class="ln"> 4</span><span class="c1"></span><span class="kd">func</span> <span class="nf">initializeCallbacks</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="o">*</span><span class="nx">callbacks</span> <span class="p">{</span>
-<span class="ln"> 5</span>	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">{</span>
-<span class="ln"> 6</span>		<span class="nx">processors</span><span class="p">:</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">processor</span><span class="p">{</span>
-<span class="ln"> 7</span>			<span class="s">&#34;create&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
-<span class="ln"> 8</span>			<span class="s">&#34;query&#34;</span><span class="p">:</span>  <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
-<span class="ln"> 9</span>			<span class="s">&#34;update&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
-<span class="ln">10</span>			<span class="s">&#34;delete&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
-<span class="ln">11</span>			<span class="s">&#34;row&#34;</span><span class="p">:</span>    <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
-<span class="ln">12</span>			<span class="s">&#34;raw&#34;</span><span class="p">:</span>    <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
-<span class="ln">13</span>		<span class="p">},</span>
-<span class="ln">14</span>	<span class="p">}</span>
-<span class="ln">15</span><span class="p">}</span>
-<span class="ln">16</span>
-<span class="ln">17</span><span class="c1">// callbacks gorm callbacks manager
-</span><span class="ln">18</span><span class="c1">// callbacks 中只有一个对象: processors，是一组 processor 的结合
-</span><span class="ln">19</span><span class="c1">// 从 initalizeCallbacks 我们也能猜测到一个 processor 就是对应一个行为的处理逻辑，初始化的过程给
-</span><span class="ln">20</span><span class="c1">// create/query/update/delete/row/raw 这几个行为进行了初始化
-</span><span class="ln">21</span><span class="c1"></span><span class="kd">type</span> <span class="nx">callbacks</span> <span class="kd">struct</span> <span class="p">{</span>
-<span class="ln">22</span>	<span class="nx">processors</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">processor</span>
-<span class="ln">23</span><span class="p">}</span>
-<span class="ln">24</span>
-<span class="ln">25</span><span class="c1">// 一个行为对应的处理，可以看到一个行为是可以对应多个处理方法（callback）的
-</span><span class="ln">26</span><span class="c1"></span><span class="kd">type</span> <span class="nx">processor</span> <span class="kd">struct</span> <span class="p">{</span>
-<span class="ln">27</span>	<span class="nx">db</span>        <span class="o">*</span><span class="nx">DB</span>
-<span class="ln">28</span>	<span class="nx">Clauses</span>   <span class="p">[]</span><span class="kt">string</span>
-<span class="ln">29</span>	<span class="nx">fns</span>       <span class="p">[]</span><span class="kd">func</span><span class="p">(</span><span class="o">*</span><span class="nx">DB</span><span class="p">)</span>
-<span class="ln">30</span>	<span class="nx">callbacks</span> <span class="p">[]</span><span class="o">*</span><span class="nx">callback</span>
-<span class="ln">31</span><span class="p">}</span>
-<span class="ln">32</span>
-<span class="ln">33</span><span class="c1">// 一个处理方法
-</span><span class="ln">34</span><span class="c1"></span><span class="kd">type</span> <span class="nx">callback</span> <span class="kd">struct</span> <span class="p">{</span>
-<span class="ln">35</span>	<span class="nx">name</span>      <span class="kt">string</span>
-<span class="ln">36</span>	<span class="nx">before</span>    <span class="kt">string</span>
-<span class="ln">37</span>	<span class="nx">after</span>     <span class="kt">string</span>
-<span class="ln">38</span>	<span class="nx">remove</span>    <span class="kt">bool</span>
-<span class="ln">39</span>	<span class="nx">replace</span>   <span class="kt">bool</span>
-<span class="ln">40</span>	<span class="nx">match</span>     <span class="kd">func</span><span class="p">(</span><span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="kt">bool</span>
-<span class="ln">41</span>	<span class="nx">handler</span>   <span class="kd">func</span><span class="p">(</span><span class="o">*</span><span class="nx">DB</span><span class="p">)</span>
-<span class="ln">42</span>	<span class="nx">processor</span> <span class="o">*</span><span class="nx">processor</span>
-<span class="ln">43</span><span class="p">}</span>
-</code></pre></div><p>第二处是在sqlite dialector 的初始化过程中调用了<code>callbacks.RegisterDefaultCallbacks</code>方法</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// sqlite.go:57
-</span><span class="ln"> 2</span><span class="c1"></span><span class="nx">callbacks</span><span class="p">.</span><span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
-<span class="ln"> 3</span>    <span class="nx">CreateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;INSERT&#34;</span><span class="p">,</span> <span class="s">&#34;VALUES&#34;</span><span class="p">,</span> <span class="s">&#34;ON CONFLICT&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
-<span class="ln"> 4</span>    <span class="nx">UpdateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;UPDATE&#34;</span><span class="p">,</span> <span class="s">&#34;SET&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
-<span class="ln"> 5</span>    <span class="nx">DeleteClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;DELETE&#34;</span><span class="p">,</span> <span class="s">&#34;FROM&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
-<span class="ln"> 6</span>    <span class="nx">LastInsertIDReversed</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-<span class="ln"> 7</span><span class="p">})</span>
-<span class="ln"> 8</span>
-<span class="ln"> 9</span><span class="c1">// callbacks.go:22
-</span><span class="ln">10</span><span class="c1"></span><span class="kd">func</span> <span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">,</span> <span class="nx">config</span> <span class="o">*</span><span class="nx">Config</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">11</span>	<span class="nx">enableTransaction</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-<span class="ln">12</span>		<span class="k">return</span> <span class="p">!</span><span class="nx">db</span><span class="p">.</span><span class="nx">SkipDefaultTransaction</span>
-<span class="ln">13</span>	<span class="p">}</span>
-<span class="ln">14</span>
-<span class="ln">15</span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">CreateClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">16</span>		<span class="nx">config</span><span class="p">.</span><span class="nx">CreateClauses</span> <span class="p">=</span> <span class="nx">createClauses</span>
-<span class="ln">17</span>	<span class="p">}</span>
-<span class="ln">18</span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">QueryClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">19</span>		<span class="nx">config</span><span class="p">.</span><span class="nx">QueryClauses</span> <span class="p">=</span> <span class="nx">queryClauses</span>
-<span class="ln">20</span>	<span class="p">}</span>
-<span class="ln">21</span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">DeleteClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">22</span>		<span class="nx">config</span><span class="p">.</span><span class="nx">DeleteClauses</span> <span class="p">=</span> <span class="nx">deleteClauses</span>
-<span class="ln">23</span>	<span class="p">}</span>
-<span class="ln">24</span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">UpdateClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">25</span>		<span class="nx">config</span><span class="p">.</span><span class="nx">UpdateClauses</span> <span class="p">=</span> <span class="nx">updateClauses</span>
-<span class="ln">26</span>	<span class="p">}</span>
-<span class="ln">27</span>
-<span class="ln">28</span>    <span class="c1">// 获取到gorm.DB 中的 callbacks[&#34;create&#34;] 对象，也就是一个 processor
-</span><span class="ln">29</span><span class="c1"></span>	<span class="nx">createCallback</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Callback</span><span class="p">().</span><span class="nf">Create</span><span class="p">()</span>
-<span class="ln">30</span>
-<span class="ln">31</span>    <span class="c1">// 调用 processor.Match 方法生成一个 callback
-</span><span class="ln">32</span><span class="c1"></span>    <span class="c1">// Match 接受一个`fc func(*DB) bool`的方法作为参数放到 callback 对象的 match 字段中
-</span><span class="ln">33</span><span class="c1"></span>    <span class="c1">// 当事件发生的时候，只有这个函数返回 true 的时候，对应的 callback 才会执行
-</span><span class="ln">34</span><span class="c1"></span>    <span class="c1">// Register 就是提供一个名字和回调函数，注册到 callback 中
-</span><span class="ln">35</span><span class="c1"></span>	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Match</span><span class="p">(</span><span class="nx">enableTransaction</span><span class="p">).</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:begin_transaction&#34;</span><span class="p">,</span> <span class="nx">BeginTransaction</span><span class="p">)</span>
-<span class="ln">36</span>	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:before_create&#34;</span><span class="p">,</span> <span class="nx">BeforeCreate</span><span class="p">)</span>
-<span class="ln">37</span>	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:save_before_associations&#34;</span><span class="p">,</span> <span class="nf">SaveBeforeAssociations</span><span class="p">(</span><span class="kc">true</span><span class="p">))</span>
-<span class="ln">38</span>	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:create&#34;</span><span class="p">,</span> <span class="nf">Create</span><span class="p">(</span><span class="nx">config</span><span class="p">))</span>
-<span class="ln">39</span>	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:save_after_associations&#34;</span><span class="p">,</span> <span class="nf">SaveAfterAssociations</span><span class="p">(</span><span class="kc">true</span><span class="p">))</span>
-<span class="ln">40</span>	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:after_create&#34;</span><span class="p">,</span> <span class="nx">AfterCreate</span><span class="p">)</span>
-<span class="ln">41</span>	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Match</span><span class="p">(</span><span class="nx">enableTransaction</span><span class="p">).</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:commit_or_rollback_transaction&#34;</span><span class="p">,</span> <span class="nx">CommitOrRollbackTransaction</span><span class="p">)</span>
-<span class="ln">42</span>	<span class="nx">createCallback</span><span class="p">.</span><span class="nx">Clauses</span> <span class="p">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">CreateClauses</span>
-<span class="ln">43</span>
-<span class="ln">44</span>    <span class="c1">// 以下就和上面的过程大同小异了，只不多针对的是不同的行为
-</span><span class="ln">45</span><span class="c1"></span>    <span class="o">...</span>
-<span class="ln">46</span><span class="p">}</span>
-</code></pre></div><p>从上面的分析中我们可以得出，<code>callbacks</code>就是定义的一系列的处理流程，当某个行为发生之后，就会调用这个行为对应的 <code>callbacks</code>进行处理，这个当我们下面分析到一个简单的sql是如何执行的时候会有更深刻的理解</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nx">db</span><span class="p">.</span><span class="nx">callbacks</span> <span class="p">=</span> <span class="nf">initializeCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1">// 初始化 callbacks
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">initializeCallbacks</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="o">*</span><span class="nx">callbacks</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="nx">processors</span><span class="p">:</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">processor</span><span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">			<span class="s">&#34;create&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">			<span class="s">&#34;query&#34;</span><span class="p">:</span>  <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">			<span class="s">&#34;update&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">			<span class="s">&#34;delete&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">			<span class="s">&#34;row&#34;</span><span class="p">:</span>    <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">			<span class="s">&#34;raw&#34;</span><span class="p">:</span>    <span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">		<span class="p">},</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1">// callbacks gorm callbacks manager
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="c1">// callbacks 中只有一个对象: processors，是一组 processor 的结合
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="c1">// 从 initalizeCallbacks 我们也能猜测到一个 processor 就是对应一个行为的处理逻辑，初始化的过程给
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="c1">// create/query/update/delete/row/raw 这几个行为进行了初始化
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">callbacks</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">	<span class="nx">processors</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">processor</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">
+</span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1">// 一个行为对应的处理，可以看到一个行为是可以对应多个处理方法（callback）的
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">processor</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">	<span class="nx">db</span>        <span class="o">*</span><span class="nx">DB</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">	<span class="nx">Clauses</span>   <span class="p">[]</span><span class="kt">string</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">	<span class="nx">fns</span>       <span class="p">[]</span><span class="kd">func</span><span class="p">(</span><span class="o">*</span><span class="nx">DB</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">	<span class="nx">callbacks</span> <span class="p">[]</span><span class="o">*</span><span class="nx">callback</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">
+</span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="c1">// 一个处理方法
+</span></span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">callback</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">	<span class="nx">name</span>      <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">	<span class="nx">before</span>    <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">	<span class="nx">after</span>     <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl">	<span class="nx">remove</span>    <span class="kt">bool</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">	<span class="nx">replace</span>   <span class="kt">bool</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl">	<span class="nx">match</span>     <span class="kd">func</span><span class="p">(</span><span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="kt">bool</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl">	<span class="nx">handler</span>   <span class="kd">func</span><span class="p">(</span><span class="o">*</span><span class="nx">DB</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl">	<span class="nx">processor</span> <span class="o">*</span><span class="nx">processor</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>第二处是在sqlite dialector 的初始化过程中调用了<code>callbacks.RegisterDefaultCallbacks</code>方法</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// sqlite.go:57
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"></span><span class="nx">callbacks</span><span class="p">.</span><span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nx">CreateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;INSERT&#34;</span><span class="p">,</span> <span class="s">&#34;VALUES&#34;</span><span class="p">,</span> <span class="s">&#34;ON CONFLICT&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="nx">UpdateClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;UPDATE&#34;</span><span class="p">,</span> <span class="s">&#34;SET&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="nx">DeleteClauses</span><span class="p">:</span>        <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;DELETE&#34;</span><span class="p">,</span> <span class="s">&#34;FROM&#34;</span><span class="p">,</span> <span class="s">&#34;WHERE&#34;</span><span class="p">,</span> <span class="s">&#34;RETURNING&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="nx">LastInsertIDReversed</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1">// callbacks.go:22
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">,</span> <span class="nx">config</span> <span class="o">*</span><span class="nx">Config</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nx">enableTransaction</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="k">return</span> <span class="p">!</span><span class="nx">db</span><span class="p">.</span><span class="nx">SkipDefaultTransaction</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">CreateClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">		<span class="nx">config</span><span class="p">.</span><span class="nx">CreateClauses</span> <span class="p">=</span> <span class="nx">createClauses</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">QueryClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">		<span class="nx">config</span><span class="p">.</span><span class="nx">QueryClauses</span> <span class="p">=</span> <span class="nx">queryClauses</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">DeleteClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">		<span class="nx">config</span><span class="p">.</span><span class="nx">DeleteClauses</span> <span class="p">=</span> <span class="nx">deleteClauses</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">UpdateClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">		<span class="nx">config</span><span class="p">.</span><span class="nx">UpdateClauses</span> <span class="p">=</span> <span class="nx">updateClauses</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">
+</span></span><span class="line"><span class="ln">28</span><span class="cl">    <span class="c1">// 获取到gorm.DB 中的 callbacks[&#34;create&#34;] 对象，也就是一个 processor
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="c1"></span>	<span class="nx">createCallback</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Callback</span><span class="p">().</span><span class="nf">Create</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">
+</span></span><span class="line"><span class="ln">31</span><span class="cl">    <span class="c1">// 调用 processor.Match 方法生成一个 callback
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="c1"></span>    <span class="c1">// Match 接受一个`fc func(*DB) bool`的方法作为参数放到 callback 对象的 match 字段中
+</span></span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="c1"></span>    <span class="c1">// 当事件发生的时候，只有这个函数返回 true 的时候，对应的 callback 才会执行
+</span></span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="c1"></span>    <span class="c1">// Register 就是提供一个名字和回调函数，注册到 callback 中
+</span></span></span><span class="line"><span class="ln">35</span><span class="cl"><span class="c1"></span>	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Match</span><span class="p">(</span><span class="nx">enableTransaction</span><span class="p">).</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:begin_transaction&#34;</span><span class="p">,</span> <span class="nx">BeginTransaction</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:before_create&#34;</span><span class="p">,</span> <span class="nx">BeforeCreate</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:save_before_associations&#34;</span><span class="p">,</span> <span class="nf">SaveBeforeAssociations</span><span class="p">(</span><span class="kc">true</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl">	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:create&#34;</span><span class="p">,</span> <span class="nf">Create</span><span class="p">(</span><span class="nx">config</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:save_after_associations&#34;</span><span class="p">,</span> <span class="nf">SaveAfterAssociations</span><span class="p">(</span><span class="kc">true</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl">	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:after_create&#34;</span><span class="p">,</span> <span class="nx">AfterCreate</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl">	<span class="nx">createCallback</span><span class="p">.</span><span class="nf">Match</span><span class="p">(</span><span class="nx">enableTransaction</span><span class="p">).</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:commit_or_rollback_transaction&#34;</span><span class="p">,</span> <span class="nx">CommitOrRollbackTransaction</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl">	<span class="nx">createCallback</span><span class="p">.</span><span class="nx">Clauses</span> <span class="p">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">CreateClauses</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl">
+</span></span><span class="line"><span class="ln">44</span><span class="cl">    <span class="c1">// 以下就和上面的过程大同小异了，只不多针对的是不同的行为
+</span></span></span><span class="line"><span class="ln">45</span><span class="cl"><span class="c1"></span>    <span class="o">...</span>
+</span></span><span class="line"><span class="ln">46</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>从上面的分析中我们可以得出，<code>callbacks</code>就是定义的一系列的处理流程，当某个行为发生之后，就会调用这个行为对应的 <code>callbacks</code>进行处理，这个当我们下面分析到一个简单的sql是如何执行的时候会有更深刻的理解</p>
 <h3 id="一条sql是怎么被组装和执行的">一条sql是怎么被组装和执行的<a class="anchor ms-1" href="#一条sql是怎么被组装和执行的"><i class="fas fa-link"></i></a></h3>
 <p>我们在从一条sql被拼凑而成然后执行的流程来看下上面分析的初始化过程生成的“乱七八糟”的对象都是干啥的</p>
 <p>也就是分析下下面这条源码就近干了点什么</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">// 查询
-</span><span class="ln">2</span><span class="c1"></span><span class="kd">var</span> <span class="nx">v</span> <span class="nx">Test</span>
-<span class="ln">3</span><span class="nx">db</span><span class="p">.</span><span class="nf">Debug</span><span class="p">().</span><span class="nf">Model</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Test</span><span class="p">{}).</span><span class="nf">Where</span><span class="p">(</span><span class="s">&#34;b = ?&#34;</span><span class="p">,</span> <span class="s">&#34;test&#34;</span><span class="p">).</span><span class="nf">First</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">v</span><span class="p">)</span>
-</code></pre></div><p>在分析上面的代码之前，有一点小知识需要了解下，在使用<code>gorm</code>的过程中，我们几乎所有的交互都是通过<code>gorm.DB</code>这个 struct 来完成的，我们可以把他理解成一个“和数据库的会话”，这个会话有各种各样的属性，用来控制和数据库交互过程中的行为，我们也可以基于某个会话生成新的会话，在生成新会话的过程中指定数据，从而得到满足我们需求的会话</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// 查询
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">v</span> <span class="nx">Test</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="nx">db</span><span class="p">.</span><span class="nf">Debug</span><span class="p">().</span><span class="nf">Model</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Test</span><span class="p">{}).</span><span class="nf">Where</span><span class="p">(</span><span class="s">&#34;b = ?&#34;</span><span class="p">,</span> <span class="s">&#34;test&#34;</span><span class="p">).</span><span class="nf">First</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">v</span><span class="p">)</span>
+</span></span></code></pre></div><p>在分析上面的代码之前，有一点小知识需要了解下，在使用<code>gorm</code>的过程中，我们几乎所有的交互都是通过<code>gorm.DB</code>这个 struct 来完成的，我们可以把他理解成一个“和数据库的会话”，这个会话有各种各样的属性，用来控制和数据库交互过程中的行为，我们也可以基于某个会话生成新的会话，在生成新会话的过程中指定数据，从而得到满足我们需求的会话</p>
 <p>有了这个知识点，我们继续进行分析，<code>Debug()</code>这个方法，就是基于当前的会话生成新的会话，设置了会话的<code>Logger</code>属性，从而能输出最终执行的sql，效果如下</p>
 <p><img class="img-fluid" alt="" src="https://tva1.sinaimg.cn/large/008i3skNly1gyy6z75rfnj315a03iwer.jpg" loading="lazy"
   
    />
 
 </p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">// Debug start debug mode
-</span><span class="ln">2</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">Debug</span><span class="p">()</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">3</span>	<span class="k">return</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Session</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Session</span><span class="p">{</span>
-<span class="ln">4</span>		<span class="nx">Logger</span><span class="p">:</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Logger</span><span class="p">.</span><span class="nf">LogMode</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">Info</span><span class="p">),</span>
-<span class="ln">5</span>	<span class="p">})</span>
-<span class="ln">6</span><span class="p">}</span>
-</code></pre></div><p><code>Model</code>方法指定了 <code>Statement</code> 中 <code>Model</code> 的值，明确了我们要操作的是哪个数据表</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">Model</span><span class="p">(</span><span class="nx">value</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">2</span>	<span class="nx">tx</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">getInstance</span><span class="p">()</span>
-<span class="ln">3</span>	<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Model</span> <span class="p">=</span> <span class="nx">value</span>
-<span class="ln">4</span>	<span class="k">return</span>
-<span class="ln">5</span><span class="p">}</span>
-</code></pre></div><p><code>Where</code> 和 <code>First</code> 方法是我们关注的重点，我们的sql就是通过这两个入口构造并执行的，这里还要补充一个知识点，<code>gorm</code>提供的是流式的api，这些api分几类，可以参考<a href="https://gorm.io/zh_CN/docs/method_chaining.html" target="_blank" rel="noopener noreferrer">文档</a>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Debug start debug mode
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">Debug</span><span class="p">()</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">	<span class="k">return</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Session</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Session</span><span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">		<span class="nx">Logger</span><span class="p">:</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Logger</span><span class="p">.</span><span class="nf">LogMode</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">Info</span><span class="p">),</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>Model</code>方法指定了 <code>Statement</code> 中 <code>Model</code> 的值，明确了我们要操作的是哪个数据表</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">Model</span><span class="p">(</span><span class="nx">value</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	<span class="nx">tx</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">getInstance</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">	<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Model</span> <span class="p">=</span> <span class="nx">value</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>Where</code> 和 <code>First</code> 方法是我们关注的重点，我们的sql就是通过这两个入口构造并执行的，这里还要补充一个知识点，<code>gorm</code>提供的是流式的api，这些api分几类，可以参考<a href="https://gorm.io/zh_CN/docs/method_chaining.html" target="_blank" rel="noopener noreferrer">文档</a>
 ，其中最主要的是<code>链式方法</code>和<code>Finisher</code>方法。链式方法是将<code>Clauses</code>修改或添加到当前的<code>Statement</code>的方法，比如<code>Where</code>；<code>Finisher</code>方法是会立即执行注册回调的方法（没错，这个回调指的就是我们上面分析到的回调:-)），比如<code>First</code></p>
 <p>先来看下<code>Where</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// Where add conditions
-</span><span class="ln"> 2</span><span class="c1">// 根据传入的参数生成表达式，然后作为一个子句(Clause)添加到 Statement 中
-</span><span class="ln"> 3</span><span class="c1">// 关于 Clause 和 Statement 更细化的分析，有空单写一篇文章
-</span><span class="ln"> 4</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">Where</span><span class="p">(</span><span class="nx">query</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">args</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 5</span>	<span class="nx">tx</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">getInstance</span><span class="p">()</span>
-<span class="ln"> 6</span>	<span class="k">if</span> <span class="nx">conds</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">BuildCondition</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">args</span><span class="o">...</span><span class="p">);</span> <span class="nb">len</span><span class="p">(</span><span class="nx">conds</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln"> 7</span>		<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">AddClause</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">Where</span><span class="p">{</span><span class="nx">Exprs</span><span class="p">:</span> <span class="nx">conds</span><span class="p">})</span>
-<span class="ln"> 8</span>	<span class="p">}</span>
-<span class="ln"> 9</span>	<span class="k">return</span>
-<span class="ln">10</span><span class="p">}</span>
-</code></pre></div><p>再看下<code>First</code>：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// First find first record that match given conditions, order by primary key
-</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">First</span><span class="p">(</span><span class="nx">dest</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">conds</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 3</span>    <span class="c1">// first的语义是查找满足条件的第一条纪录
-</span><span class="ln"> 4</span><span class="c1"></span>    <span class="c1">// 所以这里默认添加了 limit 和 order 子句（Clause）
-</span><span class="ln"> 5</span><span class="c1"></span>	<span class="nx">tx</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Limit</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nf">Order</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">OrderByColumn</span><span class="p">{</span>
-<span class="ln"> 6</span>		<span class="nx">Column</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">Column</span><span class="p">{</span><span class="nx">Table</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">CurrentTable</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">PrimaryKey</span><span class="p">},</span>
-<span class="ln"> 7</span>	<span class="p">})</span>
-<span class="ln"> 8</span>    <span class="c1">// conds 就是传一些其他的条件来进行过滤，同样也是个构造子句的过程
-</span><span class="ln"> 9</span><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">conds</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">10</span>		<span class="k">if</span> <span class="nx">exprs</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">BuildCondition</span><span class="p">(</span><span class="nx">conds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">conds</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">...</span><span class="p">);</span> <span class="nb">len</span><span class="p">(</span><span class="nx">exprs</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">11</span>			<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">AddClause</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">Where</span><span class="p">{</span><span class="nx">Exprs</span><span class="p">:</span> <span class="nx">exprs</span><span class="p">})</span>
-<span class="ln">12</span>		<span class="p">}</span>
-<span class="ln">13</span>	<span class="p">}</span>
-<span class="ln">14</span>    <span class="c1">// 没有记录的时候生成error
-</span><span class="ln">15</span><span class="c1"></span>	<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">RaiseErrorOnNotFound</span> <span class="p">=</span> <span class="kc">true</span>
-<span class="ln">16</span>    <span class="c1">// 指定纪录存放的变量
-</span><span class="ln">17</span><span class="c1"></span>	<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Dest</span> <span class="p">=</span> <span class="nx">dest</span>
-<span class="ln">18</span>    <span class="c1">// 触发 query 行为，指定 query 对应的回调
-</span><span class="ln">19</span><span class="c1"></span>	<span class="k">return</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">.</span><span class="nf">Query</span><span class="p">().</span><span class="nf">Execute</span><span class="p">(</span><span class="nx">tx</span><span class="p">)</span>
-<span class="ln">20</span><span class="p">}</span>
-</code></pre></div><p>看了这么多，终于绕回来了，我们的查询行为最终回到了我们注册的回调上面，这也是为啥官网都说 gorm 是基于回调的原因</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// Where add conditions
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1">// 根据传入的参数生成表达式，然后作为一个子句(Clause)添加到 Statement 中
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1">// 关于 Clause 和 Statement 更细化的分析，有空单写一篇文章
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">Where</span><span class="p">(</span><span class="nx">query</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">args</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="nx">tx</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">getInstance</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="k">if</span> <span class="nx">conds</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">BuildCondition</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">args</span><span class="o">...</span><span class="p">);</span> <span class="nb">len</span><span class="p">(</span><span class="nx">conds</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">AddClause</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">Where</span><span class="p">{</span><span class="nx">Exprs</span><span class="p">:</span> <span class="nx">conds</span><span class="p">})</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>再看下<code>First</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// First find first record that match given conditions, order by primary key
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">First</span><span class="p">(</span><span class="nx">dest</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">conds</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="c1">// first的语义是查找满足条件的第一条纪录
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"></span>    <span class="c1">// 所以这里默认添加了 limit 和 order 子句（Clause）
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span>	<span class="nx">tx</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Limit</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nf">Order</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">OrderByColumn</span><span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="nx">Column</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">Column</span><span class="p">{</span><span class="nx">Table</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">CurrentTable</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="nx">clause</span><span class="p">.</span><span class="nx">PrimaryKey</span><span class="p">},</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="c1">// conds 就是传一些其他的条件来进行过滤，同样也是个构造子句的过程
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">conds</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">		<span class="k">if</span> <span class="nx">exprs</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">BuildCondition</span><span class="p">(</span><span class="nx">conds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">conds</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">...</span><span class="p">);</span> <span class="nb">len</span><span class="p">(</span><span class="nx">exprs</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">			<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nf">AddClause</span><span class="p">(</span><span class="nx">clause</span><span class="p">.</span><span class="nx">Where</span><span class="p">{</span><span class="nx">Exprs</span><span class="p">:</span> <span class="nx">exprs</span><span class="p">})</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="c1">// 没有记录的时候生成error
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1"></span>	<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">RaiseErrorOnNotFound</span> <span class="p">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    <span class="c1">// 指定纪录存放的变量
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"></span>	<span class="nx">tx</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Dest</span> <span class="p">=</span> <span class="nx">dest</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">    <span class="c1">// 触发 query 行为，指定 query 对应的回调
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="c1"></span>	<span class="k">return</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">.</span><span class="nf">Query</span><span class="p">().</span><span class="nf">Execute</span><span class="p">(</span><span class="nx">tx</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>看了这么多，终于绕回来了，我们的查询行为最终回到了我们注册的回调上面，这也是为啥官网都说 gorm 是基于回调的原因</p>
 <p>我们直接来看这个处理过程：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">processor</span><span class="p">)</span> <span class="nf">Execute</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="o">*</span><span class="nx">DB</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="c1">// call scopes
-</span><span class="ln"> 3</span><span class="c1"></span>    <span class="c1">// scope 先忽略，不是主流程
-</span><span class="ln"> 4</span><span class="c1"></span>	<span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">scopes</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln"> 5</span>		<span class="nx">scopes</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">scopes</span>
-<span class="ln"> 6</span>		<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">scopes</span> <span class="p">=</span> <span class="kc">nil</span>
-<span class="ln"> 7</span>		<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">scope</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">scopes</span> <span class="p">{</span>
-<span class="ln"> 8</span>			<span class="nx">db</span> <span class="p">=</span> <span class="nf">scope</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
-<span class="ln"> 9</span>		<span class="p">}</span>
-<span class="ln">10</span>	<span class="p">}</span>
-<span class="ln">11</span>
-<span class="ln">12</span>	<span class="kd">var</span> <span class="p">(</span>
-<span class="ln">13</span>		<span class="nx">curTime</span>           <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
-<span class="ln">14</span>		<span class="nx">stmt</span>              <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span>
-<span class="ln">15</span>		<span class="nx">resetBuildClauses</span> <span class="kt">bool</span>
-<span class="ln">16</span>	<span class="p">)</span>
-<span class="ln">17</span>
-<span class="ln">18</span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">BuildClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">19</span>		<span class="nx">stmt</span><span class="p">.</span><span class="nx">BuildClauses</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">Clauses</span>
-<span class="ln">20</span>		<span class="nx">resetBuildClauses</span> <span class="p">=</span> <span class="kc">true</span>
-<span class="ln">21</span>	<span class="p">}</span>
-<span class="ln">22</span>
-<span class="ln">23</span>	<span class="c1">// assign model values
-</span><span class="ln">24</span><span class="c1"></span>    <span class="c1">// 兼容处理下，如果没有手动调用过`Model`方法，就用传进来的对象类型作为要操作的表
-</span><span class="ln">25</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">26</span>		<span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span> <span class="p">=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span>
-<span class="ln">27</span>	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">28</span>		<span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span> <span class="p">=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span>
-<span class="ln">29</span>	<span class="p">}</span>
-<span class="ln">30</span>
-<span class="ln">31</span>	<span class="c1">// parse model values
-</span><span class="ln">32</span><span class="c1"></span>    <span class="c1">// 根据stmt.Model 解析库表
-</span><span class="ln">33</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">34</span>		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="o">&amp;&amp;</span> <span class="p">(!</span><span class="nx">errors</span><span class="p">.</span><span class="nf">Is</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">schema</span><span class="p">.</span><span class="nx">ErrUnsupportedDataType</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Table</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">TableExpr</span> <span class="o">==</span> <span class="kc">nil</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">Len</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
-<span class="ln">35</span>			<span class="k">if</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">Is</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">schema</span><span class="p">.</span><span class="nx">ErrUnsupportedDataType</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Table</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">TableExpr</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">36</span>				<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;%w: Table not set, please set it like: db.Model(&amp;user) or db.Table(\&#34;users\&#34;)&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">))</span>
-<span class="ln">37</span>			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-<span class="ln">38</span>				<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-<span class="ln">39</span>			<span class="p">}</span>
-<span class="ln">40</span>		<span class="p">}</span>
-<span class="ln">41</span>	<span class="p">}</span>
-<span class="ln">42</span>
-<span class="ln">43</span>	<span class="c1">// assign stmt.ReflectValue
-</span><span class="ln">44</span><span class="c1"></span>    <span class="c1">// 解析&amp;校验结果存放地址
-</span><span class="ln">45</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">46</span>		<span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span> <span class="p">=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">ValueOf</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span><span class="p">)</span>
-<span class="ln">47</span>		<span class="k">for</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Kind</span><span class="p">()</span> <span class="o">==</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">Ptr</span> <span class="p">{</span>
-<span class="ln">48</span>			<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">IsNil</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">CanAddr</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">49</span>				<span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Type</span><span class="p">().</span><span class="nf">Elem</span><span class="p">()))</span>
-<span class="ln">50</span>			<span class="p">}</span>
-<span class="ln">51</span>
-<span class="ln">52</span>			<span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span> <span class="p">=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Elem</span><span class="p">()</span>
-<span class="ln">53</span>		<span class="p">}</span>
-<span class="ln">54</span>		<span class="k">if</span> <span class="p">!</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">IsValid</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">55</span>			<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">ErrInvalidValue</span><span class="p">)</span>
-<span class="ln">56</span>		<span class="p">}</span>
-<span class="ln">57</span>	<span class="p">}</span>
-<span class="ln">58</span>
-<span class="ln">59</span>    <span class="c1">// fns 就是经过处理和排序的 processor 下的 callbacks，可以额参考 processor.compile 方法
-</span><span class="ln">60</span><span class="c1"></span>    <span class="c1">// 在每次注册callback后都会调用
-</span><span class="ln">61</span><span class="c1"></span>    <span class="c1">// 很明显，构造query sql并执行等一系列流程都是在这些 callback中搞的
-</span><span class="ln">62</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">f</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">p</span><span class="p">.</span><span class="nx">fns</span> <span class="p">{</span>
-<span class="ln">63</span>		<span class="nf">f</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
-<span class="ln">64</span>	<span class="p">}</span>
-<span class="ln">65</span>
-<span class="ln">66</span>    <span class="c1">// 打一些追踪日志
-</span><span class="ln">67</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">Len</span><span class="p">()</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">68</span>		<span class="nx">db</span><span class="p">.</span><span class="nx">Logger</span><span class="p">.</span><span class="nf">Trace</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">curTime</span><span class="p">,</span> <span class="kd">func</span><span class="p">()</span> <span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">int64</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">69</span>			<span class="k">return</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Dialector</span><span class="p">.</span><span class="nf">Explain</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">String</span><span class="p">(),</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Vars</span><span class="o">...</span><span class="p">),</span> <span class="nx">db</span><span class="p">.</span><span class="nx">RowsAffected</span>
-<span class="ln">70</span>		<span class="p">},</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Error</span><span class="p">)</span>
-<span class="ln">71</span>	<span class="p">}</span>
-<span class="ln">72</span>
-<span class="ln">73</span>	<span class="k">if</span> <span class="p">!</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nx">DryRun</span> <span class="p">{</span>
-<span class="ln">74</span>		<span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">Reset</span><span class="p">()</span>
-<span class="ln">75</span>		<span class="nx">stmt</span><span class="p">.</span><span class="nx">Vars</span> <span class="p">=</span> <span class="kc">nil</span>
-<span class="ln">76</span>	<span class="p">}</span>
-<span class="ln">77</span>
-<span class="ln">78</span>	<span class="k">if</span> <span class="nx">resetBuildClauses</span> <span class="p">{</span>
-<span class="ln">79</span>		<span class="nx">stmt</span><span class="p">.</span><span class="nx">BuildClauses</span> <span class="p">=</span> <span class="kc">nil</span>
-<span class="ln">80</span>	<span class="p">}</span>
-<span class="ln">81</span>
-<span class="ln">82</span>	<span class="k">return</span> <span class="nx">db</span>
-<span class="ln">83</span><span class="p">}</span>
-</code></pre></div><p>通过上面的分析，我们知道想要进一步了解，就要看query这个行为注册了哪些callback，可以再返回注册的时候的代码看看，是在<code>callbacks</code>包中</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// callbacks.go:22
-</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">func</span> <span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">,</span> <span class="nx">config</span> <span class="o">*</span><span class="nx">Config</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 3</span>    <span class="o">...</span>
-<span class="ln"> 4</span>    <span class="c1">// callbacks包为query行为注册了3个callback
-</span><span class="ln"> 5</span><span class="c1"></span>    <span class="nx">queryCallback</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Callback</span><span class="p">().</span><span class="nf">Query</span><span class="p">()</span>
-<span class="ln"> 6</span>	<span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:query&#34;</span><span class="p">,</span> <span class="nx">Query</span><span class="p">)</span>
-<span class="ln"> 7</span>	<span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:preload&#34;</span><span class="p">,</span> <span class="nx">Preload</span><span class="p">)</span>
-<span class="ln"> 8</span>	<span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:after_query&#34;</span><span class="p">,</span> <span class="nx">AfterQuery</span><span class="p">)</span>
-<span class="ln"> 9</span>	<span class="nx">queryCallback</span><span class="p">.</span><span class="nx">Clauses</span> <span class="p">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">QueryClauses</span>
-<span class="ln">10</span>    <span class="o">...</span>
-<span class="ln">11</span><span class="p">}</span>
-<span class="ln">12</span>
-<span class="ln">13</span><span class="kd">func</span> <span class="nf">Query</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">14</span>	<span class="k">if</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Error</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">15</span>        <span class="c1">// 构造sql
-</span><span class="ln">16</span><span class="c1"></span>		<span class="nf">BuildQuerySQL</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
-<span class="ln">17</span>
-<span class="ln">18</span>		<span class="k">if</span> <span class="p">!</span><span class="nx">db</span><span class="p">.</span><span class="nx">DryRun</span> <span class="o">&amp;&amp;</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Error</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">19</span>            <span class="c1">// 执行sql，这里就交给真正的db去执行了
-</span><span class="ln">20</span><span class="c1"></span>			<span class="nx">rows</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">.</span><span class="nf">QueryContext</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">String</span><span class="p">(),</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Vars</span><span class="o">...</span><span class="p">)</span>
-<span class="ln">21</span>			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">22</span>				<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-<span class="ln">23</span>				<span class="k">return</span>
-<span class="ln">24</span>			<span class="p">}</span>
-<span class="ln">25</span>			<span class="nx">gorm</span><span class="p">.</span><span class="nf">Scan</span><span class="p">(</span><span class="nx">rows</span><span class="p">,</span> <span class="nx">db</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="ln">26</span>			<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">rows</span><span class="p">.</span><span class="nf">Close</span><span class="p">())</span>
-<span class="ln">27</span>		<span class="p">}</span>
-<span class="ln">28</span>	<span class="p">}</span>
-<span class="ln">29</span><span class="p">}</span>
-</code></pre></div><h3 id="总结">总结<a class="anchor ms-1" href="#总结"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">processor</span><span class="p">)</span> <span class="nf">Execute</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="o">*</span><span class="nx">DB</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="c1">// call scopes
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1"></span>    <span class="c1">// scope 先忽略，不是主流程
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"></span>	<span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">scopes</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">		<span class="nx">scopes</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">scopes</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">scopes</span> <span class="p">=</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">scope</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">scopes</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">			<span class="nx">db</span> <span class="p">=</span> <span class="nf">scope</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="kd">var</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">		<span class="nx">curTime</span>           <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">		<span class="nx">stmt</span>              <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">		<span class="nx">resetBuildClauses</span> <span class="kt">bool</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="p">)</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">BuildClauses</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">		<span class="nx">stmt</span><span class="p">.</span><span class="nx">BuildClauses</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">Clauses</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">		<span class="nx">resetBuildClauses</span> <span class="p">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">
+</span></span><span class="line"><span class="ln">23</span><span class="cl">	<span class="c1">// assign model values
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="c1"></span>    <span class="c1">// 兼容处理下，如果没有手动调用过`Model`方法，就用传进来的对象类型作为要操作的表
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">		<span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span> <span class="p">=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">		<span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span> <span class="p">=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">
+</span></span><span class="line"><span class="ln">31</span><span class="cl">	<span class="c1">// parse model values
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="c1"></span>    <span class="c1">// 根据stmt.Model 解析库表
+</span></span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Model</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="o">&amp;&amp;</span> <span class="p">(!</span><span class="nx">errors</span><span class="p">.</span><span class="nf">Is</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">schema</span><span class="p">.</span><span class="nx">ErrUnsupportedDataType</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Table</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">TableExpr</span> <span class="o">==</span> <span class="kc">nil</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">Len</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">			<span class="k">if</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">Is</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">schema</span><span class="p">.</span><span class="nx">ErrUnsupportedDataType</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Table</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">TableExpr</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">				<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;%w: Table not set, please set it like: db.Model(&amp;user) or db.Table(\&#34;users\&#34;)&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl">				<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl">
+</span></span><span class="line"><span class="ln">43</span><span class="cl">	<span class="c1">// assign stmt.ReflectValue
+</span></span></span><span class="line"><span class="ln">44</span><span class="cl"><span class="c1"></span>    <span class="c1">// 解析&amp;校验结果存放地址
+</span></span></span><span class="line"><span class="ln">45</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">46</span><span class="cl">		<span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span> <span class="p">=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">ValueOf</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Dest</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">47</span><span class="cl">		<span class="k">for</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Kind</span><span class="p">()</span> <span class="o">==</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">Ptr</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">48</span><span class="cl">			<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">IsNil</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">CanAddr</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">49</span><span class="cl">				<span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Type</span><span class="p">().</span><span class="nf">Elem</span><span class="p">()))</span>
+</span></span><span class="line"><span class="ln">50</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">51</span><span class="cl">
+</span></span><span class="line"><span class="ln">52</span><span class="cl">			<span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span> <span class="p">=</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">Elem</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">53</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">54</span><span class="cl">		<span class="k">if</span> <span class="p">!</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">ReflectValue</span><span class="p">.</span><span class="nf">IsValid</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">55</span><span class="cl">			<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">ErrInvalidValue</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">56</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">57</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">58</span><span class="cl">
+</span></span><span class="line"><span class="ln">59</span><span class="cl">    <span class="c1">// fns 就是经过处理和排序的 processor 下的 callbacks，可以额参考 processor.compile 方法
+</span></span></span><span class="line"><span class="ln">60</span><span class="cl"><span class="c1"></span>    <span class="c1">// 在每次注册callback后都会调用
+</span></span></span><span class="line"><span class="ln">61</span><span class="cl"><span class="c1"></span>    <span class="c1">// 很明显，构造query sql并执行等一系列流程都是在这些 callback中搞的
+</span></span></span><span class="line"><span class="ln">62</span><span class="cl"><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">f</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">p</span><span class="p">.</span><span class="nx">fns</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">63</span><span class="cl">		<span class="nf">f</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">64</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">65</span><span class="cl">
+</span></span><span class="line"><span class="ln">66</span><span class="cl">    <span class="c1">// 打一些追踪日志
+</span></span></span><span class="line"><span class="ln">67</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">Len</span><span class="p">()</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">68</span><span class="cl">		<span class="nx">db</span><span class="p">.</span><span class="nx">Logger</span><span class="p">.</span><span class="nf">Trace</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">curTime</span><span class="p">,</span> <span class="kd">func</span><span class="p">()</span> <span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">int64</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">69</span><span class="cl">			<span class="k">return</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Dialector</span><span class="p">.</span><span class="nf">Explain</span><span class="p">(</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">String</span><span class="p">(),</span> <span class="nx">stmt</span><span class="p">.</span><span class="nx">Vars</span><span class="o">...</span><span class="p">),</span> <span class="nx">db</span><span class="p">.</span><span class="nx">RowsAffected</span>
+</span></span><span class="line"><span class="ln">70</span><span class="cl">		<span class="p">},</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Error</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">71</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">72</span><span class="cl">
+</span></span><span class="line"><span class="ln">73</span><span class="cl">	<span class="k">if</span> <span class="p">!</span><span class="nx">stmt</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nx">DryRun</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">74</span><span class="cl">		<span class="nx">stmt</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">Reset</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">75</span><span class="cl">		<span class="nx">stmt</span><span class="p">.</span><span class="nx">Vars</span> <span class="p">=</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">76</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">77</span><span class="cl">
+</span></span><span class="line"><span class="ln">78</span><span class="cl">	<span class="k">if</span> <span class="nx">resetBuildClauses</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">79</span><span class="cl">		<span class="nx">stmt</span><span class="p">.</span><span class="nx">BuildClauses</span> <span class="p">=</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">80</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">81</span><span class="cl">
+</span></span><span class="line"><span class="ln">82</span><span class="cl">	<span class="k">return</span> <span class="nx">db</span>
+</span></span><span class="line"><span class="ln">83</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>通过上面的分析，我们知道想要进一步了解，就要看query这个行为注册了哪些callback，可以再返回注册的时候的代码看看，是在<code>callbacks</code>包中</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// callbacks.go:22
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">RegisterDefaultCallbacks</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">,</span> <span class="nx">config</span> <span class="o">*</span><span class="nx">Config</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="o">...</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="c1">// callbacks包为query行为注册了3个callback
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span>    <span class="nx">queryCallback</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Callback</span><span class="p">().</span><span class="nf">Query</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:query&#34;</span><span class="p">,</span> <span class="nx">Query</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:preload&#34;</span><span class="p">,</span> <span class="nx">Preload</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="nx">queryCallback</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="s">&#34;gorm:after_query&#34;</span><span class="p">,</span> <span class="nx">AfterQuery</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="nx">queryCallback</span><span class="p">.</span><span class="nx">Clauses</span> <span class="p">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">QueryClauses</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="o">...</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="kd">func</span> <span class="nf">Query</span><span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">gorm</span><span class="p">.</span><span class="nx">DB</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">	<span class="k">if</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Error</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">        <span class="c1">// 构造sql
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="c1"></span>		<span class="nf">BuildQuerySQL</span><span class="p">(</span><span class="nx">db</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl">		<span class="k">if</span> <span class="p">!</span><span class="nx">db</span><span class="p">.</span><span class="nx">DryRun</span> <span class="o">&amp;&amp;</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Error</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">            <span class="c1">// 执行sql，这里就交给真正的db去执行了
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="c1"></span>			<span class="nx">rows</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">ConnPool</span><span class="p">.</span><span class="nf">QueryContext</span><span class="p">(</span><span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">SQL</span><span class="p">.</span><span class="nf">String</span><span class="p">(),</span> <span class="nx">db</span><span class="p">.</span><span class="nx">Statement</span><span class="p">.</span><span class="nx">Vars</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">				<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">				<span class="k">return</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">			<span class="nx">gorm</span><span class="p">.</span><span class="nf">Scan</span><span class="p">(</span><span class="nx">rows</span><span class="p">,</span> <span class="nx">db</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">			<span class="nx">db</span><span class="p">.</span><span class="nf">AddError</span><span class="p">(</span><span class="nx">rows</span><span class="p">.</span><span class="nf">Close</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="总结">总结<a class="anchor ms-1" href="#总结"><i class="fas fa-link"></i></a></h3>
 <p>到这里，我们完整的分析了 gorm 的初始化和一次query sql 的执行流程，相信有了这个宏观的地图，在我们之后对 gorm 中某个组件进行分析的时候会更加的方便</p>
 </div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -696,9 +695,9 @@
             </a>
           </li></ul>
         <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/alipay.jpeg" loading="lazy" />
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/alipay.jpeg" loading="lazy" />
           </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/wechat.jpeg" loading="lazy" />
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/wechat.jpeg" loading="lazy" />
           </div></div>
       </div>
     </div>
@@ -706,10 +705,10 @@
 </div></div>
   <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
   <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
-    <a href="https://wangtingkui.com/posts/go/net-http/">源码阅读-Go(net/Http)
+    <a href="https://wangtingkui.space/posts/go/net-http/">源码阅读-Go(net/Http)
 </a>
   </div><div class="post-nav post-next">
-    <a href="https://wangtingkui.com/posts/go/gorm-clause/">Gorm源码阅读 - 2.Clause
+    <a href="https://wangtingkui.space/posts/go/gorm-clause/">Gorm源码阅读 - 2.Clause
 </a>
     <i class="fas fa-fw fa-chevron-right"></i>
   </div></div></div>
@@ -730,27 +729,27 @@
     </div>
     <div class="card-body">
       <ul class="post-list"><li>
-          <a href="https://wangtingkui.com/posts/go/sort/">Go 中 Sort 包的使用
+          <a href="https://wangtingkui.space/posts/go/sort/">Go 中 Sort 包的使用
 </a>
           <span class="float-end post-date">2020-10-14
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/sync/">Go标准库（sync）- 使用
+          <a href="https://wangtingkui.space/posts/go/sync/">Go标准库（sync）- 使用
 </a>
           <span class="float-end post-date">2020-06-19
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/context/">Go中Context的使用
+          <a href="https://wangtingkui.space/posts/go/context/">Go中Context的使用
 </a>
           <span class="float-end post-date">2020-06-07
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/mail/">使用 Jordan-Wright/Email 处理邮件发送
+          <a href="https://wangtingkui.space/posts/go/mail/">使用 Jordan-Wright/Email 处理邮件发送
 </a>
           <span class="float-end post-date">2020-06-07
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/channel/">Go中channel的使用
+          <a href="https://wangtingkui.space/posts/go/channel/">Go中channel的使用
 </a>
           <span class="float-end post-date">2020-06-01
 </span>
@@ -774,7 +773,7 @@
     
     <section class="card row text-center profile component">
   <div class="card-body">
-    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.com/images/avatar.jpeg" loading="lazy"
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.space/images/avatar.jpeg" loading="lazy"
    width="959" height="959"
    />
 </div>
@@ -808,46 +807,46 @@
 </div><section class="series-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/series">专栏</a>
+          <a href="https://wangtingkui.space/series">专栏</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
-            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
+        <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
             gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/categories">分类</a>
+          <a href="https://wangtingkui.space/categories">分类</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
-            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
-            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
-            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
-            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.com/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
-            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+        <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
+            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
+            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
             性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section><section class="tags-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/tags">标签</a>
+          <a href="https://wangtingkui.space/tags">标签</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
-            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
-            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
-            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">
-            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
-            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
-            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
-            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
-            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+        <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
+            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
+            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/nas/" class="badge rounded post-taxonomy" title="nas">
             nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section>
@@ -864,17 +863,17 @@
     <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
 </a>
 </footer>
-<script src="https://wangtingkui.com/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.com/js/icons.min.a35670f2f90c398e5ee5c8e509b428fae75aa2746854cee10b60794633076859.js" integrity="sha256-o1Zw8vkMOY5e5cjlCbQo&#43;udaonRoVM7hC2B5RjMHaFk=" crossorigin="anonymous" defer></script>
+<script src="https://wangtingkui.space/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.space/js/icons.min.b3391f89dcdef937e99a193c6de12584ac1d7613c16ae6ba852a096e1fd95108.js" integrity="sha256-szkfidze&#43;Tfpmhk8beElhKwddhPBaua6hSoJbh/ZUQg=" crossorigin="anonymous" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('https:\/\/wangtingkui.com\/service-worker.js').then(function(reg) {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.space\/service-worker.js').then(function(reg) {
       console.log('Successfully registered service worker', reg);
     }).catch(function(err) {
       console.warn('Error whilst registering service worker', err);
     });
   });
 }
-</script><script src="https://wangtingkui.com/js/viewer.min.4dba52a0a790f909408b7385316651299158381686401d50ff1f04dda6476473.js" integrity="sha256-TbpSoKeQ&#43;QlAi3OFMWZRKZFYOBaGQB1Q/x8E3aZHZHM=" crossorigin="anonymous" defer></script>
+</script><script src="https://wangtingkui.space/js/viewer.min.1721cbc2c5c34a150daae105f4ffed345a8bb269c6b63337f767c272fe6531f7.js" integrity="sha256-FyHLwsXDShUNquEF9P/tNFqLsmnGtjM392fCcv5lMfc=" crossorigin="anonymous" defer></script>
 </body>
 </html>

@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>alfred on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/tags/alfred/</link>
+    <link>https://wangtingkui.space/tags/alfred/</link>
     <description>Recent content in alfred on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sat, 23 May 2020 20:16:08 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/alfred/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 23 May 2020 20:16:08 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/tags/alfred/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>alfred配置同步</title>
-      <link>https://wangtingkui.com/posts/tool/sync-setting/</link>
+      <link>https://wangtingkui.space/posts/tool/sync-setting/</link>
       <pubDate>Sat, 23 May 2020 20:16:08 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/sync-setting/</guid>
+      <guid>https://wangtingkui.space/posts/tool/sync-setting/</guid>
       <description>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用 alfred 的同步功能本质上是将配置打包成一个文件，然后借助第</description>
     </item>
     
     <item>
       <title>alfred workflow 推荐</title>
-      <link>https://wangtingkui.com/posts/tool/plugin-recommend/</link>
+      <link>https://wangtingkui.space/posts/tool/plugin-recommend/</link>
       <pubDate>Sun, 10 May 2020 11:44:38 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/plugin-recommend/</guid>
+      <guid>https://wangtingkui.space/posts/tool/plugin-recommend/</guid>
       <description>这篇文站整理下自己经常使用的 alfred workflow TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录 alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目</description>
     </item>
     

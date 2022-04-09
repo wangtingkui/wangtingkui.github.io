@@ -2,9 +2,9 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/fr/</link>
+    <link>https://wangtingkui.space/fr/</link>
     <description>Recent content on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright><atom:link href="https://wangtingkui.com/fr/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright><atom:link href="https://wangtingkui.space/fr/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

@@ -3,33 +3,33 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Go标准库（flag）- 源码分析 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.com/images/icons/icon-180x180.png" sizes="180x180">
-<link rel="icon" href="https://wangtingkui.com/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="https://wangtingkui.com/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
-<link rel="icon" href="https://wangtingkui.com/images/icons/favicon.ico">
-<link rel="manifest" href="https://wangtingkui.com/manifest.json">
+    <title>Go标准库（flag）- 源码分析 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.space/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.space/manifest.json">
 <meta name="keywords" content="" />
 <meta name="description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用" /><meta itemprop="name" content="Go标准库（flag）- 源码分析">
 <meta itemprop="description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用"><meta itemprop="datePublished" content="2019-12-02T14:07:56+08:00" />
 <meta itemprop="dateModified" content="2019-12-02T14:07:56+08:00" />
-<meta itemprop="wordCount" content="2137">
+<meta itemprop="wordCount" content="2018">
 <meta itemprop="keywords" content="" /><meta property="og:title" content="Go标准库（flag）- 源码分析" />
 <meta property="og:description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://wangtingkui.com/posts/go/flag/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://wangtingkui.space/posts/go/flag/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2019-12-02T14:07:56+08:00" />
 <meta property="article:modified_time" content="2019-12-02T14:07:56+08:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Go标准库（flag）- 源码分析"/>
 <meta name="twitter:description" content="flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用"/>
-<link rel="stylesheet" href="https://wangtingkui.com/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.com/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
-  <body><script>const items=['mode','palette'];items.forEach(function(a){const b=localStorage.getItem('hbs-'+a);b&&document.body.parentElement.setAttribute('data-'+a,b)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+<link rel="stylesheet" href="https://wangtingkui.space/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.space/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=["mode","palette"];items.forEach(function(e){const t=localStorage.getItem("hbs-"+e);t&&document.body.parentElement.setAttribute("data-"+e,t)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
   <div class="container">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <i class="fas fa-bars"></i>
-    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.com">xiaok&#39;s blog
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.space">xiaok&#39;s blog
     </a>
     <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
   <div class="offcanvas-header">
@@ -40,11 +40,11 @@
   </div>
   <div class="offcanvas-body">
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
-      target="_blank" href="https://twitter.com/intent/tweet?title=Go%e6%a0%87%e5%87%86%e5%ba%93%ef%bc%88flag%ef%bc%89-%20%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90&url=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fflag%2f">
+      target="_blank" href="https://twitter.com/intent/tweet?title=Go%e6%a0%87%e5%87%86%e5%ba%93%ef%bc%88flag%ef%bc%89-%20%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90&url=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fflag%2f">
       <i class="fab fa-fw fa-twitter"></i> Twitter
     </a>
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
-      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.com%2fposts%2fgo%2fflag%2f">
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fflag%2f">
       <i class="fab fa-fw fa-facebook-f"></i> Facebook
     </a>
   </div>
@@ -71,7 +71,7 @@
         <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           简体中文
         </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.com/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.com/zh-tw/">繁體中文</a></li></ul>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.space/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/zh-tw/">繁體中文</a></li></ul>
       </div>
     </div>
   </form>
@@ -158,26 +158,26 @@
 </div>
 
     <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
-      <form class="search-bar my-1" action="https://wangtingkui.com/search">
+      <form class="search-bar my-1" action="https://wangtingkui.space/search">
   <div class="input-group input-group-sm">
     <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
     <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
   </div>
 </form>
       <ul class="navbar-nav ms-auto"><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/series/">
+          <a class="nav-link" href="https://wangtingkui.space/series/">
             <i class="fas fa-fw fa-columns"></i>专栏
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/archives/">
+          <a class="nav-link" href="https://wangtingkui.space/archives/">
             <i class="fas fa-fw fa-file-archive"></i>归档
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/categories/">
+          <a class="nav-link" href="https://wangtingkui.space/categories/">
             <i class="fas fa-fw fa-folder"></i>分类
           </a>
         </li><li class="nav-item">
-          <a class="nav-link" href="https://wangtingkui.com/tags/">
+          <a class="nav-link" href="https://wangtingkui.space/tags/">
             <i class="fas fa-fw fa-tags"></i>标签
           </a>
         </li></ul>
@@ -190,7 +190,7 @@
 <div class="col-lg-8">
   <div class="container"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body">
-    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.com/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.com/posts/">文章</a></li><li class="breadcrumb-item active">Go标准库（flag）- 源码分析</li></ol>
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.space/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.space/posts/">文章</a></li><li class="breadcrumb-item active">Go标准库（flag）- 源码分析</li></ol>
   </div>
 </nav><div class="post-panel-wrapper">
   <div class="d-flex flex-column component rounded post-panel">
@@ -235,215 +235,215 @@
 <h3 id="核心数据类型">核心数据类型<a class="anchor ms-1" href="#核心数据类型"><i class="fas fa-link"></i></a></h3>
 <p>首先还是来看下flag包中有哪些核心的类型，主要有两个接口和两个结构体</p>
 <p>interface:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// 抽象类型， 我们后续也是通过这个接口来扩展我们flag包支持的数据类型的
-</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Value</span> <span class="kd">interface</span> <span class="p">{</span>
-<span class="ln"> 3</span>    <span class="nf">String</span><span class="p">()</span> <span class="kt">string</span>
-<span class="ln"> 4</span>    <span class="nf">Set</span><span class="p">(</span><span class="kt">string</span><span class="p">)</span> <span class="kt">error</span>
-<span class="ln"> 5</span><span class="p">}</span>
-<span class="ln"> 6</span>
-<span class="ln"> 7</span><span class="kd">type</span> <span class="nx">Getter</span> <span class="kd">interface</span> <span class="p">{</span>
-<span class="ln"> 8</span>    <span class="nx">Value</span>
-<span class="ln"> 9</span>    <span class="nf">Get</span><span class="p">()</span> <span class="kd">interface</span><span class="p">{}</span>
-<span class="ln">10</span><span class="p">}</span>
-</code></pre></div><p>struct:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// 代表一个命令行选项
-</span><span class="ln"> 2</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Flag</span> <span class="kd">struct</span> <span class="p">{</span>
-<span class="ln"> 3</span>    <span class="nx">Name</span>     <span class="kt">string</span> <span class="c1">// name as it appears on command line  // 标签在命令行显示的名字
-</span><span class="ln"> 4</span><span class="c1"></span>    <span class="nx">Usage</span>    <span class="kt">string</span> <span class="c1">// help message  // 帮助信息
-</span><span class="ln"> 5</span><span class="c1"></span>    <span class="nx">Value</span>    <span class="nx">Value</span>  <span class="c1">// value as set  // 标签的值
-</span><span class="ln"> 6</span><span class="c1"></span>    <span class="nx">DefValue</span> <span class="kt">string</span> <span class="c1">// default value (as text); for usage message  // 默认值（文本格式）；这也是一个用法的信息说明
-</span><span class="ln"> 7</span><span class="c1"></span><span class="p">}</span>
-<span class="ln"> 8</span>
-<span class="ln"> 9</span><span class="c1">// 代表一个选项集合，其实可以认为就是在shell中敲入的命令被拆分解析之后就是FlagSet
-</span><span class="ln">10</span><span class="c1"></span><span class="kd">type</span> <span class="nx">FlagSet</span> <span class="kd">struct</span> <span class="p">{</span>
-<span class="ln">11</span>
-<span class="ln">12</span>    <span class="c1">// 当解析标签出现错误的时候，Usage就会被调用。这个字段是一个函数（不是一个方法），它可以指向
-</span><span class="ln">13</span><span class="c1"></span>    <span class="c1">// 用户自己定义的错误处理函数。
-</span><span class="ln">14</span><span class="c1"></span>	<span class="nx">Usage</span> <span class="kd">func</span><span class="p">()</span>
-<span class="ln">15</span>
-<span class="ln">16</span>	<span class="nx">name</span>          <span class="kt">string</span> <span class="c1">// 名字，一般默认是os.Args[0]
-</span><span class="ln">17</span><span class="c1"></span>	<span class="nx">parsed</span>        <span class="kt">bool</span>	<span class="c1">// 是否已经解析过了（是否调用过flag.Parse()）
-</span><span class="ln">18</span><span class="c1"></span>	<span class="nx">actual</span>        <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">Flag</span> <span class="c1">// 解析过得flag数组
-</span><span class="ln">19</span><span class="c1"></span>	<span class="nx">formal</span>        <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">Flag</span> <span class="c1">// 注册的flag数组
-</span><span class="ln">20</span><span class="c1"></span>	<span class="nx">args</span>          <span class="p">[]</span><span class="kt">string</span> <span class="c1">// 解析过后，剩余的non-flag参数
-</span><span class="ln">21</span><span class="c1"></span>	<span class="nx">errorHandling</span> <span class="nx">ErrorHandling</span> <span class="c1">// 解析失败后的处理方式
-</span><span class="ln">22</span><span class="c1"></span>	<span class="nx">output</span>        <span class="nx">io</span><span class="p">.</span><span class="nx">Writer</span> <span class="c1">// nil means stderr; use out() accessor
-</span><span class="ln">23</span><span class="c1"></span><span class="p">}</span>
-</code></pre></div><h3 id="源码分析">源码分析<a class="anchor ms-1" href="#源码分析"><i class="fas fa-link"></i></a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// 抽象类型， 我们后续也是通过这个接口来扩展我们flag包支持的数据类型的
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Value</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nf">String</span><span class="p">()</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="nf">Set</span><span class="p">(</span><span class="kt">string</span><span class="p">)</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="kd">type</span> <span class="nx">Getter</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="nx">Value</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nf">Get</span><span class="p">()</span> <span class="kd">interface</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>struct:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// 代表一个命令行选项
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Flag</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="nx">Name</span>     <span class="kt">string</span> <span class="c1">// name as it appears on command line  // 标签在命令行显示的名字
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"></span>    <span class="nx">Usage</span>    <span class="kt">string</span> <span class="c1">// help message  // 帮助信息
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span>    <span class="nx">Value</span>    <span class="nx">Value</span>  <span class="c1">// value as set  // 标签的值
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c1"></span>    <span class="nx">DefValue</span> <span class="kt">string</span> <span class="c1">// default value (as text); for usage message  // 默认值（文本格式）；这也是一个用法的信息说明
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1">// 代表一个选项集合，其实可以认为就是在shell中敲入的命令被拆分解析之后就是FlagSet
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">FlagSet</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">
+</span></span><span class="line"><span class="ln">12</span><span class="cl">    <span class="c1">// 当解析标签出现错误的时候，Usage就会被调用。这个字段是一个函数（不是一个方法），它可以指向
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"></span>    <span class="c1">// 用户自己定义的错误处理函数。
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1"></span>	<span class="nx">Usage</span> <span class="kd">func</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="nx">name</span>          <span class="kt">string</span> <span class="c1">// 名字，一般默认是os.Args[0]
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"></span>	<span class="nx">parsed</span>        <span class="kt">bool</span>	<span class="c1">// 是否已经解析过了（是否调用过flag.Parse()）
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="c1"></span>	<span class="nx">actual</span>        <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">Flag</span> <span class="c1">// 解析过得flag数组
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="c1"></span>	<span class="nx">formal</span>        <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">Flag</span> <span class="c1">// 注册的flag数组
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="c1"></span>	<span class="nx">args</span>          <span class="p">[]</span><span class="kt">string</span> <span class="c1">// 解析过后，剩余的non-flag参数
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="c1"></span>	<span class="nx">errorHandling</span> <span class="nx">ErrorHandling</span> <span class="c1">// 解析失败后的处理方式
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="c1"></span>	<span class="nx">output</span>        <span class="nx">io</span><span class="p">.</span><span class="nx">Writer</span> <span class="c1">// nil means stderr; use out() accessor
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><h3 id="源码分析">源码分析<a class="anchor ms-1" href="#源码分析"><i class="fas fa-link"></i></a></h3>
 <p>很多包在提供了底层类型的同时，为了方便我们使用，经常会在包内初始化一个默认对象，然后在开放一些导出函数供我们使用，flag 包也是这样的，标准库的实现者在包内初始化了一个名为<code>CommandLine</code>的<code>FlagSet</code>类型对象，我们经常使用的<code>flag.String()</code>,<code>flag.BoolVal()</code>等方法其实就是对这个对象的操作</p>
 <p>接下来就让我们追踪下最常用的<code>flag.String</code>的调用，看下flag包的内部实现逻辑吧</p>
 <h4 id="注册">注册<a class="anchor ms-1" href="#注册"><i class="fas fa-link"></i></a></h4>
 <p><code>flag.String</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">// 可以看到，flag.String 其实是对 CommandLine 对象 String 方法的包装，和我们刚才提到的是吻合的
-</span><span class="ln">2</span><span class="c1"></span><span class="kd">func</span> <span class="nf">String</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">usage</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="kt">string</span> <span class="p">{</span>
-<span class="ln">3</span>	<span class="k">return</span> <span class="nx">CommandLine</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">usage</span><span class="p">)</span>
-<span class="ln">4</span><span class="p">}</span>
-</code></pre></div><p><code>CommandLine.String</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">// 帮我们创建了一个string类型的指针，返回给后续使用，
-</span><span class="ln">2</span><span class="c1">// 这里也可以看到，Xxx()这种方法比XxxVar()的方法只是多了一步帮我们创建变量的过程，其实更底层是一样的
-</span><span class="ln">3</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">FlagSet</span><span class="p">)</span> <span class="nf">String</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">usage</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="kt">string</span> <span class="p">{</span>
-<span class="ln">4</span>	<span class="nx">p</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="kt">string</span><span class="p">)</span>
-<span class="ln">5</span>	<span class="nx">f</span><span class="p">.</span><span class="nf">StringVar</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">usage</span><span class="p">)</span>
-<span class="ln">6</span>	<span class="k">return</span> <span class="nx">p</span>
-<span class="ln">7</span><span class="p">}</span>
-</code></pre></div><p><code>f.StringVar</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">// FlagSet.StringVar 将我们的string类型的指针包装成了 stringValue 这个实现了 Value 接口的类型
-</span><span class="ln">2</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">FlagSet</span><span class="p">)</span> <span class="nf">StringVar</span><span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="kt">string</span><span class="p">,</span> <span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">usage</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln">3</span>	<span class="nx">f</span><span class="p">.</span><span class="nf">Var</span><span class="p">(</span><span class="nf">newStringValue</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">p</span><span class="p">),</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">usage</span><span class="p">)</span>
-<span class="ln">4</span><span class="p">}</span>
-</code></pre></div><p><code>f.Var</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">FlagSet</span><span class="p">)</span> <span class="nf">Var</span><span class="p">(</span><span class="nx">value</span> <span class="nx">Value</span><span class="p">,</span> <span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">usage</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="c1">// 创建一个Flag对象
-</span><span class="ln"> 3</span><span class="c1"></span>	<span class="nx">flag</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Flag</span><span class="p">{</span><span class="nx">name</span><span class="p">,</span> <span class="nx">usage</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">value</span><span class="p">.</span><span class="nf">String</span><span class="p">()}</span>
-<span class="ln"> 4</span>	<span class="c1">// 检测是否已经注册过同名的flag
-</span><span class="ln"> 5</span><span class="c1"></span>	<span class="nx">_</span><span class="p">,</span> <span class="nx">alreadythere</span> <span class="o">:=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">formal</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span>
-<span class="ln"> 6</span>	<span class="k">if</span> <span class="nx">alreadythere</span> <span class="p">{</span>
-<span class="ln"> 7</span>		<span class="kd">var</span> <span class="nx">msg</span> <span class="kt">string</span>
-<span class="ln"> 8</span>		<span class="k">if</span> <span class="nx">f</span><span class="p">.</span><span class="nx">name</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
-<span class="ln"> 9</span>			<span class="nx">msg</span> <span class="p">=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;flag redefined: %s&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
-<span class="ln">10</span>		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-<span class="ln">11</span>			<span class="nx">msg</span> <span class="p">=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%s flag redefined: %s&#34;</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
-<span class="ln">12</span>		<span class="p">}</span>
-<span class="ln">13</span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Fprintln</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nf">Output</span><span class="p">(),</span> <span class="nx">msg</span><span class="p">)</span>
-<span class="ln">14</span>		<span class="nb">panic</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="c1">// Happens only if flags are declared with identical names
-</span><span class="ln">15</span><span class="c1"></span>	<span class="p">}</span>
-<span class="ln">16</span>	<span class="c1">// 初始化formal
-</span><span class="ln">17</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">f</span><span class="p">.</span><span class="nx">formal</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">18</span>		<span class="nx">f</span><span class="p">.</span><span class="nx">formal</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">Flag</span><span class="p">)</span>
-<span class="ln">19</span>	<span class="p">}</span>
-<span class="ln">20</span>	<span class="c1">// 放到注册的标记集合中
-</span><span class="ln">21</span><span class="c1"></span>	<span class="nx">f</span><span class="p">.</span><span class="nx">formal</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="p">=</span> <span class="nx">flag</span>
-<span class="ln">22</span><span class="p">}</span>
-</code></pre></div><h4 id="解析">解析<a class="anchor ms-1" href="#解析"><i class="fas fa-link"></i></a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// 可以看到，flag.String 其实是对 CommandLine 对象 String 方法的包装，和我们刚才提到的是吻合的
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">String</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">usage</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">	<span class="k">return</span> <span class="nx">CommandLine</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">usage</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>CommandLine.String</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// 帮我们创建了一个string类型的指针，返回给后续使用，
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1">// 这里也可以看到，Xxx()这种方法比XxxVar()的方法只是多了一步帮我们创建变量的过程，其实更底层是一样的
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">FlagSet</span><span class="p">)</span> <span class="nf">String</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">usage</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">	<span class="nx">p</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="kt">string</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">	<span class="nx">f</span><span class="p">.</span><span class="nf">StringVar</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">usage</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">	<span class="k">return</span> <span class="nx">p</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>f.StringVar</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// FlagSet.StringVar 将我们的string类型的指针包装成了 stringValue 这个实现了 Value 接口的类型
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">FlagSet</span><span class="p">)</span> <span class="nf">StringVar</span><span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="kt">string</span><span class="p">,</span> <span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">usage</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">	<span class="nx">f</span><span class="p">.</span><span class="nf">Var</span><span class="p">(</span><span class="nf">newStringValue</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">p</span><span class="p">),</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">usage</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>f.Var</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">FlagSet</span><span class="p">)</span> <span class="nf">Var</span><span class="p">(</span><span class="nx">value</span> <span class="nx">Value</span><span class="p">,</span> <span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">usage</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="c1">// 创建一个Flag对象
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1"></span>	<span class="nx">flag</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Flag</span><span class="p">{</span><span class="nx">name</span><span class="p">,</span> <span class="nx">usage</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">value</span><span class="p">.</span><span class="nf">String</span><span class="p">()}</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="c1">// 检测是否已经注册过同名的flag
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span>	<span class="nx">_</span><span class="p">,</span> <span class="nx">alreadythere</span> <span class="o">:=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">formal</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="k">if</span> <span class="nx">alreadythere</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="kd">var</span> <span class="nx">msg</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">		<span class="k">if</span> <span class="nx">f</span><span class="p">.</span><span class="nx">name</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">			<span class="nx">msg</span> <span class="p">=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;flag redefined: %s&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">			<span class="nx">msg</span> <span class="p">=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%s flag redefined: %s&#34;</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Fprintln</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nf">Output</span><span class="p">(),</span> <span class="nx">msg</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">		<span class="nb">panic</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="c1">// Happens only if flags are declared with identical names
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1"></span>	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="c1">// 初始化formal
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">f</span><span class="p">.</span><span class="nx">formal</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">		<span class="nx">f</span><span class="p">.</span><span class="nx">formal</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">Flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">	<span class="c1">// 放到注册的标记集合中
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="c1"></span>	<span class="nx">f</span><span class="p">.</span><span class="nx">formal</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="p">=</span> <span class="nx">flag</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="解析">解析<a class="anchor ms-1" href="#解析"><i class="fas fa-link"></i></a></h4>
 <p>执行到这里，我们的选项注册工作已经完成了，下一步就是命令行参数的解析，从而把用户真正的输入拿到，执行解析，我们调用的方法是<code>flag.Parse</code></p>
 <p><code>flag.Parse</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln">1</span><span class="c1">// 其实是对FlagSet.Parse的封装
-</span><span class="ln">2</span><span class="c1">// 同时也看到，flag包对参数的解析默认是从命令行输入的第二个字符串开始的
-</span><span class="ln">3</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Parse</span><span class="p">()</span> <span class="p">{</span>
-<span class="ln">4</span>	<span class="c1">// Ignore errors; CommandLine is set for ExitOnError.
-</span><span class="ln">5</span><span class="c1"></span>	<span class="nx">CommandLine</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-<span class="ln">6</span><span class="p">}</span>
-</code></pre></div><p><code>CommandLine.Parse</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">FlagSet</span><span class="p">)</span> <span class="nf">Parse</span><span class="p">(</span><span class="nx">arguments</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
-<span class="ln"> 2</span>	<span class="c1">// 将解析标记置为true，标记这个FlagSet已经被解析过了
-</span><span class="ln"> 3</span><span class="c1"></span>	<span class="nx">f</span><span class="p">.</span><span class="nx">parsed</span> <span class="p">=</span> <span class="kc">true</span>
-<span class="ln"> 4</span>	<span class="c1">// 将所有参数放到盛放non-flag参数的容器中
-</span><span class="ln"> 5</span><span class="c1"></span>	<span class="c1">// 后续解析过程会一个一个参数从这个容器中往外拿，直到解析结束
-</span><span class="ln"> 6</span><span class="c1"></span>	<span class="nx">f</span><span class="p">.</span><span class="nx">args</span> <span class="p">=</span> <span class="nx">arguments</span>
-<span class="ln"> 7</span>	<span class="k">for</span> <span class="p">{</span>
-<span class="ln"> 8</span>		<span class="c1">// 逐个解析参数
-</span><span class="ln"> 9</span><span class="c1"></span>		<span class="nx">seen</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">f</span><span class="p">.</span><span class="nf">parseOne</span><span class="p">()</span>
-<span class="ln">10</span>		<span class="k">if</span> <span class="nx">seen</span> <span class="p">{</span>
-<span class="ln">11</span>			<span class="k">continue</span>
-<span class="ln">12</span>		<span class="p">}</span>
-<span class="ln">13</span>		<span class="c1">// 解析完成，退出循环，f.parseOne 返回 false,nil 的时候
-</span><span class="ln">14</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">15</span>			<span class="k">break</span>
-<span class="ln">16</span>		<span class="p">}</span>
-<span class="ln">17</span>		<span class="c1">// 如果有error发生，根据设置定的error处理方式处理error
-</span><span class="ln">18</span><span class="c1"></span>		<span class="k">switch</span> <span class="nx">f</span><span class="p">.</span><span class="nx">errorHandling</span> <span class="p">{</span>
-<span class="ln">19</span>		<span class="k">case</span> <span class="nx">ContinueOnError</span><span class="p">:</span>
-<span class="ln">20</span>			<span class="k">return</span> <span class="nx">err</span>
-<span class="ln">21</span>		<span class="k">case</span> <span class="nx">ExitOnError</span><span class="p">:</span>
-<span class="ln">22</span>			<span class="nx">os</span><span class="p">.</span><span class="nf">Exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="ln">23</span>		<span class="k">case</span> <span class="nx">PanicOnError</span><span class="p">:</span>
-<span class="ln">24</span>			<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-<span class="ln">25</span>		<span class="p">}</span>
-<span class="ln">26</span>	<span class="p">}</span>
-<span class="ln">27</span>	<span class="k">return</span> <span class="kc">nil</span>
-<span class="ln">28</span><span class="p">}</span>
-</code></pre></div><p><code>f.parseOne</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln"> 1</span><span class="c1">// 这个方法是最主要的一个方法，他解析我们的参数
-</span><span class="ln"> 2</span><span class="c1">// 这个方法是被循环调用的，决定解析是否终止的条件也在这个方法中，在源码中我会标记出来
-</span><span class="ln"> 3</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">FlagSet</span><span class="p">)</span> <span class="nf">parseOne</span><span class="p">()</span> <span class="p">(</span><span class="kt">bool</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-<span class="ln"> 4</span>	<span class="c1">// 没有参数，不需要解析
-</span><span class="ln"> 5</span><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln"> 6</span>		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">nil</span>
-<span class="ln"> 7</span>	<span class="p">}</span>
-<span class="ln"> 8</span>	<span class="nx">s</span> <span class="o">:=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="ln"> 9</span>	<span class="c1">// 结束条件1：字符串长度小于零或者不是以 - 字符开头的
-</span><span class="ln">10</span><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">&lt;</span> <span class="mi">2</span> <span class="o">||</span> <span class="nx">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">&#39;-&#39;</span> <span class="p">{</span>
-<span class="ln">11</span>		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">nil</span>
-<span class="ln">12</span>	<span class="p">}</span>
-<span class="ln">13</span>	<span class="nx">numMinuses</span> <span class="o">:=</span> <span class="mi">1</span>
-<span class="ln">14</span>	<span class="k">if</span> <span class="nx">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span> <span class="p">{</span>
-<span class="ln">15</span>		<span class="nx">numMinuses</span><span class="o">++</span>
-<span class="ln">16</span>		<span class="c1">// 结束条件2：字符串是以 -- 开头的
-</span><span class="ln">17</span><span class="c1"></span>		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">{</span> <span class="c1">// &#34;--&#34; terminates the flags
-</span><span class="ln">18</span><span class="c1"></span>			<span class="nx">f</span><span class="p">.</span><span class="nx">args</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-<span class="ln">19</span>			<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">nil</span>
-<span class="ln">20</span>		<span class="p">}</span>
-<span class="ln">21</span>	<span class="p">}</span>
-<span class="ln">22</span>
-<span class="ln">23</span>	<span class="c1">// 取出真正的字符值（去掉前缀 - 或者 -- ）
-</span><span class="ln">24</span><span class="c1"></span>	<span class="nx">name</span> <span class="o">:=</span> <span class="nx">s</span><span class="p">[</span><span class="nx">numMinuses</span><span class="p">:]</span>
-<span class="ln">25</span>
-<span class="ln">26</span>	<span class="c1">// 字符串合法检测
-</span><span class="ln">27</span><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span> <span class="o">||</span> <span class="nx">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;=&#39;</span> <span class="p">{</span>
-<span class="ln">28</span>		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;bad flag syntax: %s&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">)</span>
-<span class="ln">29</span>	<span class="p">}</span>
-<span class="ln">30</span>
-<span class="ln">31</span>	<span class="c1">// it&#39;s a flag. does it have an argument?
-</span><span class="ln">32</span><span class="c1"></span>	<span class="nx">f</span><span class="p">.</span><span class="nx">args</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-<span class="ln">33</span>	<span class="nx">hasValue</span> <span class="o">:=</span> <span class="kc">false</span>
-<span class="ln">34</span>	<span class="nx">value</span> <span class="o">:=</span> <span class="s">&#34;&#34;</span>
-<span class="ln">35</span>	<span class="c1">// 通过等号判断是不是 &#34;name=value&#34; 这种格式类型的flag
-</span><span class="ln">36</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span> <span class="c1">// equals cannot be first
-</span><span class="ln">37</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">name</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;=&#39;</span> <span class="p">{</span>
-<span class="ln">38</span>			<span class="nx">value</span> <span class="p">=</span> <span class="nx">name</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
-<span class="ln">39</span>			<span class="nx">hasValue</span> <span class="p">=</span> <span class="kc">true</span>
-<span class="ln">40</span>			<span class="nx">name</span> <span class="p">=</span> <span class="nx">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nx">i</span><span class="p">]</span>
-<span class="ln">41</span>			<span class="k">break</span>
-<span class="ln">42</span>		<span class="p">}</span>
-<span class="ln">43</span>	<span class="p">}</span>
-<span class="ln">44</span>	<span class="nx">m</span> <span class="o">:=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">formal</span>
-<span class="ln">45</span>	<span class="c1">// 判断是否注册过指定名称的flag
-</span><span class="ln">46</span><span class="c1"></span>	<span class="nx">flag</span><span class="p">,</span> <span class="nx">alreadythere</span> <span class="o">:=</span> <span class="nx">m</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="c1">// BUG
-</span><span class="ln">47</span><span class="c1"></span>	<span class="k">if</span> <span class="p">!</span><span class="nx">alreadythere</span> <span class="p">{</span>
-<span class="ln">48</span>		<span class="c1">// 默认支持解析 help 和 h 选项
-</span><span class="ln">49</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">name</span> <span class="o">==</span> <span class="s">&#34;help&#34;</span> <span class="o">||</span> <span class="nx">name</span> <span class="o">==</span> <span class="s">&#34;h&#34;</span> <span class="p">{</span> <span class="c1">// special case for nice help message.
-</span><span class="ln">50</span><span class="c1"></span>			<span class="nx">f</span><span class="p">.</span><span class="nf">usage</span><span class="p">()</span>
-<span class="ln">51</span>			<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">ErrHelp</span>
-<span class="ln">52</span>		<span class="p">}</span>
-<span class="ln">53</span>		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;flag provided but not defined: -%s&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
-<span class="ln">54</span>	<span class="p">}</span>
-<span class="ln">55</span>
-<span class="ln">56</span>	<span class="c1">// bool类型的flag支持 -flag 形式的写法，传了标记就是true，不传就依赖默认值
-</span><span class="ln">57</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">fv</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">flag</span><span class="p">.</span><span class="nx">Value</span><span class="p">.(</span><span class="nx">boolFlag</span><span class="p">);</span> <span class="nx">ok</span> <span class="o">&amp;&amp;</span> <span class="nx">fv</span><span class="p">.</span><span class="nf">IsBoolFlag</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// special case: doesn&#39;t need an arg
-</span><span class="ln">58</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">hasValue</span> <span class="p">{</span>
-<span class="ln">59</span>			<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">fv</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">60</span>				<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;invalid boolean value %q for -%s: %v&#34;</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-<span class="ln">61</span>			<span class="p">}</span>
-<span class="ln">62</span>		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-<span class="ln">63</span>			<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">fv</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="s">&#34;true&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">64</span>				<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;invalid boolean flag %s: %v&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-<span class="ln">65</span>			<span class="p">}</span>
-<span class="ln">66</span>		<span class="p">}</span>
-<span class="ln">67</span>	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-<span class="ln">68</span>		<span class="c1">// It must have a value, which might be the next argument.
-</span><span class="ln">69</span><span class="c1"></span>		<span class="k">if</span> <span class="p">!</span><span class="nx">hasValue</span> <span class="o">&amp;&amp;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-<span class="ln">70</span>			<span class="c1">// value is the next arg
-</span><span class="ln">71</span><span class="c1"></span>			<span class="nx">hasValue</span> <span class="p">=</span> <span class="kc">true</span>
-<span class="ln">72</span>			<span class="nx">value</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-<span class="ln">73</span>		<span class="p">}</span>
-<span class="ln">74</span>		<span class="k">if</span> <span class="p">!</span><span class="nx">hasValue</span> <span class="p">{</span>
-<span class="ln">75</span>			<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;flag needs an argument: -%s&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
-<span class="ln">76</span>		<span class="p">}</span>
-<span class="ln">77</span>		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">flag</span><span class="p">.</span><span class="nx">Value</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">78</span>			<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;invalid value %q for flag -%s: %v&#34;</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-<span class="ln">79</span>		<span class="p">}</span>
-<span class="ln">80</span>	<span class="p">}</span>
-<span class="ln">81</span>
-<span class="ln">82</span>	<span class="c1">// 初始化f.actual
-</span><span class="ln">83</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">f</span><span class="p">.</span><span class="nx">actual</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-<span class="ln">84</span>		<span class="nx">f</span><span class="p">.</span><span class="nx">actual</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">Flag</span><span class="p">)</span>
-<span class="ln">85</span>	<span class="p">}</span>
-<span class="ln">86</span>
-<span class="ln">87</span>	<span class="c1">// 放在解析后的容器里面
-</span><span class="ln">88</span><span class="c1"></span>	<span class="nx">f</span><span class="p">.</span><span class="nx">actual</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="p">=</span> <span class="nx">flag</span>
-<span class="ln">89</span>	<span class="k">return</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">nil</span>
-<span class="ln">90</span><span class="p">}</span>
-</code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// 其实是对FlagSet.Parse的封装
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1">// 同时也看到，flag包对参数的解析默认是从命令行输入的第二个字符串开始的
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">Parse</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">	<span class="c1">// Ignore errors; CommandLine is set for ExitOnError.
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1"></span>	<span class="nx">CommandLine</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>CommandLine.Parse</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">FlagSet</span><span class="p">)</span> <span class="nf">Parse</span><span class="p">(</span><span class="nx">arguments</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="c1">// 将解析标记置为true，标记这个FlagSet已经被解析过了
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1"></span>	<span class="nx">f</span><span class="p">.</span><span class="nx">parsed</span> <span class="p">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="c1">// 将所有参数放到盛放non-flag参数的容器中
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span>	<span class="c1">// 后续解析过程会一个一个参数从这个容器中往外拿，直到解析结束
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c1"></span>	<span class="nx">f</span><span class="p">.</span><span class="nx">args</span> <span class="p">=</span> <span class="nx">arguments</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">		<span class="c1">// 逐个解析参数
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1"></span>		<span class="nx">seen</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">f</span><span class="p">.</span><span class="nf">parseOne</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">		<span class="k">if</span> <span class="nx">seen</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">			<span class="k">continue</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">		<span class="c1">// 解析完成，退出循环，f.parseOne 返回 false,nil 的时候
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">			<span class="k">break</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">		<span class="c1">// 如果有error发生，根据设置定的error处理方式处理error
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="c1"></span>		<span class="k">switch</span> <span class="nx">f</span><span class="p">.</span><span class="nx">errorHandling</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">		<span class="k">case</span> <span class="nx">ContinueOnError</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">			<span class="k">return</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">		<span class="k">case</span> <span class="nx">ExitOnError</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">			<span class="nx">os</span><span class="p">.</span><span class="nf">Exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">		<span class="k">case</span> <span class="nx">PanicOnError</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">			<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">	<span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>f.parseOne</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// 这个方法是最主要的一个方法，他解析我们的参数
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1">// 这个方法是被循环调用的，决定解析是否终止的条件也在这个方法中，在源码中我会标记出来
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">FlagSet</span><span class="p">)</span> <span class="nf">parseOne</span><span class="p">()</span> <span class="p">(</span><span class="kt">bool</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="c1">// 没有参数，不需要解析
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="nx">s</span> <span class="o">:=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="c1">// 结束条件1：字符串长度小于零或者不是以 - 字符开头的
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">&lt;</span> <span class="mi">2</span> <span class="o">||</span> <span class="nx">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">&#39;-&#39;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="nx">numMinuses</span> <span class="o">:=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">	<span class="k">if</span> <span class="nx">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">		<span class="nx">numMinuses</span><span class="o">++</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">		<span class="c1">// 结束条件2：字符串是以 -- 开头的
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">{</span> <span class="c1">// &#34;--&#34; terminates the flags
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="c1"></span>			<span class="nx">f</span><span class="p">.</span><span class="nx">args</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">			<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">
+</span></span><span class="line"><span class="ln">23</span><span class="cl">	<span class="c1">// 取出真正的字符值（去掉前缀 - 或者 -- ）
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="c1"></span>	<span class="nx">name</span> <span class="o">:=</span> <span class="nx">s</span><span class="p">[</span><span class="nx">numMinuses</span><span class="p">:]</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">
+</span></span><span class="line"><span class="ln">26</span><span class="cl">	<span class="c1">// 字符串合法检测
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span> <span class="o">||</span> <span class="nx">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;=&#39;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;bad flag syntax: %s&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">
+</span></span><span class="line"><span class="ln">31</span><span class="cl">	<span class="c1">// it&#39;s a flag. does it have an argument?
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="c1"></span>	<span class="nx">f</span><span class="p">.</span><span class="nx">args</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl">	<span class="nx">hasValue</span> <span class="o">:=</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">	<span class="nx">value</span> <span class="o">:=</span> <span class="s">&#34;&#34;</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">	<span class="c1">// 通过等号判断是不是 &#34;name=value&#34; 这种格式类型的flag
+</span></span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="c1"></span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span> <span class="c1">// equals cannot be first
+</span></span></span><span class="line"><span class="ln">37</span><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="nx">name</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;=&#39;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl">			<span class="nx">value</span> <span class="p">=</span> <span class="nx">name</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">			<span class="nx">hasValue</span> <span class="p">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl">			<span class="nx">name</span> <span class="p">=</span> <span class="nx">name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nx">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl">			<span class="k">break</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">44</span><span class="cl">	<span class="nx">m</span> <span class="o">:=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">formal</span>
+</span></span><span class="line"><span class="ln">45</span><span class="cl">	<span class="c1">// 判断是否注册过指定名称的flag
+</span></span></span><span class="line"><span class="ln">46</span><span class="cl"><span class="c1"></span>	<span class="nx">flag</span><span class="p">,</span> <span class="nx">alreadythere</span> <span class="o">:=</span> <span class="nx">m</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="c1">// BUG
+</span></span></span><span class="line"><span class="ln">47</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="p">!</span><span class="nx">alreadythere</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">48</span><span class="cl">		<span class="c1">// 默认支持解析 help 和 h 选项
+</span></span></span><span class="line"><span class="ln">49</span><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="nx">name</span> <span class="o">==</span> <span class="s">&#34;help&#34;</span> <span class="o">||</span> <span class="nx">name</span> <span class="o">==</span> <span class="s">&#34;h&#34;</span> <span class="p">{</span> <span class="c1">// special case for nice help message.
+</span></span></span><span class="line"><span class="ln">50</span><span class="cl"><span class="c1"></span>			<span class="nx">f</span><span class="p">.</span><span class="nf">usage</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">51</span><span class="cl">			<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">ErrHelp</span>
+</span></span><span class="line"><span class="ln">52</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">53</span><span class="cl">		<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;flag provided but not defined: -%s&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">54</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">55</span><span class="cl">
+</span></span><span class="line"><span class="ln">56</span><span class="cl">	<span class="c1">// bool类型的flag支持 -flag 形式的写法，传了标记就是true，不传就依赖默认值
+</span></span></span><span class="line"><span class="ln">57</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">fv</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">flag</span><span class="p">.</span><span class="nx">Value</span><span class="p">.(</span><span class="nx">boolFlag</span><span class="p">);</span> <span class="nx">ok</span> <span class="o">&amp;&amp;</span> <span class="nx">fv</span><span class="p">.</span><span class="nf">IsBoolFlag</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// special case: doesn&#39;t need an arg
+</span></span></span><span class="line"><span class="ln">58</span><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="nx">hasValue</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">59</span><span class="cl">			<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">fv</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">60</span><span class="cl">				<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;invalid boolean value %q for -%s: %v&#34;</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">61</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">62</span><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">63</span><span class="cl">			<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">fv</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="s">&#34;true&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">64</span><span class="cl">				<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;invalid boolean flag %s: %v&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">65</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">66</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">67</span><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">68</span><span class="cl">		<span class="c1">// It must have a value, which might be the next argument.
+</span></span></span><span class="line"><span class="ln">69</span><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="p">!</span><span class="nx">hasValue</span> <span class="o">&amp;&amp;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">70</span><span class="cl">			<span class="c1">// value is the next arg
+</span></span></span><span class="line"><span class="ln">71</span><span class="cl"><span class="c1"></span>			<span class="nx">hasValue</span> <span class="p">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="ln">72</span><span class="cl">			<span class="nx">value</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</span></span><span class="line"><span class="ln">73</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">74</span><span class="cl">		<span class="k">if</span> <span class="p">!</span><span class="nx">hasValue</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">75</span><span class="cl">			<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;flag needs an argument: -%s&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">76</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">77</span><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">flag</span><span class="p">.</span><span class="nx">Value</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">78</span><span class="cl">			<span class="k">return</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nf">failf</span><span class="p">(</span><span class="s">&#34;invalid value %q for flag -%s: %v&#34;</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">79</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">80</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">81</span><span class="cl">
+</span></span><span class="line"><span class="ln">82</span><span class="cl">	<span class="c1">// 初始化f.actual
+</span></span></span><span class="line"><span class="ln">83</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">f</span><span class="p">.</span><span class="nx">actual</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">84</span><span class="cl">		<span class="nx">f</span><span class="p">.</span><span class="nx">actual</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">Flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">85</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">86</span><span class="cl">
+</span></span><span class="line"><span class="ln">87</span><span class="cl">	<span class="c1">// 放在解析后的容器里面
+</span></span></span><span class="line"><span class="ln">88</span><span class="cl"><span class="c1"></span>	<span class="nx">f</span><span class="p">.</span><span class="nx">actual</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="p">=</span> <span class="nx">flag</span>
+</span></span><span class="line"><span class="ln">89</span><span class="cl">	<span class="k">return</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">90</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content surface">
       <div class="modal-header">
@@ -461,9 +461,9 @@
             </a>
           </li></ul>
         <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/alipay.jpeg" loading="lazy" />
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/alipay.jpeg" loading="lazy" />
           </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.com/images/reward/wechat.jpeg" loading="lazy" />
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/wechat.jpeg" loading="lazy" />
           </div></div>
       </div>
     </div>
@@ -471,10 +471,10 @@
 </div></div>
   <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
   <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
-    <a href="https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8flag/">Go标准库（flag）- 使用
+    <a href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8flag/">Go标准库（flag）- 使用
 </a>
   </div><div class="post-nav post-next">
-    <a href="https://wangtingkui.com/posts/tool/ref-other-article/">使用hugo搭建个人网站（三）- 引用其他文章
+    <a href="https://wangtingkui.space/posts/tool/ref-other-article/">使用hugo搭建个人网站（三）- 引用其他文章
 </a>
     <i class="fas fa-fw fa-chevron-right"></i>
   </div></div></div>
@@ -495,27 +495,27 @@
     </div>
     <div class="card-body">
       <ul class="post-list"><li>
-          <a href="https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8flag/">Go标准库（flag）- 使用
+          <a href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8flag/">Go标准库（flag）- 使用
 </a>
           <span class="float-end post-date">2019-12-01
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/tool/deploy-on-github-pages/">使用hugo搭建个人网站（二）- 使用 Github Pages 部署 Hugo 生成的静态站点
+          <a href="https://wangtingkui.space/posts/tool/deploy-on-github-pages/">使用hugo搭建个人网站（二）- 使用 Github Pages 部署 Hugo 生成的静态站点
 </a>
           <span class="float-end post-date">2019-12-01
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/go/%E4%BD%BF%E7%94%A8cobra/">Go Cli 应用框架cobra（一）- 简介
+          <a href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8cobra/">Go Cli 应用框架cobra（一）- 简介
 </a>
           <span class="float-end post-date">2019-12-01
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/base/unicode/">详解字符编码
+          <a href="https://wangtingkui.space/posts/base/unicode/">详解字符编码
 </a>
           <span class="float-end post-date">2019-09-22
 </span>
         </li><li>
-          <a href="https://wangtingkui.com/posts/tool/introduction/">使用hugo搭建个人网站（一）- Hugo使用入门
+          <a href="https://wangtingkui.space/posts/tool/introduction/">使用hugo搭建个人网站（一）- Hugo使用入门
 </a>
           <span class="float-end post-date">2019-09-22
 </span>
@@ -539,7 +539,7 @@
     
     <section class="card row text-center profile component">
   <div class="card-body">
-    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.com/images/avatar.jpeg" loading="lazy"
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.space/images/avatar.jpeg" loading="lazy"
    width="959" height="959"
    />
 </div>
@@ -570,46 +570,46 @@
 </div><section class="series-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/series">专栏</a>
+          <a href="https://wangtingkui.space/series">专栏</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
-            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
+        <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
             gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/categories">分类</a>
+          <a href="https://wangtingkui.space/categories">分类</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
-            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.com/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
-            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.com/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
-            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.com/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
-            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.com/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
-            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+        <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
+            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
+            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
             性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section><section class="tags-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
-          <a href="https://wangtingkui.com/tags">标签</a>
+          <a href="https://wangtingkui.space/tags">标签</a>
         </h2>
       </div>
       <div class="card-body">
-        <div class="py-2"><a href="https://wangtingkui.com/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.com/tags/php/" class="badge rounded post-taxonomy" title="php">
-            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.com/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
-            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
-            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.com/tags/atom/" class="badge rounded post-taxonomy" title="atom">
-            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
-            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
-            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
-            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
-            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.com/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+        <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
+            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
+            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/nas/" class="badge rounded post-taxonomy" title="nas">
             nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section>
@@ -626,17 +626,17 @@
     <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
 </a>
 </footer>
-<script src="https://wangtingkui.com/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.com/js/icons.min.a35670f2f90c398e5ee5c8e509b428fae75aa2746854cee10b60794633076859.js" integrity="sha256-o1Zw8vkMOY5e5cjlCbQo&#43;udaonRoVM7hC2B5RjMHaFk=" crossorigin="anonymous" defer></script>
+<script src="https://wangtingkui.space/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.space/js/icons.min.b3391f89dcdef937e99a193c6de12584ac1d7613c16ae6ba852a096e1fd95108.js" integrity="sha256-szkfidze&#43;Tfpmhk8beElhKwddhPBaua6hSoJbh/ZUQg=" crossorigin="anonymous" defer></script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('https:\/\/wangtingkui.com\/service-worker.js').then(function(reg) {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.space\/service-worker.js').then(function(reg) {
       console.log('Successfully registered service worker', reg);
     }).catch(function(err) {
       console.warn('Error whilst registering service worker', err);
     });
   });
 }
-</script><script src="https://wangtingkui.com/js/viewer.min.4dba52a0a790f909408b7385316651299158381686401d50ff1f04dda6476473.js" integrity="sha256-TbpSoKeQ&#43;QlAi3OFMWZRKZFYOBaGQB1Q/x8E3aZHZHM=" crossorigin="anonymous" defer></script>
+</script><script src="https://wangtingkui.space/js/viewer.min.1721cbc2c5c34a150daae105f4ffed345a8bb269c6b63337f767c272fe6531f7.js" integrity="sha256-FyHLwsXDShUNquEF9P/tNFqLsmnGtjM392fCcv5lMfc=" crossorigin="anonymous" defer></script>
 </body>
 </html>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>字符编码 on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/</link>
+    <link>https://wangtingkui.space/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/</link>
     <description>Recent content in 字符编码 on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 22 Sep 2019 15:45:32 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 22 Sep 2019 15:45:32 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>详解字符编码</title>
-      <link>https://wangtingkui.com/posts/base/unicode/</link>
+      <link>https://wangtingkui.space/posts/base/unicode/</link>
       <pubDate>Sun, 22 Sep 2019 15:45:32 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/base/unicode/</guid>
+      <guid>https://wangtingkui.space/posts/base/unicode/</guid>
       <description>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型</description>
     </item>
     

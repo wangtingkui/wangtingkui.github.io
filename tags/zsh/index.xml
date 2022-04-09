@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>zsh on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/tags/zsh/</link>
+    <link>https://wangtingkui.space/tags/zsh/</link>
     <description>Recent content in zsh on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 10 May 2020 11:02:41 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/zsh/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 10 May 2020 11:02:41 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/tags/zsh/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用zsh插件</title>
-      <link>https://wangtingkui.com/posts/tool/plugin/</link>
+      <link>https://wangtingkui.space/posts/tool/plugin/</link>
       <pubDate>Sun, 10 May 2020 11:02:41 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/plugin/</guid>
+      <guid>https://wangtingkui.space/posts/tool/plugin/</guid>
       <description>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.z</description>
     </item>
     

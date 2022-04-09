@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>nas on xiaok&#39;s blog</title>
-    <link>https://wangtingkui.com/tags/nas/</link>
+    <link>https://wangtingkui.space/tags/nas/</link>
     <description>Recent content in nas on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 24 May 2020 10:48:57 +0800</lastBuildDate><atom:link href="https://wangtingkui.com/tags/nas/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 24 May 2020 10:48:57 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/tags/nas/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>群辉nas使用plex套件</title>
-      <link>https://wangtingkui.com/posts/tool/plex/</link>
+      <link>https://wangtingkui.space/posts/tool/plex/</link>
       <pubDate>Sun, 24 May 2020 10:48:57 +0800</pubDate>
       
-      <guid>https://wangtingkui.com/posts/tool/plex/</guid>
+      <guid>https://wangtingkui.space/posts/tool/plex/</guid>
       <description>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、</description>
     </item>
     
