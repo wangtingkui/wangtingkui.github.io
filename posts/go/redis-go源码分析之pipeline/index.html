@@ -1,0 +1,615 @@
+<!doctype html><html lang="zh-cn" data-palette="blue"
+  >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Redis Go源码分析之pipeline - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.space/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.space/manifest.json">
+<meta name="keywords" content="" />
+<meta name="description" content="在批量redis操作的场景中，可以使用 pipeline 技术减少 rtt 时间对程序性能的影响，什么是pipeline可以参考这篇文章 本文将对 redis-go 中 pipeline 相关代码进行源码" /><meta itemprop="name" content="Redis Go源码分析之pipeline">
+<meta itemprop="description" content="在批量redis操作的场景中，可以使用 pipeline 技术减少 rtt 时间对程序性能的影响，什么是pipeline可以参考这篇文章 本文将对 redis-go 中 pipeline 相关代码进行源码"><meta itemprop="datePublished" content="2022-04-17T22:28:42+08:00" />
+<meta itemprop="dateModified" content="2022-04-17T22:28:42+08:00" />
+<meta itemprop="wordCount" content="1070">
+<meta itemprop="keywords" content="go," /><meta property="og:title" content="Redis Go源码分析之pipeline" />
+<meta property="og:description" content="在批量redis操作的场景中，可以使用 pipeline 技术减少 rtt 时间对程序性能的影响，什么是pipeline可以参考这篇文章 本文将对 redis-go 中 pipeline 相关代码进行源码" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8Bpipeline/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-04-17T22:28:42+08:00" />
+<meta property="article:modified_time" content="2022-04-17T22:28:42+08:00" />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Redis Go源码分析之pipeline"/>
+<meta name="twitter:description" content="在批量redis操作的场景中，可以使用 pipeline 技术减少 rtt 时间对程序性能的影响，什么是pipeline可以参考这篇文章 本文将对 redis-go 中 pipeline 相关代码进行源码"/>
+<link rel="stylesheet" href="https://wangtingkui.space/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.space/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=["mode","palette"];items.forEach(function(e){const t=localStorage.getItem("hbs-"+e);t&&document.body.parentElement.setAttribute("data-"+e,t)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.space">xiaok&#39;s blog
+    </a>
+    <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">Share</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body">
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
+      target="_blank" href="https://twitter.com/intent/tweet?title=Redis%20Go%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90%e4%b9%8bpipeline&url=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fredis-go%25E6%25BA%2590%25E7%25A0%2581%25E5%2588%2586%25E6%259E%2590%25E4%25B9%258Bpipeline%2f">
+      <i class="fab fa-fw fa-twitter"></i> Twitter
+    </a>
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fredis-go%25E6%25BA%2590%25E7%25A0%2581%25E5%2588%2586%25E6%259E%2590%25E4%25B9%258Bpipeline%2f">
+      <i class="fab fa-fw fa-facebook-f"></i> Facebook
+    </a>
+  </div>
+</div>
+    <button class="navbar-settings" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
+  aria-controls="offcanvasSettings" aria-label="Toggle settings">
+  <i class="fas fa-ellipsis-v"></i>
+</button>
+
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettings">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">设置</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-language"></i> 语言</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="dropdown">
+        <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          简体中文
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.space/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/zh-tw/">繁體中文</a></li></ul>
+      </div>
+    </div>
+  </form>
+</section>
+
+
+<section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-adjust"></i> 模式</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="modeSwitcher">
+      </div>
+    </div>
+  </form>
+</section>
+
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> 字体大小</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> 配色</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <a id="btnPalette" class="btn btn-sm btn-outline-primary" role="button" aria-label="palettePicker">
+        <i class="fas fa-eye-dropper"></i>
+      </a>
+    </div>
+  </form>
+  <div class="mt-2 d-flex justify-content-between visually-hidden" id="palettePicker"><button type="button" id="palette-blue" aria-label="蓝色"
+        class="btn btn-sm w-100 palette" data-palette="blue">
+      </button><button type="button" id="palette-blue-gray" aria-label="蓝灰色"
+        class="btn btn-sm w-100 palette" data-palette="blue-gray">
+      </button><button type="button" id="palette-brown" aria-label="棕色"
+        class="btn btn-sm w-100 palette" data-palette="brown">
+      </button><button type="button" id="palette-cyan" aria-label="青色"
+        class="btn btn-sm w-100 palette" data-palette="cyan">
+      </button><button type="button" id="palette-green" aria-label="绿色"
+        class="btn btn-sm w-100 palette" data-palette="green">
+      </button><button type="button" id="palette-indigo" aria-label="靛青色"
+        class="btn btn-sm w-100 palette" data-palette="indigo">
+      </button><button type="button" id="palette-orange" aria-label="橙色"
+        class="btn btn-sm w-100 palette" data-palette="orange">
+      </button><button type="button" id="palette-pink" aria-label="粉色"
+        class="btn btn-sm w-100 palette" data-palette="pink">
+      </button><button type="button" id="palette-purple" aria-label="紫色"
+        class="btn btn-sm w-100 palette" data-palette="purple">
+      </button><button type="button" id="palette-red" aria-label="红色"
+        class="btn btn-sm w-100 palette" data-palette="red">
+      </button><button type="button" id="palette-teal" aria-label="蓝绿色"
+        class="btn btn-sm w-100 palette" data-palette="teal">
+      </button><button type="button" id="palette-yellow" aria-label="黄色"
+        class="btn btn-sm w-100 palette" data-palette="yellow">
+      </button></div>
+</section>
+<section class="setting actions d-flex justify-content-around mt-auto overflow-auto">
+  <a role="button" class="action action-go-back" href="javascript: window.history.back();">
+    <span class="action-icon"><i class="fas fa-2x fa-arrow-left"></i></span> 返回
+  </a>
+  <a role="button" class="action action-reload-page">
+    <span class="action-icon"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+  </a>
+  <a role="button" class="action action-copy-url">
+    <span class="action-icon"><i class="fas fa-2x fa-link"></i></span> 复制链接
+  </a><a class="action action-social-share" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSocialShare"
+    aria-controls="offcanvasSocialShare" aria-label="Toggle social share">
+    <span class="action-icon"><i class="fas fa-2x fa-share-alt"></i></span> 分享
+  </a></section>
+
+</div>
+</div>
+
+    <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
+      <form class="search-bar my-1" action="https://wangtingkui.space/search">
+  <div class="input-group input-group-sm">
+    <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+    <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
+  </div>
+</form>
+      <ul class="navbar-nav ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.space/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.space/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.space/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.space/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.space/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.space/posts/">文章</a></li><li class="breadcrumb-item active">Redis Go源码分析之pipeline</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper">
+  <div class="d-flex flex-column component rounded post-panel">
+    
+    <a class="action action-panel-toggler" role="button" title="Panel toggler">
+      <i class="fas fa-fw fa-chevron-circle-down"></i>
+    </a>
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    <a class="action" href="#post-copyright" role="button" aria-label="Copyright" title="Copyright">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a class="action" href="#post-comments" role="button" aria-label="Comments" title="Comments">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    <a class="action" href="#postTOC" aria-controls="Table of contents" role="button" title="Table of contents">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+  </div>
+</div>
+<article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title">Redis Go源码分析之pipeline
+</h1>
+  </div>
+  <div class="card-body"><div class="post-meta">
+  <span class="post-date" title="创建于 2022-04-17 22:28:42 &#43;0800 CST。">
+    2022-04-17
+  </span><span class="post-reading-time">
+    3 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge post-taxonomy">Go Redis源码分析</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-content mb-3"><p>在批量redis操作的场景中，可以使用 pipeline 技术减少 rtt 时间对程序性能的影响，什么是pipeline可以参考<a href="http://www.redis.cn/topics/pipelining.html" target="_blank" rel="noopener noreferrer">这篇文章</a>
+</p>
+<p>本文将对 redis-go 中 pipeline 相关代码进行源码分析</p>
+<h3 id="版本信息">版本信息<a class="anchor ms-1" href="#版本信息"><i class="fas fa-link"></i></a></h3>
+<h3 id="版本信息-1">版本信息<a class="anchor ms-1" href="#版本信息-1"><i class="fas fa-link"></i></a></h3>
+<ul>
+<li>go: <code>go version go1.16.10 darwin/amd64</code></li>
+<li>go-redis/redis: <code>v8.11.5</code></li>
+</ul>
+<h3 id="基本使用">基本使用<a class="anchor ms-1" href="#基本使用"><i class="fas fa-link"></i></a></h3>
+<p>go-redis 官方文档中相关文章：<a href="https://redis.uptrace.dev/guide/go-redis-pipelines.html#speeding-up-redis-with-pipelines" target="_blank" rel="noopener noreferrer">点击</a>
+</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">client</span> <span class="o">:=</span> <span class="nx">redis</span><span class="p">.</span><span class="nf">NewClient</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">redis</span><span class="p">.</span><span class="nx">Options</span><span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">		<span class="nx">Addr</span><span class="p">:</span> <span class="s">&#34;redis:6379&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="c1">// 第一种使用方式
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"></span>	<span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">		<span class="nx">ctx</span> <span class="o">:=</span> <span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="nx">pipe</span> <span class="o">:=</span> <span class="nx">client</span><span class="p">.</span><span class="nf">Pipeline</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">		<span class="nx">pipe</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="s">&#34;test1&#34;</span><span class="p">,</span> <span class="s">&#34;test1value&#34;</span><span class="p">,</span> <span class="mi">100</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">		<span class="nx">pipe</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="s">&#34;test1&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="nx">cmds</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">pipe</span><span class="p">.</span><span class="nf">Exec</span><span class="p">(</span><span class="nx">ctx</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">			<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">		<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">cmds</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">			<span class="k">switch</span> <span class="nx">a</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.(</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">			<span class="k">case</span> <span class="o">*</span><span class="nx">redis</span><span class="p">.</span><span class="nx">StatusCmd</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nf">Result</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">			<span class="k">case</span> <span class="o">*</span><span class="nx">redis</span><span class="p">.</span><span class="nx">StringCmd</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nf">Result</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">			<span class="k">default</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;unsupport cmd type&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">
+</span></span><span class="line"><span class="ln">28</span><span class="cl">	<span class="c1">// 第二种使用方式
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="c1"></span>	<span class="p">{</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">		<span class="nx">ctx</span> <span class="o">:=</span> <span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">		<span class="nx">cmds</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">client</span><span class="p">.</span><span class="nf">Pipelined</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">pipeliner</span> <span class="nx">redis</span><span class="p">.</span><span class="nx">Pipeliner</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">			<span class="nx">pipeliner</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="s">&#34;test2&#34;</span><span class="p">,</span> <span class="s">&#34;test2value&#34;</span><span class="p">,</span> <span class="mi">100</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl">			<span class="nx">pipeliner</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="s">&#34;test2&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">			<span class="k">return</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">		<span class="p">})</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">37</span><span class="cl">			<span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">38</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">		<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">cmds</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl">			<span class="k">switch</span> <span class="nx">a</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.(</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">41</span><span class="cl">			<span class="k">case</span> <span class="o">*</span><span class="nx">redis</span><span class="p">.</span><span class="nx">StatusCmd</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">42</span><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nf">Result</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl">			<span class="k">case</span> <span class="o">*</span><span class="nx">redis</span><span class="p">.</span><span class="nx">StringCmd</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">44</span><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nf">Result</span><span class="p">())</span>
+</span></span><span class="line"><span class="ln">45</span><span class="cl">			<span class="k">default</span><span class="p">:</span>
+</span></span><span class="line"><span class="ln">46</span><span class="cl">				<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;unsupport cmd type&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">47</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln">48</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">49</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">50</span><span class="cl">
+</span></span><span class="line"><span class="ln">51</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="源码分析">源码分析<a class="anchor ms-1" href="#源码分析"><i class="fas fa-link"></i></a></h3>
+<p>由于第二种使用方式只是对第一种的简单封装，所以我们用第一种进行源码分析就好</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">  1</span><span class="cl"><span class="c1">// 使用 Client 的 Pipeline 方法返回一个 Pipeliner
+</span></span></span><span class="line"><span class="ln">  2</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Client</span><span class="p">)</span> <span class="nf">Pipeline</span><span class="p">()</span> <span class="nx">Pipeliner</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">  3</span><span class="cl">	<span class="nx">pipe</span> <span class="o">:=</span> <span class="nx">Pipeline</span><span class="p">{</span>
+</span></span><span class="line"><span class="ln">  4</span><span class="cl">		<span class="nx">ctx</span><span class="p">:</span>  <span class="nx">c</span><span class="p">.</span><span class="nx">ctx</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">  5</span><span class="cl">		<span class="nx">exec</span><span class="p">:</span> <span class="nx">c</span><span class="p">.</span><span class="nx">processPipeline</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">  6</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">  7</span><span class="cl">	<span class="nx">pipe</span><span class="p">.</span><span class="nf">init</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">  8</span><span class="cl">	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">pipe</span>
+</span></span><span class="line"><span class="ln">  9</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 10</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 11</span><span class="cl"><span class="c1">// 观察 Pipeliner 的结构
+</span></span></span><span class="line"><span class="ln"> 12</span><span class="cl"><span class="c1">// 是一个接口
+</span></span></span><span class="line"><span class="ln"> 13</span><span class="cl"><span class="c1">// 描述的就是redis的pipeline功能
+</span></span></span><span class="line"><span class="ln"> 14</span><span class="cl"><span class="c1">// 实际的实现是 Pipeline
+</span></span></span><span class="line"><span class="ln"> 15</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Pipeliner</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 16</span><span class="cl">	<span class="nx">StatefulCmdable</span>
+</span></span><span class="line"><span class="ln"> 17</span><span class="cl">	<span class="nf">Len</span><span class="p">()</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="ln"> 18</span><span class="cl">	<span class="nf">Do</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">args</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="o">*</span><span class="nx">Cmd</span>
+</span></span><span class="line"><span class="ln"> 19</span><span class="cl">	<span class="nf">Process</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">cmd</span> <span class="nx">Cmder</span><span class="p">)</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="ln"> 20</span><span class="cl">	<span class="nf">Close</span><span class="p">()</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="ln"> 21</span><span class="cl">	<span class="nf">Discard</span><span class="p">()</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="ln"> 22</span><span class="cl">	<span class="nf">Exec</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">([]</span><span class="nx">Cmder</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 23</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 24</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 25</span><span class="cl"><span class="c1">// 观察Pipeline的结构
+</span></span></span><span class="line"><span class="ln"> 26</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Pipeline</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 27</span><span class="cl">	<span class="nx">cmdable</span>
+</span></span><span class="line"><span class="ln"> 28</span><span class="cl">	<span class="nx">statefulCmdable</span>
+</span></span><span class="line"><span class="ln"> 29</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 30</span><span class="cl">	<span class="nx">ctx</span>  <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span>
+</span></span><span class="line"><span class="ln"> 31</span><span class="cl">	<span class="nx">exec</span> <span class="nx">pipelineExecer</span>
+</span></span><span class="line"><span class="ln"> 32</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 33</span><span class="cl">	<span class="nx">mu</span>     <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
+</span></span><span class="line"><span class="ln"> 34</span><span class="cl">	<span class="nx">cmds</span>   <span class="p">[]</span><span class="nx">Cmder</span>
+</span></span><span class="line"><span class="ln"> 35</span><span class="cl">	<span class="nx">closed</span> <span class="kt">bool</span>
+</span></span><span class="line"><span class="ln"> 36</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 37</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 38</span><span class="cl"><span class="c1">// Pipeline 中需要我们关注就是 exec 这个成员
+</span></span></span><span class="line"><span class="ln"> 39</span><span class="cl"><span class="c1">// pipelineExecer 是一个函数类型，定义为 func(context.Context, []Cmder) error
+</span></span></span><span class="line"><span class="ln"> 40</span><span class="cl"><span class="c1">// 构建过程中，exec 被赋值为 Client.processPipeline
+</span></span></span><span class="line"><span class="ln"> 41</span><span class="cl"><span class="c1">// 还是老套路，在外面包了层 hooks 的方法
+</span></span></span><span class="line"><span class="ln"> 42</span><span class="cl"><span class="c1">// 核心使用的是 c.baseClient.processPipeline
+</span></span></span><span class="line"><span class="ln"> 43</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Client</span><span class="p">)</span> <span class="nf">processPipeline</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">cmds</span> <span class="p">[]</span><span class="nx">Cmder</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 44</span><span class="cl">	<span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nf">processPipeline</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">cmds</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">baseClient</span><span class="p">.</span><span class="nx">processPipeline</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 45</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 46</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 47</span><span class="cl"><span class="c1">// 直接看 c.baseClient.processPipeline
+</span></span></span><span class="line"><span class="ln"> 48</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">baseClient</span><span class="p">)</span> <span class="nf">processPipeline</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">cmds</span> <span class="p">[]</span><span class="nx">Cmder</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 49</span><span class="cl">	<span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nf">generalProcessPipeline</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">cmds</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">pipelineProcessCmds</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 50</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 51</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 52</span><span class="cl"><span class="c1">// 这个方法也没啥，就是对错误进行了下处理
+</span></span></span><span class="line"><span class="ln"> 53</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">baseClient</span><span class="p">)</span> <span class="nf">generalProcessPipeline</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 54</span><span class="cl">	<span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">cmds</span> <span class="p">[]</span><span class="nx">Cmder</span><span class="p">,</span> <span class="nx">p</span> <span class="nx">pipelineProcessor</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 55</span><span class="cl"><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 56</span><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nf">_generalProcessPipeline</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">cmds</span><span class="p">,</span> <span class="nx">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 57</span><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 58</span><span class="cl">		<span class="nf">setCmdsErr</span><span class="p">(</span><span class="nx">cmds</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 59</span><span class="cl">		<span class="k">return</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="ln"> 60</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 61</span><span class="cl">	<span class="k">return</span> <span class="nf">cmdsFirstErr</span><span class="p">(</span><span class="nx">cmds</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 62</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 63</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 64</span><span class="cl"><span class="c1">// 处理逻辑，这里和上篇文章分析的 _process 很像
+</span></span></span><span class="line"><span class="ln"> 65</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">baseClient</span><span class="p">)</span> <span class="nf">_generalProcessPipeline</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 66</span><span class="cl">	<span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">cmds</span> <span class="p">[]</span><span class="nx">Cmder</span><span class="p">,</span> <span class="nx">p</span> <span class="nx">pipelineProcessor</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 67</span><span class="cl"><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 68</span><span class="cl">	<span class="kd">var</span> <span class="nx">lastErr</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="ln"> 69</span><span class="cl">	<span class="k">for</span> <span class="nx">attempt</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">attempt</span> <span class="o">&lt;=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">opt</span><span class="p">.</span><span class="nx">MaxRetries</span><span class="p">;</span> <span class="nx">attempt</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 70</span><span class="cl">        <span class="c1">// 处理重试延时
+</span></span></span><span class="line"><span class="ln"> 71</span><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="nx">attempt</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 72</span><span class="cl">			<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">internal</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nf">retryBackoff</span><span class="p">(</span><span class="nx">attempt</span><span class="p">));</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 73</span><span class="cl">				<span class="k">return</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="ln"> 74</span><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 75</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 76</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 77</span><span class="cl">		<span class="kd">var</span> <span class="nx">canRetry</span> <span class="kt">bool</span>
+</span></span><span class="line"><span class="ln"> 78</span><span class="cl">        <span class="c1">// 拿到连接，执行真正的处理方法，也就是从外面传进来的 Client.pipelineProcessCmds 方法
+</span></span></span><span class="line"><span class="ln"> 79</span><span class="cl"><span class="c1"></span>		<span class="nx">lastErr</span> <span class="p">=</span> <span class="nx">c</span><span class="p">.</span><span class="nf">withConn</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">cn</span> <span class="o">*</span><span class="nx">pool</span><span class="p">.</span><span class="nx">Conn</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 80</span><span class="cl">			<span class="kd">var</span> <span class="nx">err</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="ln"> 81</span><span class="cl">			<span class="nx">canRetry</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nf">p</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">cn</span><span class="p">,</span> <span class="nx">cmds</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 82</span><span class="cl">			<span class="k">return</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="ln"> 83</span><span class="cl">		<span class="p">})</span>
+</span></span><span class="line"><span class="ln"> 84</span><span class="cl">		<span class="k">if</span> <span class="nx">lastErr</span> <span class="o">==</span> <span class="kc">nil</span> <span class="o">||</span> <span class="p">!</span><span class="nx">canRetry</span> <span class="o">||</span> <span class="p">!</span><span class="nf">shouldRetry</span><span class="p">(</span><span class="nx">lastErr</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 85</span><span class="cl">			<span class="k">return</span> <span class="nx">lastErr</span>
+</span></span><span class="line"><span class="ln"> 86</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 87</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 88</span><span class="cl">	<span class="k">return</span> <span class="nx">lastErr</span>
+</span></span><span class="line"><span class="ln"> 89</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 90</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 91</span><span class="cl"><span class="c1">// 发送命令和读取命令的处理
+</span></span></span><span class="line"><span class="ln"> 92</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">baseClient</span><span class="p">)</span> <span class="nf">pipelineProcessCmds</span><span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 93</span><span class="cl">	<span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">cn</span> <span class="o">*</span><span class="nx">pool</span><span class="p">.</span><span class="nx">Conn</span><span class="p">,</span> <span class="nx">cmds</span> <span class="p">[]</span><span class="nx">Cmder</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 94</span><span class="cl"><span class="p">)</span> <span class="p">(</span><span class="kt">bool</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 95</span><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">cn</span><span class="p">.</span><span class="nf">WithWriter</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">opt</span><span class="p">.</span><span class="nx">WriteTimeout</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">wr</span> <span class="o">*</span><span class="nx">proto</span><span class="p">.</span><span class="nx">Writer</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 96</span><span class="cl">		<span class="k">return</span> <span class="nf">writeCmds</span><span class="p">(</span><span class="nx">wr</span><span class="p">,</span> <span class="nx">cmds</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 97</span><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="ln"> 98</span><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 99</span><span class="cl">		<span class="k">return</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="ln">100</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">101</span><span class="cl">
+</span></span><span class="line"><span class="ln">102</span><span class="cl">	<span class="nx">err</span> <span class="p">=</span> <span class="nx">cn</span><span class="p">.</span><span class="nf">WithReader</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">opt</span><span class="p">.</span><span class="nx">ReadTimeout</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">rd</span> <span class="o">*</span><span class="nx">proto</span><span class="p">.</span><span class="nx">Reader</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">103</span><span class="cl">		<span class="k">return</span> <span class="nf">pipelineReadCmds</span><span class="p">(</span><span class="nx">rd</span><span class="p">,</span> <span class="nx">cmds</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">104</span><span class="cl">	<span class="p">})</span>
+</span></span><span class="line"><span class="ln">105</span><span class="cl">	<span class="k">return</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="ln">106</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="总结">总结<a class="anchor ms-1" href="#总结"><i class="fas fa-link"></i></a></h3>
+<p>可以发现，对 go-redis 中 pipline 的处理和正常处理一个单命令的流程很像，只不过是一次性按照协议写入多个命令和一次性读取多个回复而已</p>
+<h3 id="注意事项">注意事项<a class="anchor ms-1" href="#注意事项"><i class="fas fa-link"></i></a></h3>
+<p>在源码中对pipeline有如下备注:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">// Pay attention, that Pipeline is not a transaction, so you can get unexpected
+</span></span><span class="line"><span class="ln">2</span><span class="cl">// results in case of big pipelines and small read/write timeouts.
+</span></span><span class="line"><span class="ln">3</span><span class="cl">// Redis client has retransmission logic in case of timeouts, pipeline
+</span></span><span class="line"><span class="ln">4</span><span class="cl">// can be retransmitted and commands can be executed more then once.
+</span></span><span class="line"><span class="ln">5</span><span class="cl">// To avoid this: it is good idea to use reasonable bigger read/write timeouts
+</span></span><span class="line"><span class="ln">6</span><span class="cl">// depends of your batch size and/or use TxPipeline.
+</span></span></code></pre></div><p>大意是，pipeline中如果命令较多，而设置的超时时间又比较小，可能会造成执行超时，由于默认情况下，redis客户端有重试的机制，所以可能会造成命令的重复执行。可以通过设置合理的超时时间或者使用 TxPipeline 解决这种情况</p>
+<p>TxPipeline 的实现其实就是讲 pipeline 的执行放到了redis 事务中，关于事务的实现，有时间单独分析下其源码</p>
+</div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-coffee"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary" aria-label="Close"><i class="fas fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/alipay.jpeg" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/wechat.jpeg" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+  <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Go Redis源码分析（一）
+</a>
+  </div></div></div>
+</article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+    <div class="card-header">
+      <h2 class="card-title">相关文章</h2>
+    </div>
+    <div class="card-body">
+      <ul class="post-list"><li>
+          <a href="https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Go Redis源码分析（一）
+</a>
+          <span class="float-end post-date">2022-04-17
+</span>
+        </li><li>
+          <a href="https://wangtingkui.space/posts/go/gorm-read-write-split/">Gorm源码阅读 - 3.读写分离
+</a>
+          <span class="float-end post-date">2022-02-02
+</span>
+        </li><li>
+          <a href="https://wangtingkui.space/posts/go/gorm-clause/">Gorm源码阅读 - 2.Clause
+</a>
+          <span class="float-end post-date">2022-02-02
+</span>
+        </li><li>
+          <a href="https://wangtingkui.space/posts/go/gorm-base/">Gorm源码阅读 - 1.基础流程
+</a>
+          <span class="float-end post-date">2022-02-01
+</span>
+        </li><li>
+          <a href="https://wangtingkui.space/posts/go/sort/">Go 中 Sort 包的使用
+</a>
+          <span class="float-end post-date">2020-10-14
+</span>
+        </li></ul>
+    </div>
+  </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script></div>
+</div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
+    
+    <section class="card row text-center profile component">
+  <div class="card-body">
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.space/images/avatar.jpeg" loading="lazy"
+   width="959" height="959"
+   />
+</div>
+    <div class="col-12 profile-meta"><div class="profile-name">无敌小k</div><div class="profile-bio">Gopher, PHPer.</div><div class="profile-about"><i class="fas fa-fw fa-user"></i><a target="_blank" rel="noopener noreferrer" href="https://domain.tld">关于我</a></div><nav class="social-links nav justify-content-center"><a class="nav-link social-link" href="mailto:wangtingkui_coder@163.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a><a class="nav-link social-link" target="_blank" href="https://github.com/wangtingkui" title="GitHub" rel="noopener noreferrer">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a></nav>
+</div>
+  </div>
+</section>
+  <div class="post-toc row mb-4 card component" id="postTOC">
+  <div class="card-header">
+    <h2 class="card-title">目录</h2>
+  </div>
+  <div class="card-body">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#版本信息">版本信息</a></li>
+        <li><a href="#版本信息-1">版本信息</a></li>
+        <li><a href="#基本使用">基本使用</a></li>
+        <li><a href="#源码分析">源码分析</a></li>
+        <li><a href="#总结">总结</a></li>
+        <li><a href="#注意事项">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div><section class="series-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.space/series">专栏</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="Go Redis源码分析">
+            Go Redis源码分析<span class="badge badge-sm text-white bg-accent ms-1">2</span></a></div>
+      </div>
+    </section><section class="categories-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.space/categories">分类</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
+            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
+            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+            性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section><section class="tags-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.space/tags">标签</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">30</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
+            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
+            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section>
+    
+  </div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"></nav>
+<div class="copyright mb-2">
+  Copyright © 2016-2022 Razon Yang. All Rights Reserved.
+</div>
+
+<a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
+    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
+</a>
+</footer>
+<script src="https://wangtingkui.space/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.space/js/icons.min.b3391f89dcdef937e99a193c6de12584ac1d7613c16ae6ba852a096e1fd95108.js" integrity="sha256-szkfidze&#43;Tfpmhk8beElhKwddhPBaua6hSoJbh/ZUQg=" crossorigin="anonymous" defer></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.space\/service-worker.js').then(function(reg) {
+      console.log('Successfully registered service worker', reg);
+    }).catch(function(err) {
+      console.warn('Error whilst registering service worker', err);
+    });
+  });
+}
+</script><script src="https://wangtingkui.space/js/viewer.min.1721cbc2c5c34a150daae105f4ffed345a8bb269c6b63337f767c272fe6531f7.js" integrity="sha256-FyHLwsXDShUNquEF9P/tNFqLsmnGtjM392fCcv5lMfc=" crossorigin="anonymous" defer></script>
+</body>
+</html>

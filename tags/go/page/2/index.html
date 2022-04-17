@@ -189,6 +189,27 @@
   </div>
 </nav><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/go/unit-testing/">在go中使用单元测试
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2020-05-17 11:22:21 &#43;0800 CST。">
+    2020-05-17
+  </span><span class="post-reading-time">
+    4 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持
+单测基本规则  单元测试文件必须以_test.go结尾 单元测试文件名前面的部分最好和要被测试的方法所在的文件名保持一致 单元测试函数名称必须要以TestXxxx的格式书写，函数必须要接受一个testing.T类型的指针，不能有返回值 单元测试函数名最好能和被测试的函数保持对应，比如要测试的方法是Add，那么单测函数的名字最好是TestAdd，如果被测试的方法在同一个包下的多个结构体中都有，那么单测函数的名字可以是Test结构体名字_方法名，比如TestMyStruct_Add  一个demo 包文件结构
+1❯ tree 2. 3├──...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/unit-testing/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
       <a href="https://wangtingkui.space/posts/go/viper/">使用 Viper 处理项目配置
 </a>
     </h2>
@@ -387,27 +408,6 @@ url 结构 在学习使用这个库之前，我们先来了解下 url 的标准�
     </div>
   </div>
 </article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/go-multi-version-manage/">Go多版本管理
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-13 14:46:50 &#43;0800 CST。">
-    2019-12-13
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下使用gvm进行go的多版本管理
-gvm的信息可以参考：https://github.com/moovweb/gvm
-环境信息  macOS 10.15.2 brew 2.1.16  安装gvm 1bash &lt; &lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) 下载好之后，需要修改下个人配置文件，使gvm相关命令生效，如果用的是bash，则修...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/go-multi-version-manage/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
 </div><div class="row table-responsive mb-3">
     <ul class="pagination pagination-default">
       <li class="page-item">
@@ -463,7 +463,7 @@ gvm的信息可以参考：https://github.com/moovweb/gvm
         <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
             使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
             gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="Go Redis源码分析">
-            Go Redis源码分析<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+            Go Redis源码分析<span class="badge badge-sm text-white bg-accent ms-1">2</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
@@ -488,7 +488,7 @@ gvm的信息可以参考：https://github.com/moovweb/gvm
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">29</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">30</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">

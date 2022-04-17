@@ -6,7 +6,16 @@
     <description>Recent content in Go Redis源码分析 on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 17 Apr 2022 16:24:48 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 17 Apr 2022 22:28:42 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Redis Go源码分析之pipeline</title>
+      <link>https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8Bpipeline/</link>
+      <pubDate>Sun, 17 Apr 2022 22:28:42 +0800</pubDate>
+      
+      <guid>https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8Bpipeline/</guid>
+      <description>在批量redis操作的场景中，可以使用 pipeline 技术减少 rtt 时间对程序性能的影响，什么是pipeline可以参考这篇文章 本文将对 redis-go 中 pipeline 相关代码进行源码</description>
+    </item>
+    
     <item>
       <title>Go Redis源码分析（一）</title>
       <link>https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>

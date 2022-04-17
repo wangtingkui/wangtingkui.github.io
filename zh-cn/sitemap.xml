@@ -3,16 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://wangtingkui.space/tags/go/</loc>
-    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
+    <lastmod>2022-04-17T22:28:42+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
+    <lastmod>2022-04-17T22:28:42+08:00</lastmod>
   </url><url>
-    <loc>https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
+    <loc>https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8Bpipeline/</loc>
+    <lastmod>2022-04-17T22:28:42+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.space/</loc>
-    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
+    <lastmod>2022-04-17T22:28:42+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -35,7 +35,7 @@
                 />
   </url><url>
     <loc>https://wangtingkui.space/series/</loc>
-    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
+    <lastmod>2022-04-17T22:28:42+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -58,10 +58,10 @@
                 />
   </url><url>
     <loc>https://wangtingkui.space/posts/</loc>
-    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
+    <lastmod>2022-04-17T22:28:42+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.space/tags/</loc>
-    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
+    <lastmod>2022-04-17T22:28:42+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -82,6 +82,9 @@
                 hreflang="zh-cn"
                 href="https://wangtingkui.space/tags/"
                 />
+  </url><url>
+    <loc>https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.space/posts/go/ants/</loc>
     <lastmod>2022-02-05T16:22:13+08:00</lastmod>
