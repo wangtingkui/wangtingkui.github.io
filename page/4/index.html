@@ -186,6 +186,28 @@
 <div class="col-lg-8">
   <div class="container"><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/go/go-file-operation/">Go进行文件操作
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2020-01-05 15:33:50 &#43;0800 CST。">
+    2020-01-05
+  </span><span class="post-reading-time">
+    2 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供了一些常用的方法供开发者使用
+本文只列出了一些常用的方法，更多的操作可以参考：https://colobu.com/2016/10/12/go-file-operations
+使用 os 包进行文件操作  打开文件
+ 1package main 23import ( 4&#34;os&#34; 5) 67func main() { 89var ( 10file *os.File 11err error 12) 1314// 以只读方式打开一个文件 15	file, err =...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/go-file-operation/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
       <a href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8net-http/">Go标准库（net/Http）- 使用
 </a>
     </h2>
@@ -387,29 +409,6 @@ github pages 支持多种域名类型，不同的域名类型配置有细微的�
     </div>
   </div>
 </article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/hugo-custom-your-url/">使用hugo搭建个人网站（六）- 定制你文章的url
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-07 16:01:41 &#43;0800 CST。">
-    2019-12-07
-  </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge post-taxonomy">使用hugo搭建个人网站</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>默认情况下，站点文章的 url 和我们 content 目录下的文件结构是一一对应的，比如有 content/posts/test.md 这篇文章，当我们发布之后，在站点访问的 url 就是 &lt;domian&gt;/posts/test，如果我们不想要这种形式，可以通过配置来改变默认的行为
-在使用配置之前，先让我们了解下 hugo 生成的 url 规则
-知道了每个段的含义，我们就可以使用hugo提供给我们的配置项来进行url的自定义
-可以在config.toml文件中的[permalinks]配置指定url的格式，比如
-1[permalinks] 2post = &#34;/:year/:month/:title/&#34;...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/hugo-custom-your-url/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
 </div><div class="row table-responsive mb-3">
     <ul class="pagination pagination-default">
       <li class="page-item">
@@ -470,7 +469,8 @@ github pages 支持多种域名类型，不同的域名类型配置有细微的�
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
             使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
-            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a></div>
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="Go Redis源码分析">
+            Go Redis源码分析<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
@@ -495,7 +495,7 @@ github pages 支持多种域名类型，不同的域名类型配置有细微的�
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">29</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">

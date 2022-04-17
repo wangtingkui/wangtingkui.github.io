@@ -3,27 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>推荐的atom插件 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.space/images/icons/icon-180x180.png" sizes="180x180">
+    <title>Go Redis源码分析 - 专栏 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.space/images/icons/icon-180x180.png" sizes="180x180">
 <link rel="icon" href="https://wangtingkui.space/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="https://wangtingkui.space/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
 <link rel="icon" href="https://wangtingkui.space/images/icons/favicon.ico">
 <link rel="manifest" href="https://wangtingkui.space/manifest.json">
-<meta name="keywords" content="" />
-<meta name="description" content="atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件 project-manager（atom项目" /><meta itemprop="name" content="推荐的atom插件">
-<meta itemprop="description" content="atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件 project-manager（atom项目"><meta itemprop="datePublished" content="2020-05-16T10:33:59+08:00" />
-<meta itemprop="dateModified" content="2020-05-16T10:33:59+08:00" />
-<meta itemprop="wordCount" content="340">
-<meta itemprop="keywords" content="atom," /><meta property="og:title" content="推荐的atom插件" />
-<meta property="og:description" content="atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件 project-manager（atom项目" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://wangtingkui.space/posts/tool/pakage/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-05-16T10:33:59+08:00" />
-<meta property="article:modified_time" content="2020-05-16T10:33:59+08:00" />
+<meta name="keywords" content="Hugo, Bootstrap, 博客主题" />
+<meta name="description" content="一个快速、响应式和功能丰富的 Hugo 博客主题" /><meta itemprop="name" content="Go Redis源码分析">
+<meta itemprop="description" content="一个快速、响应式和功能丰富的 Hugo 博客主题"><meta property="og:title" content="Go Redis源码分析" />
+<meta property="og:description" content="一个快速、响应式和功能丰富的 Hugo 博客主题" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="推荐的atom插件"/>
-<meta name="twitter:description" content="atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件 project-manager（atom项目"/>
-<link rel="stylesheet" href="https://wangtingkui.space/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.space/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+<meta name="twitter:title" content="Go Redis源码分析"/>
+<meta name="twitter:description" content="一个快速、响应式和功能丰富的 Hugo 博客主题"/>
+<link rel="alternate" type="application/rss+xml" href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.xml" title="xiaok's blog" /><link rel="stylesheet" href="https://wangtingkui.space/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.space/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
   <body><script>const items=["mode","palette"];items.forEach(function(e){const t=localStorage.getItem("hbs-"+e);t&&document.body.parentElement.setAttribute("data-"+e,t)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
   <div class="container">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -40,11 +35,11 @@
   </div>
   <div class="offcanvas-body">
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
-      target="_blank" href="https://twitter.com/intent/tweet?title=%e6%8e%a8%e8%8d%90%e7%9a%84atom%e6%8f%92%e4%bb%b6&url=https%3a%2f%2fwangtingkui.space%2fposts%2ftool%2fpakage%2f">
+      target="_blank" href="https://twitter.com/intent/tweet?title=Go%20Redis%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90&url=https%3a%2f%2fwangtingkui.space%2fseries%2fgo-redis%25E6%25BA%2590%25E7%25A0%2581%25E5%2588%2586%25E6%259E%2590%2f">
       <i class="fab fa-fw fa-twitter"></i> Twitter
     </a>
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
-      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.space%2fposts%2ftool%2fpakage%2f">
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.space%2fseries%2fgo-redis%25E6%25BA%2590%25E7%25A0%2581%25E5%2588%2586%25E6%259E%2590%2f">
       <i class="fab fa-fw fa-facebook-f"></i> Facebook
     </a>
   </div>
@@ -190,154 +185,33 @@
 <div class="col-lg-8">
   <div class="container"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body">
-    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.space/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.space/posts/">文章</a></li><li class="breadcrumb-item active">推荐的atom插件</li></ol>
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.space/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.space/series/">专栏</a></li><li class="breadcrumb-item active">Go Redis源码分析</li></ol>
   </div>
-</nav><div class="post-panel-wrapper">
-  <div class="d-flex flex-column component rounded post-panel">
-    
-    <a class="action action-panel-toggler" role="button" title="Panel toggler">
-      <i class="fas fa-fw fa-chevron-circle-down"></i>
-    </a>
-    <a id="sidebarToggler" class="action d-none d-lg-block" role="button" title="Sidebar toggler">
-  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</nav><div class="posts mb-4"><article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Go Redis源码分析（一）
 </a>
-
-    
-
-    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
-  <i class="fas fa-fw fa-coffee"></i>
-</a>
-    <a class="action" href="#post-copyright" role="button" aria-label="Copyright" title="Copyright">
-  <i class="fas fa-fw fa-copyright"></i>
-</a>
-    <a class="action" href="#post-comments" role="button" aria-label="Comments" title="Comments">
-  <i class="fas fa-fw fa-comments"></i>
-</a>
-    <a class="action" href="#postTOC" aria-controls="Table of contents" role="button" title="Table of contents">
-  <i class="fas fa-fw fa-list-alt"></i>
-</a>
-    
+    </h2>
   </div>
-</div>
-<article class="row card component mb-4 post">
-  <div class="card-header ">
-    <h1 class="card-title post-title">推荐的atom插件
-</h1>
-  </div>
-  <div class="card-body"><div class="post-meta">
-  <span class="post-date" title="创建于 2020-05-16 10:33:59 &#43;0800 CST。">
-    2020-05-16
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2022-04-17 16:24:48 &#43;0800 CST。">
+    2022-04-17
   </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/atom/" class="badge post-taxonomy">atom</a></span>
+    6 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge post-taxonomy">Go Redis源码分析</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
-<div class="post-content mb-3"><p>atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件</p>
-<h3 id="project-manageratom项目管理">project-manager（atom项目管理）<a class="anchor ms-1" href="#project-manageratom项目管理"><i class="fas fa-link"></i></a></h3>
-<p>可以将文件保存为项目，方便管理。我一般会配合 <a href="https://github.com/danielbrodin/atom-project-manager" target="_blank" rel="noopener noreferrer">alfred workflow</a>
- 方便的打开自己想要的项目</p>
-<h3 id="sync-settingsatom配置同步">sync-settings（atom配置同步）<a class="anchor ms-1" href="#sync-settingsatom配置同步"><i class="fas fa-link"></i></a></h3>
-<p>如果使用多台电脑，必不能少的插件，将atom配置同步到 github gist 来达到同步目的</p>
-<h3 id="pretty-jsonjson格式化">pretty-json（json格式化）<a class="anchor ms-1" href="#pretty-jsonjson格式化"><i class="fas fa-link"></i></a></h3>
-<p>开发中经常用的，可以对json字符串进行格式化</p>
-<h3 id="ide-yamlyaml格式化和校验">ide-yaml（yaml格式化和校验）<a class="anchor ms-1" href="#ide-yamlyaml格式化和校验"><i class="fas fa-link"></i></a></h3>
-<p>yaml格式化和校验</p>
-<h3 id="pp-markdownmarkdown预览">pp-markdown（markdown预览）<a class="anchor ms-1" href="#pp-markdownmarkdown预览"><i class="fas fa-link"></i></a></h3>
-<p>markdown预览</p>
-<h3 id="atom-beautify代码格式化">atom-beautify（代码格式化）<a class="anchor ms-1" href="#atom-beautify代码格式化"><i class="fas fa-link"></i></a></h3>
-<p>代码格式化</p>
-<h3 id="css-snippetscss代码提示">css-snippets（css代码提示）<a class="anchor ms-1" href="#css-snippetscss代码提示"><i class="fas fa-link"></i></a></h3>
-<p>支持css、scss、sass、less</p>
-</div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content surface">
-      <div class="modal-header">
-        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-coffee"></i>打赏</h5>
-        <a href="#" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary" aria-label="Close"><i class="fas fa-times"></i></a>
-      </div>
-      <div class="modal-body">
-        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
-            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
-              <i class="fab fa-fw fa-alipay"></i>支付宝
-            </a>
-          </li><li class="nav-item text-nowrap" role="presentation">
-            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
-              <i class="fab fa-fw fa-weixin"></i>微信
-            </a>
-          </li></ul>
-        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/alipay.jpeg" loading="lazy" />
-          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
-            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/wechat.jpeg" loading="lazy" />
-          </div></div>
-      </div>
+<div class="post-summary">
+      <p>go-redis/redis 这个包是当下go语言操作redis比较常用的包，它支持了几乎redis的所有命令；并且对应redis不同的架构（主从/Sential/Cluster…）也有良好的支持
+本片文章主要演示其简单的使用和对主流程代码进行简要分析，后续可能对高级操作（pipeline/pub-sub…）进行源码分析
+版本信息  go: go version go1.16.10 darwin/amd64 go-redis/redis: v8.11.5  基本使用 go-redis提供了多种客户端的支持, 本文主要使用单实例的 redis server 作为演示
+在命令调用上，go-redis 提供了两种方式，一种是通过客户端的方...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">阅读更多</a></div>
     </div>
   </div>
-</div></div>
-  <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
-  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
-    <a href="https://wangtingkui.space/posts/tool/theme/">使用zsh主题
-</a>
-  </div><div class="post-nav post-next">
-    <a href="https://wangtingkui.space/posts/go/unit-testing/">在go中使用单元测试
-</a>
-    <i class="fas fa-fw fa-chevron-right"></i>
-  </div></div></div>
-</article><div class="post-copyright mb-3 row card component" id="post-copyright">
-    <div class="card-header">
-        <h2 class="card-title">版权</h2>
-    </div>
-    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
-  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
-  CC BY-NC-ND 4.0 
-</a>
+</article>
+</div><div class="row table-responsive mb-3"></div>
+</div>
 
-
-    </div>
-</div><section class="related-posts row card component">
-    <div class="card-header">
-      <h2 class="card-title">相关文章</h2>
-    </div>
-    <div class="card-body">
-      <ul class="post-list"><li>
-          <a href="https://wangtingkui.space/posts/tool/theme/">使用zsh主题
-</a>
-          <span class="float-end post-date">2020-05-12
-</span>
-        </li><li>
-          <a href="https://wangtingkui.space/posts/tool/plugin-recommend/">Alfred Workflow 推荐
-</a>
-          <span class="float-end post-date">2020-05-10
-</span>
-        </li><li>
-          <a href="https://wangtingkui.space/posts/tool/plugin/">使用zsh插件
-</a>
-          <span class="float-end post-date">2020-05-10
-</span>
-        </li><li>
-          <a href="https://wangtingkui.space/posts/go/viper/">使用 Viper 处理项目配置
-</a>
-          <span class="float-end post-date">2020-05-03
-</span>
-        </li><li>
-          <a href="https://wangtingkui.space/posts/go/errors/">使用 Pkg/Errors 进行错误处理
-</a>
-          <span class="float-end post-date">2020-04-28
-</span>
-        </li></ul>
-    </div>
-  </section><div class="card component row post-comments" id="post-comments">
-  <div class="card-header">
-    <h2 class="card-title">评论</h2>
-  </div>
-  <div class="card-body"><script src="https://utteranc.es/client.js"
-  repo="razonyang/hugo-theme-bootstrap-comments"
-  issue-term="pathname"
-  label="comment"
-  theme="github-light"
-  crossorigin="anonymous"
-  async>
-</script></div>
-</div></div>
 </div><aside class="col-lg-4 sidebar d-flex">
   <div class="container d-flex flex-column">
     
@@ -351,32 +225,13 @@
       <i class="fas fa-fw fa-2x fa-envelope"></i>
     </a><a class="nav-link social-link" target="_blank" href="https://github.com/wangtingkui" title="GitHub" rel="noopener noreferrer">
         <i class="fa-fw fa-2x fab fa-github"></i>
-      </a></nav>
+      </a><a class="nav-link social-link" target="_blank" href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.xml" title="RSS" rel="noopener noreferrer">
+      <i class="fas fa-fw fa-2x fa-rss"></i>
+    </a></nav>
 </div>
   </div>
 </section>
-  <div class="post-toc row mb-4 card component" id="postTOC">
-  <div class="card-header">
-    <h2 class="card-title">目录</h2>
-  </div>
-  <div class="card-body">
-    <nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#project-manageratom项目管理">project-manager（atom项目管理）</a></li>
-        <li><a href="#sync-settingsatom配置同步">sync-settings（atom配置同步）</a></li>
-        <li><a href="#pretty-jsonjson格式化">pretty-json（json格式化）</a></li>
-        <li><a href="#ide-yamlyaml格式化和校验">ide-yaml（yaml格式化和校验）</a></li>
-        <li><a href="#pp-markdownmarkdown预览">pp-markdown（markdown预览）</a></li>
-        <li><a href="#atom-beautify代码格式化">atom-beautify（代码格式化）</a></li>
-        <li><a href="#css-snippetscss代码提示">css-snippets（css代码提示）</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-  </div>
-</div><section class="series-taxonomies row card component">
+  <section class="series-taxonomies row card component">
       <div class="card-header">
         <h2 class="card-title">
           <a href="https://wangtingkui.space/series">专栏</a>
@@ -427,7 +282,9 @@
   </div>
 </aside>
 </div>
-    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"></nav>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"><a class="nav-link social-link" target="_blank" href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.xml" title="RSS" rel="noopener noreferrer">
+      <i class="fas fa-fw fa-2x fa-rss"></i>
+    </a></nav>
 <div class="copyright mb-2">
   Copyright © 2016-2022 Razon Yang. All Rights Reserved.
 </div>

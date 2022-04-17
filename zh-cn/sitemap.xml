@@ -2,14 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://wangtingkui.space/posts/go/ants/</loc>
-    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
+    <loc>https://wangtingkui.space/tags/go/</loc>
+    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
   </url><url>
-    <loc>https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</loc>
-    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
+    <loc>https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
+  </url><url>
+    <loc>https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.space/</loc>
-    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
+    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -31,11 +34,34 @@
                 href="https://wangtingkui.space/"
                 />
   </url><url>
+    <loc>https://wangtingkui.space/series/</loc>
+    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://wangtingkui.space/en/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://wangtingkui.space/fr/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-tw"
+                href="https://wangtingkui.space/zh-tw/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://wangtingkui.space/series/"
+                />
+  </url><url>
     <loc>https://wangtingkui.space/posts/</loc>
-    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
+    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.space/tags/</loc>
-    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
+    <lastmod>2022-04-17T16:24:48+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -57,37 +83,17 @@
                 href="https://wangtingkui.space/tags/"
                 />
   </url><url>
-    <loc>https://wangtingkui.space/tags/go/</loc>
-    <lastmod>2022-02-02T22:05:41+08:00</lastmod>
+    <loc>https://wangtingkui.space/posts/go/ants/</loc>
+    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
+  </url><url>
+    <loc>https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</loc>
+    <lastmod>2022-02-05T16:22:13+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</loc>
     <lastmod>2022-02-02T22:05:41+08:00</lastmod>
   </url><url>
     <loc>https://wangtingkui.space/posts/go/gorm-read-write-split/</loc>
     <lastmod>2022-02-02T22:05:41+08:00</lastmod>
-  </url><url>
-    <loc>https://wangtingkui.space/series/</loc>
-    <lastmod>2022-02-02T22:05:41+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://wangtingkui.space/en/series/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://wangtingkui.space/fr/series/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://wangtingkui.space/zh-tw/series/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://wangtingkui.space/series/"
-                />
   </url><url>
     <loc>https://wangtingkui.space/posts/go/gorm-clause/</loc>
     <lastmod>2022-02-02T18:05:41+08:00</lastmod>

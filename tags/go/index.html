@@ -189,6 +189,28 @@
   </div>
 </nav><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Go Redis源码分析（一）
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2022-04-17 16:24:48 &#43;0800 CST。">
+    2022-04-17
+  </span><span class="post-reading-time">
+    6 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge post-taxonomy">Go Redis源码分析</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>go-redis/redis 这个包是当下go语言操作redis比较常用的包，它支持了几乎redis的所有命令；并且对应redis不同的架构（主从/Sential/Cluster…）也有良好的支持
+本片文章主要演示其简单的使用和对主流程代码进行简要分析，后续可能对高级操作（pipeline/pub-sub…）进行源码分析
+版本信息  go: go version go1.16.10 darwin/amd64 go-redis/redis: v8.11.5  基本使用 go-redis提供了多种客户端的支持, 本文主要使用单实例的 redis server 作为演示
+在命令调用上，go-redis 提供了两种方式，一种是通过客户端的方...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
       <a href="https://wangtingkui.space/posts/go/gorm-read-write-split/">Gorm源码阅读 - 3.读写分离
 </a>
     </h2>
@@ -379,28 +401,6 @@ jordan-wright/email 就是一个使用的比较多的用来处理邮件发送的
     </div>
   </div>
 </article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/viper/">使用 Viper 处理项目配置
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-05-03 12:05:47 &#43;0800 CST。">
-    2020-05-03
-  </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">go三方库使用</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置。
-配置优先级 viper 可以从环境变量，配置文件等地方读取配置，甚至可以手动的在运行时设置值，那么 viper 读取配置的优先级是什么呢？根据官网，viper 读取的值得优先级如下
- 通过 Set 设置的值 从命令行选项读取的值 环境变量的值 配置文件的值 key/value store 默认值  快速上手 一个使用 viper 的基本示例如下，基本上完成一个应用也就使用这些功能
-1#...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/viper/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
 </div><div class="row table-responsive mb-3">
     <ul class="pagination pagination-default">
       <li class="page-item disabled">
@@ -455,7 +455,8 @@ jordan-wright/email 就是一个使用的比较多的用来处理邮件发送的
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
             使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
-            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a></div>
+            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="Go Redis源码分析">
+            Go Redis源码分析<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
@@ -480,7 +481,7 @@ jordan-wright/email 就是一个使用的比较多的用来处理邮件发送的
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">28</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">29</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
