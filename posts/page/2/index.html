@@ -189,6 +189,26 @@
   </div>
 </nav><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/go/gorm-clause/">Gorm源码阅读 - 2.Clause
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2022-02-02 18:05:41 &#43;0800 CST。">
+    2022-02-02
+  </span><span class="post-reading-time">
+    4 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>承上 在基础流程篇中我们层多次提到 Clause 的概念，本片就让我们详细分析下 Clause 究竟是什么
+从基础流程篇中我们可以知道 Clause 就是一个 sql 子句，我们调用 gorm 提供的链式api的过程，就是不断的添加子句，最后当调用 Finisher 方法的时候，将所有的子句构建成一个完整的 sql，然后执行。举个简单的例子，当我们调用db.Where(&#34;a = ?&#34;, 1)这个方法的时候，就是用这些参数去生成了一个clause.Where的Clause对象，不同的Clause对象（比如Where、Limit…）可能会有不同的参数，但他们都会实现Build方法。去根据自己需要的参数构建出真实的sql片段，比如上面的例...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/gorm-clause/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
       <a href="https://wangtingkui.space/posts/go/gorm-base/">Gorm源码阅读 - 1.基础流程
 </a>
     </h2>
@@ -272,28 +292,6 @@ Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要�
     </div>
   </div>
 </article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/editorconfig/">Editorconfig
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-07-20 14:01:14 &#43;0800 CST。">
-    2020-07-20
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge post-taxonomy">EditorConfig</a></span>
-</div>
-<div class="post-summary">
-      <p>现如今，各种开发工具百花齐放，每个开发者都会有自己最中意的一款编辑器，但是各种编辑器的配置方式不同，当我们切换编辑器的时候，又需要针对新的编辑器进行配置，以保证代码格式的相同。那么有没有什么方式可以让我们在不同的编辑器之间随意切换而不用考虑配置带来的成本呢？那就是 EditorConfig
-官方网站 https://editorconfig.org/ 原理 EditorConfig 的运作原理是设计了一套标准的配置文件，然后在各种编辑器中开发对应的插件，插件解析配置文件，从而保证不同编辑器的配置相同
-现在几乎大部分编辑器都内置了 EditorConfig 的支持，不需要额外的安装插件
-配置文件 EditorConfig 的配置文件是...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/editorconfig/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
 </div><div class="row table-responsive mb-3">
     <ul class="pagination pagination-default">
       <li class="page-item">
@@ -365,7 +363,7 @@ Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要�
         <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
             工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go标准库使用和源码分析">
             go标准库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go三方库使用和源码分析">
-            go三方库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">6</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go三方库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">7</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
             go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
             php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
             性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
@@ -378,7 +376,7 @@ Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要�
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">31</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">32</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">

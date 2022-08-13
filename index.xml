@@ -5,7 +5,16 @@
     <link>https://wangtingkui.space/</link>
     <description>Recent content on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 17 Apr 2022 22:28:42 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 13 Aug 2022 16:21:30 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mapstructure 库的使用和分析</title>
+      <link>https://wangtingkui.space/posts/go/mapstructure/</link>
+      <pubDate>Sat, 13 Aug 2022 16:21:30 +0800</pubDate>
+      
+      <guid>https://wangtingkui.space/posts/go/mapstructure/</guid>
+      <description>使用viper的时候看到了这个库，觉得在项目中还是有很多使用场景的，所以拿来说一说 mapsturcture 干什么用的 根据其官网 的说明，mapstructure是用</description>
+    </item>
+    
     <item>
       <title>Redis Go源码分析之pipeline</title>
       <link>https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8Bpipeline/</link>
