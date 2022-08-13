@@ -186,219 +186,114 @@
 <div class="col-lg-8">
   <div class="container"><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/hugo-custom-your-domain/">使用hugo搭建个人网站（八）- 自定义你的站点域名
+      <a href="https://wangtingkui.space/posts/go/unit-testing/">在go中使用单元测试
 </a>
     </h2>
   </div>
   <div class="card-body">
     <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-07 16:35:07 &#43;0800 CST。">
-    2019-12-07
+  <span class="post-date" title="创建于 2020-05-17 11:22:21 &#43;0800 CST。">
+    2020-05-17
+  </span><span class="post-reading-time">
+    4 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>单测能够极大的提升rd的回归效率（也能极大的提升开发效率），go内置了完整的单测支持
+单测基本规则  单元测试文件必须以_test.go结尾 单元测试文件名前面的部分最好和要被测试的方法所在的文件名保持一致 单元测试函数名称必须要以TestXxxx的格式书写，函数必须要接受一个testing.T类型的指针，不能有返回值 单元测试函数名最好能和被测试的函数保持对应，比如要测试的方法是Add，那么单测函数的名字最好是TestAdd，如果被测试的方法在同一个包下的多个结构体中都有，那么单测函数的名字可以是Test结构体名字_方法名，比如TestMyStruct_Add  一个demo 包文件结构
+1❯ tree 2. 3├──...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/unit-testing/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/tool/pakage/">推荐的atom插件
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2020-05-16 10:33:59 &#43;0800 CST。">
+    2020-05-16
   </span><span class="post-reading-time">
     1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge post-taxonomy">使用hugo搭建个人网站</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a><a href="https://wangtingkui.space/tags/github-pages/" class="badge post-taxonomy">github pages</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/atom/" class="badge post-taxonomy">atom</a></span>
 </div>
 <div class="post-summary">
-      <p>github pages 为我们提供的站点域名是 &lt;username&gt;.github.io，但是有好多同学其实购买了自己的域名，那能否将自己的域名绑定到 github pages 上呢，当然是可以的
-github pages 支持多种域名类型，不同的域名类型配置有细微的区别
-配置二级域名 二级域名就是类似baidu.com这种，.com是顶级域,baidu是二级域
-首先进入到 github 仓库的设置，找到 GitHub Pages 项下的 Custom domain 配置项 输入你的二级域名，点击保存，这个操作会自动在你的仓库代码的根目录下添加一个CNAME文件 最后还需要在你的dns服务提供商那里配置一下域名解析，对于二级域名来...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/hugo-custom-your-domain/">阅读更多</a></div>
+      <p>atom 是一个插件化的编辑器，使用合适的插件可以极大的提升我们的使用效率，下面推荐一些我自己常用的插件
+project-manager（atom项目管理） 可以将文件保存为项目，方便管理。我一般会配合 alfred workflow 方便的打开自己想要的项目
+sync-settings（atom配置同步） 如果使用多台电脑，必不能少的插件，将atom配置同步到 github gist 来达到同步目的
+pretty-json（json格式化） 开发中经常用的，可以对json字符串进行格式化
+ide-yaml（yaml格式化和校验） yaml格式化和校验
+pp-markdown（markdown预览） markdown...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/pakage/">阅读更多</a></div>
     </div>
   </div>
 </article>
 <article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/hugo-custom-your-url/">使用hugo搭建个人网站（六）- 定制你文章的url
+      <a href="https://wangtingkui.space/posts/tool/theme/">使用zsh主题
 </a>
     </h2>
   </div>
   <div class="card-body">
     <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-07 16:01:41 &#43;0800 CST。">
-    2019-12-07
+  <span class="post-date" title="创建于 2020-05-12 23:21:29 &#43;0800 CST。">
+    2020-05-12
   </span><span class="post-reading-time">
     1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge post-taxonomy">使用hugo搭建个人网站</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a></span>
 </div>
 <div class="post-summary">
-      <p>默认情况下，站点文章的 url 和我们 content 目录下的文件结构是一一对应的，比如有 content/posts/test.md 这篇文章，当我们发布之后，在站点访问的 url 就是 &lt;domian&gt;/posts/test，如果我们不想要这种形式，可以通过配置来改变默认的行为
-在使用配置之前，先让我们了解下 hugo 生成的 url 规则
-知道了每个段的含义，我们就可以使用hugo提供给我们的配置项来进行url的自定义
-可以在config.toml文件中的[permalinks]配置指定url的格式，比如
-1[permalinks] 2post = &#34;/:year/:month/:title/&#34;...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/hugo-custom-your-url/">阅读更多</a></div>
+      <p>和插件一样，zsh 为我们提供了丰富的主题和自定义主题的能力，主题也分为两大类，一类是内置主题，另一类是自定义的扩展主题
+内置主题 这个其实没啥好说的，在官网 浏览下，挑选自己喜欢的，然后再~/.zshrc中配置对应的主题名称就行
+以官网中下图这个主题为例，主题名字叫robbyrussell
+在配置文件中修改ZSH_THEME变量的值即可
+1# Set name of the theme to load --- if set to &#34;random&#34;, it will 2# load a random theme each time oh-my-zsh is loaded, in which case, 3# to know...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/theme/">阅读更多</a></div>
     </div>
   </div>
 </article>
 <article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/hugo-template-order/">使用hugo搭建个人网站（五）- 模板选择顺序
+      <a href="https://wangtingkui.space/posts/tool/plugin-recommend/">Alfred Workflow 推荐
 </a>
     </h2>
   </div>
   <div class="card-body">
     <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-07 15:55:24 &#43;0800 CST。">
-    2019-12-07
+  <span class="post-date" title="创建于 2020-05-10 11:44:38 &#43;0800 CST。">
+    2020-05-10
   </span><span class="post-reading-time">
     1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge post-taxonomy">使用hugo搭建个人网站</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/alfred/" class="badge post-taxonomy">alfred</a></span>
 </div>
 <div class="post-summary">
-      <p>加入我们要寻找content/posts下文章的模板
-当我们未在Front Matter中指定type和layout属性的时候，hugo默认的模板查找顺序是：
-1&lt;project_path&gt;/layouts/UNSPECIFIED/UNSPECIFIED.html 2&lt;project_path&gt;/layouts/posts/UNSPECIFIED.html 3&lt;project_path&gt;/layouts/UNSPECIFIED/single.html 4&lt;project_path&gt;/layouts/posts/single.html 5&lt;project_path&gt;/layouts/_default/single.html...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/hugo-template-order/">阅读更多</a></div>
+      <p>这篇文站整理下自己经常使用的 alfred workflow
+TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录
+alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目
+YoudaoTranslate 有道词典翻译
+</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/plugin-recommend/">阅读更多</a></div>
     </div>
   </div>
 </article>
 <article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/front-matter/">使用hugo搭建个人网站（四）- Front Matter 配置详解
+      <a href="https://wangtingkui.space/posts/tool/plugin/">使用zsh插件
 </a>
     </h2>
   </div>
   <div class="card-body">
     <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-07 15:31:44 &#43;0800 CST。">
-    2019-12-07
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge post-taxonomy">使用hugo搭建个人网站</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>Front Matter 是扉页，前页的意思，顾名思义，他出现在我们文章的最前面，用来设定一些文章的元信息，比如是否是草稿，写作时间，文章所属的标签等等。
-Front Matter 支持4种配置语言 YAML,JSON,TOML,ORG，可以通过Front Matter的前导符（包裹Front Matter的定界符）来告诉hugo我们使用的是什么配置语言，各种配置语言的前导符如下：
-   格式 定界符     toml 开始和结束行使用+++   yaml 开始和结束行使用---   json 使用一个json对象，对象后需要跟一个空白行   org a group of Org mode keywords in the...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/front-matter/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/ref-other-article/">使用hugo搭建个人网站（三）- 引用其他文章
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-02 14:12:07 &#43;0800 CST。">
-    2019-12-02
+  <span class="post-date" title="创建于 2020-05-10 11:02:41 &#43;0800 CST。">
+    2020-05-10
   </span><span class="post-reading-time">
     1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge post-taxonomy">使用hugo搭建个人网站</a><a href="https://wangtingkui.space/tags/hugo/" class="badge post-taxonomy">hugo</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/zsh/" class="badge post-taxonomy">zsh</a><a href="https://wangtingkui.space/tags/oh-my-zsh/" class="badge post-taxonomy">oh-my-zsh</a></span>
 </div>
 <div class="post-summary">
-      <p>我们可以在文章中引用自己的其他文章，hugo 帮我们实现了这种功能，只需要在文章中使用 {{&lt; ref &#34;posts/my_post.md&#34; &gt;}}或者{{&lt; relref &#34;posts/my_post.md&#34; &gt;}}即可，前者是相对链接，后者是绝对链接
-这个功能其实是 hugo 提供的 Shortcodes功能 一些例子：
-1{{&lt; ref &#34;blog/post.md&#34; &gt;}} =&gt; https://example.com/blog/post/ 2{{&lt; ref &#34;post.md#tldr&#34; &gt;}} =&gt; https://example.com/blog/post/#tldr:caffebad 3{{&lt; relref...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/ref-other-article/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/flag/">Go标准库（flag）- 源码分析
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-02 14:07:56 &#43;0800 CST。">
-    2019-12-02
-  </span><span class="post-reading-time">
-    5 分钟阅读
-  </span><span class="post-taxonomies"></span>
-</div>
-<div class="post-summary">
-      <p>flag 包是官方给我们提供的解析命令行选项的标准包，本文主要对其进行源码分析，如果仅仅只是需要学会简单的使用，可以参考Go标准库（flag）- 使用核心数据类型 首先还是来看下flag包中有哪些核心的类型，主要有两个接口和两个结构体
-interface:
-1// 抽象类型， 我们后续也是通过这个接口来扩展我们flag包支持的数据类型的 2type Value interface { 3String() string 4Set(string) error 5} 67type Getter interface { 8Value 9Get() interface{} 10} struct:
-1// 代表一个命令行选项 2type...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/flag/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8flag/">Go标准库（flag）- 使用
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-01 17:28:45 &#43;0800 CST。">
-    2019-12-01
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>本文所讨论内容基于的go版本：go1.13
-在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提供了解析命令行参数的功能
-要使用flag包，主要有3个步骤：定义flag、解析flag、使用flag
-定义flag flag包为我们提供了两种定义flag的方式，flag.Xxx()方式和flag.XxxVar()方式,其中Xxx可以是Int,String等类型，其中第一种会返回对应类型的指针，第二种则是将flag绑定到一个变量上
-1// 方式1 2var config *string = flag.String(&#34;config&#34;. &#34;path/to/config&#34;, &#34;配置文件路径&#34;)...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8flag/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/deploy-on-github-pages/">使用hugo搭建个人网站（二）- 使用 Github Pages 部署 Hugo 生成的静态站点
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-01 13:56:09 &#43;0800 CST。">
-    2019-12-01
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge post-taxonomy">使用hugo搭建个人网站</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>上一篇文章已经让我们简单了解了如何使用hugo，但是我们使用hugo的最终目的还是依靠它去搭建一个我们的个人站点，hugo能解决的是静态站点的生成，那么剩下的一个问题就是如何部署我们生成的站点，供其他人访问
-这篇文章帮助我们了解如何使用github pages的功能来部署我们的个人站点
-使用 github pages 的好处  完全免费 不需要自己购买服务器 不需要自己运行维护 可以方便的使用https  github pages 的限制 当然github pages本身还是有一些限制的
- 网站大小不能超过1GB 网站不能发布的过于频繁（每小时不超过10个版本） 每个月流量上限为1000GB  但是作为个人博客来说，这些限制几乎对我...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/deploy-on-github-pages/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8cobra/">Go Cli 应用框架cobra（一）- 简介
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-01 10:17:30 &#43;0800 CST。">
-    2019-12-01
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"></span>
-</div>
-<div class="post-summary">
-      <p>简介 cobra是一个go语言的命令行应用框架，他也是一个用来快速生成命令行应用的脚手架
-一些基础概念 cobra推崇的是The best applications will read like sentences when used. Users will know how to use the application because they will natively understand how to use it.也就是我们的应用应该做到自解释，让使用者可以很容易的上手，使用的时候就像是说话一样的简单和自然
-一个遵循这个理念的命令行应用模式是 APPNAME VERB NOUN -ADJECTIVE...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8cobra/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/base/unicode/">详解字符编码
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-09-22 15:45:32 &#43;0800 CST。">
-    2019-09-22
-  </span><span class="post-reading-time">
-    6 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/" class="badge post-taxonomy">字符编码</a><a href="https://wangtingkui.space/tags/unicode/" class="badge post-taxonomy">unicode</a><a href="https://wangtingkui.space/tags/utf-8/" class="badge post-taxonomy">utf-8</a></span>
-</div>
-<div class="post-summary">
-      <p>作为一名coder，日常的开发工作中不可避免的会接触一些字符编码相关的东西，之前只是模模糊糊的了解一点，没有明确的，系统性的认知。一个最典型的例子就是当我们的代码遇到了乱码，这时候其他人总会告诉我们要使用utf-8编码就可以解决问题，但这背后蕴含的原理，却一直没有探索过，所以就查了一些资料，将查到的资料提炼汇总，有了这篇文章
-字符编码的发展历程 我们知道，所有的数据在计算机中都是用二进制串来表示的，那么人类世界的语言符号，想要在计算机中表示，就必须有对应的转换规则，这就是字符编码
-ASCII 时期 上世纪60年代，美国制定了一套字符编码，它使用一个字节来对英语字符和二进制串进行映射，这就是ASCII码。
-ASCII一共规定了128个...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/base/unicode/">阅读更多</a></div>
+      <p>oh-my-zsh为我们提供了丰富的插件可以极高的提升我们的使用效率。插件分为两类，一类是内建插件， 这种插件不需要我们单独下载，只需要在.zshrc配置文件中开启即可使用，另外一类是自定义插件，我们需要将这类插件下载到~/.oh-my-zsh/custom/plugins目录中，然后再配置使用
+我们使用插件的时候要按需启用，启用过多的插件会导致shell的启动很慢
+内建插件 内建插件的使用很简单，只需要在~/.zshrc中开启即可
+1# .zshrc 文件 23# Which plugins would you like to load? 4# Standard plugins can be found in...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/plugin/">阅读更多</a></div>
     </div>
   </div>
 </article>
@@ -409,9 +304,6 @@ ASCII一共规定了128个...</p><div><a class="btn btn-sm btn-primary btn-read-
       </li>
       <li class="page-item">
         <a href="/page/4/" aria-label="Previous" class="page-link" role="button"><span aria-hidden="true">&laquo;</span></a>
-      </li>
-      <li class="page-item">
-        <a href="/page/2/" aria-label="Page 2" class="page-link" role="button">2</a>
       </li>
       <li class="page-item">
         <a href="/page/3/" aria-label="Page 3" class="page-link" role="button">3</a>
@@ -426,10 +318,13 @@ ASCII一共规定了128个...</p><div><a class="btn btn-sm btn-primary btn-read-
         <a href="/page/6/" aria-label="Page 6" class="page-link" role="button">6</a>
       </li>
       <li class="page-item">
+        <a href="/page/7/" aria-label="Page 7" class="page-link" role="button">7</a>
+      </li>
+      <li class="page-item">
         <a href="/page/6/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
       </li>
       <li class="page-item">
-        <a href="/page/6/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        <a href="/page/11/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
       </li>
     </ul></div>
 </div>
@@ -461,9 +356,7 @@ ASCII一共规定了128个...</p><div><a class="btn btn-sm btn-primary btn-read-
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
-            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
-            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="Go Redis源码分析">
-            Go Redis源码分析<span class="badge badge-sm text-white bg-accent ms-1">2</span></a></div>
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
@@ -473,10 +366,10 @@ ASCII一共规定了128个...</p><div><a class="btn btn-sm btn-primary btn-read-
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
-            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
-            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
-            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
-            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go标准库使用和源码分析">
+            go标准库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go三方库使用和源码分析">
+            go三方库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">6</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
             php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
             性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
@@ -488,16 +381,16 @@ ASCII一共规定了128个...</p><div><a class="btn btn-sm btn-primary btn-read-
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">30</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">31</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
-            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
-            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
             EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
             github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
             go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/nas/" class="badge rounded post-taxonomy" title="nas">
-            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/oh-my-zsh/" class="badge rounded post-taxonomy" title="oh-my-zsh">
+            oh-my-zsh<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section>
     
@@ -508,12 +401,9 @@ ASCII一共规定了128个...</p><div><a class="btn btn-sm btn-primary btn-read-
       <i class="fas fa-fw fa-2x fa-rss"></i>
     </a></nav>
 <div class="copyright mb-2">
-  Copyright © 2016-2022 Razon Yang. All Rights Reserved.
+  
 </div>
 
-<a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
-    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
-</a>
 </footer>
 <script src="https://wangtingkui.space/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.space/js/icons.min.b3391f89dcdef937e99a193c6de12584ac1d7613c16ae6ba852a096e1fd95108.js" integrity="sha256-szkfidze&#43;Tfpmhk8beElhKwddhPBaua6hSoJbh/ZUQg=" crossorigin="anonymous" defer></script>
 <script>

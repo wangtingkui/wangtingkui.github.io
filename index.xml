@@ -5,7 +5,6 @@
     <link>https://wangtingkui.space/</link>
     <description>Recent content on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
     <lastBuildDate>Sun, 17 Apr 2022 22:28:42 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Redis Go源码分析之pipeline</title>

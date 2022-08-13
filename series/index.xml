@@ -5,26 +5,7 @@
     <link>https://wangtingkui.space/series/</link>
     <description>Recent content in 专栏 on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>Copyright © 2016-{year} Razon Yang. All Rights Reserved.</copyright>
-    <lastBuildDate>Sun, 17 Apr 2022 22:28:42 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/series/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Go Redis源码分析</title>
-      <link>https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
-      <pubDate>Sun, 17 Apr 2022 22:28:42 +0800</pubDate>
-      
-      <guid>https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>gorm 源码阅读</title>
-      <link>https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</link>
-      <pubDate>Wed, 02 Feb 2022 22:05:41 +0800</pubDate>
-      
-      <guid>https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</guid>
-      <description></description>
-    </item>
-    
+    <lastBuildDate>Tue, 14 Apr 2020 15:50:45 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/series/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用hugo搭建个人网站</title>
       <link>https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</link>

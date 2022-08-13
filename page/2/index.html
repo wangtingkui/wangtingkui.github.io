@@ -186,220 +186,108 @@
 <div class="col-lg-8">
   <div class="container"><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/">Phpunit解决测试依赖
+      <a href="https://wangtingkui.space/posts/go/gorm-base/">Gorm源码阅读 - 1.基础流程
 </a>
     </h2>
   </div>
   <div class="card-body">
     <div class="post-meta">
-  <span class="post-date" title="创建于 2020-07-19 11:24:13 &#43;0800 CST。">
-    2020-07-19
+  <span class="post-date" title="创建于 2022-02-01 16:48:25 &#43;0800 CST。">
+    2022-02-01
   </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">php基础</a><a href="https://wangtingkui.space/tags/php/" class="badge post-taxonomy">php</a></span>
+    8 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-summary">
-      <p>介绍 在书写单测代码的过程中，我们要测试的代码段往往会依赖其他的模块，如果是简单的模块还好，但是如果遇到复杂的模块（比如依赖各种其他的组件，db、redis、api调用等等），被依赖模块的稳定程度会影响我们的单测。而且被依赖模块返回的不确定性也使得我们无法编写单测代码
-为了解决这类型问题，我们可以使用测试替身 ，本质其实就是对数据进行mock
-在 phpunit 中，使用测试替身有两种方式，一种是Stubs（桩件），另外一种是Mock Object（仿件对象）。这两个概念有啥区别呢？其实是测试重点不同：
- 桩件注重的是可以对我们被依赖的模块进行返回值的设置，让单测可以按照我们期望的路径运行，往往还需要在我们的单测代码中书写各种断言 ...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/php/phpunit%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E4%BE%9D%E8%B5%96/">阅读更多</a></div>
+      <p>gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然
+本篇文章主要是从宏观的角度看下使用 gorm 执行一条 sql 的整体流程，了解这个类库大概是怎么使用的，里面涉及的一些核心的对象是什么，方便我们日后针对某一组件进行剖析打好基础
+版本信息 1# go 版本 2go version go1.16.10 darwin/amd64 34# 类库版本 5gorm.io/driver/mysql v1.2.3 // indirect 6gorm.io/driver/sqlite v1.2.6 7gorm.io/gorm v1.22.5 一个最简单的使用demo...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/gorm-base/">阅读更多</a></div>
     </div>
   </div>
 </article>
 <article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/php/closure/">Php 中的匿名函数和 Closure
+      <a href="https://wangtingkui.space/posts/go/net-http/">源码阅读-Go(net/Http)
 </a>
     </h2>
   </div>
   <div class="card-body">
     <div class="post-meta">
-  <span class="post-date" title="创建于 2020-06-24 11:53:13 &#43;0800 CST。">
-    2020-06-24
+  <span class="post-date" title="创建于 2022-01-16 17:09:17 &#43;0800 CST。">
+    2022-01-16
+  </span><span class="post-reading-time">
+    5 分钟阅读
+  </span><span class="post-taxonomies"></span>
+</div>
+<div class="post-summary">
+      <p>写在前面 我们知道，使用 go 构建一个 http 服务是一件非常简单的事情，比如使用下面区区几行代码，就可以运行起一个 http server
+1package main 23import ( 4&#34;log&#34; 5&#34;net/http&#34; 6) 78func main() { 9http.HandleFunc(&#34;/&#34;, func(resp http.ResponseWriter, req *http.Request) { 10_, err := resp.Write([]byte(&#34;test http&#34;)) 11if err != nil { 12log.Println(err) 13} 14}) 15if err :=...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/net-http/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/go/sort/">Go 中 Sort 包的使用
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2020-10-14 14:42:29 &#43;0800 CST。">
+    2020-10-14
   </span><span class="post-reading-time">
     2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">php基础</a><a href="https://wangtingkui.space/tags/php/" class="badge post-taxonomy">php</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge post-taxonomy">go标准库使用和源码分析</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-summary">
-      <p>php 中匿名函数也叫做闭包函数，允许我们创建一个没有名称的函数，经常用作回调函数
-php 中的匿名函数是基于 Closure 这个类来实现的
-基本使用 通常会将匿名函数用作回调函数
-1array_filter([1,2,3], function ($item) { 2return $item % 2 == 0; 3}); 45// 也可以赋值给变量，供后续使用 6$func = function () { 7echo &#34;called&#34; . PHP_EOL; 8} 910$func(); 使用父作用域变量 接触过其他有闭包特性语言的同学，一定会知道闭包的一大特点是可以使用父作用域的变量，php中的必报同样可以，...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/php/closure/">阅读更多</a></div>
+      <p>排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序
+Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实现了 sort.Interface 接口，就可以调用 sort.Sort(data Interface) 进行排序操作了
+先来看下 sort.Interface 都定义了哪些方法：
+1type Interface interface { 2// Len is the number of elements in the collection. 3 // Len 为集合内元素的总数 4 Len() int 5// Less reports whether the element...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/sort/">阅读更多</a></div>
     </div>
   </div>
 </article>
 <article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/sync/">Go标准库（sync）- 使用
+      <a href="https://wangtingkui.space/posts/performance/flame/">使用火焰图分析性能瓶颈
 </a>
     </h2>
   </div>
   <div class="card-body">
     <div class="post-meta">
-  <span class="post-date" title="创建于 2020-06-19 15:32:25 &#43;0800 CST。">
-    2020-06-19
-  </span><span class="post-reading-time">
-    3 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>Go 的一大特点就是在语言级别实现了并发，一旦涉及并发，那么不可避免的就需要同步，来确保多个 goroutine 在访问共享资源的时候不会出现混乱的状况
-Go 中的 sync 包提供了常见的并发编程同步原语，我们接下来就看下各种同步的方式如何使用，以及不同的同步方式都适用于什么样的场景，从而能让我们在日常使用中可以有针对性的挑选
-sync.Mutex sync.Mutex 是使用最广泛的一种原语，它保证同一时刻，只有一个 goroutine 可以访问临界资源，也就是我们常说的互斥锁
-1m := &amp;sync.Mutex{} 2m.Lock() 3// 临界区 4m.Unlock() sync.RWMutex sync.RWMutex ...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/sync/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/context/">Go中Context的使用
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-06-07 15:33:50 &#43;0800 CST。">
-    2020-06-07
+  <span class="post-date" title="创建于 2020-07-20 15:45:48 &#43;0800 CST。">
+    2020-07-20
   </span><span class="post-reading-time">
     2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge post-taxonomy">性能调优</a><a href="https://wangtingkui.space/tags/%E7%81%AB%E7%84%B0%E5%9B%BE/" class="badge post-taxonomy">火焰图</a></span>
 </div>
 <div class="post-summary">
-      <p>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使用比较少
-使用 Context 本身是 context 包对外暴露的一个接口
-1type Context interface { 2Deadline() (deadline time.Time, ok bool) // 返回当前 Context 的截止日期 3 Done() &lt;-chan struct{} // 返回一个 channel，这个channel会在 Context 截止日期到了或者被取消之后关闭，多次调用Done会返回同一...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/context/">阅读更多</a></div>
+      <p>简介 火焰图 是用来分析 CPU 瓶颈的利器，它利用可交互 svg 图片可视化的展示了 CPU 的占用情况，可以帮助我们快速的定位优化方向。因为生成的图片非常像一团熊熊燃烧的火焰，所以起名为火焰图。
+使用火焰图的步骤 使用火焰图有两个步骤
+ 使用trace工具收集采样数据 使用火焰图生成工具将收集的采样数据生成火焰图  火焰图的类型 根据要分析的问题不同，火焰图有不同的类型，一般由以下五种，其中最常用的是 CPU（也就是常说的ON-CPU） 类型
+ CPU  Memory  Off-CPU  Hot/Cold  Differential   在 Linux 下使用火焰图进行 CPU 性能分析 收集采样信息 在 linux 下，一般使...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/performance/flame/">阅读更多</a></div>
     </div>
   </div>
 </article>
 <article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/mail/">使用 Jordan-Wright/Email 处理邮件发送
+      <a href="https://wangtingkui.space/posts/tool/editorconfig/">Editorconfig
 </a>
     </h2>
   </div>
   <div class="card-body">
     <div class="post-meta">
-  <span class="post-date" title="创建于 2020-06-07 14:49:31 &#43;0800 CST。">
-    2020-06-07
-  </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">go三方库使用</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>在 go 官方的标准库中，提供了 net/smtp 库可以让我们使用 smtp 协议来发送邮件，但是这个库使用起来不是很方便，而且官方也不再维护这个库，推荐我们使用功能更丰富的第三方库来处理邮件发送
-jordan-wright/email 就是一个使用的比较多的用来处理邮件发送的类库，它底层还是基于net/smtp实现的，但是提供了方便的调用方式供使用者使用
-安装 go get github.com/jordan-wright/email
-使用demo 1e := email.NewEmail() 2e.From = &#34;Jordan Wright &lt;test@gmail.com&gt;&#34; 3e.To =...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/mail/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/channel/">Go中channel的使用
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-06-01 18:46:47 &#43;0800 CST。">
-    2020-06-01
+  <span class="post-date" title="创建于 2020-07-20 14:01:14 &#43;0800 CST。">
+    2020-07-20
   </span><span class="post-reading-time">
     2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge post-taxonomy">EditorConfig</a></span>
 </div>
 <div class="post-summary">
-      <p>channel 类型 go 中 channel 类型分为两类：
- 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int)  不带缓冲区的 channel，写入和读取都会阻塞，在使用的时候必须有对应的写入 goroutine 和读取 goroutine，否则会造成死锁；带缓冲区的 channel，在缓冲区没满的时候会先将数据发到缓冲区，然后立即返回，如果缓冲区满了，会阻塞 goroutine
-为了操作上的安全和可读性，我们还可以限制 channel 的读写属性，默认 channel 都是可读可写的，可以使用 &lt;-chan 来...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/channel/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/net-fix-on-centos-7/">VMware Funsion 安装 Centos7 后配置 NAT 网络
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-05-31 08:40:51 &#43;0800 CST。">
-    2020-05-31
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/vmware/" class="badge post-taxonomy">vmware</a></span>
-</div>
-<div class="post-summary">
-      <p>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络
-一、确定网络信息 vmnet8是安装 vmware funsion 之后自动生成的一张虚拟网卡，NAT 模式使用的就是这张网卡
-进入vmnet8网卡配置目录 1&gt; cd /Library/Preferences/VMware Fusion/vmnet8 查看nat信息，记住nat网关信息，也就是ip和netmask字段 1&gt; cat nat.conf nat.conf 文件内容：
-1... # 省略文件其他部分 2[host] 34# NAT gateway address...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/net-fix-on-centos-7/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/plex/">群辉nas使用plex套件
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-05-24 10:48:57 &#43;0800 CST。">
-    2020-05-24
-  </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/nas/" class="badge post-taxonomy">nas</a></span>
-</div>
-<div class="post-summary">
-      <p>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、演员等），易用程度和美观程度都非常高
-本片文章主要写一下 plex 在群辉nas上的基本使用
-第一步 安装 Plex Media Server 套件
-第二步 根据步骤注册 plex 账号
-第三步 点击头像旁边的+号，添加资料库
-选择要添加的资料库类型，官网强烈建议不同的媒体类型分类存储，比如电影和电视剧最好分开，否则可能会造成元信息搜索不到或者不准确
-这里假设我们要创建电影类型的资料库
-选择文件夹的时候要注意，plex只能展示第一层文件夹，比如我们的电影存储路径在/a/b/c，plex只...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/plex/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/extension/">Vscode推荐扩展
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-05-23 23:04:47 &#43;0800 CST。">
-    2020-05-23
-  </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/vscode/" class="badge post-taxonomy">vscode</a></span>
-</div>
-<div class="post-summary">
-      <p>vscode 扩展推荐
-实用    扩展名 用途    推荐主题    主题名 备注     vscode-icons 可以替换vscode的默认图标   Atom One Dark Theme    Monokai Pro     </p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/extension/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/sync-setting/">Alfred配置同步
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-05-23 20:16:08 &#43;0800 CST。">
-    2020-05-23
-  </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/alfred/" class="badge post-taxonomy">alfred</a></span>
-</div>
-<div class="post-summary">
-      <p>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用
-alfred 的同步功能本质上是将配置打包成一个文件，然后借助第三方云同步功能同步这个文件，所以首先我们需要有个可用的云同步的文件夹，alfred 官方推荐的是 dropbox，但是由于一些不可描述的原因在国内使用起来不是很方便，所以这里我推荐另外一个软件，坚果云 具体坚果云的配置非常简单，这里就不赘述了，下面说一下怎么开启 alfred 的同步功能
-配置  打开偏好设置 找到Advanced配置项 右下角一个 Syncing 的配置 点击 Set preferences folder.. 按钮，选择我们的云同步文件夹就好了  </p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/sync-setting/">阅读更多</a></div>
+      <p>现如今，各种开发工具百花齐放，每个开发者都会有自己最中意的一款编辑器，但是各种编辑器的配置方式不同，当我们切换编辑器的时候，又需要针对新的编辑器进行配置，以保证代码格式的相同。那么有没有什么方式可以让我们在不同的编辑器之间随意切换而不用考虑配置带来的成本呢？那就是 EditorConfig
+官方网站 https://editorconfig.org/ 原理 EditorConfig 的运作原理是设计了一套标准的配置文件，然后在各种编辑器中开发对应的插件，插件解析配置文件，从而保证不同编辑器的配置相同
+现在几乎大部分编辑器都内置了 EditorConfig 的支持，不需要额外的安装插件
+配置文件 EditorConfig 的配置文件是...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/editorconfig/">阅读更多</a></div>
     </div>
   </div>
 </article>
@@ -430,7 +318,7 @@ alfred 的同步功能本质上是将配置打包成一个文件，然后借助�
         <a href="/page/3/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
       </li>
       <li class="page-item">
-        <a href="/page/6/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        <a href="/page/11/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
       </li>
     </ul></div>
 </div>
@@ -462,9 +350,7 @@ alfred 的同步功能本质上是将配置打包成一个文件，然后借助�
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
-            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
-            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="Go Redis源码分析">
-            Go Redis源码分析<span class="badge badge-sm text-white bg-accent ms-1">2</span></a></div>
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
@@ -474,10 +360,10 @@ alfred 的同步功能本质上是将配置打包成一个文件，然后借助�
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
-            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
-            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
-            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
-            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go标准库使用和源码分析">
+            go标准库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go三方库使用和源码分析">
+            go三方库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">6</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
             php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
             性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
@@ -489,16 +375,16 @@ alfred 的同步功能本质上是将配置打包成一个文件，然后借助�
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">30</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">31</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
-            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
-            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
             EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
             github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
             go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/nas/" class="badge rounded post-taxonomy" title="nas">
-            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/oh-my-zsh/" class="badge rounded post-taxonomy" title="oh-my-zsh">
+            oh-my-zsh<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section>
     
@@ -509,12 +395,9 @@ alfred 的同步功能本质上是将配置打包成一个文件，然后借助�
       <i class="fas fa-fw fa-2x fa-rss"></i>
     </a></nav>
 <div class="copyright mb-2">
-  Copyright © 2016-2022 Razon Yang. All Rights Reserved.
+  
 </div>
 
-<a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
-    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
-</a>
 </footer>
 <script src="https://wangtingkui.space/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.space/js/icons.min.b3391f89dcdef937e99a193c6de12584ac1d7613c16ae6ba852a096e1fd95108.js" integrity="sha256-szkfidze&#43;Tfpmhk8beElhKwddhPBaua6hSoJbh/ZUQg=" crossorigin="anonymous" defer></script>
 <script>

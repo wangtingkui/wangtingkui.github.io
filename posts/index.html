@@ -199,7 +199,7 @@
     2022-04-17
   </span><span class="post-reading-time">
     3 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge post-taxonomy">Go Redis源码分析</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-summary">
       <p>在批量redis操作的场景中，可以使用 pipeline 技术减少 rtt 时间对程序性能的影响，什么是pipeline可以参考这篇文章 本文将对 redis-go 中 pipeline 相关代码进行源码分析
@@ -219,7 +219,7 @@
     2022-04-17
   </span><span class="post-reading-time">
     6 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge post-taxonomy">Go Redis源码分析</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-summary">
       <p>go-redis/redis 这个包是当下go语言操作redis比较常用的包，它支持了几乎redis的所有命令；并且对应redis不同的架构（主从/Sential/Cluster…）也有良好的支持
@@ -262,7 +262,7 @@
     2022-02-02
   </span><span class="post-reading-time">
     4 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge post-taxonomy">gorm 源码阅读</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-summary">
       <p>前言 数据库读写分离是企业级项目的基本能力，成熟的数据库类库基本都内置支持了读写分离的能力，在 gorm 中，读写分离是通过插件的方式实现的
@@ -284,118 +284,11 @@ gorm 的插件能力 插件相关的简介可以参考官方文档 dbresolver go
     2022-02-02
   </span><span class="post-reading-time">
     4 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge post-taxonomy">gorm 源码阅读</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-summary">
       <p>承上 在基础流程篇中我们层多次提到 Clause 的概念，本片就让我们详细分析下 Clause 究竟是什么
 从基础流程篇中我们可以知道 Clause 就是一个 sql 子句，我们调用 gorm 提供的链式api的过程，就是不断的添加子句，最后当调用 Finisher 方法的时候，将所有的子句构建成一个完整的 sql，然后执行。举个简单的例子，当我们调用db.Where(&#34;a = ?&#34;, 1)这个方法的时候，就是用这些参数去生成了一个clause.Where的Clause对象，不同的Clause对象（比如Where、Limit…）可能会有不同的参数，但他们都会实现Build方法。去根据自己需要的参数构建出真实的sql片段，比如上面的例...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/gorm-clause/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/gorm-base/">Gorm源码阅读 - 1.基础流程
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2022-02-01 16:48:25 &#43;0800 CST。">
-    2022-02-01
-  </span><span class="post-reading-time">
-    8 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge post-taxonomy">gorm 源码阅读</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>gorm 是目前项目中使用较多的用来和数据库操作的类库，本系列文章的目的是对其源码进行研读和学习，达到知其然和知其所以然
-本篇文章主要是从宏观的角度看下使用 gorm 执行一条 sql 的整体流程，了解这个类库大概是怎么使用的，里面涉及的一些核心的对象是什么，方便我们日后针对某一组件进行剖析打好基础
-版本信息 1# go 版本 2go version go1.16.10 darwin/amd64 34# 类库版本 5gorm.io/driver/mysql v1.2.3 // indirect 6gorm.io/driver/sqlite v1.2.6 7gorm.io/gorm v1.22.5 一个最简单的使用demo...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/gorm-base/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/net-http/">源码阅读-Go(net/Http)
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2022-01-16 17:09:17 &#43;0800 CST。">
-    2022-01-16
-  </span><span class="post-reading-time">
-    5 分钟阅读
-  </span><span class="post-taxonomies"></span>
-</div>
-<div class="post-summary">
-      <p>写在前面 我们知道，使用 go 构建一个 http 服务是一件非常简单的事情，比如使用下面区区几行代码，就可以运行起一个 http server
-1package main 23import ( 4&#34;log&#34; 5&#34;net/http&#34; 6) 78func main() { 9http.HandleFunc(&#34;/&#34;, func(resp http.ResponseWriter, req *http.Request) { 10_, err := resp.Write([]byte(&#34;test http&#34;)) 11if err != nil { 12log.Println(err) 13} 14}) 15if err :=...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/net-http/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/sort/">Go 中 Sort 包的使用
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-10-14 14:42:29 &#43;0800 CST。">
-    2020-10-14
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序
-Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实现了 sort.Interface 接口，就可以调用 sort.Sort(data Interface) 进行排序操作了
-先来看下 sort.Interface 都定义了哪些方法：
-1type Interface interface { 2// Len is the number of elements in the collection. 3 // Len 为集合内元素的总数 4 Len() int 5// Less reports whether the element...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/sort/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/performance/flame/">使用火焰图分析性能瓶颈
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-07-20 15:45:48 &#43;0800 CST。">
-    2020-07-20
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge post-taxonomy">性能调优</a><a href="https://wangtingkui.space/tags/%E7%81%AB%E7%84%B0%E5%9B%BE/" class="badge post-taxonomy">火焰图</a></span>
-</div>
-<div class="post-summary">
-      <p>简介 火焰图 是用来分析 CPU 瓶颈的利器，它利用可交互 svg 图片可视化的展示了 CPU 的占用情况，可以帮助我们快速的定位优化方向。因为生成的图片非常像一团熊熊燃烧的火焰，所以起名为火焰图。
-使用火焰图的步骤 使用火焰图有两个步骤
- 使用trace工具收集采样数据 使用火焰图生成工具将收集的采样数据生成火焰图  火焰图的类型 根据要分析的问题不同，火焰图有不同的类型，一般由以下五种，其中最常用的是 CPU（也就是常说的ON-CPU） 类型
- CPU  Memory  Off-CPU  Hot/Cold  Differential   在 Linux 下使用火焰图进行 CPU 性能分析 收集采样信息 在 linux 下，一般使...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/performance/flame/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/editorconfig/">Editorconfig
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-07-20 14:01:14 &#43;0800 CST。">
-    2020-07-20
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge post-taxonomy">EditorConfig</a></span>
-</div>
-<div class="post-summary">
-      <p>现如今，各种开发工具百花齐放，每个开发者都会有自己最中意的一款编辑器，但是各种编辑器的配置方式不同，当我们切换编辑器的时候，又需要针对新的编辑器进行配置，以保证代码格式的相同。那么有没有什么方式可以让我们在不同的编辑器之间随意切换而不用考虑配置带来的成本呢？那就是 EditorConfig
-官方网站 https://editorconfig.org/ 原理 EditorConfig 的运作原理是设计了一套标准的配置文件，然后在各种编辑器中开发对应的插件，插件解析配置文件，从而保证不同编辑器的配置相同
-现在几乎大部分编辑器都内置了 EditorConfig 的支持，不需要额外的安装插件
-配置文件 EditorConfig 的配置文件是...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/editorconfig/">阅读更多</a></div>
     </div>
   </div>
 </article>
@@ -426,7 +319,7 @@ Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要�
         <a href="/posts/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
       </li>
       <li class="page-item">
-        <a href="/posts/page/6/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        <a href="/posts/page/11/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
       </li>
     </ul></div>
 </div>
@@ -458,9 +351,7 @@ Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要�
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
-            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
-            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="Go Redis源码分析">
-            Go Redis源码分析<span class="badge badge-sm text-white bg-accent ms-1">2</span></a></div>
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
@@ -470,10 +361,10 @@ Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要�
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
-            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
-            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
-            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
-            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go标准库使用和源码分析">
+            go标准库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go三方库使用和源码分析">
+            go三方库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">6</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
             php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
             性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
@@ -485,16 +376,16 @@ Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要�
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">30</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">31</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
-            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
-            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
             EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
             github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
             go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/nas/" class="badge rounded post-taxonomy" title="nas">
-            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/oh-my-zsh/" class="badge rounded post-taxonomy" title="oh-my-zsh">
+            oh-my-zsh<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section>
     
@@ -505,12 +396,9 @@ Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要�
       <i class="fas fa-fw fa-2x fa-rss"></i>
     </a></nav>
 <div class="copyright mb-2">
-  Copyright © 2016-2022 Razon Yang. All Rights Reserved.
+  
 </div>
 
-<a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
-    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
-</a>
 </footer>
 <script src="https://wangtingkui.space/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.space/js/icons.min.b3391f89dcdef937e99a193c6de12584ac1d7613c16ae6ba852a096e1fd95108.js" integrity="sha256-szkfidze&#43;Tfpmhk8beElhKwddhPBaua6hSoJbh/ZUQg=" crossorigin="anonymous" defer></script>
 <script>

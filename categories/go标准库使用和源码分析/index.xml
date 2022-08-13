@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>go标准库使用和源码分析 on xiaok&#39;s blog</title>
+    <link>https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
+    <description>Recent content in go标准库使用和源码分析 on xiaok&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 14 Oct 2020 14:42:29 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go 中 sort 包的使用</title>
+      <link>https://wangtingkui.space/posts/go/sort/</link>
+      <pubDate>Wed, 14 Oct 2020 14:42:29 +0800</pubDate>
+      
+      <guid>https://wangtingkui.space/posts/go/sort/</guid>
+      <description>排序是日常开发工作中最常见的需求之一，本片文章我们来看下 Go 中如何对数据进行排序 Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（sync）- 使用</title>
+      <link>https://wangtingkui.space/posts/go/sync/</link>
+      <pubDate>Fri, 19 Jun 2020 15:32:25 +0800</pubDate>
+      
+      <guid>https://wangtingkui.space/posts/go/sync/</guid>
+      <description>Go 的一大特点就是在语言级别实现了并发，一旦涉及并发，那么不可避免的就需要同步，来确保多个 goroutine 在访问共享资源的时候不会出现混乱的状况 Go 中的 sync 包提</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（time）- 使用</title>
+      <link>https://wangtingkui.space/posts/go/time/</link>
+      <pubDate>Sun, 12 Apr 2020 23:31:09 +0800</pubDate>
+      
+      <guid>https://wangtingkui.space/posts/go/time/</guid>
+      <description>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面： 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（log）- 使用</title>
+      <link>https://wangtingkui.space/posts/go/log/</link>
+      <pubDate>Sun, 29 Mar 2020 17:51:54 +0800</pubDate>
+      
+      <guid>https://wangtingkui.space/posts/go/log/</guid>
+      <description>log 标准包实现了一个简单的日志功能，本片文章主要写下 log 标准包的基本使用 实例化 logger 进行日志记录 首先看一个最简单的 demo： 1package main 23import ( 4&amp;#34;log&amp;#34; 5&amp;#34;os&amp;#34; 6) 78func main() { 9logger :=</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（net/http）- 使用</title>
+      <link>https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8net-http/</link>
+      <pubDate>Sun, 22 Dec 2019 11:48:21 +0800</pubDate>
+      
+      <guid>https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8net-http/</guid>
+      <description>net/http 包为我们提供了对 http 协议的处理，包含了客户端和服务端两大部分的实现 版本 go1.12 主要结构体 几乎任何语言中的http包都是围绕客户端，服务端，请求和响</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（net/url）- 使用</title>
+      <link>https://wangtingkui.space/posts/go/net-url/</link>
+      <pubDate>Sat, 21 Dec 2019 22:21:40 +0800</pubDate>
+      
+      <guid>https://wangtingkui.space/posts/go/net-url/</guid>
+      <description>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（path/filepath）- 使用</title>
+      <link>https://wangtingkui.space/posts/go/path-filepath/</link>
+      <pubDate>Sun, 15 Dec 2019 14:35:43 +0800</pubDate>
+      
+      <guid>https://wangtingkui.space/posts/go/path-filepath/</guid>
+      <description>简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示 而且要注意</description>
+    </item>
+    
+    <item>
+      <title>Go标准库（flag）- 使用</title>
+      <link>https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8flag/</link>
+      <pubDate>Sun, 01 Dec 2019 17:28:45 +0800</pubDate>
+      
+      <guid>https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8flag/</guid>
+      <description>本文所讨论内容基于的go版本：go1.13 在我们编写命令行程序的时候，解析命令行的参数是非常常见的一种需求，Go标准库中的flag包为我们提</description>
+    </item>
+    
+  </channel>
+</rss>

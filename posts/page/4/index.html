@@ -189,225 +189,111 @@
   </div>
 </nav><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/php/php-multi-version/">Php多版本管理
+      <a href="https://wangtingkui.space/posts/go/channel/">Go中channel的使用
 </a>
     </h2>
   </div>
   <div class="card-body">
     <div class="post-meta">
-  <span class="post-date" title="创建于 2020-01-14 19:11:11 &#43;0800 CST。">
-    2020-01-14
-  </span><span class="post-reading-time">
-    3 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">php基础</a><a href="https://wangtingkui.space/tags/php/" class="badge post-taxonomy">php</a></span>
-</div>
-<div class="post-summary">
-      <p>本篇文章是写一下我怎么进行php的多版本管理，利用的是phpbrew这个工具
- phpbrew github 地址   phpbrew安装过程 第一步 首先需要下载 phpbrew 的二进制文件
-1# 下载执行文件 2curl -L -O https://github.com/phpbrew/phpbrew/releases/latest/download/phpbrew.phar 34# 添加执行权限 5chmod +x phpbrew.phar 67# Move the file to some directory within your $PATH 8sudo mv phpbrew.phar...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/php/php-multi-version/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/go-file-operation/">Go进行文件操作
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-01-05 15:33:50 &#43;0800 CST。">
-    2020-01-05
+  <span class="post-date" title="创建于 2020-06-01 18:46:47 &#43;0800 CST。">
+    2020-06-01
   </span><span class="post-reading-time">
     2 分钟阅读
   </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-summary">
-      <p>go 的 os 包提供了与基础的与操作系统无关的文件操作，包括创建、删除、读写等。同时为了更便捷的操作和性能上的提升，go在 io/ioutil 、bufio 等包中也提供了一些常用的方法供开发者使用
-本文只列出了一些常用的方法，更多的操作可以参考：https://colobu.com/2016/10/12/go-file-operations
-使用 os 包进行文件操作  打开文件
- 1package main 23import ( 4&#34;os&#34; 5) 67func main() { 89var ( 10file *os.File 11err error 12) 1314// 以只读方式打开一个文件 15	file, err =...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/go-file-operation/">阅读更多</a></div>
+      <p>channel 类型 go 中 channel 类型分为两类：
+ 带缓冲区的channel，定义方式如：ch := make(chan int, 2) 不带缓冲区的channel，定义方式如：ch := make(chan int)  不带缓冲区的 channel，写入和读取都会阻塞，在使用的时候必须有对应的写入 goroutine 和读取 goroutine，否则会造成死锁；带缓冲区的 channel，在缓冲区没满的时候会先将数据发到缓冲区，然后立即返回，如果缓冲区满了，会阻塞 goroutine
+为了操作上的安全和可读性，我们还可以限制 channel 的读写属性，默认 channel 都是可读可写的，可以使用 &lt;-chan 来...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/channel/">阅读更多</a></div>
     </div>
   </div>
 </article>
 <article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8net-http/">Go标准库（net/Http）- 使用
+      <a href="https://wangtingkui.space/posts/tool/net-fix-on-centos-7/">VMware Funsion 安装 Centos7 后配置 NAT 网络
 </a>
     </h2>
   </div>
   <div class="card-body">
     <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-22 11:48:21 &#43;0800 CST。">
-    2019-12-22
+  <span class="post-date" title="创建于 2020-05-31 08:40:51 &#43;0800 CST。">
+    2020-05-31
   </span><span class="post-reading-time">
     2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/vmware/" class="badge post-taxonomy">vmware</a></span>
 </div>
 <div class="post-summary">
-      <p>net/http 包为我们提供了对 http 协议的处理，包含了客户端和服务端两大部分的实现
-版本  go1.12  主要结构体 几乎任何语言中的http包都是围绕客户端，服务端，请求和响应这4个对象展开的，go 也不例外。本篇主要是讲解包的使用，所以还是通过例子来说明
-客户端 快速入门 http 客户端基本的使用流程：
- 构造请求 构造客户端 使用客户端发送请求获取响应 使用响应  下面用一个最简单的例子来展示下上面的流程：
-1func main() { 23// 创建一个请求 4	req, err := http.NewRequest(&#34;GET&#34;, &#34;http://www.baidu.com&#34;, nil) 5if err !=...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8net-http/">阅读更多</a></div>
+      <p>在vmware funsion上安装完centos7后，不经过配置的话网络是无法使用的，下面看下如何给新安装的 centos7 虚拟机配置 NAT 模式的网络
+一、确定网络信息 vmnet8是安装 vmware funsion 之后自动生成的一张虚拟网卡，NAT 模式使用的就是这张网卡
+进入vmnet8网卡配置目录 1&gt; cd /Library/Preferences/VMware Fusion/vmnet8 查看nat信息，记住nat网关信息，也就是ip和netmask字段 1&gt; cat nat.conf nat.conf 文件内容：
+1... # 省略文件其他部分 2[host] 34# NAT gateway address...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/net-fix-on-centos-7/">阅读更多</a></div>
     </div>
   </div>
 </article>
 <article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/net-url/">Go标准库（net/Url）- 使用
+      <a href="https://wangtingkui.space/posts/tool/plex/">群辉nas使用plex套件
 </a>
     </h2>
   </div>
   <div class="card-body">
     <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-21 22:21:40 &#43;0800 CST。">
-    2019-12-21
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用
-url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：scheme://[userinfo@]host/path[?query][#fragment]，如果 scheme 之后不是以斜线开头的，那么结构被认为是 scheme:opaque[?query][#fragment]，也就是用户信息、域名和路径部分是不透明的，可以认为是被加密或者被编码过的
-环境  go1.12  包中的基本结构体 这个包中有3个比较基本的结构体：
- URL：代表一个被解析的url UserInfo：代表 url 中的用户信息部分 Values：...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/net-url/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/zap/">Go日志库zap使用
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-16 22:45:34 &#43;0800 CST。">
-    2019-12-16
-  </span><span class="post-reading-time">
-    6 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">go三方库使用</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>zap 是一个高性能的第三方日志类库，本篇主要说明下如何使用 zap
-版本 本篇基于的 zap 版本是 v1.10.0
-使用 基本概念 在使用 zap 之前，我们还是先了解下 zap 里面的一些基本概念，方便在我们阅读 demo 或者写代码的时候能大体的感知到我们在用什么，为什么这样用。为了不产生翻译上的歧义，书写过程中涉及到的概念会用 zap 源码中的命名
- Logger
- 这是 zap 暴露给我们类型，正常情况下，我们也是通过 Logger 这个结构体的方法来记录日志的
- Config
- 这个是 zap 提供给我们的 Logger 的配置，我们可以按需配置，然后通过 Build 方法来构造出我们想要的 Logger，是典型的的构...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/zap/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/path-filepath/">Go标准库（path/Filepath）- 使用
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-15 14:35:43 &#43;0800 CST。">
-    2019-12-15
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge post-taxonomy">Go标准库使用</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>简介 这个库主要是对文件路径的操作，是比较常用的一个库，由于这个库比较简单，没有什么需要过多的说明，大部分的方法会以实例的形式来展示
-而且要注意的是，path/filepath这个库并不会去判断你指定的路径存不存在，也不会去判断指定的路径是一个文件还是一个目录
-环境 1╰─$ go version 2go version go1.12.14 darwin/amd64 说明 获取指定路径的目录 filepath.Dir() 代码：
-1func main() { 2examples := []string{ 3&#34;/etc/a.txt&#34;, 4&#34;/etc/&#34;, 5&#34;/etc&#34;, 6&#34;etc/a.txt&#34;, 7&#34;etc&#34;, 8&#34;&#34;, 9}...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/path-filepath/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/go-multi-version-manage/">Go多版本管理
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-13 14:46:50 &#43;0800 CST。">
-    2019-12-13
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>之前写php，使用phpbrew来进行php的版本管理，非常方便，同样的，go也有自己的多版本管理工具gvm，这篇文章就记录下如何在mac下使用gvm进行go的多版本管理
-gvm的信息可以参考：https://github.com/moovweb/gvm
-环境信息  macOS 10.15.2 brew 2.1.16  安装gvm 1bash &lt; &lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) 下载好之后，需要修改下个人配置文件，使gvm相关命令生效，如果用的是bash，则修...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/go-multi-version-manage/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/cobra/">Go Cli 应用框架cobra（二）- 源码分析
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-11 14:57:37 &#43;0800 CST。">
-    2019-12-11
-  </span><span class="post-reading-time">
-    6 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a><a href="https://wangtingkui.space/tags/cobra/" class="badge post-taxonomy">cobra</a><a href="https://wangtingkui.space/tags/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge post-taxonomy">源码分析</a></span>
-</div>
-<div class="post-summary">
-      <p>上一篇文章中简单介绍了如何使用cobra框架，这篇文章让我们来看下cobra的源码，本文基于的cobra版本是v0.0.5
-首先需要了解的是，在cobra中，所有的命令会组成一个树的结构，必然有一个根命令，我们应用的每次执行，都是从这个根命令开始的，官方文档也说过，基于cobra的应用的main包中的代码是很简单的，几乎没有额外的操作，仅有的操作其实就是执行我们的根命令。所以自然而然的，我们的代码分析之旅也是从根命令的执行开始的。
-为了有个直观的感受，我简单生成了一个基于cobra的应用。这个应用有一个根命令和一个test1的子命令，项目结构如下：
-1╰─$ tree . 2. 3├── LICENSE 4├── cmd 5│...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/cobra/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/version/">Hugo源码分析（一）- Version
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-10 17:00:24 &#43;0800 CST。">
-    2019-12-10
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"></span>
-</div>
-<div class="post-summary">
-      <p>hugo 是一个静态网页生成器，关于它的使用就不再多说，可以参考之前写过的使用hugo搭建个人站点系列文章。本系列主要是分析下 hugo 的源码，看下其他人是如何实现一个大型的 cli 应用
-第一篇文章从 hugo version 命令出发，简单了解下 hugo 应用的整体流程和代码结构，为后续比较复杂的命令分析做准备
-本系列文章都是基于 hugo 0.57.2 版本叙述的
-命令简介 version 命令的作用数输出当前 hugo 的版本，基本上所有的 cli 应用都会有这样的命令
-一个 hugo version 的输出：
-1╰─$ hugo version 2Hugo Static Site Generator...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/version/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/hugo-categorize-your-artical/">使用hugo搭建个人网站（七）- 给你的文章分类
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-07 16:35:07 &#43;0800 CST。">
-    2019-12-07
+  <span class="post-date" title="创建于 2020-05-24 10:48:57 &#43;0800 CST。">
+    2020-05-24
   </span><span class="post-reading-time">
     1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge post-taxonomy">使用hugo搭建个人网站</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/nas/" class="badge post-taxonomy">nas</a></span>
 </div>
 <div class="post-summary">
-      <p>hugo 内置了强大且支持自定义的分类系统，比如标签、类别、系列等，可以通过配置开启这些分类系统
-在config.toml中配置：
-1[taxonomies] 2tag = &#34;tags&#34; 3category = &#34;categories&#34; 4seris = &#34;series&#34; 开启之后，只需要在文章的Front Matter对应的属性中，添加想要划分到的分类即可
-1--- 2title: &#34;php入门&#34; 3date: 2019-10-10 4tags: [&#34;php&#34;] 5categories: [&#34;php&#34;] 6series: [&#34;php入门系列&#34;] </p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/hugo-categorize-your-artical/">阅读更多</a></div>
+      <p>plex 是一个跨平台的家庭影音中心，基本上使用nas的小伙伴都会使用它来搭建自己的影音中心，他可以根据影片名称和年份信息自动拉取其他元信息（封面、演员等），易用程度和美观程度都非常高
+本片文章主要写一下 plex 在群辉nas上的基本使用
+第一步 安装 Plex Media Server 套件
+第二步 根据步骤注册 plex 账号
+第三步 点击头像旁边的+号，添加资料库
+选择要添加的资料库类型，官网强烈建议不同的媒体类型分类存储，比如电影和电视剧最好分开，否则可能会造成元信息搜索不到或者不准确
+这里假设我们要创建电影类型的资料库
+选择文件夹的时候要注意，plex只能展示第一层文件夹，比如我们的电影存储路径在/a/b/c，plex只...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/plex/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/tool/extension/">Vscode推荐扩展
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2020-05-23 23:04:47 &#43;0800 CST。">
+    2020-05-23
+  </span><span class="post-reading-time">
+    1 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/vscode/" class="badge post-taxonomy">vscode</a></span>
+</div>
+<div class="post-summary">
+      <p>vscode 扩展推荐
+实用    扩展名 用途    推荐主题    主题名 备注     vscode-icons 可以替换vscode的默认图标   Atom One Dark Theme    Monokai Pro     </p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/extension/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/tool/sync-setting/">Alfred配置同步
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2020-05-23 20:16:08 &#43;0800 CST。">
+    2020-05-23
+  </span><span class="post-reading-time">
+    1 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/alfred/" class="badge post-taxonomy">alfred</a></span>
+</div>
+<div class="post-summary">
+      <p>如果有多台电脑，可以使用 alfred 提供的配置同步功能来进行配置同步，以保证在多台电脑间的无缝使用
+alfred 的同步功能本质上是将配置打包成一个文件，然后借助第三方云同步功能同步这个文件，所以首先我们需要有个可用的云同步的文件夹，alfred 官方推荐的是 dropbox，但是由于一些不可描述的原因在国内使用起来不是很方便，所以这里我推荐另外一个软件，坚果云 具体坚果云的配置非常简单，这里就不赘述了，下面说一下怎么开启 alfred 的同步功能
+配置  打开偏好设置 找到Advanced配置项 右下角一个 Syncing 的配置 点击 Set preferences folder.. 按钮，选择我们的云同步文件夹就好了  </p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/sync-setting/">阅读更多</a></div>
     </div>
   </div>
 </article>
@@ -438,7 +324,7 @@ gvm的信息可以参考：https://github.com/moovweb/gvm
         <a href="/posts/page/5/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
       </li>
       <li class="page-item">
-        <a href="/posts/page/6/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        <a href="/posts/page/11/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
       </li>
     </ul></div>
 </div>
@@ -470,9 +356,7 @@ gvm的信息可以参考：https://github.com/moovweb/gvm
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
-            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/series/gorm-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="gorm 源码阅读">
-            gorm 源码阅读<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/series/go-redis%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="Go Redis源码分析">
-            Go Redis源码分析<span class="badge badge-sm text-white bg-accent ms-1">2</span></a></div>
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a></div>
       </div>
     </section><section class="categories-taxonomies row card component">
       <div class="card-header">
@@ -482,10 +366,10 @@ gvm的信息可以参考：https://github.com/moovweb/gvm
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
-            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="Go标准库使用">
-            Go标准库使用<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
-            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8/" class="badge rounded post-taxonomy" title="go三方库使用">
-            go三方库使用<span class="badge badge-sm text-white bg-accent ms-1">4</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go标准库使用和源码分析">
+            go标准库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go三方库使用和源码分析">
+            go三方库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">6</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
             php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
             性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
@@ -497,16 +381,16 @@ gvm的信息可以参考：https://github.com/moovweb/gvm
       </div>
       <div class="card-body">
         <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
-            go<span class="badge badge-sm text-white bg-accent ms-1">30</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            go<span class="badge badge-sm text-white bg-accent ms-1">31</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
             php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
             alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
             hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
-            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/cobra/" class="badge rounded post-taxonomy" title="cobra">
-            cobra<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
             EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
             github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
             go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/nas/" class="badge rounded post-taxonomy" title="nas">
-            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/oh-my-zsh/" class="badge rounded post-taxonomy" title="oh-my-zsh">
+            oh-my-zsh<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
       </div>
     </section>
     
@@ -517,12 +401,9 @@ gvm的信息可以参考：https://github.com/moovweb/gvm
       <i class="fas fa-fw fa-2x fa-rss"></i>
     </a></nav>
 <div class="copyright mb-2">
-  Copyright © 2016-2022 Razon Yang. All Rights Reserved.
+  
 </div>
 
-<a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
-    <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" width="114" height="51" />
-</a>
 </footer>
 <script src="https://wangtingkui.space/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.space/js/icons.min.b3391f89dcdef937e99a193c6de12584ac1d7613c16ae6ba852a096e1fd95108.js" integrity="sha256-szkfidze&#43;Tfpmhk8beElhKwddhPBaua6hSoJbh/ZUQg=" crossorigin="anonymous" defer></script>
 <script>
