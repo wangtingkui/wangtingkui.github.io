@@ -3,26 +3,26 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>使用 viper 处理项目配置 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.space/images/icons/icon-180x180.png" sizes="180x180">
+    <title>使用 pkg/errors 进行错误处理 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.space/images/icons/icon-180x180.png" sizes="180x180">
 <link rel="icon" href="https://wangtingkui.space/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="https://wangtingkui.space/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
 <link rel="icon" href="https://wangtingkui.space/images/icons/favicon.ico">
 <link rel="manifest" href="https://wangtingkui.space/manifest.json">
 <meta name="keywords" content="" />
-<meta name="description" content="viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置" /><meta itemprop="name" content="使用 viper 处理项目配置">
-<meta itemprop="description" content="viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置"><meta itemprop="datePublished" content="2020-05-03T12:05:47+08:00" />
-<meta itemprop="dateModified" content="2020-05-03T12:05:47+08:00" />
-<meta itemprop="wordCount" content="453">
-<meta itemprop="keywords" content="go," /><meta property="og:title" content="使用 viper 处理项目配置" />
-<meta property="og:description" content="viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置" />
+<meta name="description" content="当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两个" /><meta itemprop="name" content="使用 pkg/errors 进行错误处理">
+<meta itemprop="description" content="当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两个"><meta itemprop="datePublished" content="2020-04-28T16:53:09+08:00" />
+<meta itemprop="dateModified" content="2020-04-28T16:53:09+08:00" />
+<meta itemprop="wordCount" content="552">
+<meta itemprop="keywords" content="go," /><meta property="og:title" content="使用 pkg/errors 进行错误处理" />
+<meta property="og:description" content="当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两个" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://wangtingkui.space/posts/go/viper/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-05-03T12:05:47+08:00" />
-<meta property="article:modified_time" content="2020-05-03T12:05:47+08:00" />
+<meta property="og:url" content="https://wangtingkui.space/posts/go/pkg-errors/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-04-28T16:53:09+08:00" />
+<meta property="article:modified_time" content="2020-04-28T16:53:09+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="使用 viper 处理项目配置"/>
-<meta name="twitter:description" content="viper 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置"/>
+<meta name="twitter:title" content="使用 pkg/errors 进行错误处理"/>
+<meta name="twitter:description" content="当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两个"/>
 <link rel="stylesheet" href="https://wangtingkui.space/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.space/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
   <body><script>const items=["mode","palette"];items.forEach(function(e){const t=localStorage.getItem("hbs-"+e);t&&document.body.parentElement.setAttribute("data-"+e,t)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
   <div class="container">
@@ -40,11 +40,11 @@
   </div>
   <div class="offcanvas-body">
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
-      target="_blank" href="https://twitter.com/intent/tweet?title=%e4%bd%bf%e7%94%a8%20viper%20%e5%a4%84%e7%90%86%e9%a1%b9%e7%9b%ae%e9%85%8d%e7%bd%ae&url=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fviper%2f">
+      target="_blank" href="https://twitter.com/intent/tweet?title=%e4%bd%bf%e7%94%a8%20pkg%2ferrors%20%e8%bf%9b%e8%a1%8c%e9%94%99%e8%af%af%e5%a4%84%e7%90%86&url=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fpkg-errors%2f">
       <i class="fab fa-fw fa-twitter"></i> Twitter
     </a>
     <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
-      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fviper%2f">
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2fpkg-errors%2f">
       <i class="fab fa-fw fa-facebook-f"></i> Facebook
     </a>
   </div>
@@ -190,7 +190,7 @@
 <div class="col-lg-8">
   <div class="container"><nav class="row card component" aria-label="breadcrumb">
   <div class="card-body">
-    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.space/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.space/posts/">文章</a></li><li class="breadcrumb-item active">使用 Viper 处理项目配置</li></ol>
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.space/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.space/posts/">文章</a></li><li class="breadcrumb-item active">使用 Pkg/Errors 进行错误处理</li></ol>
   </div>
 </nav><div class="post-panel-wrapper">
   <div class="d-flex flex-column component rounded post-panel">
@@ -221,93 +221,89 @@
 </div>
 <article class="row card component mb-4 post">
   <div class="card-header ">
-    <h1 class="card-title post-title">使用 Viper 处理项目配置
+    <h1 class="card-title post-title">使用 Pkg/Errors 进行错误处理
 </h1>
   </div>
   <div class="card-body"><div class="post-meta">
-  <span class="post-date" title="创建于 2020-05-03 12:05:47 &#43;0800 CST。">
-    2020-05-03
+  <span class="post-date" title="创建于 2020-04-28 16:53:09 &#43;0800 CST。">
+    2020-04-28
   </span><span class="post-reading-time">
-    1 分钟阅读
+    2 分钟阅读
   </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge post-taxonomy">go三方库使用和源码分析</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
-<div class="post-content mb-3"><p><a href="https://github.com/spf13/viper" target="_blank" rel="noopener noreferrer">viper</a>
- 是一个 go 的配置解决方案，它支持多种多样的配置文件，也支持从配置系统读取配置，比如 etcd。它还可以监视配置文件的变动，实时的载入最新的配置。</p>
-<h3 id="配置优先级">配置优先级<a class="anchor ms-1" href="#配置优先级"><i class="fas fa-link"></i></a></h3>
-<p>viper 可以从环境变量，配置文件等地方读取配置，甚至可以手动的在运行时设置值，那么 viper 读取配置的优先级是什么呢？根据官网，viper 读取的值得优先级如下</p>
-<ul>
-<li>通过 <code>Set</code> 设置的值</li>
-<li>从命令行选项读取的值</li>
-<li>环境变量的值</li>
-<li>配置文件的值</li>
-<li>key/value store</li>
-<li>默认值</li>
-</ul>
-<h3 id="快速上手">快速上手<a class="anchor ms-1" href="#快速上手"><i class="fas fa-link"></i></a></h3>
-<p>一个使用 viper 的基本示例如下，基本上完成一个应用也就使用这些功能</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="c"># myconfig.yaml</span><span class="w">
-</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w"></span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">xiaok</span><span class="w">
-</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w"></span><span class="nt">age</span><span class="p">:</span><span class="w"> </span><span class="m">28</span><span class="w">
-</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="w"></span><span class="nt">sex</span><span class="p">:</span><span class="w"> </span><span class="l">male</span><span class="w">
-</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="w"></span><span class="nt">book</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="w">  </span>- <span class="l">php</span><span class="w">
-</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="w">  </span>- <span class="l">java</span><span class="w">
-</span></span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="w">  </span>- <span class="l">c</span><span class="w">
-</span></span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="w"></span><span class="nt">other</span><span class="p">:</span><span class="w"> </span><span class="l">other_value</span><span class="w">
-</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+<div class="post-content mb-3"><p>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">        <span class="k">return</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>然后层层传递，最终将错误传递到最上层，这里面存在着两个问题：</p>
+<ol>
+<li>没有错误发生时的上下文信息（或者叫堆栈信息）</li>
+<li>在层层的错误传递过程中，有可能已经将原始错误转化，丢失了最原始的 error</li>
+</ol>
+<p>当前，比较优雅的方式是使用 <code>github.com/pkg/errors</code> 这个包来进行错误处理，<a href="https://godoc.org/github.com/pkg/errors" target="_blank" rel="noopener noreferrer">官方文档</a>
+</p>
+<h3 id="quick-start">QUICK START<a class="anchor ms-1" href="#quick-start"><i class="fas fa-link"></i></a></h3>
+<p>一个基本的使用如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="nx">e</span> <span class="s">&#34;errors&#34;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="s">&#34;github.com/pkg/errors&#34;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nx">oldErr</span> <span class="o">:=</span> <span class="nx">e</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;我是底层error&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="c1">// 添加错误信息和堆栈信息，生成一个新的 error
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1"></span>	<span class="nx">wrappedErr</span> <span class="o">:=</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">Wrap</span><span class="p">(</span><span class="nx">oldErr</span><span class="p">,</span> <span class="s">&#34;我是封装error&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="c1">// 输出错误信息
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%v\n&#34;</span><span class="p">,</span> <span class="nx">wrappedErr</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">
+</span></span><span class="line"><span class="ln">19</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;===============================&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">
+</span></span><span class="line"><span class="ln">21</span><span class="cl">	<span class="c1">// 输出错误信息和堆栈信息
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%+v\n&#34;</span><span class="p">,</span> <span class="nx">wrappedErr</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">
+</span></span><span class="line"><span class="ln">24</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;===============================&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">
+</span></span><span class="line"><span class="ln">26</span><span class="cl">	<span class="c1">// 获取底层错误
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="c1"></span>	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">Cause</span><span class="p">(</span><span class="nx">wrappedErr</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">
+</span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>我们也可以使用<code>errors.WithMessage</code>和<code>errors.WithStack</code>单独添加错误信息和堆栈信息</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kn">import</span> <span class="p">(</span>
 </span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="s">&#34;fmt&#34;</span>
 </span></span><span class="line"><span class="ln"> 5</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="s">&#34;github.com/spf13/viper&#34;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="s">&#34;github.com/pkg/errors&#34;</span>
 </span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="p">)</span>
 </span></span><span class="line"><span class="ln"> 8</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">10</span><span class="cl">
-</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nx">viper</span><span class="p">.</span><span class="nf">AddConfigPath</span><span class="p">(</span><span class="s">&#34;.&#34;</span><span class="p">)</span>        <span class="c1">// viper 不会帮我们设置任何默认路径，我们需要至少添加一个寻找配置文件的路径
-</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c1"></span>	<span class="nx">viper</span><span class="p">.</span><span class="nf">SetConfigName</span><span class="p">(</span><span class="s">&#34;myconfig&#34;</span><span class="p">)</span> <span class="c1">// 设置配置文件名称
-</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"></span>	<span class="nx">viper</span><span class="p">.</span><span class="nf">SetConfigType</span><span class="p">(</span><span class="s">&#34;yaml&#34;</span><span class="p">)</span>     <span class="c1">// 如果配置文件没有后缀的话，这个值必须设置
-</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="ln">15</span><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">viper</span><span class="p">.</span><span class="nf">ReadInConfig</span><span class="p">()</span>
-</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">17</span><span class="cl">		<span class="nb">panic</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Read config file err: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">))</span>
-</span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="ln">19</span><span class="cl">
-</span></span><span class="line"><span class="ln">20</span><span class="cl">	<span class="c1">// 读取
-</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="c1"></span>	<span class="nx">name</span> <span class="o">:=</span> <span class="nx">viper</span><span class="p">.</span><span class="nf">GetString</span><span class="p">(</span><span class="s">&#34;name&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">22</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">23</span><span class="cl">	<span class="nx">age</span> <span class="o">:=</span> <span class="nx">viper</span><span class="p">.</span><span class="nf">GetInt</span><span class="p">(</span><span class="s">&#34;age&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">24</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">age</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">25</span><span class="cl">	<span class="nx">books</span> <span class="o">:=</span> <span class="nx">viper</span><span class="p">.</span><span class="nf">GetStringSlice</span><span class="p">(</span><span class="s">&#34;book&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">26</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">books</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">27</span><span class="cl">
-</span></span><span class="line"><span class="ln">28</span><span class="cl">	<span class="nx">viper</span><span class="p">.</span><span class="nf">SetDefault</span><span class="p">(</span><span class="s">&#34;test_default&#34;</span><span class="p">,</span> <span class="s">&#34;default_value&#34;</span><span class="p">)</span> <span class="c1">// 设置默认值
-</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="c1"></span>	<span class="nx">defaultv</span> <span class="o">:=</span> <span class="nx">viper</span><span class="p">.</span><span class="nf">GetString</span><span class="p">(</span><span class="s">&#34;test_default&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">30</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">defaultv</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">31</span><span class="cl">
-</span></span><span class="line"><span class="ln">32</span><span class="cl">	<span class="nx">viper</span><span class="p">.</span><span class="nf">RegisterAlias</span><span class="p">(</span><span class="s">&#34;alias_of_age&#34;</span><span class="p">,</span> <span class="s">&#34;age&#34;</span><span class="p">)</span> <span class="c1">// 设置配置key别名
-</span></span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">viper</span><span class="p">.</span><span class="nf">GetInt</span><span class="p">(</span><span class="s">&#34;alias_of_age&#34;</span><span class="p">))</span>
-</span></span><span class="line"><span class="ln">34</span><span class="cl">
-</span></span><span class="line"><span class="ln">35</span><span class="cl">	<span class="nx">viper</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="s">&#34;name&#34;</span><span class="p">,</span> <span class="s">&#34;wudixiaok&#34;</span><span class="p">)</span> <span class="c1">// 运行时设置配置值
-</span></span></span><span class="line"><span class="ln">36</span><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">viper</span><span class="p">.</span><span class="nf">GetString</span><span class="p">(</span><span class="s">&#34;name&#34;</span><span class="p">))</span>
-</span></span><span class="line"><span class="ln">37</span><span class="cl">
-</span></span><span class="line"><span class="ln">38</span><span class="cl">	<span class="c1">// 如果值得类型比较复杂，可以先读取出来，然后再断言
-</span></span></span><span class="line"><span class="ln">39</span><span class="cl"><span class="c1"></span>	<span class="nx">v</span> <span class="o">:=</span> <span class="nx">viper</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;other&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">40</span><span class="cl">	<span class="nx">realvalue</span> <span class="o">:=</span> <span class="nx">v</span><span class="p">.(</span><span class="kt">string</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">41</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">realvalue</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">42</span><span class="cl">
-</span></span><span class="line"><span class="ln">43</span><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># 输出
-</span></span><span class="line"><span class="ln">2</span><span class="cl">xiaok
-</span></span><span class="line"><span class="ln">3</span><span class="cl">28
-</span></span><span class="line"><span class="ln">4</span><span class="cl">[php java c]
-</span></span><span class="line"><span class="ln">5</span><span class="cl">default_value
-</span></span><span class="line"><span class="ln">6</span><span class="cl">28
-</span></span><span class="line"><span class="ln">7</span><span class="cl">wudixiaok
-</span></span><span class="line"><span class="ln">8</span><span class="cl">other_value
-</span></span></code></pre></div><h3 id="其他高级功能">其他高级功能<a class="anchor ms-1" href="#其他高级功能"><i class="fas fa-link"></i></a></h3>
-<p>viper 还支持各种其他的高级功能，如果想要了解，可以到<a href="https://github.com/spf13/viper" target="_blank" rel="noopener noreferrer">官网</a>
-去看看</p>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="kd">func</span> <span class="nf">func1</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="nx">e</span> <span class="o">:=</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;make a error by errors.New&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nx">e</span> <span class="p">=</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">WithMessage</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="s">&#34;add a message&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="nx">e</span> <span class="p">=</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">WithMessage</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="s">&#34;add another message&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="nx">e</span> <span class="p">=</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">WithStack</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%+v&#34;</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="nf">func1</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">
+</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">	<span class="nf">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="正常的使用方式">正常的使用方式<a class="anchor ms-1" href="#正常的使用方式"><i class="fas fa-link"></i></a></h3>
+<ol>
+<li>在错误的发生点使用<code>errors.New</code>生成错误，或者使用<code>errors.Wrap</code>封装错误，这时候会纪录堆栈信息，在之后就不需要在添加堆栈信息了</li>
+<li>如果需要对错误添加错误信息，使用<code>errors.WithMessage</code>方法</li>
+<li>顶层使用<code>errors.Cause</code>获取原始错误信息，使用<code>%+v</code>纪录整条链路的错误信息和堆栈信息</li>
+</ol>
 </div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content surface">
@@ -336,10 +332,10 @@
 </div></div>
   <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
   <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
-    <a href="https://wangtingkui.space/posts/go/pkg-errors/">使用 Pkg/Errors 进行错误处理
+    <a href="https://wangtingkui.space/posts/tool/shortcodes/">在hugo中使用shortcode
 </a>
   </div><div class="post-nav post-next">
-    <a href="https://wangtingkui.space/posts/tool/plugin/">使用zsh插件
+    <a href="https://wangtingkui.space/posts/go/viper/">使用 Viper 处理项目配置
 </a>
     <i class="fas fa-fw fa-chevron-right"></i>
   </div></div></div>
@@ -360,11 +356,6 @@
     </div>
     <div class="card-body">
       <ul class="post-list"><li>
-          <a href="https://wangtingkui.space/posts/go/pkg-errors/">使用 Pkg/Errors 进行错误处理
-</a>
-          <span class="float-end post-date">2020-04-28
-</span>
-        </li><li>
           <a href="https://wangtingkui.space/posts/go/time/">Go标准库（time）- 使用
 </a>
           <span class="float-end post-date">2020-04-12
@@ -383,6 +374,11 @@
           <a href="https://wangtingkui.space/posts/go/%E4%BD%BF%E7%94%A8net-http/">Go标准库（net/Http）- 使用
 </a>
           <span class="float-end post-date">2019-12-22
+</span>
+        </li><li>
+          <a href="https://wangtingkui.space/posts/go/net-url/">Go标准库（net/Url）
+</a>
+          <span class="float-end post-date">2019-12-21
 </span>
         </li></ul>
     </div>
@@ -425,9 +421,8 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#配置优先级">配置优先级</a></li>
-        <li><a href="#快速上手">快速上手</a></li>
-        <li><a href="#其他高级功能">其他高级功能</a></li>
+        <li><a href="#quick-start">QUICK START</a></li>
+        <li><a href="#正常的使用方式">正常的使用方式</a></li>
       </ul>
     </li>
   </ul>

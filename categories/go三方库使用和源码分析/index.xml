@@ -35,10 +35,10 @@
     
     <item>
       <title>使用 pkg/errors 进行错误处理</title>
-      <link>https://wangtingkui.space/posts/go/errors/</link>
+      <link>https://wangtingkui.space/posts/go/pkg-errors/</link>
       <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
       
-      <guid>https://wangtingkui.space/posts/go/errors/</guid>
+      <guid>https://wangtingkui.space/posts/go/pkg-errors/</guid>
       <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两个</description>
     </item>
     

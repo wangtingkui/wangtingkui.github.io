@@ -253,7 +253,7 @@
 </article>
 <article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/errors/">使用 Pkg/Errors 进行错误处理
+      <a href="https://wangtingkui.space/posts/go/pkg-errors/">使用 Pkg/Errors 进行错误处理
 </a>
     </h2>
   </div>
@@ -269,7 +269,7 @@
       <p>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下：
 1if err != nil { 2return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两个问题：
  没有错误发生时的上下文信息（或者叫堆栈信息） 在层层的错误传递过程中，有可能已经将原始错误转化，丢失了最原始的 error  当前，比较优雅的方式是使用 github.com/pkg/errors 这个包来进行错误处理，官方文档 QUICK START 一个基本的使用如下：
-1package main 23import ( 4e &#34;errors&#34; 5&#34;fmt&#34; 67&#34;github.com/pkg/errors&#34; 8) 910func...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/errors/">阅读更多</a></div>
+1package main 23import ( 4e &#34;errors&#34; 5&#34;fmt&#34; 67&#34;github.com/pkg/errors&#34; 8) 910func...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/pkg-errors/">阅读更多</a></div>
     </div>
   </div>
 </article>

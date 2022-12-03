@@ -189,6 +189,27 @@
   </div>
 </nav><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/go/net-url/">Go标准库（net/Url）
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2019-12-21 22:21:40 &#43;0800 CST。">
+    2019-12-21
+  </span><span class="post-reading-time">
+    3 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge post-taxonomy">go标准库使用和源码分析</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用
+url 结构 想要使用好这个库，我们需要了解url的基本结构：标准结构：scheme://[userinfo@]host/path[?query][#fragment]，如果 scheme 之后不是以斜线开头的，那么结构被认为是 scheme:opaque[?query][#fragment]，也就是用户信息、域名和路径部分是不透明的，可以认为是被加密或者被编码过的
+更多详细的信息，可以参考百科 环境 1❯ go version 2go version go1.16.15 darwin/amd64 包中的基本结构体 先概览下包中导出的方法和结...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/net-url/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
       <a href="https://wangtingkui.space/posts/go/zap/">Go日志库zap使用
 </a>
     </h2>
@@ -274,30 +295,6 @@ gvm的信息可以参考：https://github.com/moovweb/gvm
 首先需要了解的是，在cobra中，所有的命令会组成一个树的结构，必然有一个根命令，我们应用的每次执行，都是从这个根命令开始的，官方文档也说过，基于cobra的应用的main包中的代码是很简单的，几乎没有额外的操作，仅有的操作其实就是执行我们的根命令。所以自然而然的，我们的代码分析之旅也是从根命令的执行开始的。
 为了有个直观的感受，我简单生成了一个基于cobra的应用。这个应用有一个根命令和一个test1的子命令，项目结构如下：
 1╰─$ tree . 2. 3├── LICENSE 4├── cmd 5│...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/cobra/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/version/">Hugo源码分析（一）- Version
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2019-12-10 17:00:24 &#43;0800 CST。">
-    2019-12-10
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"></span>
-</div>
-<div class="post-summary">
-      <p>hugo 是一个静态网页生成器，关于它的使用就不再多说，可以参考之前写过的使用hugo搭建个人站点系列文章。本系列主要是分析下 hugo 的源码，看下其他人是如何实现一个大型的 cli 应用
-第一篇文章从 hugo version 命令出发，简单了解下 hugo 应用的整体流程和代码结构，为后续比较复杂的命令分析做准备
-本系列文章都是基于 hugo 0.57.2 版本叙述的
-命令简介 version 命令的作用数输出当前 hugo 的版本，基本上所有的 cli 应用都会有这样的命令
-一个 hugo version 的输出：
-1╰─$ hugo version 2Hugo Static Site Generator...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/version/">阅读更多</a></div>
     </div>
   </div>
 </article>

@@ -186,6 +186,28 @@
 <div class="col-lg-8">
   <div class="container"><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/go/gorm-read-write-split/">Gorm源码阅读 - 3.读写分离
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2022-02-02 22:05:41 &#43;0800 CST。">
+    2022-02-02
+  </span><span class="post-reading-time">
+    4 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>前言 数据库读写分离是企业级项目的基本能力，成熟的数据库类库基本都内置支持了读写分离的能力，在 gorm 中，读写分离是通过插件的方式实现的
+gorm 的插件能力 插件相关的简介可以参考官方文档 dbresolver gorm 实现了读写分离能力的插件叫做 dbresolver ，他提供了多数据库的支持，其中就包括读写分离
+源码分析 注册插件 下面这段代码是粘贴自 resolver 项目 readme
+1import ( 2&#34;gorm.io/gorm&#34; 3&#34;gorm.io/plugin/dbresolver&#34; 4&#34;gorm.io/driver/mysql&#34; 5) 67DB, err :=...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/gorm-read-write-split/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
       <a href="https://wangtingkui.space/posts/go/gorm-clause/">Gorm源码阅读 - 2.Clause
 </a>
     </h2>
@@ -264,28 +286,6 @@
 Go 的标准库中提供了 sort 包来辅助我们进行排序工作，只要我们的数据实现了 sort.Interface 接口，就可以调用 sort.Sort(data Interface) 进行排序操作了
 先来看下 sort.Interface 都定义了哪些方法：
 1type Interface interface { 2// Len is the number of elements in the collection. 3 // Len 为集合内元素的总数 4 Len() int 5// Less reports whether the element...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/sort/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/performance/flame/">使用火焰图分析性能瓶颈
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-07-20 15:45:48 &#43;0800 CST。">
-    2020-07-20
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge post-taxonomy">性能调优</a><a href="https://wangtingkui.space/tags/%E7%81%AB%E7%84%B0%E5%9B%BE/" class="badge post-taxonomy">火焰图</a></span>
-</div>
-<div class="post-summary">
-      <p>简介 火焰图 是用来分析 CPU 瓶颈的利器，它利用可交互 svg 图片可视化的展示了 CPU 的占用情况，可以帮助我们快速的定位优化方向。因为生成的图片非常像一团熊熊燃烧的火焰，所以起名为火焰图。
-使用火焰图的步骤 使用火焰图有两个步骤
- 使用trace工具收集采样数据 使用火焰图生成工具将收集的采样数据生成火焰图  火焰图的类型 根据要分析的问题不同，火焰图有不同的类型，一般由以下五种，其中最常用的是 CPU（也就是常说的ON-CPU） 类型
- CPU  Memory  Off-CPU  Hot/Cold  Differential   在 Linux 下使用火焰图进行 CPU 性能分析 收集采样信息 在 linux 下，一般使...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/performance/flame/">阅读更多</a></div>
     </div>
   </div>
 </article>

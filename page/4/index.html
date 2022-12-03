@@ -186,6 +186,27 @@
 <div class="col-lg-8">
   <div class="container"><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/go/context/">Go中Context的使用
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2020-06-07 15:33:50 &#43;0800 CST。">
+    2020-06-07
+  </span><span class="post-reading-time">
+    2 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge post-taxonomy">go基础</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
+</div>
+<div class="post-summary">
+      <p>go 中的 Context 的主要作用是在多个 groutine 之间同步取消信号或者截止日期，用于减少对资源的消耗和长时间占用，避免资源浪费。也可以利用 Context 来进行值的传递，但是使用比较少
+使用 Context 本身是 context 包对外暴露的一个接口
+1type Context interface { 2Deadline() (deadline time.Time, ok bool) // 返回当前 Context 的截止日期 3 Done() &lt;-chan struct{} // 返回一个 channel，这个channel会在 Context 截止日期到了或者被取消之后关闭，多次调用Done会返回同一...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/context/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
       <a href="https://wangtingkui.space/posts/go/mail/">使用 Jordan-Wright/Email 处理邮件发送
 </a>
     </h2>
@@ -272,26 +293,6 @@ jordan-wright/email 就是一个使用的比较多的用来处理邮件发送的
 选择要添加的资料库类型，官网强烈建议不同的媒体类型分类存储，比如电影和电视剧最好分开，否则可能会造成元信息搜索不到或者不准确
 这里假设我们要创建电影类型的资料库
 选择文件夹的时候要注意，plex只能展示第一层文件夹，比如我们的电影存储路径在/a/b/c，plex只...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/plex/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/tool/extension/">Vscode推荐扩展
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-05-23 23:04:47 &#43;0800 CST。">
-    2020-05-23
-  </span><span class="post-reading-time">
-    1 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/vscode/" class="badge post-taxonomy">vscode</a></span>
-</div>
-<div class="post-summary">
-      <p>vscode 扩展推荐
-实用    扩展名 用途    推荐主题    主题名 备注     vscode-icons 可以替换vscode的默认图标   Atom One Dark Theme    Monokai Pro     </p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/extension/">阅读更多</a></div>
     </div>
   </div>
 </article>

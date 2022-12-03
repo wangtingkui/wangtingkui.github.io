@@ -1,0 +1,687 @@
+<!doctype html><html lang="zh-cn" data-palette="blue"
+  >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>记一次fmt.Printf的问题 - xiaok&#39;s blog</title><link rel="apple-touch-icon" href="https://wangtingkui.space/images/icons/icon-180x180.png" sizes="180x180">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/icon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="https://wangtingkui.space/images/icons/favicon.ico">
+<link rel="manifest" href="https://wangtingkui.space/manifest.json">
+<meta name="keywords" content="" />
+<meta name="description" content="背景 前几天碰到了一个特殊的问题，线上一个路径拼接的异常，大概是下面这个样子 路径 /path/xxx?id= 需要拼接一个id的参数，原先的使用方式是 fmt.Sprintf(&quot;/path/xxx?id=%s&quot;, struct{ Id string }{Id: &quot;123&quot;}.Id), 一切运转" /><meta itemprop="name" content="记一次fmt.Printf的问题">
+<meta itemprop="description" content="背景 前几天碰到了一个特殊的问题，线上一个路径拼接的异常，大概是下面这个样子 路径 /path/xxx?id= 需要拼接一个id的参数，原先的使用方式是 fmt.Sprintf(&quot;/path/xxx?id=%s&quot;, struct{ Id string }{Id: &quot;123&quot;}.Id), 一切运转"><meta itemprop="datePublished" content="2022-12-03T17:19:21+08:00" />
+<meta itemprop="dateModified" content="2022-12-03T17:19:21+08:00" />
+<meta itemprop="wordCount" content="1434">
+<meta itemprop="keywords" content="," /><meta property="og:title" content="记一次fmt.Printf的问题" />
+<meta property="og:description" content="背景 前几天碰到了一个特殊的问题，线上一个路径拼接的异常，大概是下面这个样子 路径 /path/xxx?id= 需要拼接一个id的参数，原先的使用方式是 fmt.Sprintf(&quot;/path/xxx?id=%s&quot;, struct{ Id string }{Id: &quot;123&quot;}.Id), 一切运转" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wangtingkui.space/posts/go/%E8%AE%B0%E4%B8%80%E6%AC%A1fmt.printf%E7%9A%84%E9%97%AE%E9%A2%98/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-12-03T17:19:21+08:00" />
+<meta property="article:modified_time" content="2022-12-03T17:19:21+08:00" />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="记一次fmt.Printf的问题"/>
+<meta name="twitter:description" content="背景 前几天碰到了一个特殊的问题，线上一个路径拼接的异常，大概是下面这个样子 路径 /path/xxx?id= 需要拼接一个id的参数，原先的使用方式是 fmt.Sprintf(&quot;/path/xxx?id=%s&quot;, struct{ Id string }{Id: &quot;123&quot;}.Id), 一切运转"/>
+<link rel="stylesheet" href="https://wangtingkui.space/css/main.min.b7a6eda8d46e39a549f182cf72a9ff4f4c1d4d82c31ecc3ede0b7f4d5b26f32b.css" integrity="sha256-t6btqNRuOaVJ8YLPcqn/T0wdTYLDHsw&#43;3gt/TVsm8ys=" crossorigin="anonymous"><link rel="stylesheet" href="https://wangtingkui.space/css/viewer.min.3d228794bcedbbfa0412beb8fbc1ec6973202945e42af7004f742a4d7bd620ab.css" integrity="sha256-PSKHlLztu/oEEr64&#43;8HsaXMgKUXkKvcAT3QqTXvWIKs=" crossorigin="anonymous"></head>
+  <body><script>const items=["mode","palette"];items.forEach(function(e){const t=localStorage.getItem("hbs-"+e);t&&document.body.parentElement.setAttribute("data-"+e,t)})</script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button><a class="navbar-brand flex-grow-1 flex-lg-grow-0 text-center text-lg-start mx-auto me-lg-3" href="https://wangtingkui.space">xiaok&#39;s blog
+    </a>
+    <div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">Share</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body">
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
+      target="_blank" href="https://twitter.com/intent/tweet?title=%e8%ae%b0%e4%b8%80%e6%ac%a1fmt.Printf%e7%9a%84%e9%97%ae%e9%a2%98&url=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2f%25E8%25AE%25B0%25E4%25B8%2580%25E6%25AC%25A1fmt.printf%25E7%259A%2584%25E9%2597%25AE%25E9%25A2%2598%2f">
+      <i class="fab fa-fw fa-twitter"></i> Twitter
+    </a>
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwangtingkui.space%2fposts%2fgo%2f%25E8%25AE%25B0%25E4%25B8%2580%25E6%25AC%25A1fmt.printf%25E7%259A%2584%25E9%2597%25AE%25E9%25A2%2598%2f">
+      <i class="fab fa-fw fa-facebook-f"></i> Facebook
+    </a>
+  </div>
+</div>
+    <button class="navbar-settings" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
+  aria-controls="offcanvasSettings" aria-label="Toggle settings">
+  <i class="fas fa-ellipsis-v"></i>
+</button>
+
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettings">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">设置</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column"><section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-language"></i> 语言</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="dropdown">
+        <a class="btn btn-sm btn-outline-primary dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          简体中文
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"><li><a class="dropdown-item" href="https://wangtingkui.space/en/">English</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/fr/">Français</a></li><li><a class="dropdown-item" href="https://wangtingkui.space/zh-tw/">繁體中文</a></li></ul>
+      </div>
+    </div>
+  </form>
+</section>
+
+
+<section class="setting">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-adjust"></i> 模式</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="modeSwitcher">
+      </div>
+    </div>
+  </form>
+</section>
+
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> 字体大小</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> 配色</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <a id="btnPalette" class="btn btn-sm btn-outline-primary" role="button" aria-label="palettePicker">
+        <i class="fas fa-eye-dropper"></i>
+      </a>
+    </div>
+  </form>
+  <div class="mt-2 d-flex justify-content-between visually-hidden" id="palettePicker"><button type="button" id="palette-blue" aria-label="蓝色"
+        class="btn btn-sm w-100 palette" data-palette="blue">
+      </button><button type="button" id="palette-blue-gray" aria-label="蓝灰色"
+        class="btn btn-sm w-100 palette" data-palette="blue-gray">
+      </button><button type="button" id="palette-brown" aria-label="棕色"
+        class="btn btn-sm w-100 palette" data-palette="brown">
+      </button><button type="button" id="palette-cyan" aria-label="青色"
+        class="btn btn-sm w-100 palette" data-palette="cyan">
+      </button><button type="button" id="palette-green" aria-label="绿色"
+        class="btn btn-sm w-100 palette" data-palette="green">
+      </button><button type="button" id="palette-indigo" aria-label="靛青色"
+        class="btn btn-sm w-100 palette" data-palette="indigo">
+      </button><button type="button" id="palette-orange" aria-label="橙色"
+        class="btn btn-sm w-100 palette" data-palette="orange">
+      </button><button type="button" id="palette-pink" aria-label="粉色"
+        class="btn btn-sm w-100 palette" data-palette="pink">
+      </button><button type="button" id="palette-purple" aria-label="紫色"
+        class="btn btn-sm w-100 palette" data-palette="purple">
+      </button><button type="button" id="palette-red" aria-label="红色"
+        class="btn btn-sm w-100 palette" data-palette="red">
+      </button><button type="button" id="palette-teal" aria-label="蓝绿色"
+        class="btn btn-sm w-100 palette" data-palette="teal">
+      </button><button type="button" id="palette-yellow" aria-label="黄色"
+        class="btn btn-sm w-100 palette" data-palette="yellow">
+      </button></div>
+</section>
+<section class="setting actions d-flex justify-content-around mt-auto overflow-auto">
+  <a role="button" class="action action-go-back" href="javascript: window.history.back();">
+    <span class="action-icon"><i class="fas fa-2x fa-arrow-left"></i></span> 返回
+  </a>
+  <a role="button" class="action action-reload-page">
+    <span class="action-icon"><i class="fas fa-2x fa-redo-alt"></i></span> 刷新
+  </a>
+  <a role="button" class="action action-copy-url">
+    <span class="action-icon"><i class="fas fa-2x fa-link"></i></span> 复制链接
+  </a><a class="action action-social-share" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSocialShare"
+    aria-controls="offcanvasSocialShare" aria-label="Toggle social share">
+    <span class="action-icon"><i class="fas fa-2x fa-share-alt"></i></span> 分享
+  </a></section>
+
+</div>
+</div>
+
+    <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
+      <form class="search-bar my-1" action="https://wangtingkui.space/search">
+  <div class="input-group input-group-sm">
+    <span class="btn btn-search disabled position-absolute left-0"><i class="fas fa-fw fa-search"></i></span>
+    <input class="form-control rounded-pill" name="q" type="search" aria-label="Search">
+  </div>
+</form>
+      <ul class="navbar-nav ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.space/series/">
+            <i class="fas fa-fw fa-columns"></i>专栏
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.space/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>归档
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.space/categories/">
+            <i class="fas fa-fw fa-folder"></i>分类
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://wangtingkui.space/tags/">
+            <i class="fas fa-fw fa-tags"></i>标签
+          </a>
+        </li></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://wangtingkui.space/">主页</a></li><li class="breadcrumb-item"><a href="https://wangtingkui.space/posts/">文章</a></li><li class="breadcrumb-item active">记一次fmt.Printf的问题</li></ol>
+  </div>
+</nav><div class="post-panel-wrapper">
+  <div class="d-flex flex-column component rounded post-panel">
+    
+    <a class="action action-panel-toggler" role="button" title="Panel toggler">
+      <i class="fas fa-fw fa-chevron-circle-down"></i>
+    </a>
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button" title="Sidebar toggler">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+
+    
+
+    <a class="action btn-reward" role="button" data-bs-toggle="modal" data-bs-target="#rewardModal" title="打赏">
+  <i class="fas fa-fw fa-coffee"></i>
+</a>
+    <a class="action" href="#post-copyright" role="button" aria-label="Copyright" title="Copyright">
+  <i class="fas fa-fw fa-copyright"></i>
+</a>
+    <a class="action" href="#post-comments" role="button" aria-label="Comments" title="Comments">
+  <i class="fas fa-fw fa-comments"></i>
+</a>
+    <a class="action" href="#postTOC" aria-controls="Table of contents" role="button" title="Table of contents">
+  <i class="fas fa-fw fa-list-alt"></i>
+</a>
+    
+  </div>
+</div>
+<article class="row card component mb-4 post">
+  <div class="card-header ">
+    <h1 class="card-title post-title">记一次fmt.Printf的问题
+</h1>
+  </div>
+  <div class="card-body"><div class="post-meta">
+  <span class="post-date" title="创建于 2022-12-03 17:19:21 &#43;0800 CST。">
+    2022-12-03
+  </span><span class="post-reading-time">
+    3 分钟阅读
+  </span><span class="post-taxonomies"></span>
+</div>
+<div class="post-content mb-3"><h2 id="背景">背景<a class="anchor ms-1" href="#背景"><i class="fas fa-link"></i></a></h2>
+<p>前几天碰到了一个特殊的问题，线上一个路径拼接的异常，大概是下面这个样子</p>
+<p>路径 <code>/path/xxx?id=</code> 需要拼接一个id的参数，原先的使用方式是 <code>fmt.Sprintf(&quot;/path/xxx?id=%s&quot;, struct{ Id string }{Id: &quot;123&quot;}.Id)</code>, 一切运转正常，但是某次需求里同事将 Id 字段的类型换成了 int，结果导致输出的路径变成了 <code>/path/xxx?id=%!s(int=123)</code></p>
+<p>一时之间也感觉比较奇怪，所以读下源码分析下</p>
+<h2 id="分析">分析<a class="anchor ms-1" href="#分析"><i class="fas fa-link"></i></a></h2>
+<p>直接上源码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">  1</span><span class="cl">func Printf(format string, a ...interface{}) (n int, err error) {
+</span></span><span class="line"><span class="ln">  2</span><span class="cl">	return Fprintf(os.Stdout, format, a...)
+</span></span><span class="line"><span class="ln">  3</span><span class="cl">}
+</span></span><span class="line"><span class="ln">  4</span><span class="cl">
+</span></span><span class="line"><span class="ln">  5</span><span class="cl">func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) {
+</span></span><span class="line"><span class="ln">  6</span><span class="cl">    // 新建一个 printer
+</span></span><span class="line"><span class="ln">  7</span><span class="cl">	p := newPrinter()
+</span></span><span class="line"><span class="ln">  8</span><span class="cl">    // 执行输出，我们核心的分析路径
+</span></span><span class="line"><span class="ln">  9</span><span class="cl">	p.doPrintf(format, a)
+</span></span><span class="line"><span class="ln"> 10</span><span class="cl">    // 输出到 writer
+</span></span><span class="line"><span class="ln"> 11</span><span class="cl">	n, err = w.Write(p.buf)
+</span></span><span class="line"><span class="ln"> 12</span><span class="cl">    // 释放对象到对象池
+</span></span><span class="line"><span class="ln"> 13</span><span class="cl">	p.free()
+</span></span><span class="line"><span class="ln"> 14</span><span class="cl">	return
+</span></span><span class="line"><span class="ln"> 15</span><span class="cl">}
+</span></span><span class="line"><span class="ln"> 16</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 17</span><span class="cl">// 到这里我们需要先看下 p 的结构 `*pp` 类型
+</span></span><span class="line"><span class="ln"> 18</span><span class="cl">type pp struct {
+</span></span><span class="line"><span class="ln"> 19</span><span class="cl">	buf buffer
+</span></span><span class="line"><span class="ln"> 20</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 21</span><span class="cl">	// arg holds the current item, as an interface{}.
+</span></span><span class="line"><span class="ln"> 22</span><span class="cl">	arg interface{}
+</span></span><span class="line"><span class="ln"> 23</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 24</span><span class="cl">	// value is used instead of arg for reflect values.
+</span></span><span class="line"><span class="ln"> 25</span><span class="cl">	value reflect.Value
+</span></span><span class="line"><span class="ln"> 26</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 27</span><span class="cl">	// fmt is used to format basic items such as integers or strings.
+</span></span><span class="line"><span class="ln"> 28</span><span class="cl">	fmt fmt
+</span></span><span class="line"><span class="ln"> 29</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 30</span><span class="cl">	// reordered records whether the format string used argument reordering.
+</span></span><span class="line"><span class="ln"> 31</span><span class="cl">	reordered bool
+</span></span><span class="line"><span class="ln"> 32</span><span class="cl">	// goodArgNum records whether the most recent reordering directive was valid.
+</span></span><span class="line"><span class="ln"> 33</span><span class="cl">	goodArgNum bool
+</span></span><span class="line"><span class="ln"> 34</span><span class="cl">	// panicking is set by catchPanic to avoid infinite panic, recover, panic, ... recursion.
+</span></span><span class="line"><span class="ln"> 35</span><span class="cl">	panicking bool
+</span></span><span class="line"><span class="ln"> 36</span><span class="cl">	// erroring is set when printing an error string to guard against calling handleMethods.
+</span></span><span class="line"><span class="ln"> 37</span><span class="cl">	erroring bool
+</span></span><span class="line"><span class="ln"> 38</span><span class="cl">	// wrapErrs is set when the format string may contain a %w verb.
+</span></span><span class="line"><span class="ln"> 39</span><span class="cl">	wrapErrs bool
+</span></span><span class="line"><span class="ln"> 40</span><span class="cl">	// wrappedErr records the target of the %w verb.
+</span></span><span class="line"><span class="ln"> 41</span><span class="cl">	wrappedErr error
+</span></span><span class="line"><span class="ln"> 42</span><span class="cl">}
+</span></span><span class="line"><span class="ln"> 43</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 44</span><span class="cl">// 直接看 doPrintf 方法
+</span></span><span class="line"><span class="ln"> 45</span><span class="cl">func (p *pp) doPrintf(format string, a []interface{}) {
+</span></span><span class="line"><span class="ln"> 46</span><span class="cl">	end := len(format)
+</span></span><span class="line"><span class="ln"> 47</span><span class="cl">	argNum := 0         // we process one argument per non-trivial format
+</span></span><span class="line"><span class="ln"> 48</span><span class="cl">	afterIndex := false // previous item in format was an index like [3].
+</span></span><span class="line"><span class="ln"> 49</span><span class="cl">	p.reordered = false
+</span></span><span class="line"><span class="ln"> 50</span><span class="cl">formatLoop:
+</span></span><span class="line"><span class="ln"> 51</span><span class="cl">    // 逐字符遍历，每个循环去处理一个动词（%d， %v 这种）
+</span></span><span class="line"><span class="ln"> 52</span><span class="cl">	for i := 0; i &lt; end; {
+</span></span><span class="line"><span class="ln"> 53</span><span class="cl">		p.goodArgNum = true
+</span></span><span class="line"><span class="ln"> 54</span><span class="cl">        // 开始的字符位置
+</span></span><span class="line"><span class="ln"> 55</span><span class="cl">		lasti := i
+</span></span><span class="line"><span class="ln"> 56</span><span class="cl">        // 所有的格式化字符都是以 `%` 开始的，所以这里逐字符查找 `%`
+</span></span><span class="line"><span class="ln"> 57</span><span class="cl">		for i &lt; end &amp;&amp; format[i] != &#39;%&#39; {
+</span></span><span class="line"><span class="ln"> 58</span><span class="cl">			i++
+</span></span><span class="line"><span class="ln"> 59</span><span class="cl">		}
+</span></span><span class="line"><span class="ln"> 60</span><span class="cl">        // 跳出循环，要么是找到了 `%`，要么是到了原来字符串的结尾
+</span></span><span class="line"><span class="ln"> 61</span><span class="cl">        // 判断是不是有原始的字符串需要输出（也就是 `%` 前面的原始信息）
+</span></span><span class="line"><span class="ln"> 62</span><span class="cl">		if i &gt; lasti {
+</span></span><span class="line"><span class="ln"> 63</span><span class="cl">			p.buf.writeString(format[lasti:i])
+</span></span><span class="line"><span class="ln"> 64</span><span class="cl">		}
+</span></span><span class="line"><span class="ln"> 65</span><span class="cl">        // 如果是因为遍历完字符串跳出的，处理也就结束了
+</span></span><span class="line"><span class="ln"> 66</span><span class="cl">		if i &gt;= end {
+</span></span><span class="line"><span class="ln"> 67</span><span class="cl">			// done processing format string
+</span></span><span class="line"><span class="ln"> 68</span><span class="cl">			break
+</span></span><span class="line"><span class="ln"> 69</span><span class="cl">		}
+</span></span><span class="line"><span class="ln"> 70</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 71</span><span class="cl">		// Process one verb
+</span></span><span class="line"><span class="ln"> 72</span><span class="cl">        // 让 i 索引指向动词的位置
+</span></span><span class="line"><span class="ln"> 73</span><span class="cl">		i++
+</span></span><span class="line"><span class="ln"> 74</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 75</span><span class="cl">		// Do we have flags?
+</span></span><span class="line"><span class="ln"> 76</span><span class="cl">        // 初始化 flags，避免上个动词带来的影响
+</span></span><span class="line"><span class="ln"> 77</span><span class="cl">		p.fmt.clearflags()
+</span></span><span class="line"><span class="ln"> 78</span><span class="cl">	simpleFormat:
+</span></span><span class="line"><span class="ln"> 79</span><span class="cl">		for ; i &lt; end; i++ {
+</span></span><span class="line"><span class="ln"> 80</span><span class="cl">            // 把动词复制给 c
+</span></span><span class="line"><span class="ln"> 81</span><span class="cl">			c := format[i]
+</span></span><span class="line"><span class="ln"> 82</span><span class="cl">            // 判断是不是修饰符（比如 %+v，%0d 这种格式化方式，在真正的动词前面允许添加一些修饰行为）
+</span></span><span class="line"><span class="ln"> 83</span><span class="cl">			switch c {
+</span></span><span class="line"><span class="ln"> 84</span><span class="cl">			case &#39;#&#39;:
+</span></span><span class="line"><span class="ln"> 85</span><span class="cl">				p.fmt.sharp = true
+</span></span><span class="line"><span class="ln"> 86</span><span class="cl">			case &#39;0&#39;:
+</span></span><span class="line"><span class="ln"> 87</span><span class="cl">				p.fmt.zero = !p.fmt.minus // Only allow zero padding to the left.
+</span></span><span class="line"><span class="ln"> 88</span><span class="cl">			case &#39;+&#39;:
+</span></span><span class="line"><span class="ln"> 89</span><span class="cl">				p.fmt.plus = true
+</span></span><span class="line"><span class="ln"> 90</span><span class="cl">			case &#39;-&#39;:
+</span></span><span class="line"><span class="ln"> 91</span><span class="cl">				p.fmt.minus = true
+</span></span><span class="line"><span class="ln"> 92</span><span class="cl">				p.fmt.zero = false // Do not pad with zeros to the right.
+</span></span><span class="line"><span class="ln"> 93</span><span class="cl">			case &#39; &#39;:
+</span></span><span class="line"><span class="ln"> 94</span><span class="cl">				p.fmt.space = true
+</span></span><span class="line"><span class="ln"> 95</span><span class="cl">			default:
+</span></span><span class="line"><span class="ln"> 96</span><span class="cl">				// Fast path for common case of ascii lower case simple verbs
+</span></span><span class="line"><span class="ln"> 97</span><span class="cl">				// without precision or width or argument indices.
+</span></span><span class="line"><span class="ln"> 98</span><span class="cl">				if &#39;a&#39; &lt;= c &amp;&amp; c &lt;= &#39;z&#39; &amp;&amp; argNum &lt; len(a) {
+</span></span><span class="line"><span class="ln"> 99</span><span class="cl">					if c == &#39;v&#39; {
+</span></span><span class="line"><span class="ln">100</span><span class="cl">						// Go syntax
+</span></span><span class="line"><span class="ln">101</span><span class="cl">						p.fmt.sharpV = p.fmt.sharp
+</span></span><span class="line"><span class="ln">102</span><span class="cl">						p.fmt.sharp = false
+</span></span><span class="line"><span class="ln">103</span><span class="cl">						// Struct-field syntax
+</span></span><span class="line"><span class="ln">104</span><span class="cl">						p.fmt.plusV = p.fmt.plus
+</span></span><span class="line"><span class="ln">105</span><span class="cl">						p.fmt.plus = false
+</span></span><span class="line"><span class="ln">106</span><span class="cl">					}
+</span></span><span class="line"><span class="ln">107</span><span class="cl">                    // 开始处理字符
+</span></span><span class="line"><span class="ln">108</span><span class="cl">					p.printArg(a[argNum], rune(c))
+</span></span><span class="line"><span class="ln">109</span><span class="cl">					argNum++
+</span></span><span class="line"><span class="ln">110</span><span class="cl">					i++
+</span></span><span class="line"><span class="ln">111</span><span class="cl">					continue formatLoop
+</span></span><span class="line"><span class="ln">112</span><span class="cl">				}
+</span></span><span class="line"><span class="ln">113</span><span class="cl">				// Format is more complex than simple flags and a verb or is malformed.
+</span></span><span class="line"><span class="ln">114</span><span class="cl">                // 更复杂的格式化动词或者不正确的格式直接就往下走了，这里我们不关注
+</span></span><span class="line"><span class="ln">115</span><span class="cl">				break simpleFormat
+</span></span><span class="line"><span class="ln">116</span><span class="cl">			}
+</span></span><span class="line"><span class="ln">117</span><span class="cl">		}
+</span></span><span class="line"><span class="ln">118</span><span class="cl">
+</span></span><span class="line"><span class="ln">119</span><span class="cl">        ...
+</span></span><span class="line"><span class="ln">120</span><span class="cl">}
+</span></span><span class="line"><span class="ln">121</span><span class="cl">
+</span></span><span class="line"><span class="ln">122</span><span class="cl">func (p *pp) printArg(arg interface{}, verb rune) {
+</span></span><span class="line"><span class="ln">123</span><span class="cl">	p.arg = arg
+</span></span><span class="line"><span class="ln">124</span><span class="cl">	p.value = reflect.Value{}
+</span></span><span class="line"><span class="ln">125</span><span class="cl">
+</span></span><span class="line"><span class="ln">126</span><span class="cl">    // nil 的特殊处理
+</span></span><span class="line"><span class="ln">127</span><span class="cl">	if arg == nil {
+</span></span><span class="line"><span class="ln">128</span><span class="cl">		switch verb {
+</span></span><span class="line"><span class="ln">129</span><span class="cl">		case &#39;T&#39;, &#39;v&#39;:
+</span></span><span class="line"><span class="ln">130</span><span class="cl">			p.fmt.padString(nilAngleString)
+</span></span><span class="line"><span class="ln">131</span><span class="cl">		default:
+</span></span><span class="line"><span class="ln">132</span><span class="cl">			p.badVerb(verb)
+</span></span><span class="line"><span class="ln">133</span><span class="cl">		}
+</span></span><span class="line"><span class="ln">134</span><span class="cl">		return
+</span></span><span class="line"><span class="ln">135</span><span class="cl">	}
+</span></span><span class="line"><span class="ln">136</span><span class="cl">
+</span></span><span class="line"><span class="ln">137</span><span class="cl">    //  打印类型和打印指针的特殊处理
+</span></span><span class="line"><span class="ln">138</span><span class="cl">	// Special processing considerations.
+</span></span><span class="line"><span class="ln">139</span><span class="cl">	// %T (the value&#39;s type) and %p (its address) are special; we always do them first.
+</span></span><span class="line"><span class="ln">140</span><span class="cl">	switch verb {
+</span></span><span class="line"><span class="ln">141</span><span class="cl">	case &#39;T&#39;:
+</span></span><span class="line"><span class="ln">142</span><span class="cl">		p.fmt.fmtS(reflect.TypeOf(arg).String())
+</span></span><span class="line"><span class="ln">143</span><span class="cl">		return
+</span></span><span class="line"><span class="ln">144</span><span class="cl">	case &#39;p&#39;:
+</span></span><span class="line"><span class="ln">145</span><span class="cl">		p.fmtPointer(reflect.ValueOf(arg), &#39;p&#39;)
+</span></span><span class="line"><span class="ln">146</span><span class="cl">		return
+</span></span><span class="line"><span class="ln">147</span><span class="cl">	}
+</span></span><span class="line"><span class="ln">148</span><span class="cl">
+</span></span><span class="line"><span class="ln">149</span><span class="cl">	// Some types can be done without reflection.
+</span></span><span class="line"><span class="ln">150</span><span class="cl">    // 简单类型通过断言进行输出
+</span></span><span class="line"><span class="ln">151</span><span class="cl">	switch f := arg.(type) {
+</span></span><span class="line"><span class="ln">152</span><span class="cl">	case bool:
+</span></span><span class="line"><span class="ln">153</span><span class="cl">		p.fmtBool(f, verb)
+</span></span><span class="line"><span class="ln">154</span><span class="cl">	case float32:
+</span></span><span class="line"><span class="ln">155</span><span class="cl">		p.fmtFloat(float64(f), 32, verb)
+</span></span><span class="line"><span class="ln">156</span><span class="cl">	case float64:
+</span></span><span class="line"><span class="ln">157</span><span class="cl">		p.fmtFloat(f, 64, verb)
+</span></span><span class="line"><span class="ln">158</span><span class="cl">	case complex64:
+</span></span><span class="line"><span class="ln">159</span><span class="cl">		p.fmtComplex(complex128(f), 64, verb)
+</span></span><span class="line"><span class="ln">160</span><span class="cl">	case complex128:
+</span></span><span class="line"><span class="ln">161</span><span class="cl">		p.fmtComplex(f, 128, verb)
+</span></span><span class="line"><span class="ln">162</span><span class="cl">	case int:
+</span></span><span class="line"><span class="ln">163</span><span class="cl">        // 这里是我们的目标分支
+</span></span><span class="line"><span class="ln">164</span><span class="cl">		p.fmtInteger(uint64(f), signed, verb)
+</span></span><span class="line"><span class="ln">165</span><span class="cl">	case int8:
+</span></span><span class="line"><span class="ln">166</span><span class="cl">		p.fmtInteger(uint64(f), signed, verb)
+</span></span><span class="line"><span class="ln">167</span><span class="cl">	case int16:
+</span></span><span class="line"><span class="ln">168</span><span class="cl">		p.fmtInteger(uint64(f), signed, verb)
+</span></span><span class="line"><span class="ln">169</span><span class="cl">	case int32:
+</span></span><span class="line"><span class="ln">170</span><span class="cl">		p.fmtInteger(uint64(f), signed, verb)
+</span></span><span class="line"><span class="ln">171</span><span class="cl">	case int64:
+</span></span><span class="line"><span class="ln">172</span><span class="cl">		p.fmtInteger(uint64(f), signed, verb)
+</span></span><span class="line"><span class="ln">173</span><span class="cl">	case uint:
+</span></span><span class="line"><span class="ln">174</span><span class="cl">		p.fmtInteger(uint64(f), unsigned, verb)
+</span></span><span class="line"><span class="ln">175</span><span class="cl">	case uint8:
+</span></span><span class="line"><span class="ln">176</span><span class="cl">		p.fmtInteger(uint64(f), unsigned, verb)
+</span></span><span class="line"><span class="ln">177</span><span class="cl">	case uint16:
+</span></span><span class="line"><span class="ln">178</span><span class="cl">		p.fmtInteger(uint64(f), unsigned, verb)
+</span></span><span class="line"><span class="ln">179</span><span class="cl">	case uint32:
+</span></span><span class="line"><span class="ln">180</span><span class="cl">		p.fmtInteger(uint64(f), unsigned, verb)
+</span></span><span class="line"><span class="ln">181</span><span class="cl">	case uint64:
+</span></span><span class="line"><span class="ln">182</span><span class="cl">		p.fmtInteger(f, unsigned, verb)
+</span></span><span class="line"><span class="ln">183</span><span class="cl">	case uintptr:
+</span></span><span class="line"><span class="ln">184</span><span class="cl">		p.fmtInteger(uint64(f), unsigned, verb)
+</span></span><span class="line"><span class="ln">185</span><span class="cl">	case string:
+</span></span><span class="line"><span class="ln">186</span><span class="cl">		p.fmtString(f, verb)
+</span></span><span class="line"><span class="ln">187</span><span class="cl">	case []byte:
+</span></span><span class="line"><span class="ln">188</span><span class="cl">		p.fmtBytes(f, verb, &#34;[]byte&#34;)
+</span></span><span class="line"><span class="ln">189</span><span class="cl">	case reflect.Value:
+</span></span><span class="line"><span class="ln">190</span><span class="cl">		// Handle extractable values with special methods
+</span></span><span class="line"><span class="ln">191</span><span class="cl">		// since printValue does not handle them at depth 0.
+</span></span><span class="line"><span class="ln">192</span><span class="cl">		if f.IsValid() &amp;&amp; f.CanInterface() {
+</span></span><span class="line"><span class="ln">193</span><span class="cl">			p.arg = f.Interface()
+</span></span><span class="line"><span class="ln">194</span><span class="cl">			if p.handleMethods(verb) {
+</span></span><span class="line"><span class="ln">195</span><span class="cl">				return
+</span></span><span class="line"><span class="ln">196</span><span class="cl">			}
+</span></span><span class="line"><span class="ln">197</span><span class="cl">		}
+</span></span><span class="line"><span class="ln">198</span><span class="cl">		p.printValue(f, verb, 0)
+</span></span><span class="line"><span class="ln">199</span><span class="cl">	default:
+</span></span><span class="line"><span class="ln">200</span><span class="cl">		// If the type is not simple, it might have methods.
+</span></span><span class="line"><span class="ln">201</span><span class="cl">		if !p.handleMethods(verb) {
+</span></span><span class="line"><span class="ln">202</span><span class="cl">			// Need to use reflection, since the type had no
+</span></span><span class="line"><span class="ln">203</span><span class="cl">			// interface methods that could be used for formatting.
+</span></span><span class="line"><span class="ln">204</span><span class="cl">			p.printValue(reflect.ValueOf(f), verb, 0)
+</span></span><span class="line"><span class="ln">205</span><span class="cl">		}
+</span></span><span class="line"><span class="ln">206</span><span class="cl">	}
+</span></span><span class="line"><span class="ln">207</span><span class="cl">}
+</span></span><span class="line"><span class="ln">208</span><span class="cl">
+</span></span><span class="line"><span class="ln">209</span><span class="cl">// 可以看到，这个方法是认为使用者传递的动词是和实际参数的类型匹配的，如果不匹配，将走默认分支，使用 badVerb 处理
+</span></span><span class="line"><span class="ln">210</span><span class="cl">func (p *pp) fmtInteger(v uint64, isSigned bool, verb rune) {
+</span></span><span class="line"><span class="ln">211</span><span class="cl">	switch verb {
+</span></span><span class="line"><span class="ln">212</span><span class="cl">	case &#39;v&#39;:
+</span></span><span class="line"><span class="ln">213</span><span class="cl">		if p.fmt.sharpV &amp;&amp; !isSigned {
+</span></span><span class="line"><span class="ln">214</span><span class="cl">			p.fmt0x64(v, true)
+</span></span><span class="line"><span class="ln">215</span><span class="cl">		} else {
+</span></span><span class="line"><span class="ln">216</span><span class="cl">			p.fmt.fmtInteger(v, 10, isSigned, verb, ldigits)
+</span></span><span class="line"><span class="ln">217</span><span class="cl">		}
+</span></span><span class="line"><span class="ln">218</span><span class="cl">	case &#39;d&#39;:
+</span></span><span class="line"><span class="ln">219</span><span class="cl">		p.fmt.fmtInteger(v, 10, isSigned, verb, ldigits)
+</span></span><span class="line"><span class="ln">220</span><span class="cl">	case &#39;b&#39;:
+</span></span><span class="line"><span class="ln">221</span><span class="cl">		p.fmt.fmtInteger(v, 2, isSigned, verb, ldigits)
+</span></span><span class="line"><span class="ln">222</span><span class="cl">	case &#39;o&#39;, &#39;O&#39;:
+</span></span><span class="line"><span class="ln">223</span><span class="cl">		p.fmt.fmtInteger(v, 8, isSigned, verb, ldigits)
+</span></span><span class="line"><span class="ln">224</span><span class="cl">	case &#39;x&#39;:
+</span></span><span class="line"><span class="ln">225</span><span class="cl">		p.fmt.fmtInteger(v, 16, isSigned, verb, ldigits)
+</span></span><span class="line"><span class="ln">226</span><span class="cl">	case &#39;X&#39;:
+</span></span><span class="line"><span class="ln">227</span><span class="cl">		p.fmt.fmtInteger(v, 16, isSigned, verb, udigits)
+</span></span><span class="line"><span class="ln">228</span><span class="cl">	case &#39;c&#39;:
+</span></span><span class="line"><span class="ln">229</span><span class="cl">		p.fmt.fmtC(v)
+</span></span><span class="line"><span class="ln">230</span><span class="cl">	case &#39;q&#39;:
+</span></span><span class="line"><span class="ln">231</span><span class="cl">		p.fmt.fmtQc(v)
+</span></span><span class="line"><span class="ln">232</span><span class="cl">	case &#39;U&#39;:
+</span></span><span class="line"><span class="ln">233</span><span class="cl">		p.fmt.fmtUnicode(v)
+</span></span><span class="line"><span class="ln">234</span><span class="cl">	default:
+</span></span><span class="line"><span class="ln">235</span><span class="cl">		p.badVerb(verb)
+</span></span><span class="line"><span class="ln">236</span><span class="cl">	}
+</span></span><span class="line"><span class="ln">237</span><span class="cl">}
+</span></span><span class="line"><span class="ln">238</span><span class="cl">
+</span></span><span class="line"><span class="ln">239</span><span class="cl">// 这里输出的就是我们看到的异常情况了
+</span></span><span class="line"><span class="ln">240</span><span class="cl">func (p *pp) badVerb(verb rune) {
+</span></span><span class="line"><span class="ln">241</span><span class="cl">	p.erroring = true
+</span></span><span class="line"><span class="ln">242</span><span class="cl">	p.buf.writeString(percentBangString)
+</span></span><span class="line"><span class="ln">243</span><span class="cl">	p.buf.writeRune(verb)
+</span></span><span class="line"><span class="ln">244</span><span class="cl">	p.buf.writeByte(&#39;(&#39;)
+</span></span><span class="line"><span class="ln">245</span><span class="cl">	switch {
+</span></span><span class="line"><span class="ln">246</span><span class="cl">	case p.arg != nil:
+</span></span><span class="line"><span class="ln">247</span><span class="cl">		p.buf.writeString(reflect.TypeOf(p.arg).String())
+</span></span><span class="line"><span class="ln">248</span><span class="cl">		p.buf.writeByte(&#39;=&#39;)
+</span></span><span class="line"><span class="ln">249</span><span class="cl">		p.printArg(p.arg, &#39;v&#39;)
+</span></span><span class="line"><span class="ln">250</span><span class="cl">	case p.value.IsValid():
+</span></span><span class="line"><span class="ln">251</span><span class="cl">		p.buf.writeString(p.value.Type().String())
+</span></span><span class="line"><span class="ln">252</span><span class="cl">		p.buf.writeByte(&#39;=&#39;)
+</span></span><span class="line"><span class="ln">253</span><span class="cl">		p.printValue(p.value, &#39;v&#39;, 0)
+</span></span><span class="line"><span class="ln">254</span><span class="cl">	default:
+</span></span><span class="line"><span class="ln">255</span><span class="cl">		p.buf.writeString(nilAngleString)
+</span></span><span class="line"><span class="ln">256</span><span class="cl">	}
+</span></span><span class="line"><span class="ln">257</span><span class="cl">	p.buf.writeByte(&#39;)&#39;)
+</span></span><span class="line"><span class="ln">258</span><span class="cl">	p.erroring = false
+</span></span><span class="line"><span class="ln">259</span><span class="cl">}
+</span></span></code></pre></div><h2 id="总结">总结<a class="anchor ms-1" href="#总结"><i class="fas fa-link"></i></a></h2>
+<p>在 go 中，使用 <code>fmt</code> 包进行格式化输出的时候，go 的实现是倾向于动词和实际参数的类型是匹配的，如果实际使用的时候不匹配，那么会使用 badVerb 进行处理，往往输出的字符串不是我们期望的字符串</p>
+</div><div class="modal fade" id="rewardModal" tabindex="-1" aria-labelledby="rewardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content surface">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rewardModalLabel"><i class="fas fa-fw fa-coffee"></i>打赏</h5>
+        <a href="#" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary" aria-label="Close"><i class="fas fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist"><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link active" id="reward-alipay-tab" data-bs-toggle="tab" href="#reward-alipay" role="tab" aria-controls="reward-alipay" aria-selected="true">
+              <i class="fab fa-fw fa-alipay"></i>支付宝
+            </a>
+          </li><li class="nav-item text-nowrap" role="presentation">
+            <a class="nav-link" id="reward-wechat-tab" data-bs-toggle="tab" href="#reward-wechat" role="tab" aria-controls="reward-wechat" aria-selected="true">
+              <i class="fab fa-fw fa-weixin"></i>微信
+            </a>
+          </li></ul>
+        <div class="tab-content" id="rewardTabContent"><div class="tab-pane fade post-reward-content show active" id="reward-alipay" role="tabpanel" aria-labelledby="reward-alipay-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/alipay.jpeg" loading="lazy" />
+          </div><div class="tab-pane fade post-reward-content show" id="reward-wechat" role="tabpanel" aria-labelledby="reward-wechat-tab">
+            <img class="img-fluid post-reward-img" src="https://wangtingkui.space/images/reward/wechat.jpeg" loading="lazy" />
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+  <div class="card-footer"><div class="post-navs d-flex justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="https://wangtingkui.space/posts/go/mapstructure/">Mapstructure 库的使用和分析
+</a>
+  </div></div></div>
+</article><div class="post-copyright mb-3 row card component" id="post-copyright">
+    <div class="card-header">
+        <h2 class="card-title">版权</h2>
+    </div>
+    <div class="card-body"><a class="d-flex align-items-center flex-column" target="_blank" rel="license noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh">
+  <span><i class="fab fa-fw fa-2x fa-creative-commons"></i><i class="fab fa-fw fa-2x fa-creative-commons-by"></i><i class="fab fa-fw fa-2x fa-creative-commons-nc"></i><i class="fab fa-fw fa-2x fa-creative-commons-nd"></i></span>
+  CC BY-NC-ND 4.0 
+</a>
+
+
+    </div>
+</div><section class="related-posts row card component">
+    <div class="card-header">
+      <h2 class="card-title">相关文章</h2>
+    </div>
+    <div class="card-body">
+      <ul class="post-list"><li>
+          <a href="https://wangtingkui.space/posts/go/mapstructure/">Mapstructure 库的使用和分析
+</a>
+          <span class="float-end post-date">2022-08-13
+</span>
+        </li><li>
+          <a href="https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8Bpipeline/">Redis Go源码分析之pipeline
+</a>
+          <span class="float-end post-date">2022-04-17
+</span>
+        </li><li>
+          <a href="https://wangtingkui.space/posts/go/redis-go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Go Redis源码分析（一）
+</a>
+          <span class="float-end post-date">2022-04-17
+</span>
+        </li><li>
+          <a href="https://wangtingkui.space/posts/go/ants/">Ants源码阅读
+</a>
+          <span class="float-end post-date">2022-02-05
+</span>
+        </li><li>
+          <a href="https://wangtingkui.space/posts/go/gorm-read-write-split/">Gorm源码阅读 - 3.读写分离
+</a>
+          <span class="float-end post-date">2022-02-02
+</span>
+        </li></ul>
+    </div>
+  </section><div class="card component row post-comments" id="post-comments">
+  <div class="card-header">
+    <h2 class="card-title">评论</h2>
+  </div>
+  <div class="card-body"><script src="https://utteranc.es/client.js"
+  repo="razonyang/hugo-theme-bootstrap-comments"
+  issue-term="pathname"
+  label="comment"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script></div>
+</div></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container d-flex flex-column">
+    
+    <section class="card row text-center profile component">
+  <div class="card-body">
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="无敌小k" src="https://wangtingkui.space/images/avatar.jpeg" loading="lazy"
+   width="959" height="959"
+   />
+</div>
+    <div class="col-12 profile-meta"><div class="profile-name">无敌小k</div><div class="profile-bio">Gopher, PHPer.</div><div class="profile-about"><i class="fas fa-fw fa-user"></i><a target="_blank" rel="noopener noreferrer" href="https://domain.tld">关于我</a></div><nav class="social-links nav justify-content-center"><a class="nav-link social-link" href="mailto:wangtingkui_coder@163.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a><a class="nav-link social-link" target="_blank" href="https://github.com/wangtingkui" title="GitHub" rel="noopener noreferrer">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a></nav>
+</div>
+  </div>
+</section>
+  <div class="post-toc row mb-4 card component" id="postTOC">
+  <div class="card-header">
+    <h2 class="card-title">目录</h2>
+  </div>
+  <div class="card-body">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#分析">分析</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div><section class="series-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.space/series">专栏</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.space/series/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" class="badge rounded post-taxonomy" title="使用hugo搭建个人网站">
+            使用hugo搭建个人网站<span class="badge badge-sm text-white bg-accent ms-1">9</span></a></div>
+      </div>
+    </section><section class="categories-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.space/categories">分类</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge rounded post-taxonomy" title="工具">
+            工具<span class="badge badge-sm text-white bg-accent ms-1">9</span></a><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go标准库使用和源码分析">
+            go标准库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">8</span></a><a href="https://wangtingkui.space/categories/go%E4%B8%89%E6%96%B9%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge rounded post-taxonomy" title="go三方库使用和源码分析">
+            go三方库使用和源码分析<span class="badge badge-sm text-white bg-accent ms-1">7</span></a><a href="https://wangtingkui.space/categories/go%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="go基础">
+            go基础<span class="badge badge-sm text-white bg-accent ms-1">5</span></a><a href="https://wangtingkui.space/categories/php%E5%9F%BA%E7%A1%80/" class="badge rounded post-taxonomy" title="php基础">
+            php基础<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/categories/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" class="badge rounded post-taxonomy" title="性能调优">
+            性能调优<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section><section class="tags-taxonomies row card component">
+      <div class="card-header">
+        <h2 class="card-title">
+          <a href="https://wangtingkui.space/tags">标签</a>
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="py-2"><a href="https://wangtingkui.space/tags/go/" class="badge rounded post-taxonomy" title="go">
+            go<span class="badge badge-sm text-white bg-accent ms-1">32</span></a><a href="https://wangtingkui.space/tags/php/" class="badge rounded post-taxonomy" title="php">
+            php<span class="badge badge-sm text-white bg-accent ms-1">3</span></a><a href="https://wangtingkui.space/tags/alfred/" class="badge rounded post-taxonomy" title="alfred">
+            alfred<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/hugo/" class="badge rounded post-taxonomy" title="hugo">
+            hugo<span class="badge badge-sm text-white bg-accent ms-1">2</span></a><a href="https://wangtingkui.space/tags/atom/" class="badge rounded post-taxonomy" title="atom">
+            atom<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/editorconfig/" class="badge rounded post-taxonomy" title="EditorConfig">
+            EditorConfig<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/github-pages/" class="badge rounded post-taxonomy" title="github pages">
+            github pages<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/go%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="badge rounded post-taxonomy" title="go源码阅读">
+            go源码阅读<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/nas/" class="badge rounded post-taxonomy" title="nas">
+            nas<span class="badge badge-sm text-white bg-accent ms-1">1</span></a><a href="https://wangtingkui.space/tags/oh-my-zsh/" class="badge rounded post-taxonomy" title="oh-my-zsh">
+            oh-my-zsh<span class="badge badge-sm text-white bg-accent ms-1">1</span></a></div>
+      </div>
+    </section>
+    
+  </div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav justify-content-center mb-2"></nav>
+<div class="copyright mb-2">
+  
+</div>
+
+</footer>
+<script src="https://wangtingkui.space/js/main.8b751a641715a3e199553eece6cc1ebc66f3174f71aa61d55917f74dfc34009c.js" integrity="sha256-i3UaZBcVo&#43;GZVT7s5swevGbzF09xqmHVWRf3Tfw0AJw=" crossorigin="anonymous" defer></script><script src="https://wangtingkui.space/js/icons.min.b3391f89dcdef937e99a193c6de12584ac1d7613c16ae6ba852a096e1fd95108.js" integrity="sha256-szkfidze&#43;Tfpmhk8beElhKwddhPBaua6hSoJbh/ZUQg=" crossorigin="anonymous" defer></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('https:\/\/wangtingkui.space\/service-worker.js').then(function(reg) {
+      console.log('Successfully registered service worker', reg);
+    }).catch(function(err) {
+      console.warn('Error whilst registering service worker', err);
+    });
+  });
+}
+</script><script src="https://wangtingkui.space/js/viewer.min.1721cbc2c5c34a150daae105f4ffed345a8bb269c6b63337f767c272fe6531f7.js" integrity="sha256-FyHLwsXDShUNquEF9P/tNFqLsmnGtjM392fCcv5lMfc=" crossorigin="anonymous" defer></script>
+</body>
+</html>

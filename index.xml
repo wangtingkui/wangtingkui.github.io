@@ -5,7 +5,16 @@
     <link>https://wangtingkui.space/</link>
     <description>Recent content on xiaok&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 13 Aug 2022 16:21:30 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 03 Dec 2022 17:19:21 +0800</lastBuildDate><atom:link href="https://wangtingkui.space/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记一次fmt.Printf的问题</title>
+      <link>https://wangtingkui.space/posts/go/%E8%AE%B0%E4%B8%80%E6%AC%A1fmt.printf%E7%9A%84%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Sat, 03 Dec 2022 17:19:21 +0800</pubDate>
+      
+      <guid>https://wangtingkui.space/posts/go/%E8%AE%B0%E4%B8%80%E6%AC%A1fmt.printf%E7%9A%84%E9%97%AE%E9%A2%98/</guid>
+      <description>背景 前几天碰到了一个特殊的问题，线上一个路径拼接的异常，大概是下面这个样子 路径 /path/xxx?id= 需要拼接一个id的参数，原先的使用方式是 fmt.Sprintf(&amp;quot;/path/xxx?id=%s&amp;quot;, struct{ Id string }{Id: &amp;quot;123&amp;quot;}.Id), 一切运转</description>
+    </item>
+    
     <item>
       <title>mapstructure 库的使用和分析</title>
       <link>https://wangtingkui.space/posts/go/mapstructure/</link>
@@ -251,10 +260,10 @@
     
     <item>
       <title>使用 pkg/errors 进行错误处理</title>
-      <link>https://wangtingkui.space/posts/go/errors/</link>
+      <link>https://wangtingkui.space/posts/go/pkg-errors/</link>
       <pubDate>Tue, 28 Apr 2020 16:53:09 +0800</pubDate>
       
-      <guid>https://wangtingkui.space/posts/go/errors/</guid>
+      <guid>https://wangtingkui.space/posts/go/pkg-errors/</guid>
       <description>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下： 1if err != nil { 2return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两个</description>
     </item>
     
@@ -313,12 +322,12 @@
     </item>
     
     <item>
-      <title>Go标准库（net/url）- 使用</title>
+      <title>Go标准库（net/url）</title>
       <link>https://wangtingkui.space/posts/go/net-url/</link>
       <pubDate>Sat, 21 Dec 2019 22:21:40 +0800</pubDate>
       
       <guid>https://wangtingkui.space/posts/go/net-url/</guid>
-      <description>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：s</description>
+      <description>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用 url 结构 想要使用好这个库，我们需要了解url的基本结构：标准</description>
     </item>
     
     <item>

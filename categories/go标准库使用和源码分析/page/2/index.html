@@ -189,7 +189,7 @@
   </div>
 </nav><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/net-url/">Go标准库（net/Url）- 使用
+      <a href="https://wangtingkui.space/posts/go/net-url/">Go标准库（net/Url）
 </a>
     </h2>
   </div>
@@ -198,14 +198,13 @@
   <span class="post-date" title="创建于 2019-12-21 22:21:40 &#43;0800 CST。">
     2019-12-21
   </span><span class="post-reading-time">
-    2 分钟阅读
+    3 分钟阅读
   </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge post-taxonomy">go标准库使用和源码分析</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
 </div>
 <div class="post-summary">
       <p>net/url包是官方为我们提供的处理 url 链接的库，基本能覆盖我们大多数场景下的使用
-url 结构 在学习使用这个库之前，我们先来了解下 url 的标准结构：scheme://[userinfo@]host/path[?query][#fragment]，如果 scheme 之后不是以斜线开头的，那么结构被认为是 scheme:opaque[?query][#fragment]，也就是用户信息、域名和路径部分是不透明的，可以认为是被加密或者被编码过的
-环境  go1.12  包中的基本结构体 这个包中有3个比较基本的结构体：
- URL：代表一个被解析的url UserInfo：代表 url 中的用户信息部分 Values：...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/net-url/">阅读更多</a></div>
+url 结构 想要使用好这个库，我们需要了解url的基本结构：标准结构：scheme://[userinfo@]host/path[?query][#fragment]，如果 scheme 之后不是以斜线开头的，那么结构被认为是 scheme:opaque[?query][#fragment]，也就是用户信息、域名和路径部分是不透明的，可以认为是被加密或者被编码过的
+更多详细的信息，可以参考百科 环境 1❯ go version 2go version go1.16.15 darwin/amd64 包中的基本结构体 先概览下包中导出的方法和结...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/net-url/">阅读更多</a></div>
     </div>
   </div>
 </article>

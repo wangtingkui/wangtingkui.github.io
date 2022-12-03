@@ -186,6 +186,29 @@
 <div class="col-lg-8">
   <div class="container"><div class="posts mb-4"><article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
+      <a href="https://wangtingkui.space/posts/tool/plugin-recommend/">Alfred Workflow 推荐
+</a>
+    </h2>
+  </div>
+  <div class="card-body">
+    <div class="post-meta">
+  <span class="post-date" title="创建于 2020-05-10 11:44:38 &#43;0800 CST。">
+    2020-05-10
+  </span><span class="post-reading-time">
+    1 分钟阅读
+  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/%E5%B7%A5%E5%85%B7/" class="badge post-taxonomy">工具</a><a href="https://wangtingkui.space/tags/alfred/" class="badge post-taxonomy">alfred</a></span>
+</div>
+<div class="post-summary">
+      <p>这篇文站整理下自己经常使用的 alfred workflow
+TerminalFinder 可以快速在终端和finder直接切换，比如在iterm中打开当前finder的目录
+alfred-jetbrains 快速打开 jetbrains 系列 IDE 的项目
+YoudaoTranslate 有道词典翻译
+</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/plugin-recommend/">阅读更多</a></div>
+    </div>
+  </div>
+</article>
+<article class="row card post component"><div class="card-header">
+    <h2 class="card-title post-title">
       <a href="https://wangtingkui.space/posts/tool/plugin/">使用zsh插件
 </a>
     </h2>
@@ -230,7 +253,7 @@
 </article>
 <article class="row card post component"><div class="card-header">
     <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/errors/">使用 Pkg/Errors 进行错误处理
+      <a href="https://wangtingkui.space/posts/go/pkg-errors/">使用 Pkg/Errors 进行错误处理
 </a>
     </h2>
   </div>
@@ -246,7 +269,7 @@
       <p>当前，go 本身并没有良好的错误处理机制，一个比较常见错误处理方式如下：
 1if err != nil { 2return err 3} 然后层层传递，最终将错误传递到最上层，这里面存在着两个问题：
  没有错误发生时的上下文信息（或者叫堆栈信息） 在层层的错误传递过程中，有可能已经将原始错误转化，丢失了最原始的 error  当前，比较优雅的方式是使用 github.com/pkg/errors 这个包来进行错误处理，官方文档 QUICK START 一个基本的使用如下：
-1package main 23import ( 4e &#34;errors&#34; 5&#34;fmt&#34; 67&#34;github.com/pkg/errors&#34; 8) 910func...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/errors/">阅读更多</a></div>
+1package main 23import ( 4e &#34;errors&#34; 5&#34;fmt&#34; 67&#34;github.com/pkg/errors&#34; 8) 910func...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/pkg-errors/">阅读更多</a></div>
     </div>
   </div>
 </article>
@@ -268,27 +291,6 @@
       <p>markdown 因为简洁的语法非常受到写文章的人的喜爱，但是某些情况下 markdown 也有不足，比如我们想展示一些特殊的样式或者格式的时候，往往需要直接书写 html 代码，这就和 markdown 简洁的初衷相违背了，hugo 提供了shortcode的功能来弥补了 markdown 的这个不足。shortcode 本质上是一些模板，我们可以使用定义好的指令来引用这些模板，相当于书写了一段html在文章中，更多的说明可以查看官网 ，接下来我们来看看怎么使用 shortcode
 简单使用 使用 shortcode 的语法是 {{% shortcodename parameters %}}，其中：
  shortcodename ...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/tool/shortcodes/">阅读更多</a></div>
-    </div>
-  </div>
-</article>
-<article class="row card post component"><div class="card-header">
-    <h2 class="card-title post-title">
-      <a href="https://wangtingkui.space/posts/go/time/">Go标准库（time）- 使用
-</a>
-    </h2>
-  </div>
-  <div class="card-body">
-    <div class="post-meta">
-  <span class="post-date" title="创建于 2020-04-12 23:31:09 &#43;0800 CST。">
-    2020-04-12
-  </span><span class="post-reading-time">
-    2 分钟阅读
-  </span><span class="post-taxonomies"><a href="https://wangtingkui.space/categories/go%E6%A0%87%E5%87%86%E5%BA%93%E4%BD%BF%E7%94%A8%E5%92%8C%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="badge post-taxonomy">go标准库使用和源码分析</a><a href="https://wangtingkui.space/tags/go/" class="badge post-taxonomy">go</a></span>
-</div>
-<div class="post-summary">
-      <p>本篇文章主要讲解下 go 的 time 包如何使用。go 中 time 的使用主要分为以下三个方面：
- 时间点的表示及其操作，以及时间点的格式化展示 时间段的表示及其操作 定时器的操作  本文只是列举比较常用的场景，更多的细节还是要参考官方文档 时间点 在 go 中，时间点使用 time.Time 来表示，这是一个基于纳秒精度的时间表示，我们还是通过一些例子来来学习
-1package main 23import ( 4&#34;fmt&#34; 5&#34;time&#34; 6) 78func main() { 9// 获取时间 10	now := time.Now() // 获取当前时间点对象 11	t := time.Unix(1586708379, 0)...</p><div><a class="btn btn-sm btn-primary btn-read-more" href="https://wangtingkui.space/posts/go/time/">阅读更多</a></div>
     </div>
   </div>
 </article>
